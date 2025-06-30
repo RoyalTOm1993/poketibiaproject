@@ -1,0 +1,236 @@
+checkBoxLogin < UICheckBox
+  size: 26 27
+  image-source: images/!check
+  $checked:
+    !tooltip: tr('Seu client, agora lembra sua conta')
+    image-source:images/check
+  $!checked:
+    !tooltip: tr('Ative para salvar sua conta.')
+
+showPassword < UICheckBox
+  size: 20 20
+  image-source: images/visible
+  image-color: white
+  &updateCheck: |
+    function(self)
+      if self:isChecked() then
+        self:setChecked(false)
+        getPassword():setTextHidden(true)
+      else
+        self:setChecked(true)
+        getPassword():setTextHidden(false)
+      end
+    end
+  @onClick: self:updateCheck()
+
+  $checked:
+    !tooltip: tr('Desmarque para mostrar suas informacoes')
+    image-source: images/hidden
+  $!checked:
+    !tooltip: tr('Marque para ocultar suas informacoes')
+
+showAccount < UICheckBox
+  size: 20 20
+  image-source: images/visible
+  image-color: white
+  &updateCheck: |
+    function(self)
+      if self:isChecked() then
+        self:setChecked(false)
+        getAccount():setTextHidden(true)
+      else
+        self:setChecked(true)
+        getAccount():setTextHidden(false)
+      end
+    end
+  @onClick: self:updateCheck()
+
+  $checked:
+    !tooltip: tr('Desmarque para mostrar suas informacoes')
+    image-source: images/hidden
+  $!checked:
+    !tooltip: tr('Marque para ocultar suas informacoes')
+
+SpaceWindow
+  id: enterGame
+  width: 362
+  height: 400
+  focusable: true
+  draggable: false
+  @onEnter: EnterGame.doLogin()
+
+  LoginTextEdit
+    id: accountNameTextEdit
+    text-hidden: true
+    size: 274 63
+    padding: 15 66
+    color: #ffffff
+    image-source: images/loginTextEdit
+    icon-source:  images/loginIcon
+    icon-offset: -138 -10
+    anchors.left: parent.left
+    anchors.top: parent.top
+    margin-left: 56
+    margin-top: 50
+    draggable: false
+
+  PasswordTextEdit
+    id: accountPasswordTextEdit
+    text-hidden: false
+    size: 274 63
+    padding: 15 66
+    image-source: images/loginTextEdit
+    color: #ffffff
+    icon-source:  images/passwordIcon
+    icon-offset: -138 -10
+    anchors.left: parent.left
+    anchors.top: prev.bottom
+    margin-top: 15
+    margin-left: 56
+    draggable: false
+
+  checkBoxLogin
+    id: rememberPasswordBox
+    anchors.left: parent.left
+    anchors.top: prev.bottom
+    margin-top: 10
+    margin-left: 20
+    draggable: false
+
+  showPassword
+    id: showPassword
+    anchors.right: accountPasswordTextEdit.right
+    anchors.verticalCenter: accountPasswordTextEdit.verticalCenter
+    margin-right: 45
+    margin-bottom: 10
+    draggable: false
+
+  showAccount
+    id: showAccount
+    anchors.right: accountNameTextEdit.right
+    anchors.verticalCenter: accountNameTextEdit.verticalCenter
+    margin-right: 45
+    margin-bottom: 10
+    draggable: false
+
+  Label
+    id: rememberPasswordText
+    !text: tr('LEMBRAR LOGIN')
+    font: future-earth-16px
+    anchors.left: rememberPasswordBox.right
+    anchors.top: rememberPasswordBox.top
+    margin-top: 6
+    margin-left: 8
+    color: #ffffff
+    text-auto-resize: true
+    text-align: left
+    draggable: false
+
+  UIButton
+    !text: tr('ENTRAR')
+    font: future-earth-16px
+    color: #ffffff
+    size: 138 44
+    image-source: images/buttonLogin
+    anchors.right: parent.right
+    anchors.bottom: parent.bottom
+    margin-right: 20
+    margin-bottom: 6
+    @onClick: EnterGame.doLogin()
+
+    $hover:
+      change-cursor-image: true
+      cursor: pointer
+
+  UIButton
+    !text: tr('CRIAR CONTA')
+    font: future-earth-16px
+    color: #ffffff
+    size: 138 44
+    image-source: images/buttonCreateAccount
+    anchors.left: parent.left
+    anchors.bottom: parent.bottom
+    margin-left: 20
+    margin-bottom: 6
+    @onClick: CreateAccount.show()
+
+    $hover:
+      change-cursor-image: true
+      cursor: pointer
+
+  Label
+    id: serverInfoLabel
+    font: future-earth-16px
+    anchors.top: prev.top
+    anchors.left: parent.left
+    margin-top: 5
+    color: green
+    text-auto-resize: true
+    draggable: false
+
+  Label
+    id: topText
+    size: 250 30 
+    !text: tr('LOGIN')
+    font: future-earth-32
+    anchors.left: parent.left
+    anchors.top: parent.top
+    color: #ffffff
+    draggable: false
+    phantom: true
+    margin-left: 112
+    margin-top: -36
+
+  Panel
+    id: serverSelectorPanel
+    anchors.left: parent.left
+    anchors.right: parent.right
+    anchors.bottom: parent.bottom
+    margin-bottom: 80
+    height: 52
+    on: true
+    focusable: false
+    
+    $on:
+      visible: true
+      margin-top: 0
+    
+    $!on:
+      visible: false
+      margin-top: -52
+      
+    MenuLabel
+      id: serverLabel
+      !text: tr('Server')
+      anchors.left: parent.left
+      anchors.top: prev.bottom
+      text-auto-resize: true    
+      margin-top: 5
+
+    ComboBox
+      id: serverSelector
+      anchors.left: prev.left
+      anchors.right: parent.right
+      anchors.top: serverLabel.bottom
+      margin-top: 2
+      margin-right: 3
+      menu-scroll: true
+      menu-height: 125
+      menu-scroll-step: 25
+      text-offset: 5 2
+      @onOptionChange: EnterGame.onServerChange()
+
+  Panel
+    id: customServerSelectorPanel
+
+    MenuLabel
+      id: serverLabel
+
+    TextEdit
+      id: serverHostTextEdit
+
+    MenuLabel
+      id: clientLabel
+
+    ComboBox
+      id: clientVersionSelector

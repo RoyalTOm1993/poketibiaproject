@@ -1,0 +1,66 @@
+CreateCharacterWindow < MainWindow
+  size: 260 210
+
+CreateCharacterWindow
+  id: createCharacterWindow
+  !text: tr('CRIAR PERSONAGEM')
+  font: future-earth-14
+  text-offset: 0 10
+  draggable: false
+
+  MenuLabel
+    !text: tr('Character name')
+    margin-top: 20
+    font: window
+    color: #ffffff
+    anchors.horizontalCenter: parent.horizontalCenter
+    anchors.top: parent.top
+    text-auto-resize: true
+
+  TextEdit
+    id: characterNameTextEdit
+    anchors.left: parent.left
+    anchors.right: parent.right
+    anchors.top: prev.bottom
+    margin-top: 2
+    color: #ffffff
+
+  MenuLabel
+    !text: tr('Character gender')
+    font: window
+    color: #ffffff
+    anchors.horizontalCenter: parent.horizontalCenter
+    anchors.top: prev.bottom
+    margin-top: 10
+    text-auto-resize: true
+
+  ComboBox
+    id: sexLabel
+    margin-top: 3
+    margin-right: 2
+    margin-left: 2
+    anchors.horizontalCenter: parent.horizontalCenter
+    anchors.top: prev.bottom
+    @onSetup: |
+      self:addOption("Male")
+      self:addOption("Female")
+
+  SpaceBlueButtonFont
+    !text: tr('Create')
+    margin-bottom: 12
+    size: 100 24
+    font: window
+    color: #ffffff
+    anchors.bottom: parent.bottom
+    anchors.left: parent.left
+    @onClick: CreateCharacter.doCreateCharacter()
+
+  SpaceGreenButtonFont
+    !text: tr('Cancel')
+    margin-bottom: 12
+    size: 100 24
+    font: window
+    color: #ffffff
+    anchors.bottom: parent.bottom
+    anchors.right: parent.right
+    @onClick: CreateCharacter.doOpenCharacterList()

@@ -1,0 +1,205 @@
+basicTextEdit < UITextEdit
+  font-size: 12
+  color: #ffffff
+  size: 255 46
+  image-offset: -30 -10
+  opacity: 1.0
+  padding: 6 30
+  image-source: /images/ui/login/basicTextEdit
+  change-cursor-image: true
+  $disabled:
+    opacity: 1.0
+    change-cursor-image: false
+
+CreateAccountWindow < SpaceWindowCreateAccount
+  size: 362 440
+  focusable: true
+  draggable: false
+
+showPassword < UICheckBox
+  size: 16 16
+  image-source: images/visible
+  image-color: white
+  &updateCheck: |
+    function(self)
+      if self:isChecked() then
+        self:setChecked(false)
+        getPasswordCreate():setTextHidden(true)
+        getPasswordConfirmCreate():setTextHidden(true)
+      else
+        self:setChecked(true)
+        getPasswordCreate():setTextHidden(false)
+        getPasswordConfirmCreate():setTextHidden(false)
+      end
+    end
+  @onClick: self:updateCheck()
+
+  $checked:
+    !tooltip: tr('Desmarque para mostrar suas informacoes')
+    image-source: images/hidden
+  $!checked:
+    !tooltip: tr('Marque para ocultar suas informacoes')
+
+showAccount < UICheckBox
+  size: 16 16
+  image-source: images/visible
+  image-color: white
+  &updateCheck: |
+    function(self)
+      if self:isChecked() then
+        self:setChecked(false)
+        getAccountCreate():setTextHidden(true)
+      else
+        self:setChecked(true)
+        getAccountCreate():setTextHidden(false)
+      end
+    end
+  @onClick: self:updateCheck()
+
+  $checked:
+    !tooltip: tr('Desmarque para mostrar suas informacoes')
+    image-source: images/hidden
+  $!checked:
+    !tooltip: tr('Marque para ocultar suas informacoes')
+
+CreateAccountWindow
+  id: createAccountWindow
+
+  MenuLabel
+    !text: tr('NOME DA CONTA')
+    anchors.left: parent.left
+    color: #ffffff
+    font: future-earth-16px
+    anchors.top: parent.top
+    margin-top: 20
+    margin-left: 90
+    text-auto-resize: true
+
+  basicTextEdit
+    margin-top: 10
+    margin-left: 66
+    icon-source:  /images/ui/login/AccountIcon
+    icon-offset: -135 -10
+    id: accountNameTextEdit
+    anchors.top: prev.bottom
+    anchors.left: parent.left
+
+  MenuLabel
+    margin-top: 4
+    !text: tr('EMAIL')
+    margin-left: 90
+    color: #ffffff
+    font: future-earth-16px
+    anchors.left: parent.left
+    anchors.top: prev.bottom
+    text-auto-resize: true
+
+  basicTextEdit
+    margin-top: 10
+    margin-left: 66
+    icon-source:  /images/ui/login/emailIcon
+    icon-offset: -135 -10
+    id: emailTextEdit
+    anchors.top: prev.bottom
+    anchors.left: parent.left
+
+  MenuLabel
+    margin-top: 4
+    margin-left: 90
+    color: #ffffff
+    !text: tr('SENHA')
+    font: future-earth-16px
+    anchors.left: parent.left
+    anchors.top: prev.bottom
+    text-auto-resize: true
+
+  basicTextEdit
+    margin-top: 10
+    margin-left: 66
+    id: passwordTextEdit
+    icon-source:  /images/ui/login/passwordIcon
+    icon-offset: -135 -10
+    anchors.top: prev.bottom
+    anchors.left: parent.left
+
+  MenuLabel
+    margin-left: 90
+    margin-top: 4
+    color: #ffffff
+    !text: tr('CONFIRME A SENHA')
+    font: future-earth-16px
+    anchors.left: parent.left
+    anchors.top: prev.bottom
+    text-auto-resize: true
+
+  basicTextEdit
+    id: passwordConfirmationTextEdit
+    margin-top: 10
+    margin-left: 66
+    icon-source:  /images/ui/login/ConfirmPasswordIcon
+    icon-offset: -135 -10
+    anchors.top: prev.bottom
+    anchors.left: parent.left
+
+
+  UIButton
+    !text: tr('CONFIRMAR')
+    font: future-earth-16px
+    color: #ffffff
+    size: 138 44
+    image-source: images/buttonLogin
+    anchors.right: parent.right
+    anchors.bottom: parent.bottom
+    margin-right: 20
+    margin-bottom: 6
+    @onClick: CreateAccount.doCreateAccount()
+
+    $hover:
+      change-cursor-image: true
+      cursor: pointer
+
+  UIButton
+    !text: tr('VOLTAR')
+    font: future-earth-16px
+    color: #ffffff
+    size: 138 44
+    image-source: images/buttonCreateAccount
+    anchors.left: parent.left
+    anchors.bottom: parent.bottom
+    margin-left: 20
+    margin-bottom: 6
+    @onClick: CreateAccount.doOpenEnterGameWindow()
+
+    $hover:
+      change-cursor-image: true
+      cursor: pointer
+
+  Label
+    id: topText
+    size: 350 30 
+    !text: tr('CRIAR CONTA')
+    font: future-earth-26
+    font-size: 28
+    anchors.left: parent.left
+    anchors.top: parent.top
+    color: #ffffff
+    draggable: false
+    phantom: true
+    margin-left: 66
+    margin-top: -32
+
+  showPassword
+    id: showPassword
+    anchors.right: passwordTextEdit.right
+    anchors.verticalCenter: passwordTextEdit.verticalCenter
+    margin-right: 45
+    margin-bottom: 10
+    draggable: false
+
+  showAccount
+    id: showAccount
+    anchors.right: accountNameTextEdit.right
+    anchors.verticalCenter: accountNameTextEdit.verticalCenter
+    margin-right: 45
+    margin-bottom: 10
+    draggable: false

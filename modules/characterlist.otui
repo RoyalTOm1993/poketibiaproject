@@ -1,0 +1,257 @@
+Character < Creature
+  fixed-creature-size: true
+  anchors.horizontalCenter: parent.horizontalCenter
+  anchors.verticalCenter: parent.verticalCenter
+  margin-bottom: 45
+  margin-left: 26
+  rotation: 81
+  image-source: ~
+
+CharacterWidget < UIWidget
+  image-source: images/planet1
+  size: 359 238
+  image-size: 316 31
+  image-offset: 22 176 
+  margin: 4
+  &updateOnStates: |
+    function(self)
+      local children = self:getChildren()
+      for i=1,#children do
+        children[i]:setOn(self:isFocused())
+      end
+    end
+  @onFocusChange: self:updateOnStates()
+  @onSetup: self:updateOnStates()
+  opacity: 0.7
+
+  $focus:
+    opacity: 1.0
+  
+  UIWidget
+    anchors.top: parent.top
+    anchors.left: parent.left
+    image-source: images/borda
+    margin-top: -10
+    size: 359 238
+
+  Label
+    id: name
+    anchors.top: parent.top
+    anchors.left: parent.left
+    anchors.right: parent.right
+    font: window
+    color: #ffffff
+    text-auto-resize: true
+    margin-top: 20
+    margin-left: 30
+
+  Label
+    id: level
+    color: #ffffff
+    font: window
+    anchors.top: name.bottom
+    anchors.left: name.left
+    text-auto-resize: true
+    text-align: center
+
+  Label
+    visible: true
+    id: worldName
+    color: #ffffff
+    font: window
+    anchors.top: level.bottom
+    anchors.left: level.left
+    margin-right: 30
+    text-auto-resize: true
+    text-align: center
+    &baseText: '%s'
+
+  UIWidget
+    //ICONE DO CLA
+    id: ClaICON
+    size: 40 40
+    anchors.top: parent.top
+    anchors.left: parent.left
+    margin-top: 110
+    margin-left: 10
+
+  UICreature
+    id: pokemon1
+    color: #5C5C5C
+    anchors.bottom: parent.bottom
+    anchors.left: parent.left
+    margin-bottom: 24
+    margin-left: 25
+    image-source: ~
+    size: 46 50
+
+  UICreature
+    id: pokemon2
+    color: #5C5C5C
+    anchors.bottom: parent.bottom
+    anchors.left: parent.left
+    margin-bottom: 48
+    margin-left: 84
+    image-source: ~
+    size: 46 50
+
+  UICreature
+    id: pokemon3
+    color: #5C5C5C
+    anchors.bottom: parent.bottom
+    anchors.left: parent.left
+    margin-bottom: 50
+    margin-left: 132
+    image-source: ~
+    size: 46 50
+
+  UICreature
+    id: pokemon4
+    color: #5C5C5C
+    anchors.bottom: parent.bottom
+    anchors.left: parent.left
+    margin-bottom: 50
+    margin-left: 188
+    image-source: ~
+    size: 46 50
+
+  UICreature
+    id: pokemon5
+    color: #5C5C5C
+    anchors.bottom: parent.bottom
+    anchors.left: parent.left
+    margin-bottom: 48
+    margin-left: 242
+    image-source: ~
+    size: 46 50
+
+  UICreature
+    id: pokemon6
+    color: #5C5C5C
+    anchors.bottom: parent.bottom
+    anchors.left: parent.left
+    margin-bottom: 24
+    margin-left: 292
+    image-source: ~
+    size: 46 50
+
+StaticMainWindow
+  id: charactersWindow
+  image-source: images/background_characterlist
+  size: 770 468
+  padding: 0
+  draggable: false
+  visible: false
+  @onEnter: CharacterList.doLogin()
+  @onEscape: CharacterList.hide(true)
+  @onSetup: |
+    g_keyboard.bindKeyPress('Up',   function() for i = 1, 4 do self.characters:focusPreviousChild(KeyboardFocusReason) end end, self)
+    g_keyboard.bindKeyPress('Down', function() for i = 1, 4 do self.characters:focusNextChild(KeyboardFocusReason)     end end, self)
+    g_keyboard.bindKeyPress('Left',  function() self.characters:focusPreviousChild(KeyboardFocusReason) end, self)
+    g_keyboard.bindKeyPress('Right', function() self.characters:focusNextChild(KeyboardFocusReason)     end, self)
+  SpaceBlueButtonFont
+    id: createCharButton
+    !text: tr('Create Character')
+    size: 134 24
+    color: #ffffff
+    anchors.horizontalCenter: parent.horizontalCenter
+    anchors.bottom: parent.bottom
+    margin-bottom: 66
+    @onClick: CreateCharacter.show()
+    $on:
+      color: #ffffff
+
+  Label
+    id: accountStatusCaption
+    !text: tr('Account Status') .. ':'
+    margin-left: 290
+    anchors.left: parent.left
+    anchors.bottom: createCharButton.top
+    margin-bottom: 6
+    font: window
+    color: #ffffff
+
+  Label
+    id: accountStatusLabel
+    !text: tr('Free Account')
+    anchors.left: accountStatusCaption.right
+    anchors.right: parent.right
+    font: window
+    color: #ffffff
+    anchors.bottom: accountStatusCaption.bottom
+    margin-bottom: -1
+    margin-left: 5
+    text-auto-resize: true
+
+  Label
+    id: topText
+    size: 450 30 
+    !text: tr('SELECIONE SEU PERSONAGEM')
+    font: future-earth-26
+    font-size: 28
+    anchors.left: parent.left
+    anchors.top: parent.top
+    color: #ffffff
+    draggable: false
+    phantom: true
+    margin-left: 170
+    margin-top: 16
+
+  ScrollableFlatPanel
+    id: characters
+    anchors.top: parent.top
+    anchors.left: parent.left
+    anchors.right: parent.right
+    anchors.bottom: parent.bottom
+    margin-top: 90
+    margin-bottom: 132
+    margin-left: 18
+    margin-right: 18
+    image-source:
+    padding: 0
+    layout:
+      type: horizontalBox
+      cell-size: 404 224
+      flow: true
+      cell-spacing: 1
+    horizontal-scrollbar: characterListScrollBar
+    auto-focus: first
+    focusable: false
+
+  HorizontalScrollBar
+    id: characterListScrollBar
+    anchors.bottom: accountStatusCaption.top
+    anchors.right: parent.right
+    anchors.left: parent.left
+    margin-left: 40
+    margin-bottom: 12
+    margin-right: 40
+    step: 15
+    pixels-scroll: true
+
+  SpaceBlueButton
+    id: buttonOk
+    !text: tr('SELECIONAR')
+    size:  138 32
+    anchors.right: parent.right
+    anchors.bottom: parent.bottom
+    margin-right: 244
+    font: future-earth-16px
+    color: #ffffff
+    margin-bottom: 24
+    opacity: 1
+    @onClick: CharacterList.doLogin()
+
+
+  SpaceGreenButton
+    id: buttonCancel
+    !text: tr('CANCELAR') 
+    size:  138 32
+    anchors.right: buttonOk.left
+    anchors.bottom: parent.bottom
+    color: #ffffff
+    font: future-earth-16px
+    margin-right: 10
+    margin-bottom: 24
+    @onClick: CharacterList.hide(true)
+    opacity: 1

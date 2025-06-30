@@ -1,0 +1,69 @@
+playerLabel < UIWidget
+  Label
+    size: 100 20
+    id: rank
+    anchors.top: parent.top
+    anchors.left: parent.left
+    text-align: left
+  Label
+    size: 100 20
+    id: nome
+    anchors.top: parent.top
+    anchors.left: parent.left
+    text-align: center
+  Label
+    size: 100 20
+    id: damage
+    anchors.top: parent.top
+    anchors.right: parent.right
+    text-align: right
+    color: red
+
+Window
+  text: Boss Damage
+  text-align: topCenter
+  font: newfont-16px-rounded
+  focusable: false
+  image-source: images/base
+  visible: false
+  size: 197 315
+  anchors.verticalCenter: parent.verticalCenter
+  anchors.left: parent.left
+  ScrollablePanel
+    id: panelDamage
+    size: 160 150
+    visible: true
+    anchors.bottom: parent.bottom
+    anchors.right: parent.right
+    anchors.left: parent.left
+    vertical-scrollbar: scrollbar
+    layout:
+      type: grid
+      cell-size: 160 20
+      cell-spacing: 2
+      flow: false
+      num-columns: 1
+  VerticalScrollBar
+    id: scrollbar
+    visible: false
+    anchors.top: panelDamage.top
+    anchors.bottom: panelDamage.bottom
+    anchors.right: panelDamage.right
+    margin-right: 0
+    step: 30
+  Label
+    id: personalRank
+    anchors.bottom: panelDamage.bottom
+    anchors.left: panelDamage.left
+    margin-bottom: 30
+  Label
+    id: personalDamage
+    anchors.bottom: panelDamage.bottom
+    anchors.left: panelDamage.left
+    color: red
+    margin-bottom: 15
+  UICreature
+    id: bossOutfit
+    size: 96 96
+    anchors.top: parent.top
+    anchors.horizontalCenter: parent.horizontalCenter

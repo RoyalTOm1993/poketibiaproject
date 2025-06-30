@@ -1,0 +1,62 @@
+UIWidget
+  id: background
+  anchors.fill: parent
+  focusable: false
+  image-source: /images/background
+  image-smooth: true
+  image-fixed-ratio: true
+  margin-top: 1
+
+  UILabel
+    id: clientVersionLabel
+    image-source: ~
+    anchors.right: parent.right
+    anchors.bottom: parent.bottom
+    text-align: center
+    text-auto-resize: true
+    font: sono_bold_border_30
+  
+
+  UIButton
+    id: discord
+    !tooltip: tr('Discord')
+    image-source: /images/ui/socialicons/discord
+    anchors.horizontalCenter: parent.horizontalCenter
+    anchors.bottom: parent.bottom
+    margin-left: -44
+    margin-bottom: 10
+    rotation: 0
+    @onClick: g_platform.openUrl("")
+    $hover:
+      rotation: 30
+    $pressed:
+      rotation: -35
+  UIButton
+    id: site
+    !tooltip: tr('Site')
+    image-source: /images/ui/socialicons/internet
+    margin-left: 8
+    margin-bottom: 10
+    anchors.horizontalCenter: parent.horizontalCenter
+    anchors.bottom: parent.bottom
+    rotation: 0
+    @onClick: g_platform.openUrl("")
+    $hover:
+      rotation: 30
+    $pressed:
+      rotation: -35
+  UIButton
+    id: whatsapp
+    !tooltip: tr('whatsapp')
+    image-source: /images/ui/socialicons/whatsapp
+    margin-left: 60
+    margin-bottom: 10
+    anchors.horizontalCenter: parent.horizontalCenter
+    anchors.bottom: parent.bottom
+    rotation: 0
+    @onClick: g_platform.openUrl("")
+    $hover:
+      rotation: 30
+    $pressed:
+      rotation: -35
+
