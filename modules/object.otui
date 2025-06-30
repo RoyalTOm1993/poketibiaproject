@@ -1,0 +1,110 @@
+RoundCheckBox < CheckBox
+  image-source: /images/ui/checkbox
+  
+  $first:
+    margin-top: 2
+
+  $!first:
+    margin-top: 5
+
+MainWindow
+  id: assignItemWindow
+  size: 275 210
+
+  UIItem
+    id: item
+    anchors.top: parent.top
+    anchors.left: parent.left
+    margin-top: 18
+    margin-left: 6
+    size: 86 86
+    padding: 5
+    &selectable: true
+    &editable: false
+    image-source: /images/ui/panel_flat
+    image-border: 1
+
+  Panel
+    id: checks
+    anchors.left: prev.right
+    anchors.top: parent.top
+    anchors.right: parent.right
+    margin-left: 16
+    margin-top: 14
+    layout: 
+      type: verticalBox
+      fit-children: true
+
+    RoundCheckBox
+      id: useSelf
+      text: Use on yourself
+      enabled: false
+    
+    RoundCheckBox
+      id: useTarget
+      text: Use on target
+      enabled: false
+
+    RoundCheckBox
+      id: useCross
+      text: With crosshair
+      enabled: false
+
+    RoundCheckBox
+      id: equip
+      text: Equip/Unequip
+      enabled: false
+
+    RoundCheckBox
+      id: use
+      text: Use
+      enabled: false
+
+  Button
+    id: select
+    anchors.left: item.left
+    anchors.right: item.right
+    anchors.top: item.bottom
+    margin-top: 5
+    font: window
+    size: 60 22
+    text: Select item
+
+  Button
+    id: buttonClose
+    anchors.right: parent.right
+    anchors.bottom: parent.bottom
+    size: 50 22
+    font: window
+    text: Close
+
+  Button
+    id: buttonApply
+    anchors.right: prev.left
+    margin-right: 5
+    anchors.bottom: parent.bottom
+    size: 50 22
+    font: window
+    text: Apply
+
+  Button
+    id: buttonOk
+    anchors.right: prev.left
+    margin-right: 5
+    anchors.bottom: parent.bottom
+    size: 50 22
+    font: window
+    text: Ok
+
+  Label
+    id: topText
+    text-auto-resize: true
+    !text: tr('ATRIBUIR OBJETO')
+    font: future-earth-18
+    anchors.horizontalCenter: parent.horizontalCenter
+    anchors.top: parent.top
+    color: #68b4db
+    draggable: false
+    phantom: true
+    margin-top: -30
+    margin-left: 16
