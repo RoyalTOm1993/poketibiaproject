@@ -1,0 +1,554 @@
+SpellHoverIcon < UIWidget
+  id: spelliconhover
+  size: 9 9
+  image-source: /images/game/poketeam/tooltip/spell_progress
+
+TeamBarHover < UIWidget
+  id: tooltipWindow
+  size: 158 250
+  image-source: /images/game/poketeam/tooltip/background
+  image-border: 10
+  UICreature
+    id: creature
+    size: 54 54
+    anchors.top: parent.top
+    anchors.horizontalCenter: parent.horizontalCenter
+    margin-top: 8
+    old-scaling: true
+  UIWidget
+    id: DexId
+    !text: '#0'
+    text-auto-resize: true
+    font: sono_bold_12
+    anchors.top: parent.top
+    anchors.left: parent.left
+    margin-top: 6
+    margin-left: 6
+  UIWidget
+    id: PokeName
+    !text: 'nil'
+    text-auto-resize: true
+    font: sono_medium_14
+    anchors.top: creature.bottom
+    anchors.horizontalCenter: creature.horizontalCenter
+    margin-top: 5
+  UIItem
+    id: pokeballitem
+    virtual: true
+    size: 20 20
+    anchors.top: PokeName.top
+    anchors.right: PokeName.left
+  UIWidget
+    id: PokeNick
+    !text: '(nil)'
+    visible: false
+    text-auto-resize: true
+    font: sono_bold_12
+    anchors.top: PokeName.bottom
+    anchors.horizontalCenter: PokeName.horizontalCenter
+  UIWidget
+    id: separator
+    size: 88 2
+    image-source: /images/game/poketeam/tooltip/separator
+    anchors.top: PokeNick.bottom
+    anchors.horizontalCenter: PokeNick.horizontalCenter
+  UIWidget
+    id: LifeBackground
+    size: 125 11
+    image-source: /images/game/poketeam/tooltip/progress_background
+    image-border-left: 8
+    image-border-right: 8
+    anchors.top: prev.bottom
+    anchors.horizontalCenter: prev.horizontalCenter
+    margin-top: 5
+  UIWidget
+    id: Lifebar
+    size: 125 11
+    image-source: /images/game/poketeam/tooltip/progressbar
+    image-border-left: 8
+    image-border-right: 8
+    anchors.top: LifeBackground.top
+    anchors.horizontalCenter: LifeBackground.horizontalCenter
+  UIWidget
+    id: valueLife
+    !text: 'nil'
+    text-auto-resize: true
+    font: sono_medium_12
+    anchors.verticalCenter: prev.verticalCenter
+    anchors.horizontalCenter: prev.horizontalCenter
+    margin-top: -1
+  UIWidget
+    id: XPBackground
+    size: 125 11
+    image-source: /images/game/poketeam/tooltip/progress_background
+    image-border-left: 8
+    image-border-right: 8
+    anchors.top: prev.bottom
+    anchors.horizontalCenter: prev.horizontalCenter
+    margin-top: 2
+  UIWidget
+    id: XpBar
+    size: 125 11
+    image-source: /images/game/poketeam/tooltip/progressbar
+    image-border-left: 8
+    image-border-right: 8
+    anchors.top: XPBackground.top
+    anchors.horizontalCenter: XPBackground.horizontalCenter
+  UIWidget
+    id: valuexp
+    !text: 'nil'
+    text-auto-resize: true
+    font: sono_medium_12
+    anchors.verticalCenter: prev.verticalCenter
+    anchors.horizontalCenter: prev.horizontalCenter
+    margin-top: -1
+  UIWidget
+    id: HappyBackground
+    size: 125 11
+    image-source: /images/game/poketeam/tooltip/progress_background
+    image-border-left: 8
+    image-border-right: 8
+    anchors.top: prev.bottom
+    anchors.horizontalCenter: prev.horizontalCenter
+    margin-top: 2
+  UIWidget
+    id: HappyBar
+    size: 125 11
+    image-source: /images/game/poketeam/tooltip/progressbar
+    image-border-left: 8
+    image-border-right: 8
+    anchors.top: HappyBackground.top
+    anchors.horizontalCenter: HappyBackground.horizontalCenter
+  UIWidget
+    id: valueHappy
+    !text: 'nil'
+    text-auto-resize: true
+    font: sono_medium_12
+    anchors.verticalCenter: prev.verticalCenter
+    anchors.horizontalCenter: prev.horizontalCenter
+    margin-top: -1
+  UIScrollArea
+    id: spells
+    size: 125 9
+    layout:
+      type: horizontalBox
+      cell-size: 9 9
+      spacing: 1
+    anchors.top: valueHappy.bottom
+    anchors.horizontalCenter: XPBackground.horizontalCenter
+  UIWidget
+    id: levelTitle
+    !text: tr('Level')..':'
+    color: #ffff99
+    text-auto-resize: true
+    font: sono_medium_12
+    anchors.top: spells.bottom
+    anchors.left: parent.left
+    margin-top: 5
+    margin-left: 10
+  UIWidget
+    id: level
+    !text: 'nil'
+    color: white
+    text-auto-resize: true
+    font: sono_medium_12
+    anchors.top: prev.top
+    anchors.right: parent.right
+    margin-right: 10
+  UIWidget
+    id: happtTitle
+    !text: tr('Happiness')..':'
+    color: #ffff99
+    text-auto-resize: true
+    font: sono_medium_12
+    anchors.top: levelTitle.bottom
+    anchors.left: parent.left
+    margin-left: 10
+  UIWidget
+    id: happy
+    !text: 'nil'
+    color: white
+    text-auto-resize: true
+    font: sono_medium_12
+    anchors.top: prev.top
+    anchors.right: parent.right
+    margin-right: 10
+  UIWidget
+    id: PerfectionTitle
+    !text: tr('Perfection')..':'
+    color: #ffff99
+    text-auto-resize: true
+    font: sono_medium_12
+    anchors.top: prev.bottom
+    anchors.left: parent.left
+    margin-left: 10
+  UIWidget
+    id: Perfection
+    !text: 'nil'
+    color: white
+    text-auto-resize: true
+    font: sono_medium_12
+    anchors.top: prev.top
+    anchors.right: parent.right
+    margin-right: 10
+  UIWidget
+    id: NatureTitle
+    !text: tr('Nature')..':'
+    color: #ffff99
+    text-auto-resize: true
+    font: sono_medium_12
+    anchors.top: prev.bottom
+    anchors.left: parent.left
+    margin-left: 10
+  UIWidget
+    id: Nature
+    !text: 'nil'
+    color: white
+    text-auto-resize: true
+    font: sono_medium_12
+    anchors.top: prev.top
+    anchors.right: parent.right
+    margin-right: 10
+  UIWidget
+    id: NpcPriceTitle
+    !text: tr('Npc Price')..':'
+    color: #ffff99
+    text-auto-resize: true
+    font: sono_medium_12
+    anchors.top: prev.bottom
+    anchors.left: parent.left
+    margin-left: 10
+  UIWidget
+    id: NpcPrice
+    !text: 'nil'
+    color: white
+    text-auto-resize: true
+    font: sono_medium_12
+    anchors.top: prev.top
+    anchors.right: parent.right
+    margin-right: 10
+  UIWidget
+    id: ParticleTitle
+    !text: tr('Particle')..':'
+    color: #ffff99
+    text-auto-resize: true
+    font: sono_medium_12
+    anchors.top: prev.bottom
+    anchors.left: parent.left
+    margin-left: 10
+  UIWidget
+    id: Particle
+    size: 13 13
+    image-source: /images/game/poketeam/tooltip/unchecked
+    anchors.top: prev.top
+    anchors.right: parent.right
+    margin-right: 10
+
+HoverMapItem < UIItem
+  size: 32 32
+  color: white
+
+HoverMap < UIWidget
+  size: 94 94
+  HoverMapItem
+    id: 1
+    visible: false
+    anchors.top: parent.top
+    anchors.left: parent.left
+  HoverMapItem
+    id: 2
+    visible: false
+    anchors.top: prev.top
+    anchors.left: prev.right
+  HoverMapItem
+    id: 3
+    visible: false
+    anchors.top: prev.top
+    anchors.left: prev.right
+  HoverMapItem
+    id: 4
+    visible: false
+    anchors.top: prev.bottom
+    anchors.left: parent.left
+  HoverMapItem
+    id: 5
+    visible: false
+    anchors.top: prev.top
+    anchors.left: prev.right
+  HoverMapItem
+    id: 6
+    visible: false
+    anchors.top: prev.top
+    anchors.left: prev.right
+  HoverMapItem
+    id: 7
+    visible: false
+    anchors.top: prev.bottom
+    anchors.left: parent.left
+  HoverMapItem
+    id: 8
+    visible: false
+    anchors.top: prev.top
+    anchors.left: prev.right
+  HoverMapItem
+    id: 9
+    visible: false
+    anchors.top: prev.top
+    anchors.left: prev.right
+  UIWidget
+    id: mapBorder
+    size: 98 98
+    image-source: ~
+    anchors.top: parent.top
+    anchors.left: parent.left
+    margin-top: -2
+    margin-left: -2
+  UIWidget
+    id: base
+    size: 100 49
+    image-source: /base/1
+    anchors.top: parent.top
+    anchors.horizontalCenter: parent.horizontalCenter
+    margin-top: 50
+  UICreature
+    id: creature
+    size: 50 40
+    anchors.horizontalCenter: base.horizontalCenter
+    anchors.verticalCenter: base.verticalCenter
+  UIWidget
+    id: effect
+    size: 80 80
+    opacity: 0
+    image-source: /shaders/effect/evolve/6
+    anchors.horizontalCenter: creature.horizontalCenter
+    anchors.verticalCenter: creature.verticalCenter
+    margin-right: 15
+    margin-bottom: 12
+
+ItemHideCount < UIItem
+  hide-count: true
+  color: white
+
+
+TooltipMainWindow < UIWindow
+  size: 150 147
+  image-source: /images/ui/tooltip/background_tooltip
+  UIWidget
+    id: itemBase
+    size: 25 25
+    image-source: /images/ui/tooltip/item_slot
+    anchors.top: parent.top
+    anchors.horizontalCenter: parent.horizontalCenter
+    margin-top: 22
+  UIItem
+    id: item
+    size: 25 25
+    virtual: true
+    color: #ffffff
+    hide-count: true
+    anchors.verticalCenter: itemBase.verticalCenter
+    anchors.horizontalCenter: itemBase.horizontalCenter
+  Label
+    id: name
+    color: white
+    phantom: true
+    font: sono_medium_12
+    text-auto-resize: true
+    anchors.top: itemBase.bottom
+    anchors.horizontalCenter: parent.horizontalCenter
+    margin-top: 4
+  UIWidget
+    id: separator
+    size: 128 1
+    image-source: /images/ui/tooltip/separator
+    anchors.top: name.bottom
+    anchors.horizontalCenter: parent.horizontalCenter
+    margin-top: 25
+  Label
+    color: white
+    !text: 'Price:'
+    phantom: true
+    font: sono_medium_10
+    text-auto-resize: true
+    anchors.bottom: separator.top
+    anchors.left: separator.left
+    margin-bottom: 5
+  Label
+    id: moneyCount
+    color: #ffea00
+    !text: '0'
+    phantom: true
+    font: sono_medium_10
+    text-auto-resize: true
+    anchors.bottom: separator.top
+    anchors.right: separator.right
+    margin-bottom: 5
+  UIWidget
+    size: 8 8
+    image-source: /images/ui/tooltip/gold_icon
+    anchors.top: moneyCount.top
+    anchors.right: moneyCount.left
+    margin-top: 3
+    margin-right: 2
+  UILabel
+    id: desc
+    font: sono_medium_10
+    color: #dfdfdf
+    phantom: true
+    text-align: center
+    text-wrap: true
+    text-vertical-auto-resize: true
+    anchors.left: separator.left
+    anchors.right: separator.right
+    anchors.top: separator.bottom
+    margin-top: 5
+
+TooltipPokeWindow < UIWindow
+  size: 164 302
+  image-source: /images/ui/tooltip/background_poke
+  image-border-top: 25
+  image-border-bottom: 260
+  UIWidget
+    id: base
+    size: 69 70
+    image-source: /images/ui/tooltip/base_poke
+    anchors.top: parent.top
+    anchors.horizontalCenter: parent.horizontalCenter
+    margin-top: 28
+  UICreature
+    id: image
+    size: 69 70
+    anchors.horizontalCenter: base.horizontalCenter
+    anchors.verticalCenter: base.verticalCenter
+  UIWidget
+    id: greenEnergy
+    size: 10 10
+    image-source: /images/ui/tooltip/greenOrb
+    anchors.top: parent.top
+    anchors.left: parent.left
+    margin-top: 30
+    margin-left: 15
+  UIWidget
+    id: yellowEnergy
+    size: 10 10
+    image-source: /images/ui/tooltip/yellowOrb
+    anchors.top: parent.top
+    anchors.left: parent.left
+    margin-top: 42
+    margin-left: 15
+  UIItem
+    id: card
+    virtual: true
+    size: 25 25
+    anchors.top: parent.top
+    anchors.right: parent.right
+    margin-top: 28
+    margin-right: 10
+  UIWidget
+    id: pokeName
+    !text: 'Arceus'
+    text-auto-resize: true
+    font: sono_medium_14
+    anchors.top: base.bottom
+    anchors.horizontalCenter: parent.horizontalCenter
+    margin-top: 7
+  UIWidget
+    id: pokeName
+    color: #8d8d8d
+    text-auto-resize: true
+    font: sono_medium_12
+    anchors.top: prev.bottom
+    anchors.horizontalCenter: parent.horizontalCenter
+  UIWidget
+    id: stars
+    size: 78 13
+    image-source: /images/ui/tooltip/0_star
+    anchors.top: prev.bottom
+    anchors.horizontalCenter: parent.horizontalCenter
+    margin-top: 9
+  UIWidget
+    id: titleMaestria
+    !text: 'Maestria'
+    color: #ffff99
+    text-auto-resize: true
+    font: sono_medium_12
+    anchors.top: prev.bottom
+    anchors.horizontalCenter: parent.horizontalCenter
+    margin-top: 12
+  UIWidget
+    id: maestria
+    size: 76 18
+    image-source: /images/ui/tooltip/0_maestria
+    anchors.top: prev.bottom
+    anchors.horizontalCenter: parent.horizontalCenter
+    margin-top: 9
+    margin-right: 5
+  UIWidget
+    id: titleHelds
+    !text: 'Helds'
+    color: #ffff99
+    text-auto-resize: true
+    font: sono_medium_12
+    anchors.top: prev.bottom
+    anchors.horizontalCenter: parent.horizontalCenter
+    margin-top: 12
+  UIScrollArea
+    id: heldsPanel
+    size: 130 45
+    anchors.top: titleHelds.bottom
+    anchors.horizontalCenter: parent.horizontalCenter
+    margin-top: 2
+    auto-focus: first
+    layout:
+      type: grid
+      cell-size: 19 19
+      flow: true
+      cell-spacing: 1
+
+
+TooltipPokeMarket < UIWindow
+  size: 164 302
+  image-source: /images/ui/tooltip/background_poke
+  image-border-top: 25
+  image-border-bottom: 260
+  UIWidget
+    id: base
+    size: 69 70
+    image-source: /images/ui/tooltip/base_poke
+    anchors.top: parent.top
+    anchors.horizontalCenter: parent.horizontalCenter
+    margin-top: 28
+  UICreature
+    id: image
+    size: 69 70
+    anchors.horizontalCenter: base.horizontalCenter
+    anchors.verticalCenter: base.verticalCenter
+  UIWidget
+    id: pokeName
+    color: #8d8d8d
+    text-auto-resize: true
+    font: sono_medium_12
+    anchors.top: base.bottom
+    anchors.horizontalCenter: parent.horizontalCenter
+    margin-top: 7
+  UIWidget
+    id: titleHelds
+    !text: 'Helds'
+    color: #ffff99
+    text-auto-resize: true
+    font: sono_medium_12
+    anchors.top: prev.bottom
+    anchors.horizontalCenter: parent.horizontalCenter
+    margin-top: 12
+  UIScrollArea
+    id: heldsPanel
+    size: 130 45
+    anchors.top: titleHelds.bottom
+    anchors.horizontalCenter: parent.horizontalCenter
+    margin-top: 2
+    auto-focus: first
+    layout:
+      type: grid
+      cell-size: 19 19
+      flow: true
+      cell-spacing: 1
