@@ -1,0 +1,33 @@
+OptionPanel
+  margin-top: 24
+  OptionCheckBox
+    id: classicControl
+    !text: tr('Controle classico')
+
+    $mobile:
+      visible: false
+
+  OptionCheckBox
+    id: autoChaseOverride
+    !text: tr('Permitir anulacao automatica de perseguicao')
+
+  OptionCheckBox
+    id: displayText
+    !text: tr('Exibir mensagens de texto')
+
+  OptionCheckBox
+    id: wsadWalking
+    !text: tr('Ativar caminhada com WSAD')
+    !tooltip: tr('Desativar bate-papo e permitir caminhar usando as teclas WSAD')
+    $mobile:
+      visible: false
+
+  OptionCheckBox
+    id: dash
+    !text: tr('Ativar caminhada rapida (DASH)')
+    !tooltip: tr('Permite executar o proximo movimento sem confirmacao do servidor do anterior')
+
+  OptionCheckBox
+    id: smartWalk
+    !text: tr('Ativar caminhada inteligente')
+    !tooltip: tr('Detectara quando usar um passo diagonal com base nas\nteclas que voce esta pressionando')
