@@ -1,0 +1,10 @@
+Module
+  name: game_guildmanagement
+  description: Guild Management
+  author: Oen44
+  website: https://github.com/Oen44
+  scripts: [ guild_management ]
+  autoload: true
+  sandboxed: true
+  @onLoad: init()
+  @onUnload: terminate()

@@ -1,0 +1,147 @@
+EntryPanel < Panel
+  height: 34
+  padding: 1 2
+  layout: horizontalBox
+
+  $alternate:
+    background: #aaaaaa22
+  
+  $!alternate:
+    background: #aaaaaa11
+
+  $on:
+    background: #00ff0022
+
+  Label
+    id: position
+    text-align: center
+    width: 32
+    text: 1.
+    color: #FFDC96
+  
+  Panel
+    id: vocation
+    image-source: images/guild_management/knight
+    margin-left: 8
+    margin-right: 8
+  
+  Label
+    id: name
+    text-align: center
+    width: 125
+    text: Player Name
+    color: #FFAA00
+  
+  Panel
+    id: options
+    width: 75
+    layout:
+      type: horizontalBox
+      spacing: 10
+    
+    UIButton
+      id: chat
+      fixed-size: true
+      size: 18 18
+      image-source: images/game/npcicons/icon_chat
+      tooltip: Open private chat
+    
+    ButtonGuild
+      id: menu
+      fixed-size: true
+      width: 24
+      text: =
+  
+  Label
+    id: rank
+    text-align: center
+    text: Leader
+    width: 100
+    color: #FFDC96
+  
+  Label
+    id: level
+    text-align: center
+    text: 123
+    width: 75
+    color: #FFAA00
+  
+  Panel
+    id: status
+    height: 11
+    fixed-size: true
+    image-source: images/game/skulls/skull_red
+    phantom: false
+    margin-left: 20
+
+HeaderLabel < UIWidget
+  font: verdana-11px-antialised
+  background-color: alpha
+  color: #dfdfdfff
+  height: 23
+  focusable: false
+  text-offset: 0 0
+  image-source: images/ui/button
+  image-color: #dfdfdf
+  image-clip: 0 0 22 23
+  image-border: 3
+  padding: 5 10 5 10
+  enabled: false
+  focusable: false
+
+Panel
+
+  Panel
+    anchors.top: parent.top
+    anchors.left: parent.left
+    anchors.right: parent.right
+    height: 23
+    layout: horizontalBox
+
+    HeaderLabel
+      text: #
+      width: 32
+
+    HeaderLabel
+      text: Voc.
+      width: 50
+
+    HeaderLabel
+      text: Name
+      width: 125
+
+    HeaderLabel
+      text: Options
+      width: 75
+
+    HeaderLabel
+      text: Rank
+      width: 100
+
+    HeaderLabel
+      text: Level
+      width: 75
+
+    HeaderLabel
+      text: Status
+      width: 50
+
+  UIScrollArea
+    id: list
+    anchors.top: prev.bottom
+    anchors.left: parent.left
+    anchors.right: parent.right
+    anchors.bottom: parent.bottom
+    vertical-scrollbar: scrollbar
+    image-source: images/ui/textedit
+    image-border: 1
+    margin-right: 10
+    layout: verticalBox
+
+  VerticalScrollBar
+    id: scrollbar
+    anchors.top: parent.top
+    anchors.bottom: parent.bottom
+    anchors.right: parent.right
+    step: 50
+    pixels-scroll: true

@@ -1,0 +1,297 @@
+InboxDate < Label
+  id: date
+  anchors.top: parent.top
+  anchors.left: parent.left
+  text-auto-resize: true
+  margin-top: -18
+
+DepositInbox < MiniPanel
+  height: 89
+  text: Gold Deposit
+
+  InboxDate
+  
+  Panel
+    anchors.top: parent.top
+    anchors.left: parent.left
+    image-source: images/guild_management/deposit
+  
+  Panel
+    id: panel
+    anchors.top: parent.top
+    anchors.left: prev.right
+    anchors.right: parent.right
+    anchors.bottom: parent.bottom
+    margin-left: 2
+    padding: 2
+    image-source: images/guild_management/panel_small_dark
+    image-border: 1
+
+    Label
+      id: text
+      anchors.fill: parent
+      text-wrap: true
+
+JoinedInbox < MiniPanel
+  height: 89
+  text: Member Joined
+
+  InboxDate
+  
+  Panel
+    anchors.top: parent.top
+    anchors.left: parent.left
+    image-source: images/guild_management/joined
+  
+  Panel
+    id: panel
+    anchors.top: parent.top
+    anchors.left: prev.right
+    anchors.right: parent.right
+    anchors.bottom: parent.bottom
+    margin-left: 2
+    padding: 2
+    image-source: images/guild_management/panel_small_dark
+    image-border: 1
+
+    Label
+      id: text
+      anchors.fill: parent
+      text-wrap: true
+
+LeftInbox < MiniPanel
+  height: 89
+  text: Member Left
+
+  InboxDate
+  
+  Panel
+    anchors.top: parent.top
+    anchors.left: parent.left
+    image-source: images/guild_management/left
+  
+  Panel
+    id: panel
+    anchors.top: parent.top
+    anchors.left: prev.right
+    anchors.right: parent.right
+    anchors.bottom: parent.bottom
+    margin-left: 2
+    padding: 2
+    image-source: images/guild_management/panel_small_dark
+    image-border: 1
+
+    Label
+      id: text
+      anchors.fill: parent
+      text-wrap: true
+
+WarInbox < MiniPanel
+  height: 95
+  text: War Declaration
+
+  InboxDate
+  
+  Panel
+    anchors.top: parent.top
+    anchors.left: parent.left
+    image-source: images/guild_management/war
+  
+  Panel
+    id: panel
+    anchors.top: parent.top
+    anchors.left: prev.right
+    anchors.right: parent.right
+    anchors.bottom: next.top
+    margin-bottom: 2
+    margin-left: 2
+    padding: 2
+    image-source: images/guild_management/panel_small_dark
+    image-border: 1
+
+    Label
+      id: text
+      anchors.fill: parent
+      text-wrap: true
+  
+  ButtonGuild
+    id: acceptBtn
+    anchors.bottom: parent.bottom
+    anchors.horizontalCenter: parent.horizontalCenter
+    margin-bottom: 2
+    image-color: green
+    margin-left: 55
+    text: Accept
+
+    $disabled:
+      height: 0
+  
+  ButtonGuild
+    id: rejectBtn
+    anchors.bottom: parent.bottom
+    anchors.horizontalCenter: parent.horizontalCenter
+    margin-bottom: 2
+    image-color: red
+    margin-right: 55
+    text: Reject
+
+    $disabled:
+      height: 0
+
+RequestInbox < MiniPanel
+  height: 95
+  text: Join Request
+
+  InboxDate
+  
+  Panel
+    anchors.top: parent.top
+    anchors.left: parent.left
+    image-source: images/guild_management/invite
+  
+  Panel
+    id: panel
+    anchors.top: parent.top
+    anchors.left: prev.right
+    anchors.right: parent.right
+    anchors.bottom: next.top
+    margin-bottom: 2
+    margin-left: 2
+    padding: 2
+    image-source: images/guild_management/panel_small_dark
+    image-border: 1
+
+    Label
+      id: text
+      anchors.fill: parent
+      text-wrap: true
+  
+  ButtonGuild
+    id: acceptBtn
+    anchors.bottom: parent.bottom
+    anchors.horizontalCenter: parent.horizontalCenter
+    margin-bottom: 2
+    image-color: green
+    margin-left: 55
+    text: Accept
+
+    $disabled:
+      height: 0
+  
+  ButtonGuild
+    id: rejectBtn
+    anchors.bottom: parent.bottom
+    anchors.horizontalCenter: parent.horizontalCenter
+    margin-bottom: 2
+    image-color: red
+    margin-right: 55
+    text: Reject
+
+    $disabled:
+      height: 0
+
+InviteInbox < MiniPanel
+  height: 95
+  text: Join Invitation
+
+  InboxDate
+  
+  Panel
+    id: icon
+    anchors.top: parent.top
+    anchors.left: parent.left
+    size: 64 64
+    image-source: images/guild_management/invite
+  
+  Panel
+    id: panel
+    anchors.top: parent.top
+    anchors.left: prev.right
+    anchors.right: parent.right
+    anchors.bottom: next.top
+    margin-bottom: 2
+    margin-left: 2
+    padding: 2
+    image-source: images/guild_management/panel_small_dark
+    image-border: 1
+
+    Label
+      id: text
+      anchors.fill: parent
+      text-wrap: true
+  
+  ButtonGuild
+    id: acceptBtn
+    anchors.bottom: parent.bottom
+    anchors.horizontalCenter: parent.horizontalCenter
+    margin-bottom: 2
+    image-color: green
+    margin-left: 55
+    text: Accept
+
+    $disabled:
+      height: 0
+  
+  ButtonGuild
+    id: rejectBtn
+    anchors.bottom: parent.bottom
+    anchors.horizontalCenter: parent.horizontalCenter
+    margin-bottom: 2
+    image-color: red
+    margin-right: 55
+    text: Reject
+
+    $disabled:
+      height: 0
+
+KickedInbox < MiniPanel
+  height: 89
+  text: Kicked Out
+
+  InboxDate
+  
+  Panel
+    id: icon
+    anchors.top: parent.top
+    anchors.left: parent.left
+    size: 64 64
+    image-source: images/guild_management/kicked
+  
+  Panel
+    id: panel
+    anchors.top: parent.top
+    anchors.left: prev.right
+    anchors.right: parent.right
+    anchors.bottom: parent.bottom
+    margin-left: 2
+    padding: 2
+    image-source: images/guild_management/panel_small_dark
+    image-border: 1
+
+    Label
+      id: text
+      anchors.fill: parent
+      text-wrap: true
+
+Panel
+  UIScrollArea
+    id: list
+    anchors.top: parent.top
+    anchors.left: parent.left
+    anchors.right: parent.right
+    anchors.bottom: parent.bottom
+    margin-right: 10
+    image-source: images/ui/textedit
+    image-border: 1
+    padding: 1
+    vertical-scrollbar: scrollbar
+    layout: verticalBox
+
+  VerticalScrollBar
+    id: scrollbar
+    anchors.top: prev.top
+    anchors.bottom: prev.bottom
+    anchors.left: prev.right
+    step: 50
+    pixels-scroll: true
+  
