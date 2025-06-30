@@ -1,0 +1,57 @@
+SpellButton < UIButton
+  size: 32 32
+  focusable: false
+  image-color: white
+  image-size: 32 32
+  anchors.left: parent.left
+  anchors.top: parent.top
+  $!hover:
+    image-border: 3
+  $hover:
+    image-border: 2
+    image-color: #ffffff99
+  $pressed:
+    image-color: #999999
+  $disabled:
+    image-color: #ffffff66
+
+SpellProgressSpell < UIProgressRect
+  background: #585858AA
+  percent: 100
+  focusable: false
+  font: verdana-11px-rounded
+  color: red
+  anchors.fill: parent
+
+SpellText < Label
+  id: text
+  size: 32 32
+  font: sono_bold_border_18
+  anchors.left: parent.left
+  anchors.top: parent.top
+  text-align: center
+  margin-top: -18
+
+OrderButton < UIButton
+  size: 32 32
+  focusable: false
+  image-source: order
+  image-color: white
+  image-size: 20 26
+  anchors.left: parent.left
+  anchors.top: parent.top
+
+  $hover:
+    image-color: #ffffff99
+  $pressed:
+    image-color: #999999
+  $disabled:
+    image-color: #ffffff66
+
+UIWindow
+  focusable: false
+  image-border: 30
+  Panel
+    id: spellWindow
+    focusable: false
+    anchors.fill: parent

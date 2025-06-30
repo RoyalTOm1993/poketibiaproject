@@ -1,0 +1,43 @@
+PokemonHost < UIWidget
+  //image-source: base
+  size: 32 32
+  anchors.top: prev.top
+  anchors.left: prev.right
+  margin-left: 3
+  $first:
+    anchors.verticalCenter: parent.verticalCenter
+    anchors.left: parent.left
+    margin-left: 0
+  UICreature
+    id: pokeImage
+    anchors.fill: parent
+    old-scaling: true
+MainWindow
+  size: 210 150
+  margin-left: 200
+  text: TV Control
+  Label
+    id: viewers
+    text-auto-resize: true
+    anchors.top: parent.top
+    anchors.horizontalCenter: parent.horizontalCenter
+    text: Viewers: 1
+    margin-left: 12
+  UIButton
+    image-source: /images/eye
+    anchors.top: viewers.top
+    anchors.right: viewers.left
+    size: 24 24
+    margin-top: -5
+    margin-right: 3
+  ButtonGuild
+    id: stop
+    text: Stop Viewing
+    anchors.horizontalCenter: parent.horizontalCenter
+    anchors.bottom: parent.bottom
+  UIWidget
+    id: pokemons
+    size: 198 32
+    anchors.horizontalCenter: parent.horizontalCenter
+    anchors.bottom: parent.bottom
+    margin-bottom: 27

@@ -1,0 +1,99 @@
+SkillFirstWidget < UIWidget
+
+SkillButton < UIButton
+  height: 21
+  margin-bottom: 2
+  &onClick: onSkillButtonClick
+
+SmallSkillButton < SkillButton
+  height: 14
+
+SkillNameLabel < GameLabel
+  font: window
+  anchors.left: parent.left
+  anchors.top: parent.top
+  anchors.bottom: parent.bottom
+
+SkillValueLabel < GameLabel
+  id: value
+  font: window
+  text-align: topright
+  anchors.right: parent.right
+  anchors.top: parent.top
+  anchors.bottom: parent.bottom
+  anchors.left: prev.left
+
+SkillPercentPanel < ProgressBar
+  id: percent
+  background-color: green
+  height: 5
+  margin-top: 15
+  anchors.left: parent.left
+  anchors.right: parent.right
+  anchors.top: parent.top
+  phantom: false
+
+MiniWindow
+  id: skillWindow
+  !text: tr('Skills')
+  height: 150
+  @onClose: modules.game_skills.onMiniWindowClose()
+  &save: true
+  &autoOpen: false
+
+  MiniWindowContents
+    margin-left: 12
+    margin-right: 8
+    margin-top: 55
+    margin-bottom: 15
+    padding-left: 5
+    padding-right: 5
+    layout: verticalBox
+
+    SkillButton
+      id: level
+      SkillNameLabel
+        !text: tr('Level')
+      SkillValueLabel
+      SkillPercentPanel
+        background-color: red
+
+    SkillButton
+      id: health
+      height: 15
+      SkillNameLabel
+        !text: tr('Hit Points')
+      SkillValueLabel
+
+    SkillButton
+      id: speed
+      height: 15
+      SkillNameLabel
+        !text: tr('Speed')
+      SkillValueLabel
+
+    SkillButton
+      id: stamina
+      SkillNameLabel
+        !text: tr('Stamina')
+      SkillValueLabel
+      SkillPercentPanel
+
+    SkillButton
+      id: skillId6
+      SkillNameLabel
+        !text: tr('Fishing')
+      SkillValueLabel
+      SkillPercentPanel
+
+  ResizeBorder
+    id: bottomResizeBorder
+    anchors.bottom: parent.bottom
+    anchors.left: parent.left
+    anchors.right: parent.right
+    height: 3
+    minimum: 110
+    maximum: 173
+    margin-left: 3
+    margin-right: 3
+    background: #ffffff88

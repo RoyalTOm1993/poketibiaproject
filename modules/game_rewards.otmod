@@ -1,0 +1,11 @@
+Module
+  name: game_rewards
+  description: game rewards
+  author: san
+  website: 
+  autoload: true
+  autoload-priority: 1000
+  scripts: [ game_rewards ]
+  sandboxed: true
+  @onLoad: init()
+  @onUnload: terminate()

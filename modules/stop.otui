@@ -1,0 +1,10 @@
+MainWindow
+  size: 150 75
+  margin-left: 200
+  text: TV System
+  ButtonGuild
+    id: stop
+    text: Stop Hosting
+    anchors.horizontalCenter: parent.horizontalCenter
+    anchors.bottom: parent.bottom
+

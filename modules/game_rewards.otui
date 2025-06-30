@@ -1,0 +1,60 @@
+MainWindow
+  image-source:  assets/background
+  text: RESGATAR CÓDIGO
+  font: future-earth-32
+  color: #66c8ff
+  size: 528 280
+  @onEscape: self:hide()
+  SpaceGreenButtonFont
+    id: closeButton
+    anchors.top: parent.top
+    anchors.right: parent.right
+    margin-top: 8
+    margin-right: 2
+    size: 24 25
+    image-source: /images/ui/closeButton
+    change-cursor-image: true
+    cursor: pointer
+    @onClick: self:getParent():hide()
+
+  UIWidget
+    id: textTop
+    text: Aqui voce pode resgatar seu codigo, se alerte as letras minusculas/maiusculas, pois, elas fazem diferenca.
+    text-wrap: true
+    anchors.left: parent.left
+    anchors.right: parent.right
+    anchors.top: parent.top
+    anchors.bottom: parent.bottom
+    margin-bottom: 130
+    margin-top: 50
+    margin-left: 10
+    margin-right: 10
+    font: window
+    
+  SpaceGreenButton
+    id: resgate
+    font: future-earth-18
+    color: #d9fead
+    anchors.horizontalCenter: parent.horizontalCenter
+    anchors.bottom: parent.bottom
+    margin-bottom: 20
+    text: RESGATAR
+    @onClick: modules.game_rewards.redeemCode()
+
+  UITextEdit
+    id: code
+    font: future-earth-40
+    color: #66c8ff
+    size: 240 50
+    margin-top: 10
+    anchors.verticalCenter: parent.verticalCenter
+    anchors.horizontalCenter: parent.horizontalCenter
+    text-offset: 40 100
+    padding: 4
+    image-source: /images/ui/textedit
+    image-border: 1
+    change-cursor-image: true
+    $disabled:
+      color: #27272788
+      opacity: 0.8
+      change-cursor-image: false

@@ -1,0 +1,9 @@
+Module
+  name: game_pass
+  description: Show and get rewards of season
+  author: Ryukiimaru
+  website: https://www.facebook.com/systemyart
+  sandboxed: true
+  scripts: [ pass ]
+  @onLoad: init()
+  @onUnload: terminate()

@@ -1,0 +1,39 @@
+MainWindow
+  size: 275 170
+  !text: 'Enter Information'
+  @onEnter: modules.game_store.confirmGift()
+
+  TextEdit
+    id: description
+    anchors.top: parent.top
+    anchors.left: parent.left
+    anchors.right: parent.right
+    placeholder: Description
+
+  TextEdit
+    id: password
+    anchors.top: prev.bottom
+    anchors.left: parent.left
+    anchors.right: parent.right
+    margin-top: 15
+    placeholder: Password
+
+  Label
+    anchors.top: prev.bottom
+    anchors.horizontalCenter: parent.horizontalCenter
+    text: Leave blank to let anyone watch you
+    text-auto-resize: true
+
+  Button
+    anchors.bottom: parent.bottom
+    anchors.right: parent.right
+    text: Host
+    width: 64
+    @onClick: modules.game_spectate.confirmHost()
+
+  Button
+    anchors.bottom: parent.bottom
+    anchors.left: parent.left
+    text: Cancel
+    width: 64
+    @onClick: modules.game_spectate.cancelHost()

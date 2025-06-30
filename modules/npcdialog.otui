@@ -1,0 +1,496 @@
+RewardsNPCWindow < UIScrollArea
+  id: PanelSelections
+  size: 410 32
+  phantom: true
+  layout:
+    type: horizontalBox
+    spacing: 8
+    cell-size: 32 32
+
+DefeatPokesNpcWindow < UIScrollArea
+  id: PanelSelections
+  size: 410 30
+  phantom: true
+  layout:
+    type: horizontalBox
+    spacing: 20
+    cell-size: 32 32
+
+RewardNPCItem < UIItem
+  size: 34 34
+  padding: 1
+  image-source: /images/ui/item
+  font: sono_medium_border_12
+  border-color: white
+  color: white
+  UILabel
+    id: count
+    font: sono_medium_12
+    text-auto-resize: true
+    anchors.bottom: parent.bottom
+    anchors.right: parent.right
+    margin-right: -5
+    margin-bottom: -1
+
+DefeatPokesByNpc < UIWidget
+  size: 35 35
+  UIWidget
+    id: creature
+    size: 40 30
+    anchors.centerIn: parent
+  UILabel
+    id: count
+    phantom: true
+    font: sono_medium_12
+    text-auto-resize: true
+    anchors.bottom: parent.bottom
+    anchors.right: parent.right
+    margin-right: -13
+    margin-bottom: 5
+
+StarterNpc < UIWidget
+  size: 60 35
+  UIWidget
+    id: creature
+    size: 40 30
+    anchors.centerIn: parent
+    margin-right: 6
+  UILabel
+    id: count
+    phantom: true
+    font: sono_medium_12
+    text-auto-resize: true
+    anchors.bottom: parent.bottom
+    anchors.left: creature.right
+    margin-left: 1
+    margin-bottom: 5
+
+SelectionsWindow < UIWidget
+  size: 444 51
+  image-source: /modules/game_npcdialog/images/1
+  text-align: left
+  font: sono_medium_12
+  text-offset: 15 0
+  image-border: 14
+  change-cursor-image: true
+  cursor: pointer
+  $!checked:
+    image-source: /modules/game_npcdialog/images/1
+  $hover !checked:
+    image-source: /modules/game_npcdialog/images/2
+  $checked:
+    image-source: /modules/game_npcdialog/images/3
+  $hover checked:
+    image-source: /modules/game_npcdialog/images/3
+  $focus:
+    image-source: /modules/game_npcdialog/images/3
+
+SelectionsWindowText < SelectionsWindow
+  size: 444 33
+  UIWidget
+    id: icon
+    size: 26 25
+    phantom: true
+    image-source: images/message_icon
+    anchors.verticalCenter: parent.verticalCenter
+    anchors.right: parent.right
+    margin-right: 8
+  DialogText
+    id: text
+    phantom: true
+    anchors.top: parent.top
+    anchors.left: parent.left
+    anchors.right: parent.right
+    anchors.bottom: parent.bottom
+    margin-top: 11
+    margin-left: 20
+    margin-right: 35
+    margin-bottom: 11
+
+itemForList < UIWidget
+  size: 32 41
+  phantom: true
+  UIWidget
+    id: tooltip
+    size: 32 32
+    anchors.top: parent.top
+    anchors.horizontalCenter: parent.horizontalCenter
+  UIItem
+    id: item
+    size: 32 32
+    phantom: true
+    virtual: true
+    hide-count: true
+    anchors.top: parent.top
+    anchors.horizontalCenter: parent.horizontalCenter
+  UIWidget
+    id: count
+    font: sono_medium_10
+    color: white
+    text-auto-resize: true
+    text-align: center
+    phantom: true
+    anchors.horizontalCenter: parent.horizontalCenter
+    anchors.bottom: parent.bottom
+
+pokeForList < UIWidget
+  size: 32 42
+  phantom: true
+  UIWidget
+    id: tooltip
+    size: 32 32
+    anchors.top: parent.top
+    anchors.horizontalCenter: parent.horizontalCenter
+  UICreature
+    id: creature
+    size: 32 32
+    anchors.top: parent.top
+    anchors.horizontalCenter: parent.horizontalCenter
+  UIWidget
+    id: count
+    font: sono_medium_10
+    color: white
+    text-auto-resize: true
+    text-align: center
+    phantom: true
+    anchors.horizontalCenter: parent.horizontalCenter
+    anchors.bottom: parent.bottom
+
+SelectionsWindowClose < SelectionsWindow
+  size: 444 33
+
+  UIWidget
+    id: decrease
+    size: 444 33
+    phantom: true
+    image-source: images/decrease_chat
+    anchors.top: parent.top
+    anchors.left: parent.left
+
+  UIWidget
+    id: close
+    phantom: true
+    image-source: images/close
+    anchors.top: parent.top
+    anchors.right: parent.right
+    margin-top: 10
+    margin-right: 15
+
+  UIWidget
+    id: title
+    !text: tr("End interaction with NPC")
+    font: sono_medium_12
+    color: white
+    text-align: right
+    text-auto-resize: true
+    phantom: true
+    anchors.verticalCenter: parent.verticalCenter
+    anchors.left: parent.left
+    margin-left: 20
+
+SelectionsWindowTextEdit < SelectionsWindow
+  size: 444 64
+  UIWidget
+    id: icon
+    size: 26 25
+    phantom: true
+    image-source: images/message_icon
+    anchors.verticalCenter: parent.verticalCenter
+    anchors.right: parent.right
+    margin-right: 8
+
+  UIWidget
+    id: baseEdit
+    size: 371 29
+    phantom: true
+    image-source: images/base_textedot
+    anchors.top: title.bottom
+    anchors.left: title.left
+  TextEdit
+    id: textEdit
+    size: 354 29
+    image-source: 
+    font: sono_medium_12
+    padding-top: 8
+    padding-left: 25
+    placeholder-align: left
+    placeholder-font: sono_medium_12
+    anchors.top: baseEdit.top
+    anchors.left: baseEdit.left
+    margin-top: 0
+    margin-left: 12
+  UIWidget
+    id: editicon
+    size: 14 14
+    phantom: true
+    image-source: images/icon_textedit
+    anchors.top: baseEdit.top
+    anchors.left: baseEdit.left
+    margin-top: 8
+    margin-left: 9
+
+  UIWidget
+    id: title
+    !text: tr('Escolher Arcanine')
+    font: sono_bold_14
+    color: white
+    text-align: right
+    text-auto-resize: true
+    phantom: true
+    anchors.top: parent.top
+    anchors.left: parent.left
+    margin-left: 18
+    margin-top: 8
+
+SelectionsWindowPokeList < SelectionsWindow
+  size: 444 85
+  UIWidget
+    id: icon
+    size: 26 25
+    phantom: true
+    image-source: images/message_icon
+    anchors.verticalCenter: parent.verticalCenter
+    anchors.right: parent.right
+    margin-right: 8
+
+  UIWidget
+    id: title
+    !text: tr('Escolher Arcanine')
+    font: sono_bold_14
+    color: white
+    text-align: right
+    text-auto-resize: true
+    phantom: true
+    anchors.top: parent.top
+    anchors.left: parent.left
+    margin-left: 18
+    margin-top: 8
+
+  ScrollablePanel
+    id: panel
+    anchors.top: title.bottom
+    anchors.bottom: parent.bottom
+    anchors.left: title.left
+    anchors.right: icon.left
+    auto-focus: first
+    margin-top: 7
+    margin-right: 4
+    margin-bottom: 7
+    layout:
+      type: grid
+      cell-size: 32 41
+      flow: true
+      cell-spacing: 8
+
+SelectionsWindowItemList < SelectionsWindow
+  size: 444 75
+  UIWidget
+    id: icon
+    size: 26 25
+    phantom: true
+    image-source: images/message_icon
+    anchors.verticalCenter: parent.verticalCenter
+    anchors.right: parent.right
+    margin-right: 8
+
+  UIWidget
+    id: title
+    !text: tr('Escolher Arcanine')
+    font: sono_bold_14
+    color: white
+    text-align: right
+    text-auto-resize: true
+    phantom: true
+    anchors.top: parent.top
+    anchors.left: parent.left
+    margin-left: 18
+    margin-top: 8
+
+  ScrollablePanel
+    id: panel
+    anchors.top: title.bottom
+    anchors.bottom: parent.bottom
+    anchors.left: title.left
+    anchors.right: icon.left
+    auto-focus: first
+    margin-top: 0
+    margin-right: 4
+    margin-bottom: 7
+    layout:
+      type: grid
+      cell-size: 32 41
+      flow: true
+      cell-spacing: 4
+
+SelectionsWindowPokeSelect < SelectionsWindow
+  size: 444 33
+  UIWidget
+    id: basePoke
+    size: 40 40
+    phantom: true
+    image-source: images/basepoke
+    anchors.verticalCenter: parent.verticalCenter
+    anchors.left: parent.left
+    margin-left: 19
+  UIWidget
+    id: poke
+    size: 40 30
+    phantom: true
+    image-source: /pokemon/regular/arcanine
+    anchors.verticalCenter: basePoke.verticalCenter
+    anchors.horizontalCenter: basePoke.horizontalCenter
+  UIWidget
+    id: icon
+    size: 26 25
+    phantom: true
+    image-source: images/message_icon
+    anchors.verticalCenter: parent.verticalCenter
+    anchors.right: parent.right
+    margin-right: 8
+
+  UIWidget
+    id: title
+    !text: tr('Escolher Arcanine')
+    font: sono_bold_14
+    color: white
+    text-align: right
+    text-auto-resize: true
+    phantom: true
+    anchors.top: parent.top
+    anchors.left: basePoke.right
+    margin-left: 9
+    margin-top: 11
+  DialogText
+    id: text
+    phantom: true
+    anchors.top: title.bottom
+    anchors.left: title.left
+    anchors.right: parent.right
+    anchors.bottom: parent.bottom
+    margin-top: -2
+    margin-right: 35
+    margin-bottom: 11
+
+
+NpcDialogName < UIWidget
+  id: NpcName
+  phantom: true
+  font: sono_bold_16
+  text-align: left
+  text-auto-resize: true
+  anchors.top: baseOutfit.top
+  anchors.left: baseOutfit.right
+  margin-top: 30
+  margin-left: -15
+DialogText < UIWidget
+  id: DialogTexts
+  size: 420 0
+  font: sono_medium_12
+  color: #ffffff
+  text-wrap: true
+  text-align: topLeft
+  anchors.top: parent.top
+  anchors.bottom: parent.bottom
+  anchors.left: parent.left
+  anchors.right: parent.right
+NpcOutfitBase < UIWidget
+  id: baseOutfit
+  size: 96 96
+  phantom: true
+  anchors.top: parent.top
+  anchors.left: parent.left
+  margin-top: -23
+  margin-left: 12
+  UIWidget
+    id: base
+    size: 32 32
+    phantom: true
+    anchors.bottom: NpcOutfit.bottom
+    anchors.right: NpcOutfit.right
+    margin-right: -8
+    margin-bottom: -9
+  UICreature
+    id: NpcOutfit
+    size: 36 36
+    anchors.top: parent.top
+    anchors.left: parent.left
+    margin-top: 25
+    margin-left: 25
+    phantom: true
+    old-scaling: true
+  UIWidget
+    id: image
+    size: 96 96
+    phantom: true
+    anchors.horizontalCenter: parent.horizontalCenter
+    anchors.verticalCenter: parent.verticalCenter
+
+UIWindow
+  id: npcDialog
+  size: 444 100
+  image-border: 50
+  // background-color: blue
+  anchors.bottom: parent.bottom
+  anchors.horizontalCenter: parent.horizontalCenter
+  margin-bottom: 250
+
+  UIWidget
+    id: mainPanel
+    size: 444 101
+    phantom: true
+    image-source: images/background_main
+    image-border: 30
+    anchors.top: parent.top
+    anchors.horizontalCenter: parent.horizontalCenter
+    margin-top: 25
+
+  UIWidget
+    id: baseOut
+    size: 300 52
+    phantom: true
+    image-source: images/base_out
+    image-border: 50
+    anchors.top: parent.top
+    anchors.left: parent.left
+    margin-top: -5
+    margin-left: 27
+
+  NpcOutfitBase
+  NpcDialogName
+  UIScrollArea
+    id: PanelDialog
+    size: 420 35
+    phantom: true
+    anchors.top: baseOutfit.bottom
+    anchors.left: baseOutfit.left
+    margin-top: -15
+    margin-left: 10
+    DialogText
+      id: description
+      phantom: true
+
+  UIScrollArea
+    id: PanelSelections
+    size: 444 0
+    phantom: true
+    anchors.top: PanelDialog.bottom
+    anchors.left: parent.left
+    anchors.right: parent.right
+    margin-top: 8
+    margin-bottom: 25
+    vertical-scrollbar: ScrollBarDialog
+    auto-focus: first
+    layout:
+      type: verticalBox
+      spacing: 3
+  VerticalScrollBar
+    id: ScrollBarDialog
+    anchors.top: PanelSelections.top
+    anchors.bottom: parent.bottom
+    anchors.left: PanelSelections.right
+    margin-left: 5
+    margin-bottom: 35
+    step: 36
+    pixels-scroll: true
+    $!on:
+      width: 0

@@ -1,0 +1,9 @@
+Module
+  name: game_npcdialog
+  description: The dialogue system with NPCs created allows the player to interact in a personalized way with non-player characters, using checkboxes, text edits, visualization of items and clothing of the NPCs. It makes the game experience more immersive and engaging.
+  author: stone
+  website: https://x.gd/kJ2WH
+  scripts: [ npcdialog ]
+  sandboxed: true
+  @onLoad: init()
+  @onUnload: terminate()
