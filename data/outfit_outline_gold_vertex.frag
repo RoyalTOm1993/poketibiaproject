@@ -16,29 +16,26 @@ void main()
     vec2 vertex = a_Vertex;
     vec2 text = a_TexCoord;
     vec2 text2 = a_TexCoord;
-    
-    float outlineThickness = 1.0; // Aumente esse valor para aumentar a espessura do contorno
-
     if(vertex.x < u_Center.x) {
-        vertex.x -= outlineThickness;
-        text.x -= outlineThickness;
+        vertex.x -= 1.0;
+        text.x -= 1.0;
     }
     if(vertex.x > u_Center.x) {
-        vertex.x += outlineThickness;
-        text.x += outlineThickness;
+        vertex.x += 1.0;
+        text.x += 1.0;
     }
     if(vertex.y < u_Center.y) {
-        vertex.y -= outlineThickness;
-        text.y -= outlineThickness;
+        vertex.y -= 1.0;
+        text.y -= 1.0;
     }
     if(vertex.y > u_Center.y) {
-        vertex.y += outlineThickness;
-        text.y += outlineThickness;
+        vertex.y += 1.0;
+        text.y += 1.0;
     }
-    
     gl_Position = vec4((u_ProjectionMatrix * u_TransformMatrix * vec3(vertex.xy, 1.0)).xy, 1.0, 1.0);
     v_Position = a_Vertex.xy - u_Center;
     v_TexCoord = (u_TextureMatrix * vec3(text,1.0)).xy;
-    v_TexCoord2 = (u_TextureMatrix * vec3(text + u_Offset * outlineThickness,1.0)).xy;
+    v_TexCoord2 = (u_TextureMatrix * vec3(text + u_Offset,1.0)).xy;
     v_TexCoord3 = (u_TextureMatrix * vec3(text2,1.0)).xy;
 }
+

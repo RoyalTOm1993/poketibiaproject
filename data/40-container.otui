@@ -1,0 +1,203 @@
+PageButton < Button
+  size: 30 18
+  margin: 1
+
+ButtonSelectFilter < UIWidget
+  size: 20 20
+  image-color: #8d8e8e
+  &updateOnStates: |
+    function(self)
+      local children = self:getChildren()
+      for i = 1, #children do
+        children[i]:setOn(self:isFocused())
+      end
+    end
+  @onFocusChange: self:updateOnStates()
+  @onSetup: self:updateOnStates()
+  change-cursor-image: true
+  cursor: pointer
+  $focus:
+    image-color: #79b2ff
+
+ContainerWindow < MiniWindow
+  height: 189
+  &save: true
+  &containerWindow: true
+
+  UIItem
+    id: containerItemWidget
+    virtual: true
+    size: 32 32
+    visible: false
+    anchors.top: parent.top
+    anchors.left: parent.left
+    margin-top: 1
+    margin-left: 3
+
+  UIButton
+    id: upButton
+    anchors.top: lockButton.top
+    anchors.right: lockButton.left
+    margin-right: 8
+    margin-top: 2
+    size: 12 13
+    image-source: /images/ui/miniwindowbtn/return
+    image-color: #cbcbcb
+    opacity: 1.0
+    change-cursor-image: true
+    cursor: pointer
+    $hover:
+      opacity: 1.0
+      image-color: #ffffff
+    $pressed:
+      opacity: 0.8
+      image-color: #9c9c9c
+
+  Panel
+    id: pagePanel
+    size: 300 20
+    anchors.bottom: contentsPanel.top
+    anchors.right: contentsPanel.right
+    margin-bottom: 10
+    $on:
+      visible: true
+    $!on:
+      visible: false
+    Label
+      id: pageLabel
+      anchors.right: nextPageButton.left
+      anchors.verticalCenter: parent.verticalCenter
+      margin-right: 5
+      text-auto-resize: true
+    UIButton
+      id: prevPageButton
+      anchors.top: parent.top
+      anchors.right: pageLabel.left
+      size: 12 20
+      margin-right: 5
+      image-source: /images/ui/container/previous
+      image-color: #cbcbcb
+      opacity: 1.0
+      change-cursor-image: true
+      cursor: pointer
+      $hover:
+        opacity: 1.0
+        image-color: #ffffff
+      $pressed:
+        opacity: 0.8
+        image-color: #9c9c9c
+    UIButton
+      id: nextPageButton
+      anchors.top: parent.top
+      anchors.right: parent.right
+      size: 12 20
+      image-source: /images/ui/container/next
+      image-color: #cbcbcb
+      opacity: 1.0
+      change-cursor-image: true
+      cursor: pointer
+      $hover:
+        opacity: 1.0
+        image-color: #ffffff
+      $pressed:
+        opacity: 0.8
+        image-color: #9c9c9c
+
+  UIWidget
+    id: backgroundTopTittle
+    size: 400 33
+    anchors.top: parent.top
+    anchors.left: parent.left
+    margin-top: 7
+    margin-left: 15
+    UIWidget
+      id: baseIcon
+      size: 27 27
+      image-source: /images/ui/container/base_background_icon
+      anchors.top: parent.top
+      anchors.left: parent.left
+    UIWidget
+      id: Icon
+      size: 27 27
+      image-source: /images/ui/container/depot_icon
+      anchors.top: parent.top
+      anchors.left: parent.left
+    Label
+      id: title
+      !text: tr('Pokémon Center Machine')
+      font: sono_bold_16
+      color: white
+      text-auto-resize: true
+      anchors.verticalCenter: parent.verticalCenter
+      anchors.left: baseIcon.right
+      margin-left: 8
+      margin-bottom: 2
+    Label
+      id: StatusName
+      font: sono_bold_16
+      color: #eae370
+      text-auto-resize: true
+      anchors.verticalCenter: parent.verticalCenter
+      anchors.left: title.right
+      margin-left: 4
+      margin-bottom: 2
+
+  TextEdit
+    id: editSearch
+    size: 175 26
+    visible: false
+    image-source: /images/ui/tag/edit_text
+    font: sono_medium_12
+    placeholder: Pesquisar um item
+    placeholder-align: left
+    placeholder-font: sono_medium_12
+    max-length: 16
+    padding-top: 6
+    padding-left: 30
+    anchors.bottom: contentsPanel.top
+    anchors.right: contentsPanel.right
+    margin-bottom: 10
+    UIWidget
+      id: Progress
+      size: 14 14
+      image-source: /images/ui/container/search
+      anchors.left: parent.left
+      anchors.verticalCenter: parent.verticalCenter
+      margin-left: -22
+
+  UIWidget
+    id: filterPanel
+    size: 32 32
+    image-source: /images/ui/container_filter
+    image-border: 11
+    anchors.top: parent.top
+    anchors.bottom: parent.bottom
+    anchors.left: parent.left
+    margin-top: 40
+    margin-bottom: 5
+    margin-left: 5
+    UIScrollArea
+      id: buttonsPael
+      anchors.fill: parent
+      margin-left: 6
+      margin-top: 5
+      margin-bottom: 5
+      margin-right: 2
+      auto-focus: first
+      layout:
+        type: grid
+        cell-size: 20 20
+        flow: true
+        cell-spacing: 5
+
+  MiniWindowContents
+    margin-left: 40
+    margin-bottom: 3
+    margin-top: 40
+    margin-right: 0
+    margin-top: 40
+    layout:
+      type: grid
+      cell-size: 32 32
+      flow: true
+      cell-spacing: 1

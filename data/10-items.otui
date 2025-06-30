@@ -1,0 +1,30 @@
+Item < UIItem
+  size: 64 64
+  padding: 1
+  image-source: /images/ui/Inventory_Slot_Background
+  font: verdana-11px-rounded
+  border-color: white
+  color: white
+
+  $disabled:
+    color: #646464
+
+ItemAnimated < UIWidget
+  size: 100 100
+  UIItem
+    id: itemID
+    size: 16 16
+    virtual: true
+    anchors.top: parent.top
+    anchors.left: parent.left
+    margin-top: 55
+    margin-left: 45
+    UIWidget
+      id: count
+      !text: '2'
+      text-auto-resize: true
+      font: sono_medium_border_10
+      anchors.bottom: parent.bottom
+      anchors.right: parent.right
+      margin-bottom: -4
+      margin-right: -4
