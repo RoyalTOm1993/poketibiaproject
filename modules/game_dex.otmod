@@ -1,0 +1,11 @@
+Module
+  name: game_dex
+  description: pokedex
+  author: san
+  website: none
+  autoload: true
+  autoload-priority: 1000
+  scripts: [ game_dex ]
+  sandboxed: true
+  @onLoad: init()
+  @onUnload: terminate()

@@ -1,0 +1,7 @@
+InfoButton < Button
+  anchors.top: parent.top
+  anchors.left: parent.left
+  size: 32 32
+  @onClick: self:getParent():hide()
+MainWindow
+  @onEscape: self:hide()

@@ -1,0 +1,261 @@
+HotkeyListLabel < UILabel
+  font: verdana-11px-monochrome
+  background-color: alpha
+  text-offset: 2 0
+  focusable: true
+  phantom: false
+
+  $focus:
+    background-color: #ffffff22
+
+HotkeyWindow
+  id: hotkeysWindow
+  !text: tr('Hotkeys')
+  font: future-earth-26
+  color: #66c8ff
+  size: 352 503
+
+  @onEnter: modules.game_hotkeys.ok()
+  @onEscape: modules.game_hotkeys.cancel()
+  
+  ComboBox
+    id: configSelector
+    font: window
+    width: 150
+    margin-top: 40
+    anchors.horizontalCenter: parent.horizontalCenter
+    anchors.top: parent.top
+    menu-scroll: true
+    menu-height: 125
+    menu-scroll-step: 25
+    text-offset: 5 2
+    @onOptionChange:  modules.game_hotkeys.onConfigChange()  
+    @onSetup: |
+      self:addOption(tr("Hotkeys config #1"))
+      self:addOption(tr("Hotkeys config #2"))
+      self:addOption(tr("Hotkeys config #3"))
+      self:addOption(tr("Hotkeys config #4"))
+      self:addOption(tr("Hotkeys config #5"))
+    
+
+  VerticalScrollBar
+    id: currentHotkeysScrollBar
+    height: 100
+    anchors.top: prev.bottom
+    anchors.right: parent.right
+    margin-top: 5
+    margin-right: 28
+    step: 14
+    pixels-scroll: true
+
+  TextList
+    id: currentHotkeys
+    vertical-scrollbar: currentHotkeysScrollBar
+    anchors.horizontalCenter: parent.horizontalCenter
+    anchors.top: prev.top
+    height: 100
+    width: 240
+    focusable: false
+
+  SpaceGreenButtonFont
+    id: resetButton
+    size: 112 22
+    !text: tr('Reset All')
+    anchors.left: parent.left
+    anchors.top: next.top
+    @onClick: modules.game_hotkeys.reset()
+    margin-right: 10
+
+  SpaceBlueButtonFont
+    id: addHotkeyButton
+    !text: tr('Add')
+    size: 74 22
+    anchors.right: next.left
+    anchors.top: next.top
+    margin-right: 5
+    @onClick: modules.game_hotkeys.addHotkey()
+
+  SpaceBlueButtonFont
+    id: removeHotkeyButton
+    !text: tr('Remove')
+    size: 74 22
+    enabled: false
+    anchors.right: parent.right
+    anchors.top: currentHotkeys.bottom
+    margin-top: 8
+    @onClick: modules.game_hotkeys.removeHotkey()
+    
+  Label
+    anchors.left: parent.left
+    anchors.top: prev.bottom
+    font: window
+    margin-left: 14
+    margin-top: 20
+    !text: tr('Extra action:')    
+  
+  ComboBox
+    id: action
+    font: window
+    width: 200
+    anchors.left: prev.right
+    anchors.top: prev.top
+    margin-left: 5
+    margin-top: -4
+    enabled: false
+    @onOptionChange: modules.game_hotkeys.updateHotkeyAction()
+
+
+  Label
+    id: hotKeyTextLabel
+    !text: tr('Edit hotkey text:')
+    enable: false
+    anchors.left: parent.left
+    anchors.top: prev.bottom
+    font: window
+    margin-left: 14
+    margin-top: 6
+
+  TextEdit
+    id: hotkeyText
+    enabled: false
+    width: 139
+    anchors.left: prev.right
+    anchors.top: prev.top
+    margin-left: 5
+    margin-top: -4
+    @onTextChange: modules.game_hotkeys.onHotkeyTextChange(self:getText())
+
+  CheckBox
+    id: sendAutomatically
+    !text: tr('Send automatically')
+    anchors.left: parent.left
+    anchors.right: parent.right
+    anchors.top: prev.bottom
+    enabled:false
+    margin-left: 12
+    margin-top: 5
+    @onCheckChange: modules.game_hotkeys.onSendAutomaticallyChange(self:isChecked())
+
+  Item
+    id: itemPreview
+    anchors.left: parent.left
+    anchors.top: prev.bottom
+    margin-top: 20
+    virtual: true
+
+  SpaceBlueButtonFont
+    id: selectObjectButton
+    !text: tr('Select object')
+    width: 134
+    enabled: false
+    anchors.left: prev.right
+    anchors.top: prev.top
+    margin-left: 20
+    @onClick: modules.game_hotkeys.startChooseItem()
+
+  SpaceGreenButtonFont
+    id: clearObjectButton
+    !text: tr('Clear object')
+    width: 134
+    enabled: false
+    anchors.left: prev.left
+    anchors.right: prev.right
+    anchors.top: prev.bottom
+    margin-top: 2
+    @onClick: modules.game_hotkeys.clearObject()
+
+  ButtonBox
+    id: useOnSelf
+    font: window
+    !text: tr('Use on yourself')
+    width: 128
+    enabled: false
+    anchors.left: selectObjectButton.right
+    anchors.right: parent.right
+    anchors.top: selectObjectButton.top
+    checked: false
+    margin-left: 10
+
+  ButtonBox
+    id: useOnTarget
+    font: window
+    !text: tr('Use on target')
+    width: 128
+    enabled: false
+    anchors.left: prev.left
+    anchors.right: parent.right
+    anchors.top: prev.bottom
+    checked: false
+    margin-top: 2
+
+  ButtonBox
+    id: useWith
+    font: window
+    !text: tr('With crosshair')
+    width: 128
+    enabled: false
+    anchors.left: prev.left
+    anchors.right: parent.right
+    anchors.top: prev.bottom
+    checked: false
+    margin-top: 2
+
+  SpaceBlueButtonFont
+    id: okButton
+    !text: tr('Ok')
+    width: 64
+    margin-left: -32
+    margin-bottom: 6
+    anchors.horizontalCenter: parent.horizontalCenter
+    anchors.bottom: parent.bottom
+    @onClick: modules.game_hotkeys.ok()
+
+  SpaceGreenButtonFont
+    id: cancelButton
+    !text: tr('Cancel')
+    margin-left: 10
+    width: 64
+    margin-bottom: 6
+    anchors.left: prev.right
+    anchors.bottom: parent.bottom
+    @onClick: modules.game_hotkeys.cancel()
+
+HotkeyAssignWindow < MainWindow
+  id: assignWindow
+  !text: tr('Button Assign')
+  size: 360 150
+  @onEscape: self:destroy()
+
+  Label
+    !text: tr('Please, press the key you wish to add onto your hotkeys manager')
+    anchors.left: parent.left
+    anchors.right: parent.right
+    anchors.top: parent.top
+    text-auto-resize: true
+    text-align: left
+
+  Label
+    id: comboPreview
+    !text: tr('Current hotkey to add: %s', 'none')
+    anchors.horizontalCenter: parent.horizontalCenter
+    anchors.top: prev.bottom
+    margin-top: 10
+    text-auto-resize: true
+
+
+  Button
+    id: addButton
+    !text: tr('Add')
+    width: 64
+    anchors.right: next.left
+    anchors.bottom: parent.bottom
+    margin-right: 10
+    @onClick: modules.game_hotkeys.hotkeyCaptureOk(self:getParent(), self:getParent():getChildById('comboPreview').keyCombo)
+
+  Button
+    id: cancelButton
+    !text: tr('Cancel')
+    width: 64
+    anchors.right: parent.right
+    anchors.bottom: parent.bottom
+    @onClick: self:getParent():destroy()

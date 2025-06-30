@@ -1,0 +1,313 @@
+ConditionWidget < UIWidget
+  size: 18 18
+
+  $!first:
+    margin-left: 2
+
+InventoryItem < UIItem
+  size: 32 32
+  UIItem
+    id: bordered
+    size: 32 32
+    visible: false
+    phantom: true
+    anchors.top: parent.top
+    anchors.left: parent.left
+  UIItem
+    id: moveborder
+    size: 32 32
+    visible: false
+    phantom: true
+    anchors.top: parent.top
+    anchors.left: parent.left
+
+NewInventoryWindow < MiniWindow
+  height: 150
+  image-source: /images/ui/SpaceWindowMiniMap
+
+  UIWidget
+    id: miniwindowTopBar
+    size: 187 30
+    phantom: true
+    anchors.top: parent.top
+    anchors.right: parent.right
+    anchors.left: parent.left
+    margin-right: 3
+    margin-left: 3
+    margin-top: 3
+
+  UIButton
+    id: closeButton
+    anchors.top: parent.top
+    anchors.right: parent.right
+    margin-top: 9
+    margin-right: 6
+    size: 13 12
+    change-cursor-image: true
+    cursor: pointer
+    image-color: #cbcbcb
+    opacity: 1.0
+
+    $hover:
+      opacity: 1.0
+      image-color: #ffffff
+
+    $pressed:
+      opacity: 0.8
+      image-color: #9c9c9c
+
+  UIWidget
+    id: iconBackground
+    size: 24 24
+    anchors.top: parent.top
+    anchors.left: parent.left
+    margin-left: 24
+    margin-top: 5
+    phantom: true
+
+  UIItem
+    id: item
+    virtual: true
+    size: 20 20
+    anchors.horizontalCenter: iconBackground.horizontalCenter
+    anchors.verticalCenter: iconBackground.verticalCenter
+
+  UIWidget
+    id: icon
+    size: 24 24
+    anchors.horizontalCenter: iconBackground.horizontalCenter
+    anchors.verticalCenter: iconBackground.verticalCenter
+    phantom: true
+
+  UILabel
+    id: text
+    font: future-earth-16px
+    color: #aeebff
+    height: 16
+    anchors.verticalCenter: iconBackground.verticalCenter
+    anchors.left: iconBackground.right
+    anchors.right: lockButton.left
+    margin-left: 4
+    phantom: true
+    text-align: left
+
+HeadSlot < InventoryItem
+  id: slot1
+  &position: {x=65535, y=1, z=0}
+
+BodySlot < InventoryItem
+  id: slot4
+  &position: {x=65535, y=4, z=0}
+
+LegSlot < InventoryItem
+  id: slot7
+  &position: {x=65535, y=7, z=0}
+
+FeetSlot < InventoryItem
+  id: slot8
+  &position: {x=65535, y=8, z=0}
+
+NeckSlot < InventoryItem
+  id: slot2
+  &position: {x=65535, y=2, z=0}
+
+LeftSlot < InventoryItem
+  id: slot6
+  &position: {x=65535, y=6, z=0}
+
+FingerSlot < InventoryItem
+  id: slot9
+  &position: {x=65535, y=9, z=0}
+
+BackSlot < InventoryItem
+  id: slot3
+  &position: {x=65535, y=3, z=0}
+
+RightSlot < InventoryItem
+  id: slot5
+  &position: {x=65535, y=5, z=0}
+
+AmmoSlot < InventoryItem
+  id: slot10
+  &position: {x=65535, y=10, z=0}
+
+InfoSlot < InventoryItem
+  id: slot12
+  &position: {x=65535, y=12, z=0}
+
+
+OrderSlot < InventoryItem
+  id: slot11
+  &position: {x=65535, y=11, z=0}
+
+NewInventoryWindow
+  id: inventoryWindow
+  height: 250
+  width: 190
+  @onClose: modules.game_inventory.onMiniWindowClose()
+  &save: true
+  UIWidget
+    id: progressBar
+    size: 112 7
+    phantom: true
+    image-source: /images/ui/inventory/progress
+    anchors.top: parent.top
+    margin-right: 0
+    margin-top: 90
+    anchors.horizontalCenter: base.horizontalCenter   
+  UIWidget
+    id: progressBorder
+    size: 112 7
+    phantom: true
+    image-source: /images/ui/inventory/progress_border
+    anchors.horizontalCenter: progressBar.horizontalCenter
+    anchors.verticalCenter: progressBar.verticalCenter
+  UIWidget
+    id: base
+    size: 110 30
+    margin-right: 10
+    phantom: true
+    image-source: /images/ui/inventory/pokemonbase
+    anchors.horizontalCenter: parent.horizontalCenter
+    anchors.verticalCenter: parent.verticalCenter
+    margin-top: 64
+    margin-left: 10
+  UICreature
+    id: pokeOutfit
+    size: 70 70
+    phantom: true
+    visible: false
+    anchors.horizontalCenter: base.horizontalCenter
+    anchors.verticalCenter: base.verticalCenter
+    margin-top: -30
+    center: true
+  UIWidget
+    id: removeOutfit
+    size: 60 60
+    phantom: true
+    visible: true
+    anchors.horizontalCenter: base.horizontalCenter
+    anchors.verticalCenter: base.verticalCenter
+    margin-top: -25
+  Label
+    id: name
+    !text: '???'
+    font: window
+    color: #aeebff
+    phantom: true
+    margin-bottom: 6
+    anchors.bottom: progressBar.top
+    anchors.horizontalCenter: progressBar.horizontalCenter
+    text-auto-resize: true
+    text-align: center
+  UIWidget
+    id: contentsPanel
+    size: 200 50
+    //background-color: white
+    anchors.bottom: parent.bottom
+    anchors.left: parent.left
+    
+    OrderSlot
+      anchors.top: parent.top
+      anchors.horizontalCenter: parent.horizontalCenter
+      margin-top: 3
+      visible: true
+    
+    // ORDER
+    FingerSlot
+      anchors.top: parent.top
+      anchors.left: parent.left
+      margin-top: 10
+      margin-left: 20
+
+    // POKEDEX
+    LegSlot
+      anchors.top: prev.top
+      anchors.left: prev.right
+      margin-left: 5
+
+    // BACKPACK
+    BackSlot
+      anchors.top: prev.top
+      anchors.left: prev.right
+      margin-left: 5
+
+    // ROD
+    NeckSlot
+      anchors.top: prev.top
+      anchors.left: prev.right
+      margin-left: 5
+
+    // BADGES
+    FeetSlot
+      anchors.top: prev.top
+      anchors.left: prev.right
+      margin-left: 5
+
+    UIButton
+      id: spacePhone
+      size: 32 32
+      image-source: /images/ui/inventory/icon_space_phone
+      anchors.top: prev.top
+      anchors.left: prev.right
+      margin-top: -35
+      margin-left: -35
+      change-cursor-image: true
+      cursor: pointer
+      @onClick: modules.space_phone.toggle()
+
+    HeadSlot
+      anchors.top: prev.bottom
+      anchors.horizontalCenter: prev.horizontalCenter
+      margin-top: 3
+      visible: false
+
+    BodySlot
+      anchors.top: prev.bottom
+      anchors.horizontalCenter: prev.horizontalCenter
+      margin-top: 3
+      visible: false
+
+    InfoSlot
+      anchors.top: parent.top
+      anchors.right: slot1.left
+      margin-top: 3
+      margin-right: 5
+      visible: false
+
+    LeftSlot
+      anchors.top: prev.bottom
+      anchors.horizontalCenter: prev.horizontalCenter
+      margin-top: 3
+      visible: false
+    RightSlot
+      anchors.top: prev.bottom
+      anchors.horizontalCenter: prev.horizontalCenter
+      margin-top: 3
+      visible: false
+
+    //BIKE SLOT
+    AmmoSlot
+      visible: false
+      anchors.bottom: parent.bottom
+      anchors.left: parent.left
+      margin-left: 5
+      margin-bottom: 7
+  ResizeBorder
+    id: bottomResizeBorder
+    anchors.bottom: parent.bottom
+    anchors.left: parent.left
+    anchors.right: parent.right
+    height: 3
+    minimum: 190
+    maximum: 190
+    margin-left: 3
+    margin-right: 3
+    background: #ffffff88
+  Panel
+    id: conditionPanel
+    layout:
+      type: horizontalBox
+    anchors.left: parent.left
+    anchors.right: parent.right
+    anchors.bottom: parent.bottom

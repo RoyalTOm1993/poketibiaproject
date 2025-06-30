@@ -1,0 +1,11 @@
+Module
+  name: game_craft
+  description: craft
+  author: Icaro (san)
+  website: none
+  autoload: true
+  autoload-priority: 1000
+  scripts: [ game_craft ]
+  sandboxed: true
+  @onLoad: init()
+  @onUnload: terminate()

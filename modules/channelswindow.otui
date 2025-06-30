@@ -1,0 +1,73 @@
+ChannelListLabel < Label
+  height: 22
+  font: damas
+  background-color: alpha
+  text-offset: 3 7
+  focusable: true
+  color: #6b6b6b
+
+  $focus:
+    background-color: #ffffff22
+    color: #ffffff
+
+MainWindow
+  id: channelsWindow
+  !text: tr('Channels')
+  font: future-earth-18
+  size: 280 324
+  padding: 30 13 13 13
+  @onEscape: self:destroy()
+
+  TextList
+    id: channelList
+    vertical-scrollbar: channelsScrollBar
+    width: 240
+    font: window
+    color: #daffae
+    margin-top: 30
+    anchors.horizontalCenter: parent.horizontalCenter
+    margin-bottom: 90
+    anchors.top: parent.top
+    anchors.bottom: parent.bottom
+    padding: 1
+    focusable: false
+
+  TextEdit
+    id: openPrivateChannelWith
+    anchors.left: parent.left
+    color: #daffae
+    anchors.right: parent.right
+    anchors.bottom: next.top
+    margin-bottom: 14
+    font: window
+    !placeholder: tr('Open a private message channel')
+
+  Button
+    id: buttonOpen
+    text: ABRIR
+    size: 104 30
+    anchors.right: next.left
+    anchors.bottom: parent.bottom
+    margin-right: 8
+    @onClick: self:getParent():onEnter()
+
+  Button
+    id: buttonCancel
+    text: CANCELAR
+    color: #daffae
+    margin-right: 6
+    image-source: /images/ui/greenButton
+    font: future-earth-14
+    size: 104 30
+    anchors.horizontalCenter: parent.horizontalCenter
+    anchors.bottom: parent.bottom
+    margin-left: 64
+    @onClick: self:getParent():destroy()
+
+  VerticalScrollBar
+    id: channelsScrollBar
+    anchors.top: channelList.top
+    anchors.bottom: channelList.bottom
+    anchors.right: channelList.right
+    step: 14
+    pixels-scroll: true
