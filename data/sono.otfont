@@ -1,0 +1,8 @@
+Font
+  name: sono
+  texture: sono
+  height: 15
+  y-offset: 0
+  glyph-size: 15 15
+  fixed-glyph-width: 11
+  space-width: 6

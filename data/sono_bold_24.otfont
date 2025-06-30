@@ -1,0 +1,6 @@
+Font
+  name: sono_bold_24
+  texture: sono_bold_24
+  height: 30
+  glyph-size: 30 30
+  space-width: 3

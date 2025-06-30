@@ -1,0 +1,6 @@
+Font
+  name: gotham-black-medium-14px-bordered
+  texture: gotham-black-medium-14px-bordered
+  height: 30
+  glyph-size: 25 30
+  space-width: 4

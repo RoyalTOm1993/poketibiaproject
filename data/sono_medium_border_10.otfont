@@ -1,0 +1,8 @@
+Font
+  name: sono_medium_border_10
+  texture: sono_medium_border_10
+  height: 10
+  width: 10
+  spacing: -14 -14
+  glyph-size: 20 20
+  space-width: 17

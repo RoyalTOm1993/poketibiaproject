@@ -1,0 +1,7 @@
+Font
+  name: future-earth-32
+  texture: future-earth-32
+  height: 36
+  glyph-size: 36 36
+  space-width: 3
+  spacing: 2 0

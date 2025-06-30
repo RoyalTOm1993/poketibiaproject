@@ -1,0 +1,8 @@
+Font
+  name: newfont-16px-rounded
+  texture: newfont-16px-rounded_cp1250
+  height: 30
+  glyph-size: 30 30
+  y-offset: -6
+  spacing: -1 -10
+  space-width: 10
