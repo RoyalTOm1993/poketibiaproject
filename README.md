@@ -6,7 +6,7 @@ Este repositório contém os arquivos do client (ou servidor), usados para o des
 ## Estrutura
 
 - `/modules/`: Módulos do OTCv8, incluindo login, HUD, inventário e mais.
-- `/otui/`: Arquivos de interface visual.
+- `/mods/`: Arquivos de interface visual chamados OTUI no geral.
 - `/data/`: Scripts do servidor (em caso de incluir a parte server-side).
 
 ## Objetivo
