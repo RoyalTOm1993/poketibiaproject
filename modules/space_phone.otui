@@ -1,0 +1,111 @@
+MiniWindow
+  focusable: false
+  size: 192 247
+  image-source: images/background
+  &save: true
+  &autoOpen: false
+  UIButton
+    id: bankButton
+    size: 52 52
+    image-source: images/bank_button
+    image-color: #dfdfdfff
+    text-offset: 0 1
+    change-cursor-image: true
+    cursor: pointer
+    anchors.top: parent.top
+    anchors.left: parent.left
+    margin-left: 30
+    margin-top: 40
+    @onClick: modules.bank.toggle()
+    
+    $hover:
+      change-cursor-image: true
+      cursor: pointer
+  UIWidget
+    size: 31 16
+    image-source: images/bank
+    anchors.top: bankButton.bottom
+    anchors.horizontalCenter: bankButton.horizontalCenter
+    phantom: true
+  UIButton
+    id: catchButton
+    size: 52 52
+    image-source: images/catch_button
+    image-color: #dfdfdfff
+    text-offset: 0 1
+    change-cursor-image: true
+    cursor: pointer
+    anchors.top: bankButton.top
+    anchors.left: bankButton.left
+    margin-left: 80
+    @onClick: modules.player_brokes.toggle()
+    
+    $hover:
+      change-cursor-image: true
+      cursor: pointer
+
+  UIWidget
+    size: 36 16
+    image-source: images/catch
+    anchors.top: catchButton.bottom
+    anchors.horizontalCenter: catchButton.horizontalCenter
+    phantom: true
+  UIButton
+    id: goalButton
+    size: 52 52
+    image-source: images/donate_goal_button
+    image-color: #dfdfdfff
+    text-offset: 0 1
+    change-cursor-image: true
+    cursor: pointer
+    margin-left: 30
+    margin-top: 110
+    anchors.top: parent.top
+    anchors.left: parent.left
+    @onClick: modules.game_donationgoals.toggle()
+    
+    $hover:
+      change-cursor-image: true
+      cursor: pointer
+    
+  UIWidget
+    size: 68 16
+    image-source: images/donategoal
+    anchors.top: goalButton.bottom
+    anchors.horizontalCenter: goalButton.horizontalCenter
+    phantom: true
+  UIButton
+    id: rewardButton
+    size: 52 52
+    image-source: images/resgatar_button
+    image-color: #dfdfdfff
+    text-offset: 0 1
+    change-cursor-image: true
+    cursor: pointer
+    anchors.top: goalButton.top
+    anchors.left: goalButton.left
+    margin-left: 80
+    @onClick: modules.game_rewards.toggleRewards()
+    
+    $hover:
+      change-cursor-image: true
+      cursor: pointer
+
+  UIWidget
+    size: 50 16
+    image-source: images/resgatar
+    anchors.top: rewardButton.bottom
+    anchors.horizontalCenter: rewardButton.horizontalCenter
+    phantom: true
+
+  UIButton
+    id: closeButton
+    anchors.bottom: parent.bottom
+    anchors.horizontalCenter: parent.horizontalCenter
+    margin-bottom: 20
+    size: 31 31
+    image-source: images/exit_button
+    @onClick: toggle()
+    change-cursor-image: true
+    cursor: pointer
+

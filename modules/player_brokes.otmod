@@ -1,11 +1,11 @@
 Module
-  name: market
-  description: Market System
+  name: player_brokes
+  description: display player brokes and catch points.
   author: san
   website: 
   autoload: true
   autoload-priority: 1000
-  scripts: [ market ]
+  scripts: [ player_brokes ]
   sandboxed: true
   @onLoad: init()
   @onUnload: terminate()
