@@ -1,0 +1,147 @@
+GPU Intel(R) HD Graphics 2500 (Intel)
+OpenGL 4.0.0 - Build 10.18.10.4252
+[Atlas] Texture size is: 4096x4096 (max: 16384x16384)
+Found work dir at 'C:/pokemaster/pokemonsterclient-main/pokemonsterclient-main/'
+== application started at Mar 03 2025 15:46:37
+loading
+ERROR: Failed to read dat '/things/1098/Tibia.dat': unable to open file '/things/1098/Tibia.dat': not found'
+ERROR: Failed to load sprites from '/things/1098/Tibia.spr': unable to open file '/things/1098/Tibia.spr': not found
+ERROR: Failed to read dat '/things/1098/Tibia.dat': unable to open file '/things/1098/Tibia.dat': not found'
+ERROR: Failed to load sprites from '/things/1098/Tibia.spr': unable to open file '/things/1098/Tibia.spr': not found
+Exiting application..
+ERROR: Lua error: /modules/player_brokes/player_brokes.lua:360: attempt to index upvalue 'catchButton' (a nil value)
+stack traceback:
+	[C]: in function '__index'
+	/modules/player_brokes/player_brokes.lua:360: in function 'terminate'
+	/modules/player_brokes/player_brokes.otmod:11:[@onUnload]:1: in main chunk
+ERROR: Unable to unload module 'player_brokes': LUA ERROR:
+/modules/player_brokes/player_brokes.lua:360: attempt to index upvalue 'catchButton' (a nil value)
+stack traceback:
+	[C]: in function '__index'
+	/modules/player_brokes/player_brokes.lua:360: in function 'terminate'
+	/modules/player_brokes/player_brokes.otmod:11:[@onUnload]:1: in main chunk
+WARNING: attempt to destroy widget 'missionPanel' two times
+WARNING: widget 'widget891' was not explicitly destroyed
+WARNING: widget 'widget892' was not explicitly destroyed
+GPU Intel(R) HD Graphics 2500 (Intel)
+OpenGL 4.0.0 - Build 10.18.10.4252
+[Atlas] Texture size is: 4096x4096 (max: 16384x16384)
+Found work dir at 'C:/pokemaster/pokemonsterclient-main/pokemonsterclient-main/'
+== application started at Mar 03 2025 15:59:47
+loading
+Connecting to:104.171.122.92:7171
+Connecting to:104.171.122.92:7171
+ERROR: /modules/client_entergame/createcharacter.lua:30: attempt to call field 'doLoginAgain' (a nil value)
+Connecting to:104.171.122.92:7171
+Minimap couldn't be loaded, file missing?
+16384
+ERROR: protected lua call failed: /modules/game_shop/game_shop.otui:276: [@onClick]:2: attempt to index field 'game_donate' (a nil value)
+stack traceback:
+	[C]: in function '__index'
+	/modules/game_shop/game_shop.otui:276: [@onClick]:2: in function </modules/game_shop/game_shop.otui:276: [@onClick]:1>
+ERROR: protected lua call failed: /modules/game_shop/game_shop.otui:276: [@onClick]:2: attempt to index field 'game_donate' (a nil value)
+stack traceback:
+	[C]: in function '__index'
+	/modules/game_shop/game_shop.otui:276: [@onClick]:2: in function </modules/game_shop/game_shop.otui:276: [@onClick]:1>
+16384
+16384
+Connecting to:104.171.122.92:7171
+ERROR: /modules/client_entergame/createcharacter.lua:30: attempt to call field 'doLoginAgain' (a nil value)
+ERROR: /modules/client_entergame/createcharacter.lua:30: attempt to call field 'doLoginAgain' (a nil value)
+Connecting to:104.171.122.92:7171
+16384
+WARNING: attempt to destroy widget 'widget892' two times
+Connecting to:104.171.122.92:7171
+16384
+16384
+16384
+16384
+16384
+16384
+16384
+GPU Intel(R) HD Graphics 2500 (Intel)
+OpenGL 4.0.0 - Build 10.18.10.4252
+[Atlas] Texture size is: 4096x4096 (max: 16384x16384)
+Found work dir at 'C:/pokemaster/pokemonsterclient-main/pokemonsterclient-main/'
+== application started at Mar 03 2025 16:33:48
+loading
+Connecting to:104.171.122.92:7171
+16384
+Connecting to:104.171.122.92:7171
+16384
+ERROR: protected lua call failed: /modules/game_shop/game_shop.otui:276: [@onClick]:2: attempt to index field 'game_donate' (a nil value)
+stack traceback:
+	[C]: in function '__index'
+	/modules/game_shop/game_shop.otui:276: [@onClick]:2: in function </modules/game_shop/game_shop.otui:276: [@onClick]:1>
+16384
+16384
+16384
+16384
+16384
+WARNING: attempt to destroy widget 'widget892' two times
+Exiting application..
+ERROR: Lua error: /modules/player_brokes/player_brokes.lua:360: attempt to index upvalue 'catchButton' (a nil value)
+stack traceback:
+	[C]: in function '__index'
+	/modules/player_brokes/player_brokes.lua:360: in function 'terminate'
+	/modules/player_brokes/player_brokes.otmod:11:[@onUnload]:1: in main chunk
+ERROR: Unable to unload module 'player_brokes': LUA ERROR:
+/modules/player_brokes/player_brokes.lua:360: attempt to index upvalue 'catchButton' (a nil value)
+stack traceback:
+	[C]: in function '__index'
+	/modules/player_brokes/player_brokes.lua:360: in function 'terminate'
+	/modules/player_brokes/player_brokes.otmod:11:[@onUnload]:1: in main chunk
+WARNING: attempt to destroy widget 'missionPanel' two times
+WARNING: widget 'widget891' was not explicitly destroyed
+GPU Intel(R) HD Graphics 2500 (Intel)
+OpenGL 4.0.0 - Build 10.18.10.4252
+[Atlas] Texture size is: 4096x4096 (max: 16384x16384)
+Found work dir at 'C:/pokemaster/pokemonsterclient-main/pokemonsterclient-main/'
+== application started at Mar 03 2025 16:40:14
+loading
+Connecting to:104.171.122.92:7171
+16384
+16384
+16384
+16384
+16384
+16384
+16384
+Exiting application..
+ERROR: Lua error: /modules/player_brokes/player_brokes.lua:360: attempt to index upvalue 'catchButton' (a nil value)
+stack traceback:
+	[C]: in function '__index'
+	/modules/player_brokes/player_brokes.lua:360: in function 'terminate'
+	/modules/player_brokes/player_brokes.otmod:11:[@onUnload]:1: in main chunk
+ERROR: Unable to unload module 'player_brokes': LUA ERROR:
+/modules/player_brokes/player_brokes.lua:360: attempt to index upvalue 'catchButton' (a nil value)
+stack traceback:
+	[C]: in function '__index'
+	/modules/player_brokes/player_brokes.lua:360: in function 'terminate'
+	/modules/player_brokes/player_brokes.otmod:11:[@onUnload]:1: in main chunk
+WARNING: attempt to destroy widget 'missionPanel' two times
+WARNING: widget 'widget891' was not explicitly destroyed
+GPU Intel(R) HD Graphics 2500 (Intel)
+OpenGL 4.0.0 - Build 10.18.10.4252
+[Atlas] Texture size is: 4096x4096 (max: 16384x16384)
+Found work dir at 'C:/pokemaster/pokemonsterclient-main/pokemonsterclient-main/'
+== application started at Mar 05 2025 12:44:55
+loading
+Connecting to:104.171.122.92:7171
+16384
+16384
+16384
+Exiting application..
+ERROR: Lua error: /modules/player_brokes/player_brokes.lua:360: attempt to index upvalue 'catchButton' (a nil value)
+stack traceback:
+	[C]: in function '__index'
+	/modules/player_brokes/player_brokes.lua:360: in function 'terminate'
+	/modules/player_brokes/player_brokes.otmod:11:[@onUnload]:1: in main chunk
+ERROR: Unable to unload module 'player_brokes': LUA ERROR:
+/modules/player_brokes/player_brokes.lua:360: attempt to index upvalue 'catchButton' (a nil value)
+stack traceback:
+	[C]: in function '__index'
+	/modules/player_brokes/player_brokes.lua:360: in function 'terminate'
+	/modules/player_brokes/player_brokes.otmod:11:[@onUnload]:1: in main chunk
+WARNING: attempt to destroy widget 'missionPanel' two times
+WARNING: widget 'widget891' was not explicitly destroyed

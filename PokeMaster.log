@@ -1,0 +1,136 @@
+GPU Intel(R) UHD Graphics 620 (Intel)
+OpenGL 4.6.0 - Build 31.0.101.2135
+[Atlas] Texture size is: 4096x4096 (max: 16384x16384)
+Found work dir at 'C:/Users/Ewerton/Desktop/PokéMaster Client/'
+[2025-06-29 20:24:13][INFO] Iniciando PokeMaster v1.0.0
+ERROR: Lua error: /init.lua:75: attempt to call field 'exists' (a nil value)
+stack traceback:
+	[C]: in function 'exists'
+	/init.lua:75: in main chunk
+ERROR: Failed to load script 'init.lua': LUA ERROR:
+/init.lua:75: attempt to call field 'exists' (a nil value)
+stack traceback:
+	[C]: in function 'exists'
+	/init.lua:75: in main chunk
+FATAL ERROR: Unable to run script init.lua!
+GPU Intel(R) UHD Graphics 620 (Intel)
+OpenGL 4.6.0 - Build 31.0.101.2135
+[Atlas] Texture size is: 4096x4096 (max: 16384x16384)
+Found work dir at 'C:/Users/Ewerton/Desktop/PokéMaster Client/'
+[2025-06-29 20:24:22][INFO] Iniciando PokeMaster v1.0.0
+ERROR: Lua error: /init.lua:75: attempt to call field 'exists' (a nil value)
+stack traceback:
+	[C]: in function 'exists'
+	/init.lua:75: in main chunk
+ERROR: Failed to load script 'init.lua': LUA ERROR:
+/init.lua:75: attempt to call field 'exists' (a nil value)
+stack traceback:
+	[C]: in function 'exists'
+	/init.lua:75: in main chunk
+FATAL ERROR: Unable to run script init.lua!
+GPU Intel(R) UHD Graphics 620 (Intel)
+OpenGL 4.6.0 - Build 31.0.101.2135
+[Atlas] Texture size is: 4096x4096 (max: 16384x16384)
+Found work dir at 'C:/Users/Ewerton/Desktop/PokéMaster Client/'
+[2025-06-29 20:35:48][INFO] Iniciando PokeMaster v1.0.0
+ERROR: Lua error: /init.lua:109: attempt to call field 'exists' (a nil value)
+stack traceback:
+	[C]: in function 'exists'
+	/init.lua:109: in main chunk
+ERROR: Failed to load script 'init.lua': LUA ERROR:
+/init.lua:109: attempt to call field 'exists' (a nil value)
+stack traceback:
+	[C]: in function 'exists'
+	/init.lua:109: in main chunk
+FATAL ERROR: Unable to run script init.lua!
+GPU Intel(R) UHD Graphics 620 (Intel)
+OpenGL 4.6.0 - Build 31.0.101.2135
+[Atlas] Texture size is: 4096x4096 (max: 16384x16384)
+Found work dir at 'C:/Users/Ewerton/Desktop/PokéMaster Client/'
+[2025-06-29 20:36:22][INFO] Iniciando PokeMaster v1.0.0
+ERROR: Lua error: /init.lua:109: attempt to call field 'exists' (a nil value)
+stack traceback:
+	[C]: in function 'exists'
+	/init.lua:109: in main chunk
+ERROR: Failed to load script 'init.lua': LUA ERROR:
+/init.lua:109: attempt to call field 'exists' (a nil value)
+stack traceback:
+	[C]: in function 'exists'
+	/init.lua:109: in main chunk
+FATAL ERROR: Unable to run script init.lua!
+GPU Intel(R) UHD Graphics 620 (Intel)
+OpenGL 4.6.0 - Build 31.0.101.2135
+[Atlas] Texture size is: 4096x4096 (max: 16384x16384)
+Found work dir at 'C:/Users/Ewerton/Desktop/PokéMaster Client/'
+loading
+ERROR: Lua error: /init.lua:27: attempt to call field 'exists' (a nil value)
+stack traceback:
+	[C]: in function 'exists'
+	/init.lua:27: in function 'playLoginMusic'
+	/init.lua:85: in function 'loadModules'
+	/init.lua:116: in main chunk
+ERROR: Failed to load script 'init.lua': LUA ERROR:
+/init.lua:27: attempt to call field 'exists' (a nil value)
+stack traceback:
+	[C]: in function 'exists'
+	/init.lua:27: in function 'playLoginMusic'
+	/init.lua:85: in function 'loadModules'
+	/init.lua:116: in main chunk
+FATAL ERROR: Unable to run script init.lua!
+GPU Intel(R) UHD Graphics 620 (Intel)
+OpenGL 4.6.0 - Build 31.0.101.2135
+[Atlas] Texture size is: 4096x4096 (max: 16384x16384)
+Found work dir at 'C:/Users/Ewerton/Desktop/PokéMaster Client/'
+loading
+ERROR: Lua error: /init.lua:28: attempt to call field 'exists' (a nil value)
+stack traceback:
+	[C]: in function 'exists'
+	/init.lua:28: in function 'playLoginMusic'
+	/init.lua:90: in function 'loadModules'
+	/init.lua:122: in main chunk
+ERROR: Failed to load script 'init.lua': LUA ERROR:
+/init.lua:28: attempt to call field 'exists' (a nil value)
+stack traceback:
+	[C]: in function 'exists'
+	/init.lua:28: in function 'playLoginMusic'
+	/init.lua:90: in function 'loadModules'
+	/init.lua:122: in main chunk
+FATAL ERROR: Unable to run script init.lua!
+GPU Intel(R) UHD Graphics 620 (Intel)
+OpenGL 4.6.0 - Build 31.0.101.2135
+[Atlas] Texture size is: 4096x4096 (max: 16384x16384)
+Found work dir at 'C:/Users/Ewerton/Desktop/PokéMaster Client/'
+loading
+ERROR: Lua error: /init.lua:28: attempt to call field 'exists' (a nil value)
+stack traceback:
+	[C]: in function 'exists'
+	/init.lua:28: in function 'playLoginMusic'
+	/init.lua:90: in function 'loadEssentialModules'
+	/init.lua:122: in main chunk
+ERROR: Failed to load script 'init.lua': LUA ERROR:
+/init.lua:28: attempt to call field 'exists' (a nil value)
+stack traceback:
+	[C]: in function 'exists'
+	/init.lua:28: in function 'playLoginMusic'
+	/init.lua:90: in function 'loadEssentialModules'
+	/init.lua:122: in main chunk
+FATAL ERROR: Unable to run script init.lua!
+GPU Intel(R) UHD Graphics 620 (Intel)
+OpenGL 4.6.0 - Build 31.0.101.2135
+[Atlas] Texture size is: 4096x4096 (max: 16384x16384)
+Found work dir at 'C:/Users/Ewerton/Desktop/PokéMaster Client/'
+loading
+ERROR: Lua error: /init.lua:28: attempt to call field 'exists' (a nil value)
+stack traceback:
+	[C]: in function 'exists'
+	/init.lua:28: in function 'playLoginMusic'
+	/init.lua:90: in function 'loadEssentialModules'
+	/init.lua:122: in main chunk
+ERROR: Failed to load script 'init.lua': LUA ERROR:
+/init.lua:28: attempt to call field 'exists' (a nil value)
+stack traceback:
+	[C]: in function 'exists'
+	/init.lua:28: in function 'playLoginMusic'
+	/init.lua:90: in function 'loadEssentialModules'
+	/init.lua:122: in main chunk
+FATAL ERROR: Unable to run script init.lua!
