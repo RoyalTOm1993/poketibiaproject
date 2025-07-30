@@ -20,18 +20,43 @@
  * THE SOFTWARE.
  */
 
-#ifndef FRAMEWORK_LUA_DECLARATIONS_H
-#define FRAMEWORK_LUA_DECLARATIONS_H
+#ifndef CACHEDTEXT_H
+#define CACHEDTEXT_H
 
-#include <framework/global.h>
+#include "declarations.h"
+#include "coordsbuffer.h"
+#include "drawqueue.h"
 
-#include <memory>
+class CachedText
+{
+public:
+    CachedText();
 
-class LuaInterface;
-class LuaObject;
+    void draw(const Rect& rect, const Color& color);
 
-typedef std::function<int(LuaInterface*)> LuaCppFunction;
-typedef std::unique_ptr<LuaCppFunction> LuaCppFunctionPtr;
-typedef stdext::shared_object_ptr<LuaObject> LuaObjectPtr;
+    void wrapText(int maxWidth);
+    void setFont(const BitmapFontPtr& font) { m_font = font; update(); }
+    void setText(const std::string& text) { m_textColors.clear();  m_text = text; update(); }
+    void setColoredText(const std::vector<std::string>& texts);
+    void setAlign(Fw::AlignmentFlag align) { m_align = align; update(); }
+
+    Size getTextSize() { return m_textSize; }
+    std::string getText() const { return m_text; }
+    BitmapFontPtr getFont() const { return m_font; }
+    Fw::AlignmentFlag getAlign() { return m_align; }
+
+    bool hasText() { return !m_text.empty(); }
+
+private:
+    void update();
+
+    std::string m_text;
+    std::vector<std::pair<int, Color>> m_textColors;
+    Size m_textSize;
+    stdext::boolean<true> m_textMustRecache;
+    Rect m_textCachedScreenCoords;
+    BitmapFontPtr m_font;
+    Fw::AlignmentFlag m_align;
+};
 
 #endif

@@ -20,18 +20,55 @@
  * THE SOFTWARE.
  */
 
-#ifndef FRAMEWORK_LUA_DECLARATIONS_H
-#define FRAMEWORK_LUA_DECLARATIONS_H
+#ifndef GRAPHICS_H
+#define GRAPHICS_H
 
-#include <framework/global.h>
+#include "declarations.h"
+#include "painter.h"
 
-#include <memory>
+class Painter;
 
-class LuaInterface;
-class LuaObject;
+// @bindsingleton g_graphics
+class Graphics
+{
+public:
+    Graphics();
 
-typedef std::function<int(LuaInterface*)> LuaCppFunction;
-typedef std::unique_ptr<LuaCppFunction> LuaCppFunctionPtr;
-typedef stdext::shared_object_ptr<LuaObject> LuaObjectPtr;
+    // @dontbind
+    void init();
+    // @dontbind
+    void terminate();
+
+    void resize(const Size& size);
+    void checkDepthSupport();
+
+    int getMaxTextureSize() { return m_maxTextureSize; }
+    const Size& getViewportSize() { return m_viewportSize; }
+
+    std::string getVendor() { return m_vendor; }
+    std::string getRenderer() { return m_renderer; }
+    std::string getVersion() { return m_version; }
+    std::string getExtensions() { return m_extensions; }
+
+    bool ok() { return m_ok; }
+    void checkForError(const std::string& function, const std::string& file, int line);
+
+private:
+#ifdef WITH_DEPTH_BUFFER
+    void checkDepthSupport();
+#endif
+
+    Size m_viewportSize;
+    std::string m_vendor;
+    std::string m_renderer;
+    std::string m_version;
+    std::string m_extensions;
+
+    int m_maxTextureSize;
+    int m_alphaBits;
+    stdext::boolean<false> m_ok;
+};
+
+extern Graphics g_graphics;
 
 #endif

@@ -20,18 +20,25 @@
  * THE SOFTWARE.
  */
 
-#ifndef FRAMEWORK_LUA_DECLARATIONS_H
-#define FRAMEWORK_LUA_DECLARATIONS_H
-
 #include <framework/global.h>
 
-#include <memory>
+class Mouse
+{
+public:
+    void init();
+    void terminate();
 
-class LuaInterface;
-class LuaObject;
+    void loadCursors(std::string filename);
+    void addCursor(const std::string& name, const std::string& file, const Point& hotSpot);
+    void pushCursor(const std::string& name);
+    void popCursor(const std::string& name);
+    bool isCursorChanged();
+    bool isPressed(Fw::MouseButton mouseButton);
 
-typedef std::function<int(LuaInterface*)> LuaCppFunction;
-typedef std::unique_ptr<LuaCppFunction> LuaCppFunctionPtr;
-typedef stdext::shared_object_ptr<LuaObject> LuaObjectPtr;
+private:
+    std::map<std::string, int> m_cursors;
+    std::deque<int> m_cursorStack;
+    std::mutex m_mutex;
+};
 
-#endif
+extern Mouse g_mouse;

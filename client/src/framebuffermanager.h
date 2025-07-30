@@ -20,18 +20,29 @@
  * THE SOFTWARE.
  */
 
-#ifndef FRAMEWORK_LUA_DECLARATIONS_H
-#define FRAMEWORK_LUA_DECLARATIONS_H
 
-#include <framework/global.h>
+#ifndef FRAMEBUFFERMANAGER_H
+#define FRAMEBUFFERMANAGER_H
 
-#include <memory>
+#include "framebuffer.h"
 
-class LuaInterface;
-class LuaObject;
+class FrameBufferManager
+{
+public:
+    void init();
+    void terminate();
+    void clear();
 
-typedef std::function<int(LuaInterface*)> LuaCppFunction;
-typedef std::unique_ptr<LuaCppFunction> LuaCppFunctionPtr;
-typedef stdext::shared_object_ptr<LuaObject> LuaObjectPtr;
+    FrameBufferPtr createFrameBuffer(bool withDepth = false);
+    const FrameBufferPtr& getTemporaryFrameBuffer() { return m_temporaryFramebuffer; }
+    const FrameBufferPtr& getDrawQueueTemporaryFrameBuffer() { return m_drawQueueTemporaryFramebuffer; }
+
+protected:
+    FrameBufferPtr m_temporaryFramebuffer;
+    FrameBufferPtr m_drawQueueTemporaryFramebuffer;
+    std::vector<FrameBufferPtr> m_framebuffers;
+};
+
+extern FrameBufferManager g_framebuffers;
 
 #endif

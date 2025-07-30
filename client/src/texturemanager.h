@@ -20,18 +20,32 @@
  * THE SOFTWARE.
  */
 
-#ifndef FRAMEWORK_LUA_DECLARATIONS_H
-#define FRAMEWORK_LUA_DECLARATIONS_H
+#ifndef TEXTUREMANAGER_H
+#define TEXTUREMANAGER_H
 
-#include <framework/global.h>
+#include "texture.h"
+#include <framework/core/declarations.h>
 
-#include <memory>
+class TextureManager
+{
+public:
+    void init();
+    void terminate();
 
-class LuaInterface;
-class LuaObject;
+    void clearCache();
+    void reload();
 
-typedef std::function<int(LuaInterface*)> LuaCppFunction;
-typedef std::unique_ptr<LuaCppFunction> LuaCppFunctionPtr;
-typedef stdext::shared_object_ptr<LuaObject> LuaObjectPtr;
+    void preload(const std::string& fileName) { getTexture(fileName); }
+    TexturePtr getTexture(const std::string& fileName);
+    TexturePtr loadTexture(std::stringstream& file, const std::string& source);
+
+private:
+    std::unordered_map<std::string, TexturePtr> m_textures;
+    std::vector<AnimatedTexturePtr> m_animatedTextures;
+    ScheduledEventPtr m_liveReloadEvent;
+    std::list<uint> m_texturesToRelease;
+};
+
+extern TextureManager g_textures;
 
 #endif

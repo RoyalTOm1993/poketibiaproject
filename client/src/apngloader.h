@@ -20,18 +20,27 @@
  * THE SOFTWARE.
  */
 
-#ifndef FRAMEWORK_LUA_DECLARATIONS_H
-#define FRAMEWORK_LUA_DECLARATIONS_H
+#ifndef APNGLOADER_H
+#define APNGLOADER_H
 
-#include <framework/global.h>
+#include <sstream>
 
-#include <memory>
+struct apng_data {
+    unsigned char *pdata;
+    unsigned int width;
+    unsigned int height;
+    unsigned int first_frame;
+    unsigned int last_frame;
+    unsigned char bpp;
+    unsigned char coltype;
+    unsigned int num_frames;
+    unsigned int num_plays;
+    unsigned short *frames_delay; // each frame delay in ms
+};
 
-class LuaInterface;
-class LuaObject;
-
-typedef std::function<int(LuaInterface*)> LuaCppFunction;
-typedef std::unique_ptr<LuaCppFunction> LuaCppFunctionPtr;
-typedef stdext::shared_object_ptr<LuaObject> LuaObjectPtr;
+// returns -1 on error, 0 on success
+int load_apng(std::stringstream& file, struct apng_data *apng);
+void save_png(std::stringstream& file, unsigned int width, unsigned int height, int channels, unsigned char *pixels);
+void free_apng(struct apng_data *apng);
 
 #endif

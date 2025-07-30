@@ -20,18 +20,34 @@
  * THE SOFTWARE.
  */
 
-#ifndef FRAMEWORK_LUA_DECLARATIONS_H
-#define FRAMEWORK_LUA_DECLARATIONS_H
+#ifndef ANIMATEDTEXTURE_H
+#define ANIMATEDTEXTURE_H
 
-#include <framework/global.h>
+#include "texture.h"
+#include <framework/core/timer.h>
 
-#include <memory>
+class AnimatedTexture : public Texture
+{
+public:
+    AnimatedTexture(const Size& size, std::vector<ImagePtr> frames, std::vector<int> framesDelay, bool buildMipmaps = false, bool compress = false);
+    virtual ~AnimatedTexture();
 
-class LuaInterface;
-class LuaObject;
+    void replace(const ImagePtr& image) { }
+    void update();
 
-typedef std::function<int(LuaInterface*)> LuaCppFunction;
-typedef std::unique_ptr<LuaCppFunction> LuaCppFunctionPtr;
-typedef stdext::shared_object_ptr<LuaObject> LuaObjectPtr;
+    virtual bool isAnimatedTexture() { return true; }
+
+protected:
+    virtual bool buildHardwareMipmaps();
+
+    virtual void setSmooth(bool smooth);
+    virtual void setRepeat(bool repeat);
+
+private:
+    std::vector<TexturePtr> m_frames;
+    std::vector<int> m_framesDelay;
+    uint m_currentFrame;
+    Timer m_animTimer;
+};
 
 #endif

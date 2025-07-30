@@ -20,18 +20,33 @@
  * THE SOFTWARE.
  */
 
-#ifndef FRAMEWORK_LUA_DECLARATIONS_H
-#define FRAMEWORK_LUA_DECLARATIONS_H
+#ifndef FONTMANAGER_H
+#define FONTMANAGER_H
 
-#include <framework/global.h>
+#include "bitmapfont.h"
 
-#include <memory>
+//@bindsingleton g_fonts
+class FontManager
+{
+public:
+    FontManager();
 
-class LuaInterface;
-class LuaObject;
+    void terminate();
+    void clearFonts();
 
-typedef std::function<int(LuaInterface*)> LuaCppFunction;
-typedef std::unique_ptr<LuaCppFunction> LuaCppFunctionPtr;
-typedef stdext::shared_object_ptr<LuaObject> LuaObjectPtr;
+    void importFont(std::string file);
+
+    bool fontExists(const std::string& fontName);
+    BitmapFontPtr getFont(const std::string& fontName);
+    BitmapFontPtr getDefaultFont() { return m_defaultFont; }
+
+    void setDefaultFont(const std::string& fontName) { m_defaultFont = getFont(fontName); }
+
+private:
+    std::vector<BitmapFontPtr> m_fonts;
+    BitmapFontPtr m_defaultFont;
+};
+
+extern FontManager g_fonts;
 
 #endif

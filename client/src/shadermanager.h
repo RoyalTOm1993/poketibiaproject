@@ -20,18 +20,33 @@
  * THE SOFTWARE.
  */
 
-#ifndef FRAMEWORK_LUA_DECLARATIONS_H
-#define FRAMEWORK_LUA_DECLARATIONS_H
+#ifndef SHADERMANAGER_H
+#define SHADERMANAGER_H
 
-#include <framework/global.h>
+#include "declarations.h"
+#include <framework/graphics/paintershaderprogram.h>
 
-#include <memory>
+//@bindsingleton g_shaders
+class ShaderManager
+{
+public:
+    void init();
+    void terminate();
 
-class LuaInterface;
-class LuaObject;
+    void createShader(const std::string& name, std::string vertex, std::string fragment, bool colorMatrix = false);
+    void createOutfitShader(const std::string& name, std::string vertex, std::string fragment)
+    {
+        return createShader(name, vertex, fragment, true);
+    }
+    void addTexture(const std::string& name, const std::string& file);
+    PainterShaderProgramPtr getShader(const std::string& name);
 
-typedef std::function<int(LuaInterface*)> LuaCppFunction;
-typedef std::unique_ptr<LuaCppFunction> LuaCppFunctionPtr;
-typedef stdext::shared_object_ptr<LuaObject> LuaObjectPtr;
+private:
+    std::unordered_map<std::string, PainterShaderProgramPtr> m_shaders;
+};
+
+
+extern ShaderManager g_shaders;
 
 #endif
+

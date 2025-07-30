@@ -20,18 +20,27 @@
  * THE SOFTWARE.
  */
 
-#ifndef FRAMEWORK_LUA_DECLARATIONS_H
-#define FRAMEWORK_LUA_DECLARATIONS_H
+#ifndef COLORARRAY_H
+#define COLORARRAY_H
 
-#include <framework/global.h>
+#include "declarations.h"
+#include <framework/util/databuffer.h>
 
-#include <memory>
+class ColorArray
+{
+public:
+    inline void addColor(float r, float g, float b, float a) { m_buffer << r << g << b << a; }
+    inline void addColor(const Color& c) { addColor(c.rF(), c.gF(), c.bF(), c.aF()); }
 
-class LuaInterface;
-class LuaObject;
+    void clear() { m_buffer.reset(); }
+    float *colors() const { return m_buffer.data(); }
+    float *data() const { return m_buffer.data(); }
+    int colorCount() const { return m_buffer.size() / 4; }
+    int count() const { return m_buffer.size() / 4; }
+    int size() const { return m_buffer.size(); }
 
-typedef std::function<int(LuaInterface*)> LuaCppFunction;
-typedef std::unique_ptr<LuaCppFunction> LuaCppFunctionPtr;
-typedef stdext::shared_object_ptr<LuaObject> LuaObjectPtr;
+private:
+    DataBuffer<float> m_buffer;
+};
 
 #endif

@@ -20,18 +20,37 @@
  * THE SOFTWARE.
  */
 
-#ifndef FRAMEWORK_LUA_DECLARATIONS_H
-#define FRAMEWORK_LUA_DECLARATIONS_H
+#ifndef LUAEXCEPTION_H
+#define LUAEXCEPTION_H
 
-#include <framework/global.h>
+#include "declarations.h"
 
-#include <memory>
+class LuaException : public stdext::exception
+{
+public:
+    LuaException(const std::string& error, int traceLevel = -1);
+    virtual ~LuaException() throw() { }
 
-class LuaInterface;
-class LuaObject;
+    void generateLuaErrorMessage(const std::string& error, int traceLevel);
 
-typedef std::function<int(LuaInterface*)> LuaCppFunction;
-typedef std::unique_ptr<LuaCppFunction> LuaCppFunctionPtr;
-typedef stdext::shared_object_ptr<LuaObject> LuaObjectPtr;
+    virtual const char* what() const throw() { return m_what.c_str(); }
+
+protected:
+    LuaException() { }
+
+    std::string m_what;
+};
+
+class LuaBadNumberOfArgumentsException : public LuaException
+{
+public:
+    LuaBadNumberOfArgumentsException(int expected = -1, int got = -1);
+};
+
+class LuaBadValueCastException : public LuaException
+{
+public:
+    LuaBadValueCastException(const std::string& luaTypeName, const std::string& cppTypeName);
+};
 
 #endif

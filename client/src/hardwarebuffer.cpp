@@ -20,18 +20,28 @@
  * THE SOFTWARE.
  */
 
-#ifndef FRAMEWORK_LUA_DECLARATIONS_H
-#define FRAMEWORK_LUA_DECLARATIONS_H
+#include "hardwarebuffer.h"
+#include "graphics.h"
 
-#include <framework/global.h>
+#include <framework/core/application.h>
+#include <framework/core/eventdispatcher.h>
+#include <framework/core/logger.h>
 
-#include <memory>
+HardwareBuffer::HardwareBuffer(Type type)
+{
+    m_type = type;
+    m_id = 0;
+    glGenBuffers(1, &m_id);
+    if(!m_id)
+        g_logger.fatal("Unable to create hardware buffer.");
+    g_graphics.checkForError(__FUNCTION__, __FILE__, __LINE__);
+}
 
-class LuaInterface;
-class LuaObject;
-
-typedef std::function<int(LuaInterface*)> LuaCppFunction;
-typedef std::unique_ptr<LuaCppFunction> LuaCppFunctionPtr;
-typedef stdext::shared_object_ptr<LuaObject> LuaObjectPtr;
-
-#endif
+HardwareBuffer::~HardwareBuffer()
+{
+    VALIDATE(!g_app.isTerminated());
+    uint id = m_id;
+    g_graphicsDispatcher.addEvent([id] {
+        glDeleteBuffers(1, &id);
+    });
+}

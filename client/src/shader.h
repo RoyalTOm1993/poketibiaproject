@@ -20,18 +20,32 @@
  * THE SOFTWARE.
  */
 
-#ifndef FRAMEWORK_LUA_DECLARATIONS_H
-#define FRAMEWORK_LUA_DECLARATIONS_H
+#ifndef SHADER_H
+#define SHADER_H
 
-#include <framework/global.h>
+#include "declarations.h"
 
-#include <memory>
+class Shader : public stdext::shared_object
+{
+public:
+    enum ShaderType {
+        Vertex,
+        Fragment
+    };
 
-class LuaInterface;
-class LuaObject;
+    Shader(ShaderType shaderType);
+    ~Shader();
 
-typedef std::function<int(LuaInterface*)> LuaCppFunction;
-typedef std::unique_ptr<LuaCppFunction> LuaCppFunctionPtr;
-typedef stdext::shared_object_ptr<LuaObject> LuaObjectPtr;
+    bool compileSourceCode(const std::string& sourceCode);
+    bool compileSourceFile(const std::string& sourceFile);
+    std::string log();
+
+    uint getShaderId() { return m_shaderId; }
+    ShaderType getShaderType() { return m_shaderType; }
+
+private:
+    uint m_shaderId;
+    ShaderType m_shaderType;
+};
 
 #endif

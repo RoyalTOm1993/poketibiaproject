@@ -20,18 +20,11 @@
  * THE SOFTWARE.
  */
 
-#ifndef FRAMEWORK_LUA_DECLARATIONS_H
-#define FRAMEWORK_LUA_DECLARATIONS_H
+#ifndef LBITLIB_520_BACKPORT4_H
+#define LBITLIB_520_BACKPORT4_H
 
-#include <framework/global.h>
+struct lua_State;
 
-#include <memory>
-
-class LuaInterface;
-class LuaObject;
-
-typedef std::function<int(LuaInterface*)> LuaCppFunction;
-typedef std::unique_ptr<LuaCppFunction> LuaCppFunctionPtr;
-typedef stdext::shared_object_ptr<LuaObject> LuaObjectPtr;
+int luaopen_bit32 (lua_State *L);
 
 #endif

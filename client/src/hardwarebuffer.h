@@ -20,18 +20,36 @@
  * THE SOFTWARE.
  */
 
-#ifndef FRAMEWORK_LUA_DECLARATIONS_H
-#define FRAMEWORK_LUA_DECLARATIONS_H
 
-#include <framework/global.h>
+#ifndef HARDWAREBUFFER_H
+#define HARDWAREBUFFER_H
 
-#include <memory>
+#include "declarations.h"
 
-class LuaInterface;
-class LuaObject;
+class HardwareBuffer
+{
+public:
+    enum Type {
+        VertexBuffer = GL_ARRAY_BUFFER,
+        IndexBuffer  = GL_ELEMENT_ARRAY_BUFFER
+    };
 
-typedef std::function<int(LuaInterface*)> LuaCppFunction;
-typedef std::unique_ptr<LuaCppFunction> LuaCppFunctionPtr;
-typedef stdext::shared_object_ptr<LuaObject> LuaObjectPtr;
+    enum UsagePattern {
+        StreamDraw          = GL_STREAM_DRAW,
+        StaticDraw          = GL_STATIC_DRAW,
+        DynamicDraw         = GL_DYNAMIC_DRAW
+    };
+
+    HardwareBuffer(Type type);
+    ~HardwareBuffer();
+
+    void bind() { glBindBuffer(m_type, m_id); }
+    static void unbind(Type type) { glBindBuffer(type, 0); }
+    void write(void *data, int count, UsagePattern usage) { glBufferData(m_type, count, data, usage); }
+
+private:
+    Type m_type;
+    uint m_id;
+};
 
 #endif

@@ -20,18 +20,26 @@
  * THE SOFTWARE.
  */
 
-#ifndef FRAMEWORK_LUA_DECLARATIONS_H
-#define FRAMEWORK_LUA_DECLARATIONS_H
+#ifndef DEPTHARRAY_H
+#define DEPTHARRAY_H
 
-#include <framework/global.h>
+#include "declarations.h"
+#include <framework/util/databuffer.h>
 
-#include <memory>
+class DepthArray
+{
+public:
+    inline void addDepth(float depth) { m_buffer << depth; }
 
-class LuaInterface;
-class LuaObject;
+    void clear() { m_buffer.reset(); }
+    float *depths() const { return m_buffer.data(); }
+    float *data() const { return m_buffer.data(); }
+    int depthCount() const { return m_buffer.size(); }
+    int count() const { return m_buffer.size(); }
+    int size() const { return m_buffer.size(); }
 
-typedef std::function<int(LuaInterface*)> LuaCppFunction;
-typedef std::unique_ptr<LuaCppFunction> LuaCppFunctionPtr;
-typedef stdext::shared_object_ptr<LuaObject> LuaObjectPtr;
+private:
+    DataBuffer<float> m_buffer;
+};
 
 #endif
