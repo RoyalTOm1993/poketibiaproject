@@ -1,0 +1,32 @@
+{
+  "$schema": "https://raw.githubusercontent.com/microsoft/vcpkg-tool/main/docs/vcpkg.schema.json",
+  "dependencies": [
+      "boost-iostreams",
+      "boost-asio",
+      "boost-beast",
+      "boost-system",
+      "boost-variant",
+      "boost-lockfree",
+      "boost-process",
+      "boost-program-options",
+      "boost-filesystem",
+      "boost-uuid",
+      "luajit",
+      "glew",
+      "physfs",
+      "openal-soft",
+      "libogg",
+      "libvorbis",
+      "zlib",
+      "libzip",
+      "openssl",
+      "angle"
+    ],
+    "overrides": [
+      {
+        "name": "boost",
+        "version": "1.81.0"
+      }
+    ],
+    "builtin-baseline": "215a2535590f1f63788ac9bd2ed58ad15e6afdff"
+}
