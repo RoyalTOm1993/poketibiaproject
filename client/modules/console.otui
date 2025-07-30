@@ -1,0 +1,36 @@
+OptionPanel
+  margin-top: 24
+  OptionCheckBox
+    id: showInfoMessagesInConsole
+    font: window
+    !text: tr('Mostrar mensagens de informacao no console')
+
+  OptionCheckBox
+    id: showEventMessagesInConsole
+    font: window
+    !text: tr('Mostrar mensagens de evento no console')
+
+  OptionCheckBox
+    id: showStatusMessagesInConsole
+    font: window
+    !text: tr('Mostrar mensagens de status no console')
+
+  OptionCheckBox
+    id: showTimestampsInConsole
+    font: window
+    !text: tr('Mostrar timestamps no console')
+
+  OptionCheckBox
+    id: showLevelsInConsole
+    font: window
+    !text: tr('Mostrar niveis no console')
+
+  OptionCheckBox
+    id: showPrivateMessagesInConsole
+    font: window
+    !text: tr('Mostrar mensagens privadas no console')
+
+  OptionCheckBox
+    id: showPrivateMessagesOnScreen
+    font: window
+    !text: tr('Mostrar mensagens privadas na tela')

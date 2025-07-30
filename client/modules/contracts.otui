@@ -1,0 +1,119 @@
+BannerBH < UIWidget
+  size: 136 344
+  image-source: images/banner_comum
+  anchors.top: parent.top
+  anchors.left: parent.left
+  margin-top: 15
+  Label
+    id: rarity
+    font: sono_bold_24
+    anchors.left: parent.left
+    anchors.right: parent.right
+    anchors.bottom: next.top
+    margin-bottom: 10
+    height: 30
+    text-align: center
+  UIWidget
+    anchors.top: parent.top
+    anchors.horizontalCenter: parent.horizontalCenter
+    margin-top: 80
+    size: 64 64
+    image-source: images/base_outfit
+  UICreature
+    id: duelistOutfit
+    size: 64 64
+    margin-right: 10
+    margin-bottom: 10
+    anchors.centerIn: prev
+  Label
+    id: name
+    anchors.top: prev.bottom
+    anchors.left: parent.left
+    anchors.right: parent.right
+    text: Inativo
+    height: 25
+    text-align: center
+    margin-top: 10
+    font: sono_bold_20
+  Label
+    id: desc
+    anchors.top: prev.bottom
+    anchors.left: parent.left
+    anchors.right: parent.right
+    margin-left: 10
+    margin-right: 10
+    height: 50
+    text-align: center
+    margin-top: 10
+    text-wrap: true
+    font: sono_bold_12
+    text: 
+  UIButton
+    id: toggleContract
+    size: 96 28
+    image-source: /images/ui/greenButton
+    image-color: #00ff00
+    font: sono_bold_12
+    text: Aceitar
+    anchors.horizontalCenter: parent.horizontalCenter
+    anchors.bottom: parent.bottom
+    margin-bottom: 38
+    change-cursor-image: true
+    cursor: pointer
+    @onClick: modules.contracts.acceptButton(self:getParent():getId())
+  UIWidget
+    id: done
+    visible: false
+    anchors.fill: parent
+    image-source: images/opacity
+  $!first:
+    anchors.left: prev.right
+    margin-left: 20
+
+MainWindow
+  text: Contratos
+  size: 700 500
+  font: sono_bold_20
+  @onEscape: self:hide()
+  ScrollablePanel
+    id: panel
+    horizontal-scrollbar: scrollbar
+    anchors.fill: parent
+    BannerBH
+      id: 1
+    BannerBH
+      id: 2
+    BannerBH
+      id: 3
+    BannerBH
+      id: 4
+    BannerBH
+      id: 5
+    BannerBH
+      id: 6
+  HorizontalScrollBar
+    id: scrollbar
+    anchors.left: prev.left
+    anchors.right: prev.right
+    anchors.bottom: parent.bottom
+    margin-top: 2
+    step: 30
+    value: 1
+  UIWidget
+    size: 128 38
+    image-source: images/button_red
+    @onClick: self:getParent():hide()
+    anchors.horizontalCenter: parent.horizontalCenter
+    anchors.bottom: parent.bottom
+    margin-bottom: 20
+    text: Fechar
+    change-cursor-image: true
+    cursor: pointer
+  Label
+    id: remainingContracts
+    font: sono_bold_20
+    anchors.left: parent.left
+    anchors.bottom: parent.bottom
+    margin-bottom: 20
+    text-auto-resize: true
+    text: Contratos restantes: 0

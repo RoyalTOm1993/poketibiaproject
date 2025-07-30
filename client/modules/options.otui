@@ -1,0 +1,60 @@
+OptionCheckBox < CheckBox
+  @onCheckChange: modules.client_options.setOption(self:getId(), self:isChecked())
+  height: 16
+  margin-left: 30
+
+  $!first:
+
+OptionScrollbar < HorizontalScrollBar
+  step: 1
+  @onValueChange: modules.client_options.setOption(self:getId(), self:getValue())
+  
+OptionPanel < Panel
+  layout:
+    type: verticalBox
+    
+SpaceConfiguracoes
+  id: optionsWindow
+  size: 600 480
+  draggable: true
+  @onEnter: modules.client_options.hide()
+  @onEscape: modules.client_options.hide()
+
+  TabBarVertical
+    id: optionsTabBar
+    margin-top: 42
+    margin-bottom: 7
+    anchors.top: parent.top
+    anchors.left: parent.left
+    anchors.bottom: parent.bottom
+
+  Panel
+    size: 428 400
+    id: optionsTabContent
+    anchors.top: optionsTabBar.top
+    anchors.left: optionsTabBar.right
+
+  SpaceBlueButton
+    size: 100 32
+    !text: tr('PRONTO')
+    color: #ffffff
+    font: future-earth-18
+    margin-right: 16
+    margin-bottom: 10
+    anchors.right: parent.right
+    anchors.bottom: parent.bottom
+    @onClick: |
+      g_settings.save()
+      modules.client_options.hide()
+
+  Label
+    id: topText
+    text-auto-resize: true
+    !text: tr('Options')
+    font: future-earth-40
+    anchors.horizontalCenter: parent.horizontalCenter
+    anchors.top: parent.top
+    color: #ffffff
+    draggable: false
+    phantom: true
+    margin-top: -34
