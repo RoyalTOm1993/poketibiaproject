@@ -1,62 +1,672 @@
-MarketWindow < MainWindow
-  id: marketWindow
-  !text: tr('Market')
-  size: 700 530
+MarketRow < UIWidget
+  size: 784 33
 
-  @onEscape: Market.close()
-
-  // Main Panel Window
-
-  MarketTabBar
-    id: mainTabBar
-    width: 164
-    height: 25
-    anchors.top: parent.top
-    anchors.left: parent.left
-
-  Panel
-    id: mainTabContent
-    anchors.top: prev.bottom
-    anchors.left: parent.left
-    anchors.right: parent.right
-    anchors.bottom: parent.bottom
-    padding: 3
-    border-width: 1
-    border-color: #000000
-    margin-bottom: 20
-
+MarketRowHeader < MarketRow
+  background-color: #252121
+  anchors.bottom: next.top
+  anchors.left: next.left
+  margin-bottom: 2
+  margin-left: 0
   Label
-    id: balanceLabel
-    !text: tr('Balance') .. ':'
-    font: verdana-11px-rounded
+    anchors.top: parent.top
+    anchors.left: parent.left
+    text: Nº
+    size: 50 32
+    font: sono_bold_20
+    text-align: center
+  Label
+    text: Item
+    size: 50 32
+    font: sono_bold_20
+    anchors.top: prev.top
+    anchors.left: prev.right
+    margin-left: 20
+  Label
+    anchors.top: prev.top
+    anchors.left: prev.right
+    text: Nome
+    size: 250 32
+    font: sono_bold_20
+    text-align: center
+    margin-left: 0
+  Label
+    anchors.top: prev.top
+    anchors.left: prev.right
+    text: Qtd
+    size: 60 32
+    font: sono_bold_20
+    text-align: center
+    margin-left: 5
+  Label
+    anchors.top: prev.top
+    anchors.left: prev.right
+    text: Vendedor
+    size: 120 32
+    font: sono_bold_20
+    text-align: center
+    margin-left: 30
+  Label
+    anchors.top: prev.top
+    anchors.left: prev.right
+    text: Preço Unitário
+    size: 150 32
+    font: sono_bold_20
+    text-align: center
+    margin-left: 45
+
+MarketRowItem < MarketRow
+  &updateOnStates: |
+    function(self)
+      local children = self:getChildren()
+      for i=1,#children do
+        children[i]:setOn(self:isFocused())
+      end
+    end
+  @onFocusChange: self:updateOnStates()
+  @onSetup: self:updateOnStates()
+  opacity: 0.7
+
+  $focus:
+    icon: images/buttons/active
+    icon-offset: -335 0
+    opacity: 1.0
+  $!focus:
+    icon:
+  Label
+    id: number
+    size: 50 32
+    anchors.top: parent.top
+    anchors.left: parent.left
+    text: 1
+    font: sono_bold_20
+    text-align: center
+  UIItem
+    id: item
+    size: 32 32
+    anchors.top: prev.top
+    anchors.left: prev.right
+    margin-left: 27
+  Label
+    id: name
+    size: 250 32
+    anchors.top: prev.top
+    anchors.left: prev.right
+    font: sono_bold_20
+    text-align: center
+    margin-left: 12
+  Label
+    id: amount
+    anchors.top: prev.top
+    anchors.left: prev.right
+    text: Qtd
+    size: 60 32
+    font: sono_bold_20
+    text-align: center
+    margin-left: 5
+  Label
+    id: seller
+    anchors.top: prev.top
+    anchors.left: prev.right
+    size: 120 32
+    font: sono_bold_20
+    text-align: center
+    margin-left: 30
+  Label
+    id: price
+    anchors.top: prev.top
+    anchors.left: prev.right
+    text-auto-resize: true
+    font: sono_bold_20
+    text-align: center
+    margin-left: 100
+  UIItem
+    id: currencyItem
+    virtual: true
+    size: 32 32
+    anchors.right: prev.left
+    anchors.top: prev.top
+    margin-right: 5
+
+MarketRowHeaderOwn < MarketRow
+  background-color: #252121
+  anchors.bottom: next.top
+  anchors.left: next.left
+  margin-bottom: 2
+  margin-left: 0
+  Label
+    anchors.top: parent.top
+    anchors.left: parent.left
+    text: Nº
+    size: 50 32
+    font: sono_bold_20
+    text-align: center
+  Label
+    text: Item
+    size: 50 32
+    font: sono_bold_20
+    anchors.top: prev.top
+    anchors.left: prev.right
+    margin-left: 20
     text-offset: 0 2
+  Label
+    anchors.top: prev.top
+    anchors.left: prev.right
+    text: Nome
+    size: 250 32
+    font: sono_bold_20
+    text-align: center
+    margin-left: 0
+  Label
+    anchors.top: prev.top
+    anchors.left: prev.right
+    text: Qtd
+    size: 60 32
+    font: sono_bold_20
+    text-align: center
+    margin-left: 5
+  Label
+    anchors.top: prev.top
+    anchors.left: prev.right
+    text: Preço Unitário
+    size: 150 32
+    font: sono_bold_20
+    text-align: center
+    margin-left: 45
+  Label
+    anchors.top: prev.top
+    anchors.left: prev.right
+    text: Tempo
+    size: 150 32
+    font: sono_bold_20
+    text-align: center
+    margin-left: 45
+
+MarketRowOwnItem < MarketRow
+  &updateOnStates: |
+    function(self)
+      local children = self:getChildren()
+      for i=1,#children do
+        children[i]:setOn(self:isFocused())
+      end
+    end
+  @onFocusChange: self:updateOnStates()
+  @onSetup: self:updateOnStates()
+  opacity: 0.7
+  icon: ~
+  icon-offset: 0 0
+
+  $focus:
+    icon: images/buttons/active
+    icon-offset: -335 0
+    opacity: 1.0
+  $!focus:
+    icon:
+  Label
+    id: number
+    size: 50 32
+    anchors.top: parent.top
+    anchors.left: parent.left
+    text: 1
+    font: sono_bold_20
+    text-align: center
+  UIItem
+    id: item
+    size: 32 32
+    anchors.top: prev.top
+    anchors.left: prev.right
+    margin-left: 27
+  Label
+    id: name
+    size: 250 32
+    anchors.top: prev.top
+    anchors.left: prev.right
+    font: sono_bold_20
+    text-align: center
+    margin-left: 12
+  Label
+    id: amount
+    anchors.top: prev.top
+    anchors.left: prev.right
+    text: Qtd
+    size: 60 32
+    font: sono_bold_20
+    text-align: center
+    margin-left: 5
+  Label
+    id: price
+    anchors.top: prev.top
+    anchors.left: prev.right
+    text-auto-resize: true
+    font: sono_bold_20
+    text-align: center
+    margin-left: 100
+  UIItem
+    id: currencyItem
+    virtual: true
+    size: 32 32
+    anchors.right: prev.left
+    anchors.top: prev.top
+    margin-right: 5
+  Label
+    id: time
+    anchors.top: prev.top
+    anchors.left: prev.right
+    text-auto-resize: true
+    font: sono_bold_20
+    text-align: right
+    margin-left: 170
+
+MarketButton < UIWidget
+  size: 50 50
+  change-cursor-image: true
+  cursor: pointer
+
+BuyMarketItemWindow < UIWindow
+  size: 264 280
+  anchors.centerIn: parent
+  image-source: images/bgBuy
+  MarketButton
+    size: 36 36
+    id: mainList
     anchors.top: parent.top
     anchors.right: parent.right
-
-  Button
+    margin-top: 5
+    margin-right: 5
+    image-source: images/buttons/close
+    @onClick: self:getParent():destroy()
+  Label
+    id: itemName
+    text-auto-resize: true
+    anchors.horizontalCenter: parent.horizontalCenter
+    anchors.top: parent.top
+    margin-top: 10
+    margin-left: 0
+    text: Two Baias
+    font: sono_bold_24
+  UIItem
+    id: item
+    image-source: images/buttons/slot
+    size: 48 48
+    anchors.horizontalCenter: parent.horizontalCenter
+    anchors.top: parent.top
+    margin-top: 50
+    margin-left: 0
+  Label
+    id: price
+    text-auto-resize: true
+    anchors.horizontalCenter: parent.horizontalCenter
+    anchors.top: prev.bottom
+    margin-top: 5
+    font: sono_bold_18
+  UIItem
+    id: currency
+    virtual: true
+    size: 32 32
+    anchors.left: prev.right
+    anchors.top: prev.top
+    margin-top: -6
+    margin-left: 0
+  Label
+    text: Quantidade
+    text-auto-resize: true
+    text-offset: 8 0
+    phantom: true
+    anchors.bottom: next.top
+    anchors.left: next.left
+    font: sono_bold_14
+    margin-bottom: 0
+  UITextEdit
+    id: qtdItems
+    size: 100 18
+    image-source: images/sell/newTextEdit
+    anchors.top: currency.bottom
+    anchors.horizontalCenter: parent.horizontalCenter
+    padding-left: 10
+    padding-top: 2
+    margin-top: 25
+    @onSetup: self:setValidCharacters('0123456789')
+  MarketButton
+    id: BuyButton
+    size: 138 42
+    anchors.bottom: parent.bottom
+    anchors.horizontalCenter: parent.horizontalCenter
+    margin-bottom: 42
+    text: Confirmar Compra
+    font: sono_bold_14
+    image-source: images/buttons/blue
+MainWindow
+  size: 858 610
+  image-source: images/background
+  text: Market
+  font: sono_bold_24
+  @onEscape: toggle()
+  MarketButton
+    id: mainList
+    anchors.top: parent.top
+    anchors.left: parent.left
+    tooltip: Lista de Vendas
+    margin-top: 45
+    margin-left: 20
+    image-source: images/buttons/buy
+  MarketButton
+    id: ownOffers
+    anchors.top: prev.top
+    anchors.left: prev.right
+    tooltip: Lista de Vendas Pessoais
+    margin-left: 10
+    image-source: images/buttons/sell
+  MarketButton
+    id: playerOffers
+    anchors.top: prev.top
+    anchors.left: prev.right
+    tooltip: Suas Ofertas
+    margin-left: 10
+    image-source: images/buttons/offers
+  MarketButton
+    id: buyList
+    anchors.top: prev.top
+    anchors.left: prev.right
+    tooltip: Lista de Ofertas de Compras
+    margin-left: 10
+    image-source: images/buttons/buylist
+  MarketButton
+    id: historicList
+    anchors.top: prev.top
+    anchors.left: prev.right
+    tooltip: Histórico
+    margin-left: 10
+    image-source: images/buttons/historic
+  UITextEdit
+    id: marketSearch
+    image-source: images/searchBackground
+    placeholder: Search
+    placeholder-align: center
+    placeholder-font: window
+    anchors.top: prev.top
+    anchors.left: prev.right
+    padding-left: 30
+    padding-top: 10
+    icon: images/buttons/search
+    icon-offset: 5 9
+    icon-size: 16 16
+    margin-top: -10
+    margin-left: 20
+    focusable: true
+    @onSetup: self:setValidCharacters('AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz0123456789')
+  UIWidget
+    id: categories
+    font: sono_bold_18
+    anchors.left: prev.left
+    anchors.top: prev.bottom
+    image-source: images/searchBackground
+    text: All
+    size: 206 28
+    margin-left: 0
+    margin-top: 5
+  MarketButton
+    id: doSearch
+    size: 138 42
+    anchors.left: prev.right
+    anchors.top: prev.top
+    margin-left: 10
+    margin-top: -25
+    text: Buscar
+    font: sono_bold_20
+    image-source: images/buttons/blue
+  MarketButton
     id: closeButton
-    !text: tr('Close')
-    anchors.top: mainTabContent.bottom
-    anchors.horizontalCenter: mainTabContent.horizontalCenter
+    size: 138 42
+    anchors.bottom: parent.bottom
+    anchors.horizontalCenter: parent.horizontalCenter
+    text: Fechar
+    font: sono_bold_20
+    image-source: images/buttons/red
+    @onClick: toggle()
+  MarketButton
+    id: BuyButton
+    size: 138 42
+    anchors.bottom: parent.bottom
+    anchors.right: parent.right
+    margin-bottom: 42
+    margin-right: 150
+    text: Comprar
+    font: sono_bold_20
+    image-source: images/buttons/blue
+  MarketButton
+    id: Refresh
+    size: 32 32
+    anchors.top: doubleRight.top
+    anchors.left: doubleRight.right
+    margin-top: -10
+    margin-left: 10
+    image-source: images/buttons/refresh
+    tooltip: refresh market
+  MarketButton
+    id: offerButton
+    size: 138 42
+    anchors.bottom: parent.bottom
+    anchors.right: parent.right
+    margin-bottom: 42
+    margin-right: 0
+    text: Fazer Oferta
+    font: sono_bold_20
+    image-source: images/buttons/blue
+  Label
+    id: pages
+    text: 0/0
+    font: sono_bold_20
+    text-auto-resize: true
+    anchors.left: parent.left
+    anchors.bottom: parent.bottom
+    margin-bottom: 50
+    margin-left: 100
+  UIWidget
+    id: doubleLeft
+    size: 22 16
+    image-source: images/buttons/double_left
+    anchors.top: pages.top
+    anchors.right: pages.left
+    margin-right: 35
     margin-top: 5
-    width: 110
-    @onClick: Market.close()
+    change-cursor-image: true
+    cursor: pointer
+    @onClick: firstPage()
 
-  Button
-    id: refreshOffersButton
-    !text: tr('Refresh Offers')
-    anchors.top: mainTabContent.bottom
-    anchors.right: mainTabContent.right
-    margin-top: 5
-    width: 110
-    @onClick: Market.refreshOffers()
+  UIWidget
+    id: left
+    size: 22 18
+    image-source: images/buttons/left
+    anchors.bottom: doubleLeft.bottom
+    anchors.left: doubleLeft.right
+    margin-left: 3
+    margin-bottom: -1
+    change-cursor-image: true
+    cursor: pointer
+    @onClick: previousPage()
 
-  Button
-    id: resetButton
-    !text: tr('Reset Market')
-    !tooltip: tr('Reset selection, filters & search')
-    anchors.top: mainTabContent.bottom
-    anchors.left: mainTabContent.left
+  UIWidget
+    id: doubleRight
+    size: 22 16
+    image-source: images/buttons/double_right
+    anchors.top: pages.top
+    anchors.left: pages.right
+    margin-left: 35
     margin-top: 5
-    width: 110
-    @onClick: Market.reset()
+    change-cursor-image: true
+    cursor: pointer
+    @onClick: lastPage()
+
+  UIWidget
+    id: right
+    size: 22 18
+    image-source: images/buttons/right
+    anchors.bottom: doubleRight.bottom
+    margin-right: 3
+    margin-bottom: -1
+    anchors.right: doubleRight.left
+    change-cursor-image: true
+    cursor: pointer
+    @onClick: nextPage()
+  UIWidget
+    id: panelSellItem
+    size: 420 70
+    anchors.top: parent.top
+    anchors.left: parent.left
+    margin-top: 30
+    margin-left: 290
+    UIItem
+      id: itemSelected
+      image-source: images/buttons/slot
+      size: 32 32
+      anchors.top: parent.top
+      anchors.left: parent.left
+      margin-top: 0
+      margin-left: 53
+    UIWidget
+      id: select
+      image-source: images/buttons/select
+      size: 31 30
+      anchors.top: itemSelected.top
+      anchors.left: itemSelected.right
+      margin-left: 3
+      change-cursor-image: true
+      cursor: pointer
+    UIWidget
+      id: boxCheckBox
+      size: 150 50
+      anchors.top: parent.top
+      anchors.left: parent.left
+      margin-top: 0
+      margin-left: 145
+      UIItem
+        id: moneyItem
+        anchors.left: next.right
+        anchors.top: next.top
+        size: 24 24
+        virtual: true
+        margin-top: -5
+        margin-left: 5
+      CheckBoxMarket
+        id: money
+        anchors.top: parent.top
+        anchors.left: parent.left
+        margin-top: 20
+        margin-left: 0
+      UIItem
+        id: diamondItem
+        anchors.left: next.right
+        anchors.top: next.top
+        size: 24 24
+        virtual: true
+        margin-top: -5
+        margin-left: 5
+      CheckBoxMarket
+        id: diamond
+        anchors.top: parent.top
+        anchors.left: parent.left
+        margin-top: 20
+        margin-left: 50
+      Label
+        id: anonymousText
+        text: Venda Anônima
+        font: sono_bold_14
+        anchors.left: next.right
+        anchors.top: next.top
+        margin-top: 0
+        margin-left: 5
+      CheckBoxMarket
+        id: anonymous
+        anchors.top: parent.top
+        anchors.left: parent.left
+        margin-top: 0
+        margin-left: 0
+    Label
+      text: Preço Unitário
+      text-auto-resize: true
+      phantom: true
+      anchors.bottom: next.top
+      anchors.left: next.left
+      font: sono_bold_14
+      margin-bottom: 0
+      text-offset: 0 0
+    UITextEdit
+      id: price
+      size: 100 18
+      image-source: images/sell/newTextEdit
+      anchors.top: parent.top
+      anchors.left: parent.left
+      padding-left: 10
+      padding-top: 2
+      margin-top: 55
+      margin-left: 30
+      @onSetup: self:setValidCharacters('0123456789')
+    Label
+      text: Quantidade
+      text-auto-resize: true
+      text-offset: 8 0
+      phantom: true
+      anchors.bottom: next.top
+      anchors.left: next.left
+      font: sono_bold_14
+      margin-bottom: 0
+    UITextEdit
+      id: qtdItems
+      size: 100 18
+      image-source: images/sell/newTextEdit
+      anchors.top: parent.top
+      anchors.left: parent.left
+      padding-left: 10
+      padding-top: 2
+      margin-top: 55
+      margin-left: 140
+      @onSetup: self:setValidCharacters('0123456789')
+    MarketButton
+      id: trySellItem
+      text: Vender
+      font: window
+      size: 80 28
+      image-source: images/buttons/blue
+      anchors.top: parent.top
+      anchors.left: prev.right
+      margin-left: 0
+      margin-top: 20
+  MarketButton
+    id: cancelSell
+    size: 80 30
+    image-source: images/buttons/red
+    text: Cancelar
+    anchors.bottom: parent.bottom
+    anchors.right: parent.right
+    margin-right: 30
+    margin-bottom: 40
+  MarketRowHeaderOwn
+    id: rowHeaderOwnOffers
+  UIWidget
+    id: panelOwnOffers
+    size: 784 330
+    anchors.top: parent.top
+    anchors.left: parent.left
+    margin-top: 140
+    margin-left: 20
+    auto-focus: first
+    layout:
+      type: verticalBox
+      flow: true
+      cell-spacing: 0
+  MarketRowHeader
+    id: rowHeaderOffers
+  UIWidget
+    id: panelOffers
+    size: 784 330
+    anchors.top: parent.top
+    anchors.left: parent.left
+    margin-top: 140
+    margin-left: 20
+    auto-focus: first
+    layout:
+      type: verticalBox
+      flow: true
+      cell-spacing: 0
+    
+    
+  

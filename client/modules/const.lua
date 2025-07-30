@@ -1,327 +1,405 @@
 -- @docconsts @{
 
-AnchorNone = 0
-AnchorTop = 1
-AnchorBottom = 2
-AnchorLeft = 3
-AnchorRight = 4
-AnchorVerticalCenter = 5
-AnchorHorizontalCenter = 6
+FloorHigher = 0
+FloorLower = 15
 
-LogDebug = 0
-LogInfo = 1
-LogWarning = 2
-LogError = 3
-LogFatal = 4
+SkullNone = 0
+SkullYellow = 1
+SkullGreen = 2
+SkullWhite = 3
+SkullRed = 4
+SkullBlack = 5
+SkullOrange = 6
 
-MouseFocusReason = 0
-KeyboardFocusReason = 1
-ActiveFocusReason = 2
-OtherFocusReason = 3
+ShieldNone = 0
+ShieldWhiteYellow = 1
+ShieldWhiteBlue = 2
+ShieldBlue = 3
+ShieldYellow = 4
+ShieldBlueSharedExp = 5
+ShieldYellowSharedExp = 6
+ShieldBlueNoSharedExpBlink = 7
+ShieldYellowNoSharedExpBlink = 8
+ShieldBlueNoSharedExp = 9
+ShieldYellowNoSharedExp = 10
+ShieldGray = 11
 
-AutoFocusNone = 0
-AutoFocusFirst = 1
-AutoFocusLast = 2
+EmblemNone = 0
+EmblemGreen = 1
+EmblemRed = 2
+EmblemBlue = 3
+EmblemMember = 4
+EmblemOther = 5
 
-KeyboardNoModifier = 0
-KeyboardCtrlModifier = 1
-KeyboardAltModifier = 2
-KeyboardCtrlAltModifier = 3
-KeyboardShiftModifier = 4
-KeyboardCtrlShiftModifier = 5
-KeyboardAltShiftModifier = 6
-KeyboardCtrlAltShiftModifier = 7
+VipIconFirst = 0
+VipIconLast = 10
 
-MouseNoButton = 0
-MouseLeftButton = 1
-MouseRightButton = 2
-MouseMidButton = 3
-MouseTouch = 4
-MouseTouch2 = 5 -- multitouch, 2nd finger
-MouseTouch3 = 6 -- multitouch, 3th finger
-MouseButton4 = 7 -- side mouse button 1
-MouseButton5 = 8 -- side mouse button 2
+Directions = {
+  North = 0,
+  East = 1,
+  South = 2,
+  West = 3,
+  NorthEast = 4,
+  SouthEast = 5,
+  SouthWest = 6,
+  NorthWest = 7
+}
 
-MouseNoWheel = 0
-MouseWheelUp = 1
-MouseWheelDown = 2
+Skill = {
+  Fist = 0,
+  Club = 1,
+  Sword = 2,
+  Axe = 3,
+  Distance = 4,
+  Shielding = 5,
+  Fishing = 6,
+  CriticalChance = 7,
+  CriticalDamage = 8,
+  LifeLeechChance = 9,
+  LifeLeechAmount = 10,
+  ManaLeechChance = 11,
+  ManaLeechAmount = 12
+}
 
-AlignNone = 0
-AlignLeft = 1
-AlignRight = 2
-AlignTop = 4
-AlignBottom = 8
-AlignHorizontalCenter = 16
-AlignVerticalCenter = 32
-AlignTopLeft = 5
-AlignTopRight = 6
-AlignBottomLeft = 9
-AlignBottomRight = 10
-AlignLeftCenter = 33
-AlignRightCenter = 34
-AlignTopCenter = 20
-AlignBottomCenter = 24
-AlignCenter = 48
+North = Directions.North
+East = Directions.East
+South = Directions.South
+West = Directions.West
+NorthEast = Directions.NorthEast
+SouthEast = Directions.SouthEast
+SouthWest = Directions.SouthWest
+NorthWest = Directions.NorthWest
 
-KeyUnknown = 0
-KeyEscape = 1
-KeyTab = 2
-KeyBackspace = 3
-KeyEnter = 5
-KeyInsert = 6
-KeyDelete = 7
-KeyPause = 8
-KeyPrintScreen = 9
-KeyHome = 10
-KeyEnd = 11
-KeyPageUp = 12
-KeyPageDown = 13
-KeyUp = 14
-KeyDown = 15
-KeyLeft = 16
-KeyRight = 17
-KeyNumLock = 18
-KeyScrollLock = 19
-KeyCapsLock = 20
-KeyCtrl = 21
-KeyShift = 22
-KeyAlt = 23
-KeyMeta = 25
-KeyMenu = 26
-KeySpace = 32        -- ' '
-KeyExclamation = 33  -- !
-KeyQuote = 34        -- "
-KeyNumberSign = 35   -- #
-KeyDollar = 36       -- $
-KeyPercent = 37      -- %
-KeyAmpersand = 38    -- &
-KeyApostrophe = 39   -- '
-KeyLeftParen = 40    -- (
-KeyRightParen = 41   -- )
-KeyAsterisk = 42     -- *
-KeyPlus = 43         -- +
-KeyComma = 44        -- ,
-KeyMinus = 45        -- -
-KeyPeriod = 46       -- .
-KeySlash = 47        -- /
-Key0 = 48            -- 0
-Key1 = 49            -- 1
-Key2 = 50            -- 2
-Key3 = 51            -- 3
-Key4 = 52            -- 4
-Key5 = 53            -- 5
-Key6 = 54            -- 6
-Key7 = 55            -- 7
-Key8 = 56            -- 8
-Key9 = 57            -- 9
-KeyColon = 58        -- :
-KeySemicolon = 59    -- ;
-KeyLess = 60         -- <
-KeyEqual = 61        -- =
-KeyGreater = 62      -- >
-KeyQuestion = 63     -- ?
-KeyAtSign = 64       -- @
-KeyA = 65            -- a
-KeyB = 66            -- b
-KeyC = 67            -- c
-KeyD = 68            -- d
-KeyE = 69            -- e
-KeyF = 70            -- f
-KeyG = 71            -- g
-KeyH = 72            -- h
-KeyI = 73            -- i
-KeyJ = 74            -- j
-KeyK = 75            -- k
-KeyL = 76            -- l
-KeyM = 77            -- m
-KeyN = 78            -- n
-KeyO = 79            -- o
-KeyP = 80            -- p
-KeyQ = 81            -- q
-KeyR = 82            -- r
-KeyS = 83            -- s
-KeyT = 84            -- t
-KeyU = 85            -- u
-KeyV = 86            -- v
-KeyW = 87            -- w
-KeyX = 88            -- x
-KeyY = 89            -- y
-KeyZ = 90            -- z
-KeyLeftBracket = 91  -- [
-KeyBackslash = 92    -- '\'
-KeyRightBracket = 93 -- ]
-KeyCaret = 94        -- ^
-KeyUnderscore = 95   -- _
-KeyGrave = 96        -- `
-KeyLeftCurly = 123   -- {
-KeyBar = 124         -- |
-KeyRightCurly = 125  -- }
-KeyTilde = 126       -- ~
-KeyF1 = 128
-KeyF2 = 129
-KeyF3 = 130
-KeyF4 = 131
-KeyF5 = 132
-KeyF6 = 134
-KeyF7 = 135
-KeyF8 = 136
-KeyF9 = 137
-KeyF10 = 138
-KeyF11 = 139
-KeyF12 = 140
-KeyNumpad0 = 141
-KeyNumpad1 = 142
-KeyNumpad2 = 143
-KeyNumpad3 = 144
-KeyNumpad4 = 145
-KeyNumpad5 = 146
-KeyNumpad6 = 147
-KeyNumpad7 = 148
-KeyNumpad8 = 149
-KeyNumpad9 = 150
+FightOffensive = 1
+FightBalanced = 2
+FightDefensive = 3
 
-FirstKey = KeyUnknown
-LastKey = KeyNumpad9
+DontChase = 0
+ChaseOpponent = 1
 
-ExtendedActivate = 0
-ExtendedLocales = 1
-ExtendedParticles = 2
+PVPWhiteDove = 0
+PVPWhiteHand = 1
+PVPYellowHand = 2
+PVPRedFist = 3
+
+GameProtocolChecksum = 1
+GameAccountNames = 2
+GameChallengeOnLogin = 3
+GamePenalityOnDeath = 4
+GameNameOnNpcTrade = 5
+GameDoubleFreeCapacity = 6
+GameDoubleExperience = 7
+GameTotalCapacity = 8
+GameSkillsBase = 9
+GamePlayerRegenerationTime = 10
+GameChannelPlayerList = 11
+GamePlayerMounts = 12
+GameEnvironmentEffect = 13
+GameCreatureEmblems = 14
+GameItemAnimationPhase = 15
+GameMagicEffectU16 = 16
+GamePlayerMarket = 17
+GameSpritesU32 = 18
+GameTileAddThingWithStackpos = 19
+GameOfflineTrainingTime = 20
+GamePurseSlot = 21
+GameFormatCreatureName = 22
+GameSpellList = 23
+GameClientPing = 24
+GameExtendedClientPing = 25
+GameDoubleHealth = 28
+GameDoubleSkills = 29
+GameChangeMapAwareRange = 30
+GameMapMovePosition = 31
+GameAttackSeq = 32
+GameBlueNpcNameColor = 33
+GameDiagonalAnimatedText = 34
+GameLoginPending = 35
+GameNewSpeedLaw = 36
+GameForceFirstAutoWalkStep = 37
+GameMinimapRemove = 38
+GameDoubleShopSellAmount = 39
+GameContainerPagination = 40
+GameThingMarks = 41
+GameLooktypeU16 = 42
+GamePlayerStamina = 43
+GamePlayerAddons = 44
+GameMessageStatements = 45
+GameMessageLevel = 46
+GameNewFluids = 47
+GamePlayerStateU16 = 48
+GameNewOutfitProtocol = 49
+GamePVPMode = 50
+GameWritableDate = 51
+GameAdditionalVipInfo = 52
+GameBaseSkillU16 = 53
+GameCreatureIcons = 54
+GameHideNpcNames = 55
+GameSpritesAlphaChannel = 56
+GamePremiumExpiration = 57
+GameBrowseField = 58
+GameEnhancedAnimations = 59
+GameOGLInformation = 60
+GameMessageSizeCheck = 61
+GamePreviewState = 62
+GameLoginPacketEncryption = 63
+GameClientVersion = 64
+GameContentRevision = 65
+GameExperienceBonus = 66
+GameAuthenticator = 67
+GameUnjustifiedPoints = 68
+GameSessionKey = 69
+GameDeathType = 70
+GameIdleAnimations = 71
+GameKeepUnawareTiles = 72
+GameIngameStore = 73
+GameIngameStoreHighlights = 74
+GameIngameStoreServiceType = 75
+GameAdditionalSkills = 76
+GameDistanceEffectU16 = 77
+GamePrey = 78
+GameDoubleMagicLevel = 79
+
+GameExtendedOpcode = 80
+GameMinimapLimitedToSingleFloor = 81
+GameSendWorldName = 82
+
+GameDoubleLevel = 83
+GameDoubleSoul = 84
+GameDoublePlayerGoodsMoney = 85
+GameCreatureWalkthrough = 86 -- adicionar Walkthrough para versões inferiores a 854, unpass = msg->getU8(); em protocolgameparse.cpp
+GameDoubleTradeMoney = 87
+GameSequencedPackets = 88
+GameTibia12Protocol = 89
+
+GameNewWalking = 90
+GameSlowerManualWalking = 91
+GameItemTooltip = 93
+
+GameBot = 95
+GameBiggerMapCache = 96
+GameForceLight = 97
+GameNoDebug = 98
+GameBotProtection = 99
+
+GameCreatureDirectionPassable = 100
+GameFasterAnimations = 101
+GameCenteredOutfits = 102
+GameSendIdentifiers = 103
+GameWingsAndAura = 104
+GamePlayerStateU32 = 105
+GameOutfitShaders = 106
+GameForceAllowItemHotkeys = 107
+GameCountU16 = 108
+GameDrawAuraOnTop = 109
+
+GamePacketSizeU32 = 110
+GamePacketCompression = 111
+
+GameOldInformationBar = 112
+GameHealthInfoBackground = 113
+GameWingOffset = 114
+GameAuraFrontAndBack = 115 -- To use that: First layer is bottom/back, second (blend layer) is top/front
+
+GameMapDrawGroundFirst = 116 -- useful for big auras & wings
+GameMapIgnoreCorpseCorrection = 117
+GameDontCacheFiles = 118 -- doesn't work with encryption and compression
+GameBigAurasCenter = 119 -- Automatic negative offset for aura bigger than 32x32
+GameNewUpdateWalk = 120 -- Walk update rate dependant on FPS
+GameNewCreatureStacking = 121 -- Ignore MAX_THINGS limit while adding to tile
+GameCreaturesMana = 122 -- get mana from server for creatures other than Player
+GameQuickLootFlags = 123 -- enables quick loot feature for all protocols
+GameDontMergeAnimatedText = 124
+GameMissionId = 125
+GameItemCustomAttributes = 126
+GameAnimatedTextCustomFont = 127
+
+LastGameFeature = 130
+        
+TextColors = {
+  red       = '#f55e5e', --'#c83200'
+  orange    = '#f36500', --'#c87832'
+  yellow    = '#ffff00', --'#e6c832'
+  green     = '#00EB00', --'#3fbe32'
+  lightblue = '#5ff7f7',
+  blue      = '#9f9dfd',
+  --blue1     = '#6e50dc',
+  --blue2     = '#3264c8',
+  --blue3     = '#0096c8',
+  white     = '#ffffff', --'#bebebe'
+}
+
+MessageModes = {
+  None                    = 0,
+  Say                     = 1,
+  Whisper                 = 2,
+  Yell                    = 3,
+  PrivateFrom             = 4,
+  PrivateTo               = 5,
+  ChannelManagement       = 6,
+  Channel                 = 7,
+  ChannelHighlight        = 8,
+  Spell                   = 9,
+  NpcFrom                 = 10,
+  NpcTo                   = 11,
+  GamemasterBroadcast     = 12,
+  GamemasterChannel       = 13,
+  GamemasterPrivateFrom   = 14,
+  GamemasterPrivateTo     = 15,
+  Login                   = 16,
+  Warning                 = 17,
+  Game                    = 18,
+  Failure                 = 19,
+  Look                    = 20,
+  DamageDealed            = 21,
+  DamageReceived          = 22,
+  Heal                    = 23,
+  Exp                     = 24,
+  DamageOthers            = 25,
+  HealOthers              = 26,
+  ExpOthers               = 27,
+  Status                  = 28,
+  Loot                    = 29,
+  TradeNpc                = 30,
+  Guild                   = 31,
+  PartyManagement         = 32,
+  Party                   = 33,
+  BarkLow                 = 34,
+  BarkLoud                = 35,
+  Report                  = 36,
+  HotkeyUse               = 37,
+  TutorialHint            = 38,
+  Thankyou                = 39,
+  Market                  = 40,
+  Mana                    = 41,
+  BeyondLast              = 42,
+  MonsterYell             = 43,
+  MonsterSay              = 44,
+  Red                     = 45,
+  Blue                    = 46,
+  RVRChannel              = 47,
+  RVRAnswer               = 48,
+  RVRContinue             = 49,
+  GameHighlight           = 50,
+  NpcFromStartBlock       = 51,
+  Last                    = 52,
+  Invalid                 = 255,
+}
+
+OTSERV_RSA  = "1091201329673994292788609605089955415282375029027981291234687579" ..
+              "3726629149257644633073969600111060390723088861007265581882535850" ..
+              "3429057592827629436413108566029093628212635953836686562675849720" ..
+              "6207862794310902180176810615217550567108238764764442605581471797" ..
+              "07119674283982419152118103759076030616683978566631413"
+
+CIPSOFT_RSA = "1321277432058722840622950990822933849527763264961655079678763618" ..
+              "4334395343554449668205332383339435179772895415509701210392836078" ..
+              "6959821132214473291575712138800495033169914814069637740318278150" ..
+              "2907336840325241747827401343576296990629870233111328210165697754" ..
+              "88792221429527047321331896351555606801473202394175817"
+
+-- set to the latest Tibia.pic signature to make otclient compatible with official tibia
+PIC_SIGNATURE = 0x56C5DDE7
+
+OsTypes = {
+  Linux = 1,
+  Windows = 2,
+  Flash = 3,
+  OtclientLinux = 10,
+  OtclientWindows = 11,
+  OtclientMac = 12,
+}
+
+PathFindResults = {
+  Ok = 0,
+  Position = 1,
+  Impossible = 2,
+  TooFar = 3,
+  NoWay = 4,
+}
+
+PathFindFlags = {
+  AllowNullTiles = 1,
+  AllowCreatures = 2,
+  AllowNonPathable = 4,
+  AllowNonWalkable = 8,
+}
+
+VipState = {
+  Offline = 0,
+  Online = 1,
+  Pending = 2,
+}
+
+ExtendedIds = {
+  Activate = 0,
+  Locale = 1,
+  Ping = 2,
+  Sound = 3,
+  Game = 4,
+  Particles = 5,
+  MapShader = 6,
+  NeedsUpdate = 7
+}
+
+PreviewState = {
+  Default = 0,
+  Inactive = 1,
+  Active = 2
+}
+
+Blessings = {
+  None = 0,
+  Adventurer = 1,
+  SpiritualShielding = 2,
+  EmbraceOfTibia = 4,
+  FireOfSuns = 8,
+  WisdomOfSolitude = 16,
+  SparkOfPhoenix = 32
+}
+
+DeathType = {
+  Regular = 0,
+  Blessed = 1
+}
+
+ProductType = {
+  Other = 0,
+  NameChange = 1
+}
+
+StoreErrorType = {
+  NoError = -1,
+  PurchaseError = 0,
+  NetworkError = 1,
+  HistoryError = 2,
+  TransferError = 3,
+  Information = 4
+}
+
+StoreState = {
+  None = 0,
+  New = 1,
+  Sale = 2,
+  Timed = 3
+}
+
+AccountStatus = {
+  Ok = 0,
+  Frozen = 1,
+  Suspended = 2,
+}
+
+SubscriptionStatus = {
+  Free = 0,
+  Premium = 1,
+}
+
+ChannelEvent = {
+  Join = 0,
+  Leave = 1,
+  Invite = 2,
+  Exclude = 3,
+}
 
 -- @}
-
-KeyCodeDescs = {
-  [KeyUnknown] = 'Unknown',
-  [KeyEscape] = 'Escape',
-  [KeyTab] = 'Tab',
-  [KeyBackspace] = 'Backspace',
-  [KeyEnter] = 'Enter',
-  [KeyInsert] = 'Insert',
-  [KeyDelete] = 'Delete',
-  [KeyPause] = 'Pause',
-  [KeyPrintScreen] = 'PrintScreen',
-  [KeyHome] = 'Home',
-  [KeyEnd] = 'End',
-  [KeyPageUp] = 'PageUp',
-  [KeyPageDown] = 'PageDown',
-  [KeyUp] = 'Up',
-  [KeyDown] = 'Down',
-  [KeyLeft] = 'Left',
-  [KeyRight] = 'Right',
-  [KeyNumLock] = 'NumLock',
-  [KeyScrollLock] = 'ScrollLock',
-  [KeyCapsLock] = 'CapsLock',
-  [KeyCtrl] = 'Ctrl',
-  [KeyShift] = 'Shift',
-  [KeyAlt] = 'Alt',
-  [KeyMeta] = 'Meta',
-  [KeyMenu] = 'Menu',
-  [KeySpace] = 'Space',
-  [KeyExclamation] = '!',
-  [KeyQuote] = '\"',
-  [KeyNumberSign] = '#',
-  [KeyDollar] = '$',
-  [KeyPercent] = '%',
-  [KeyAmpersand] = '&',
-  [KeyApostrophe] = '\'',
-  [KeyLeftParen] = '(',
-  [KeyRightParen] = ')',
-  [KeyAsterisk] = '*',
-  [KeyPlus] = 'Plus',
-  [KeyComma] = ',',
-  [KeyMinus] = '-',
-  [KeyPeriod] = '.',
-  [KeySlash] = '/',
-  [Key0] = '0',
-  [Key1] = '1',
-  [Key2] = '2',
-  [Key3] = '3',
-  [Key4] = '4',
-  [Key5] = '5',
-  [Key6] = '6',
-  [Key7] = '7',
-  [Key8] = '8',
-  [Key9] = '9',
-  [KeyColon] = ':',
-  [KeySemicolon] = ';',
-  [KeyLess] = '<',
-  [KeyEqual] = '=',
-  [KeyGreater] = '>',
-  [KeyQuestion] = '?',
-  [KeyAtSign] = '@',
-  [KeyA] = 'A',
-  [KeyB] = 'B',
-  [KeyC] = 'C',
-  [KeyD] = 'D',
-  [KeyE] = 'E',
-  [KeyF] = 'F',
-  [KeyG] = 'G',
-  [KeyH] = 'H',
-  [KeyI] = 'I',
-  [KeyJ] = 'J',
-  [KeyK] = 'K',
-  [KeyL] = 'L',
-  [KeyM] = 'M',
-  [KeyN] = 'N',
-  [KeyO] = 'O',
-  [KeyP] = 'P',
-  [KeyQ] = 'Q',
-  [KeyR] = 'R',
-  [KeyS] = 'S',
-  [KeyT] = 'T',
-  [KeyU] = 'U',
-  [KeyV] = 'V',
-  [KeyW] = 'W',
-  [KeyX] = 'X',
-  [KeyY] = 'Y',
-  [KeyZ] = 'Z',
-  [KeyLeftBracket] = '[',
-  [KeyBackslash] = '\\',
-  [KeyRightBracket] = ']',
-  [KeyCaret] = '^',
-  [KeyUnderscore] = '_',
-  [KeyGrave] = '`',
-  [KeyLeftCurly] = '{',
-  [KeyBar] = '|',
-  [KeyRightCurly] = '}',
-  [KeyTilde] = '~',
-  [KeyF1] = 'F1',
-  [KeyF2] = 'F2',
-  [KeyF3] = 'F3',
-  [KeyF4] = 'F4',
-  [KeyF5] = 'F5',
-  [KeyF6] = 'F6',
-  [KeyF7] = 'F7',
-  [KeyF8] = 'F8',
-  [KeyF9] = 'F9',
-  [KeyF10] = 'F10',
-  [KeyF11] = 'F11',
-  [KeyF12] = 'F12',
-  [KeyNumpad0] = 'Numpad0',
-  [KeyNumpad1] = 'Numpad1',
-  [KeyNumpad2] = 'Numpad2',
-  [KeyNumpad3] = 'Numpad3',
-  [KeyNumpad4] = 'Numpad4',
-  [KeyNumpad5] = 'Numpad5',
-  [KeyNumpad6] = 'Numpad6',
-  [KeyNumpad7] = 'Numpad7',
-  [KeyNumpad8] = 'Numpad8',
-  [KeyNumpad9] = 'Numpad9',
-}
-
-NetworkMessageTypes = {
-  Boolean = 1,
-  U8 = 2,
-  U16 = 3,
-  U32 = 4,
-  U64 = 5,
-  NumberString = 6,
-  String = 7,
-  Table = 8,
-}
-
-SoundChannels = {
-  Music = 1,
-  Ambient = 2,
-  Effect = 3,
-  Bot = 4
-}

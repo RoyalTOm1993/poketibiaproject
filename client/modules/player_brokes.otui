@@ -1,0 +1,261 @@
+brokeBall < UIItem
+  margin-top: 8
+  margin-bottom: -8
+  size: 32 32
+  UILabel
+    id: brokes
+    anchors.verticalCenter: parent.verticalCenter
+    anchors.left: parent.right
+    margin-left: -22
+    text-auto-resize: true
+pokemonChildPanel < UIWidget
+  image-source: images/barra_off
+  size: 110 110
+  margin-top: 2
+  @onClick: self:focus()
+  @onDoubleClick: modules.player_brokes.showPokeInfo(self:getId())
+  $focus:
+    image-source: images/barra_on
+  UIWidget
+    id: pokemonId
+    phantom: true
+    anchors.right: parent.right
+    margin-right: 10
+    margin-bottom: 25
+    anchors.bottom: parent.bottom
+    text-auto-resize: true
+    font: future-earth-18
+    color: #aeebff
+  UIWidget
+    id: pokemonName
+    phantom: true
+    anchors.left: parent.left
+    anchors.verticalCenter: parent.verticalCenter
+    text-auto-resize: true
+    font: window
+    color: #66c8ff
+    margin-left: 15
+    margin-top: 34
+  UICreature
+    id: pokemonLooktype
+    size: 48 48
+    margin-top: 20
+    phantom: true
+    anchors.top: parent.top
+    anchors.horizontalCenter: parent.horizontalCenter
+  UIWidget
+    id: pokemonBrokes
+    phantom: true
+    color: #aeebff
+    anchors.left: pokemonName.left
+    anchors.top: pokemonName.bottom
+    text-auto-resize: true
+    font: window
+
+pokeWindow < UIWindow
+  size: 473 283
+  focusable: false
+  image-source: images/baseInfo
+  anchors.verticalCenter: parent.verticalCenter
+  anchors.horizontalCenter: parent.horizontalCenter
+  @onEscape: self:destroy()
+  UIButton
+    id: closeButton
+    anchors.top: parent.top
+    anchors.right: parent.right
+    margin-top: 8
+    margin-right: 2
+    size: 24 25
+    image-source: /images/ui/closeButton
+    @onClick: self:getParent():destroy()
+    change-cursor-image: true
+    cursor: pointer
+  UIWidget
+    id: panelBestBalls
+    size: 175 80
+    margin-bottom: 14
+    margin-left: 28
+    anchors.bottom: parent.bottom
+    anchors.left: parent.left
+    margin-top: 5
+    layout:
+      type: grid
+      cell-size: 24 24
+      num-lines: 4
+      num-columns: 9
+      cell-spacing: -5
+  UIWidget
+    id: panelBestBalls
+    size: 175 80
+    margin-bottom: 21
+    margin-left: 24
+    anchors.bottom: parent.bottom
+    anchors.left: parent.left
+    margin-top: 5
+    layout:
+      type: grid
+      cell-size: 24 24
+      num-lines: 4
+      num-columns: 9
+      cell-spacing: -5
+  UILabel
+    id: pokemonName
+    text-auto-resize: true
+    font: future-earth-26
+    color: #66c8ff
+    anchors.top: parent.top
+    anchors.horizontalCenter: panelBestBalls.horizontalCenter
+    margin-top: 56
+  UICreature
+    id: pokemonLooktype
+    size: 48 48
+    margin-top: 10
+    anchors.top: prev.bottom
+    anchors.horizontalCenter: panelBestBalls.horizontalCenter
+  UILabel
+    id: pontuacao
+    text-auto-resize: true
+    font: future-earth-14
+    color: #aeebff
+    anchors.top: prev.bottom
+    margin-top: 10
+    anchors.horizontalCenter: panelBestBalls.horizontalCenter
+  UIWidget
+    id: panelBrokes
+    size: 232 240
+    anchors.top: parent.top
+    anchors.right: parent.right
+    margin-right: 18
+    margin-top: 36
+    layout:
+      type: grid
+      cell-size: 54 32
+      num-lines: 10
+      num-columns: 4
+      cell-spacing: 0
+  Label
+    id: topText
+    text-auto-resize: true
+    !text: tr('POKEBOLAS USADAS')
+    font: future-earth-18
+    anchors.horizontalCenter: parent.horizontalCenter
+    anchors.top: parent.top
+    color: #aeebff
+    draggable: false
+    phantom: true
+    margin-top: 6
+MainWindow
+  image-source: images/base_2
+  size: 555 466
+  text: INFORMAÇÕES DE CAPTURA
+  color: #aeebff
+  font: future-earth-18
+  text-offset: 10 12
+  @onEscape: self:hide()
+  UIWidget
+    phantom: true
+    size: 134 31
+    image-source: images/search
+    margin-bottom: 2
+    margin-left: 5
+    anchors.bottom: parent.bottom
+    anchors.left: parent.left
+  UITextEdit
+    id: search
+    selection-color: black
+    selection-background-color: white
+    size: 100 31
+    margin-bottom: -6
+    margin-left: 34
+    anchors.bottom: parent.bottom
+    anchors.left: parent.left
+    color: #66c8ff
+    font: window
+
+  UIButton
+    id: closeButton
+    anchors.top: parent.top
+    anchors.right: parent.right
+    margin-top: 8
+    margin-right: 2
+    size: 24 25
+    image-source: /images/ui/closeButton
+    @onClick: self:getParent():hide()
+    change-cursor-image: true
+    cursor: pointer
+  UIWidget
+    id: panelPokes
+    size: 450 340
+    anchors.verticalCenter: parent.verticalCenter
+    anchors.horizontalCenter: parent.horizontalCenter
+    margin-top: -10
+    margin-left: 0
+    layout:
+      type: grid
+      cell-size: 110 110
+      num-lines: 3
+      num-columns: 4
+      flow: false
+      cell-spacing: 5
+  Label
+    id: pages
+    color: #aeebff
+    text-auto-resize: true
+    anchors.horizontalCenter: parent.horizontalCenter
+    anchors.bottom: parent.bottom
+    margin-bottom: 3
+    font: future-earth-26
+
+  UIWidget
+    id: doubleLeft
+    size: 32 34
+    image-source: images/double_left
+    anchors.bottom: parent.bottom
+    anchors.horizontalCenter: parent.horizontalCenter
+    margin-right: 100
+    margin-bottom: 1
+    change-cursor-image: true
+    cursor: pointer
+    @onClick: firstPage()
+
+  UIWidget
+    id: left
+    size: 32 34
+    image-source: images/left
+    anchors.bottom: doubleLeft.bottom
+    anchors.left: doubleLeft.right
+    margin-left: 3
+    change-cursor-image: true
+    cursor: pointer
+    @onClick: previousPage()
+
+  UIWidget
+    id: doubleRight
+    size: 32 34
+    image-source: images/double_right
+    anchors.bottom: parent.bottom
+    anchors.horizontalCenter: parent.horizontalCenter
+    margin-left: 100
+    change-cursor-image: true
+    cursor: pointer
+    @onClick: lastPage()
+
+  UIWidget
+    id: right
+    size: 32 34
+    image-source: images/right
+    anchors.bottom: doubleRight.bottom
+    margin-right: 3
+    anchors.right: doubleRight.left
+    change-cursor-image: true
+    cursor: pointer
+    @onClick: nextPage()
+  UIButton
+    id: infos
+    size: 24 24
+    image-source: images/info
+    anchors.top: parent.top
+    anchors.left: parent.left
+    margin-top: 30
+    margin-left: 6
+    tooltip: Clique duas vezes no pokémon, para mais informações sobre a captura.

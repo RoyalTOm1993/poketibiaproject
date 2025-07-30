@@ -1,1433 +1,684 @@
---[[
-    Finalizing Market:
-      Note: Feel free to work on any area and submit
-            it as a pull request from your git fork.
+local mainWindow, buyWindow = nil, nil
+local opcode = 94
+local cache = {}
+local page = 1
+local pageSearch = { busca = "", categoria = 0, page = 1 }
+local totalPages = 0
+local realTime = 0
+local currentCategory = 0
+local mouseGrabberWidget = nil
+local aba = 1
+local MARKET_ITEM_SELECTED = {
+	currency = nil,
+	price = nil,
+	selected = false,
+	anonymous = false,
+	qtd = 1,
+	maxQtd = 1,
+}
 
-      BeniS's Skype: benjiz69
+local timer = { minute = 60, hour = 3600, day = 86400, week = 604800 }
+local itemDuration = timer.day * 2
 
-      List:
-      * Add offer management:
-        - Current Offers
-        - Offer History
+local STYLE_ABAS = {
+	[1] = "MarketRowItem",
+	[2] = "MarketRowOwnItem",
+}
 
-      * Clean up the interface building
-        - Add a new market interface file to handle building?
+local MAX_ROWS_ABAS = {
+	[1] = 10,
+	[2] = 10
+}
 
-      * Extend information features
-        - Hover over offers for purchase information (balance after transaction, etc)
-  ]]
+local MARKET_CATEGORIES = {
+	[0] = 'All',
+	[1] = 'Helds',
+	[2] = 'Potions',
+	[3] = 'Pokeballs',
+	[4] = 'Pokemon',
+	[5] = 'Valuable Item'
+}
 
-Market = {}
+-- change pages by category [buy, sell...]
 
-local protocol = runinsandbox('marketprotocol')
+function generatePageBuyChildren(page_id)
+	local PANEL_ABAS = {
+		[1] = mainWindow.panelOffers,
+		[2] = mainWindow.panelOwnOffers
+	}
 
-marketWindow = nil
-mainTabBar = nil
-displaysTabBar = nil
-offersTabBar = nil
-selectionTabBar = nil
+	local MAX_ROWS = MAX_ROWS_ABAS[aba]
 
-marketOffersPanel = nil
-browsePanel = nil
-overviewPanel = nil
-itemOffersPanel = nil
-itemDetailsPanel = nil
-itemStatsPanel = nil
-myOffersPanel = nil
-currentOffersPanel = nil
-myCurrentOffersTab = nil
-myOfferHistoryTab = nil
-offerHistoryPanel = nil
-itemsPanel = nil
-selectedOffer = {}
-selectedMyOffer = {}
+	local painel = PANEL_ABAS[aba]
+	painel:destroyChildren()
 
-nameLabel = nil
-feeLabel = nil
-balanceLabel = nil
-totalPriceEdit = nil
-piecePriceEdit = nil
-amountEdit = nil
-searchEdit = nil
-radioItemSet = nil
-selectedItem = nil
-offerTypeList = nil
-categoryList = nil
-subCategoryList = nil
-slotFilterList = nil
-createOfferButton = nil
-buyButton = nil
-sellButton = nil
-anonymous = nil
-filterButtons = {}
+	local startIndex
+	local lastIndex
 
-buyOfferTable = nil
-sellOfferTable = nil
-detailsTable = nil
-buyStatsTable = nil
-sellStatsTable = nil
+	for id = 1, MAX_ROWS do
+		local MarketItem = cache[id]
+		if not MarketItem then break end
+		local widget = g_ui.createWidget(STYLE_ABAS[aba], painel)
+		widget:setId(MarketItem.id)
+		local isOdd = id % 2 == 0
+		if isOdd then
+			widget:setBackgroundColor('#252121')
+		else
+			widget:setBackgroundColor('#1f1f1f')
+		end
+		local isCurrencyMoney = MarketItem.currency == 0
+		widget.number:setText(id)
+		widget.item:setItemId(MarketItem.itemClientId)
+		widget.item.pokeballsInfo = MarketItem.pokeballAttributes
+		widget.name:setText(capitalizeFirstLetter(MarketItem.itemName))
+		widget.realName = capitalizeFirstLetter(MarketItem.itemName)
+		widget.amount:setText(MarketItem.amount)
+		widget.amountReal = MarketItem.amount
 
-buyCancelButton = nil
-sellCancelButton = nil
-buyMyOfferTable = nil
-sellMyOfferTable = nil
-myOfferHistoryTabel = nil
+		if aba == 1 then
+			widget.seller:setText(MarketItem.playerName)
+		end
+		if aba == 2 then
+			local remainingTime = MarketItem.created + itemDuration - realTime
+			if MarketItem.expired == 0 or remainingTime > 1 then
+				local tempo = convertTime(remainingTime)
+				widget.time:setText(tempo)
+				widget.remainingTime = remainingTime
+				local function scheduleFunc(widget)
+					if widget and widget.remainingTime then
+						widget.remainingTime = widget.remainingTime - 1
+						if widget.remainingTime <= 0 then
+							widget.time:setText("Expirou")
+							widget.scheduler = nil
+							return
+						end
+						widget.time:setText(convertTime(widget.remainingTime))
+						scheduleEvent(function() scheduleFunc(widget) end, 1000)
+					end
+				end
+				widget.scheduler = scheduleFunc(widget)
+			elseif MarketItem.expired == 1 or remainingTime < 1 then
+				widget.time:setText("Expirou")
+			end
+		end
+		
 
-offerExhaust = {}
-marketOffers = {}
-marketItems = {}
-marketItemNames = {}
-information = {}
-currentItems = {}
-lastCreatedOffer = 0
-fee = 0
-averagePrice = 0
-tibiaCoins = 0
+		if isCurrencyMoney then
+			widget.price:setText(convertNumberToStringMarket(MarketItem.price))
+			widget.currencyItem:setItemId(3043)
+		else
+			widget.price:setText(MarketItem.price)
+			widget.currencyItem:setItemId(25218)
+		end
+		widget.realPrice = MarketItem.price
 
-loaded = false
-
-local function isItemValid(item, category, searchFilter)
-  if not item or not item.marketData then
-    return false
-  end
-
-  if not category then
-    category = MarketCategory.All
-  end
-  if item.marketData.category ~= category and category ~= MarketCategory.All then
-    return false
-  end
-
-  -- filter item
-  local slotFilter = false
-  if slotFilterList:isEnabled() then
-    slotFilter = getMarketSlotFilterId(slotFilterList:getCurrentOption().text)
-  end
-  local marketData = item.marketData
-
-  local filterVocation = filterButtons[MarketFilters.Vocation]:isChecked()
-  local filterLevel = filterButtons[MarketFilters.Level]:isChecked()
-  local filterDepot = filterButtons[MarketFilters.Depot]:isChecked()
-
-  if slotFilter then
-    if slotFilter ~= 255 and item.thingType:getClothSlot() ~= slotFilter then
-      return false
-    end
-  end
-  local player = g_game.getLocalPlayer()
-  if filterLevel and marketData.requiredLevel and player:getLevel() < marketData.requiredLevel then
-    return false
-  end
-  if filterVocation and marketData.restrictVocation and marketData.restrictVocation > 0 then
-    local voc = Bit.bit(information.vocation)
-    if not Bit.hasBit(marketData.restrictVocation, voc) then
-      return false
-    end
-  end
-  if filterDepot and Market.getDepotCount(item.marketData.tradeAs) <= 0 then
-    return false
-  end
-  if searchFilter then
-    return marketData.name:lower():find(searchFilter)
-  end
-  return true
+		if MarketItem.pokeballAttributes then
+			widget.name:setText(MarketItem.pokeballAttributes.name)
+		end
+	end
 end
 
-local function clearItems()
-  currentItems = {}
-  Market.refreshItemsWidget()
+local function updatePage(direction)
+	local text = mainWindow.marketSearch:getText()
+
+	if (direction == 1 and page >= totalPages) or (direction == -1 and page <= 1) then return end
+	page = page + direction
+
+	if text ~= "" or currentCategory ~= 0 then
+		sendMarketBuffer(json.encode({
+			type = "search",
+			text = text,
+			category = currentCategory,
+			page = page,
+			aba = aba
+		}))
+		return
+	end
+
+	sendMarketBuffer(json.encode({type = "loadPage", page = page, aba = aba}))
 end
 
-local function clearOffers()
-  marketOffers[MarketAction.Buy] = {}
-  marketOffers[MarketAction.Sell] = {}
-  buyOfferTable:clearData()
-  sellOfferTable:clearData()
+local eventList = {}
+
+function addFuncToList(func)
+	table.insert(eventList, func)
 end
 
-local function clearMyOffers()
-  marketOffers[MarketAction.Buy] = {}
-  marketOffers[MarketAction.Sell] = {}
-  buyMyOfferTable:clearData()
-  sellMyOfferTable:clearData()
-  myOfferHistoryTabel:clearData()
+function clearEventList()
+	eventList = {}
 end
 
-local function clearFilters()
-  for _, filter in pairs(filterButtons) do
-    if filter and filter:isChecked() ~= filter.default then
-      filter:setChecked(filter.default)
-    end
-  end
+function checkEventList()
+	local event = eventList[1]
+	if event then
+		event()
+		table.remove(eventList, 1)
+	end
+	scheduleEvent(checkEventList, 200)
 end
 
-local function clearFee()
-  feeLabel:setText('')
-  fee = 20
+function nextPage()
+	addFuncToList(function() updatePage(1) end)
 end
 
-local function refreshTypeList()
-  offerTypeList:clearOptions()
-  offerTypeList:addOption('Buy')
-
-  if Market.isItemSelected() then
-    if Market.getDepotCount(selectedItem.item.marketData.tradeAs) > 0 then
-      offerTypeList:addOption('Sell')
-    end
-  end
+function previousPage()
+	addFuncToList(function() updatePage(-1) end)
 end
 
-local function addOffer(offer, offerType)
-  if not offer then
-    return false
-  end
-  local id = offer:getId()
-  local player = offer:getPlayer()
-  local amount = offer:getAmount()
-  local price = offer:getPrice()
-  local timestamp = offer:getTimeStamp()
-  local itemName = marketItemNames[offer:getItem():getId()]
-  if not itemName then
-    itemName = offer:getItem():getMarketData().name
-  end
-
-  buyOfferTable:toggleSorting(false)
-  sellOfferTable:toggleSorting(false)
-
-  buyMyOfferTable:toggleSorting(false)
-  sellMyOfferTable:toggleSorting(false)
-  
-  if amount < 1 then return false end
-  if offerType == MarketAction.Buy then
-    if offer.warn then
-      buyOfferTable:setColumnStyle('OfferTableWarningColumn', true)
-    end
-
-    local row = nil
-    if offer.var == MarketRequest.MyOffers then
-      row = buyMyOfferTable:addRow({
-        {text = itemName},
-        {text = comma_value(price*amount), sortvalue = price*amount},
-        {text = comma_value(price), sortvalue = price},
-        {text = amount},
-        {text = string.gsub(os.date('%H:%M %d/%m/%y', timestamp), " ", "  "), sortvalue = timestamp}
-      })
-    else
-      row = buyOfferTable:addRow({
-        {text = player},
-        {text = amount},
-        {text = comma_value(price*amount), sortvalue = price*amount},
-        {text = comma_value(price), sortvalue = price},
-        {text = string.gsub(os.date('%H:%M %d/%m/%y', timestamp), " ", "  ")}
-      })
-    end
-    row.ref = id
-
-    if offer.warn then
-      row:setTooltip(tr('This offer is 25%% below the average market price'))
-      buyOfferTable:setColumnStyle('OfferTableColumn', true)
-    end
-  else
-    if offer.warn then
-      sellOfferTable:setColumnStyle('OfferTableWarningColumn', true)
-    end
-
-    local row = nil
-    if offer.var == MarketRequest.MyOffers then
-      row = sellMyOfferTable:addRow({
-        {text = itemName},
-        {text = comma_value(price*amount), sortvalue = price*amount},
-        {text = comma_value(price), sortvalue = price},
-        {text = amount},
-        {text = string.gsub(os.date('%H:%M %d/%m/%y', timestamp), " ", "  "), sortvalue = timestamp}
-      })
-    else
-      row = sellOfferTable:addRow({
-        {text = player},
-        {text = amount},
-        {text = comma_value(price*amount), sortvalue = price*amount},
-        {text = comma_value(price), sortvalue = price},
-        {text = string.gsub(os.date('%H:%M %d/%m/%y', timestamp), " ", "  "), sortvalue = timestamp}
-      })
-    end
-    row.ref = id
-
-    if offer.warn then
-      row:setTooltip(tr('This offer is 25%% above the average market price'))
-      sellOfferTable:setColumnStyle('OfferTableColumn', true)
-    end
-  end
-
-  buyOfferTable:toggleSorting(false)
-  sellOfferTable:toggleSorting(false)
-  buyOfferTable:sort()
-  sellOfferTable:sort()
-
-  buyMyOfferTable:toggleSorting(false)
-  sellMyOfferTable:toggleSorting(false)
-  buyMyOfferTable:sort()
-  sellMyOfferTable:sort()
-
-  return true
+function firstPage()
+	clearEventList()
+	addFuncToList(
+	function()
+		page = 1
+		updatePage(0)
+	end)
 end
 
-local function mergeOffer(offer)
-  if not offer then
-    return false
-  end
-
-  local id = offer:getId()
-  local offerType = offer:getType()
-  local amount = offer:getAmount()
-  local replaced = false
-
-  if offerType == MarketAction.Buy then
-    if averagePrice > 0 then
-      offer.warn = offer:getPrice() <= averagePrice - math.floor(averagePrice / 4)
-    end
-
-    for i = 1, #marketOffers[MarketAction.Buy] do
-      local o = marketOffers[MarketAction.Buy][i]
-      -- replace existing offer
-      if o:isEqual(id) then
-        marketOffers[MarketAction.Buy][i] = offer
-        replaced = true
-      end
-    end
-    if not replaced then
-      table.insert(marketOffers[MarketAction.Buy], offer)
-    end
-  else
-    if averagePrice > 0 then
-      offer.warn = offer:getPrice() >= averagePrice + math.floor(averagePrice / 4)
-    end
-
-    for i = 1, #marketOffers[MarketAction.Sell] do
-      local o = marketOffers[MarketAction.Sell][i]
-      -- replace existing offer
-      if o:isEqual(id) then
-        marketOffers[MarketAction.Sell][i] = offer
-        replaced = true
-      end
-    end
-    if not replaced then
-      table.insert(marketOffers[MarketAction.Sell], offer)
-    end
-  end
-  return true
-end
-
-local function updateOffers(offers)
-  if not buyOfferTable or not sellOfferTable then
-    return
-  end
-
-  balanceLabel:setColor('#bbbbbb')
-  selectedOffer[MarketAction.Buy] = nil
-  selectedOffer[MarketAction.Sell] = nil
-
-  selectedMyOffer[MarketAction.Buy] = nil
-  selectedMyOffer[MarketAction.Sell] = nil
-
-  -- clear existing offer data
-  buyOfferTable:clearData()
-  buyOfferTable:setSorting(4, TABLE_SORTING_DESC)
-  sellOfferTable:clearData()
-  sellOfferTable:setSorting(4, TABLE_SORTING_ASC)
-
-  sellButton:setEnabled(false)
-  buyButton:setEnabled(false)
-
-  buyCancelButton:setEnabled(false)
-  sellCancelButton:setEnabled(false)
-
-  for _, offer in pairs(offers) do
-    mergeOffer(offer)
-  end
-  for type, offers in pairs(marketOffers) do
-    for i = 1, #offers do
-      addOffer(offers[i], type)
-    end
-  end
-end
-
-local function updateHistoryOffers(offers)
-  myOfferHistoryTabel:toggleSorting(false)
-  for _, offer in ipairs(offers) do
-    local offerType = offer:getType()
-    local id = offer:getId()
-    local player = offer:getPlayer()
-    local amount = offer:getAmount()
-    local price = offer:getPrice()
-    local timestamp = offer:getTimeStamp()
-    local itemName = marketItemNames[offer:getItem():getId()]
-    if not itemName then
-      itemName = offer:getItem():getMarketData().name
-    end
-        
-    local offerTypeName = "?"
-    if offerType == MarketAction.Buy then
-      offerTypeName = "Buy"
-    elseif offerType == MarketAction.Sell then
-      offerTypeName = "Sell"
-    end
-    
-    local row = myOfferHistoryTabel:addRow({
-      {text = offerTypeName},
-      {text = itemName},
-      {text = comma_value(price*amount), sortvalue = price*amount},
-      {text = comma_value(price), sortvalue = price},
-      {text = amount},
-      {text = string.gsub(os.date('%H:%M %d/%m/%y', timestamp), " ", "  "), sortvalue = timestamp}
-    })  
-  end
-  myOfferHistoryTabel:toggleSorting(false)
-  myOfferHistoryTabel:sort()
-end
-
-local function updateDetails(itemId, descriptions, purchaseStats, saleStats)
-  if not selectedItem then
-    return
-  end
-
-  -- update item details
-  detailsTable:clearData()
-  for k, desc in pairs(descriptions) do
-    local columns = {
-      {text = getMarketDescriptionName(desc[1])..':'},
-      {text = desc[2]}
-    }
-    detailsTable:addRow(columns)
-  end
-
-  -- update sale item statistics
-  sellStatsTable:clearData()
-  if table.empty(saleStats) then
-    sellStatsTable:addRow({{text = 'No information'}})
-  else
-    local offerAmount = 0
-    local transactions, totalPrice, highestPrice, lowestPrice = 0, 0, 0, 0
-    for _, stat in pairs(saleStats) do
-      if not stat:isNull() then
-        offerAmount = offerAmount + 1
-        transactions = transactions + stat:getTransactions()
-        totalPrice = totalPrice + stat:getTotalPrice()
-        local newHigh = stat:getHighestPrice()
-        if newHigh > highestPrice then
-          highestPrice = newHigh
-        end
-        local newLow = stat:getLowestPrice()
-        -- ?? getting '0xffffffff' result from lowest price in 9.60 cipsoft
-        if (lowestPrice == 0 or newLow < lowestPrice) and newLow ~= 0xffffffff then
-          lowestPrice = newLow
-        end
-      end
-    end
-
-    if offerAmount >= 5 and transactions >= 10 then
-      averagePrice = math.round(totalPrice / transactions)
-    else
-      averagePrice = 0
-    end
-
-    sellStatsTable:addRow({{text = 'Total Transations:'}, {text = transactions}})
-    sellStatsTable:addRow({{text = 'Highest Price:'}, {text = highestPrice}})
-
-    if totalPrice > 0 and transactions > 0 then
-      sellStatsTable:addRow({{text = 'Average Price:'},
-        {text = math.floor(totalPrice/transactions)}})
-    else
-      sellStatsTable:addRow({{text = 'Average Price:'}, {text = 0}})
-    end
-
-    sellStatsTable:addRow({{text = 'Lowest Price:'}, {text = lowestPrice}})
-  end
-
-  -- update buy item statistics
-  buyStatsTable:clearData()
-  if table.empty(purchaseStats) then
-    buyStatsTable:addRow({{text = 'No information'}})
-  else
-    local transactions, totalPrice, highestPrice, lowestPrice = 0, 0, 0, 0
-    for _, stat in pairs(purchaseStats) do
-      if not stat:isNull() then
-        transactions = transactions + stat:getTransactions()
-        totalPrice = totalPrice + stat:getTotalPrice()
-        local newHigh = stat:getHighestPrice()
-        if newHigh > highestPrice then
-          highestPrice = newHigh
-        end
-        local newLow = stat:getLowestPrice()
-        -- ?? getting '0xffffffff' result from lowest price in 9.60 cipsoft
-        if (lowestPrice == 0 or newLow < lowestPrice) and newLow ~= 0xffffffff then
-          lowestPrice = newLow
-        end
-      end
-    end
-
-    buyStatsTable:addRow({{text = 'Total Transations:'},{text = transactions}})
-    buyStatsTable:addRow({{text = 'Highest Price:'}, {text = highestPrice}})
-
-    if totalPrice > 0 and transactions > 0 then
-      buyStatsTable:addRow({{text = 'Average Price:'},
-        {text = math.floor(totalPrice/transactions)}})
-    else
-      buyStatsTable:addRow({{text = 'Average Price:'}, {text = 0}})
-    end
-
-    buyStatsTable:addRow({{text = 'Lowest Price:'}, {text = lowestPrice}})
-  end
-end
-
-local function updateSelectedItem(widget)
-  selectedItem.item = widget.item
-  selectedItem.ref = widget
-
-  Market.resetCreateOffer()
-  if Market.isItemSelected() then
-    selectedItem:setItem(selectedItem.item.displayItem)
-    nameLabel:setText(selectedItem.item.marketData.name)
-    clearOffers()
-
-    Market.enableCreateOffer(true) -- update offer types
-    MarketProtocol.sendMarketBrowse(selectedItem.item.marketData.tradeAs) -- send browsed msg
-  else
-    Market.clearSelectedItem()
-  end
-end
-
-local function updateBalance(balance)
-  local balance = tonumber(balance)
-  if not balance then
-    return
-  end
-
-  if balance < 0 then balance = 0 end
-  information.balance = balance
-
-  balanceLabel:setText('Balance: '.. comma_value(balance) ..' gold')
-  balanceLabel:resizeToText()
-end
-
-local function updateFee(price, amount)
-  fee = math.ceil(price / 100 * amount)
-  if fee < 20 then
-    fee = 20
-  elseif fee > 1000 then
-    fee = 1000
-  end
-  feeLabel:setText('Fee: '.. comma_value(fee))
-  feeLabel:resizeToText()
-end
-
-local function destroyAmountWindow()
-  if amountWindow then
-    amountWindow:destroy()
-    amountWindow = nil
-  end
-end
-
-local function cancelMyOffer(actionType)
-  local offer = selectedMyOffer[actionType]
-  MarketProtocol.sendMarketCancelOffer(offer:getTimeStamp(), offer:getCounter())
-  Market.refreshMyOffers()
-end
-
-local function openAmountWindow(callback, actionType, actionText)
-  if not Market.isOfferSelected(actionType) then
-    return
-  end
-
-  amountWindow = g_ui.createWidget('AmountWindow', rootWidget)
-  amountWindow:lock()
-
-  local offer = selectedOffer[actionType]
-  local item = offer:getItem()
-
-  local maximum = offer:getAmount()
-  if actionType == MarketAction.Sell then
-    local depot = Market.getDepotCount(item:getId())
-    if maximum > depot then
-      maximum = depot
-    end
-  else
-    maximum = math.min(maximum, math.floor(information.balance / offer:getPrice()))
-  end
-
-  if item:isStackable() then
-    maximum = math.min(maximum, MarketMaxAmountStackable)
-  else
-    maximum = math.min(maximum, MarketMaxAmount)
-  end
-
-  local itembox = amountWindow:getChildById('item')
-  itembox:setItemId(item:getId())
-
-  local scrollbar = amountWindow:getChildById('amountScrollBar')
-  scrollbar:setText(comma_value(offer:getPrice()) ..'gp')
-
-  scrollbar.onValueChange = function(widget, value)
-    widget:setText(comma_value(value*offer:getPrice())..'gp')
-    itembox:setText(comma_value(value))
-  end
-  scrollbar:setRange(1, maximum)
-  scrollbar:setValue(1)
-
-  local okButton = amountWindow:getChildById('buttonOk')
-  if actionText then
-    okButton:setText(actionText)
-  end
-
-  local okFunc = function()
-    local counter = offer:getCounter()
-    local timestamp = offer:getTimeStamp()
-    callback(scrollbar:getValue(), timestamp, counter)
-    destroyAmountWindow()
-  end
-
-  local cancelButton = amountWindow:getChildById('buttonCancel')
-  local cancelFunc = function()
-    destroyAmountWindow()
-  end
-
-  amountWindow.onEnter = okFunc
-  amountWindow.onEscape = cancelFunc
-
-  okButton.onClick = okFunc
-  cancelButton.onClick = cancelFunc
-end
-
-local function onSelectSellOffer(table, selectedRow, previousSelectedRow)
-  updateBalance()
-  for _, offer in pairs(marketOffers[MarketAction.Sell]) do
-    if offer:isEqual(selectedRow.ref) then
-      selectedOffer[MarketAction.Buy] = offer
-    end
-  end
-
-  local offer = selectedOffer[MarketAction.Buy]
-  if offer then
-    local price = offer:getPrice()
-    if price > information.balance then
-      balanceLabel:setColor('#b22222') -- red
-      buyButton:setEnabled(false)
-    else
-      local slice = (information.balance / 2)
-      if (price/slice) * 100 <= 40 then
-        color = '#008b00' -- green
-      elseif (price/slice) * 100 <= 70 then
-        color = '#eec900' -- yellow
-      else
-        color = '#ee9a00' -- orange
-      end
-      balanceLabel:setColor(color)
-      buyButton:setEnabled(true)
-    end
-  end
-end
-
-local function onSelectBuyOffer(table, selectedRow, previousSelectedRow)
-  updateBalance()
-  for _, offer in pairs(marketOffers[MarketAction.Buy]) do
-    if offer:isEqual(selectedRow.ref) then
-      selectedOffer[MarketAction.Sell] = offer
-      if Market.getDepotCount(offer:getItem():getId()) > 0 then
-        sellButton:setEnabled(true)
-      else
-        sellButton:setEnabled(false)
-      end
-    end
-  end
-end
-
-local function onSelectMyBuyOffer(table, selectedRow, previousSelectedRow)
-  for _, offer in pairs(marketOffers[MarketAction.Buy]) do
-    if offer:isEqual(selectedRow.ref) then
-      selectedMyOffer[MarketAction.Buy] = offer
-      buyCancelButton:setEnabled(true)
-    end
-  end
-end
-
-local function onSelectMySellOffer(table, selectedRow, previousSelectedRow)
-  for _, offer in pairs(marketOffers[MarketAction.Sell]) do
-    if offer:isEqual(selectedRow.ref) then
-      selectedMyOffer[MarketAction.Sell] = offer
-      sellCancelButton:setEnabled(true)
-    end
-  end
-end
-
-local function onChangeCategory(combobox, option)
-  local id = getMarketCategoryId(option)
-  if id == MarketCategory.MetaWeapons then
-    -- enable and load weapons filter/items
-    subCategoryList:setEnabled(true)
-    slotFilterList:setEnabled(true)
-    local subId = getMarketCategoryId(subCategoryList:getCurrentOption().text)
-    Market.loadMarketItems(subId)
-  else
-    subCategoryList:setEnabled(false)
-    slotFilterList:setEnabled(false)
-    Market.loadMarketItems(id) -- load standard filter
-  end
-end
-
-local function onChangeSubCategory(combobox, option)
-  Market.loadMarketItems(getMarketCategoryId(option))
-  slotFilterList:clearOptions()
-
-  local subId = getMarketCategoryId(subCategoryList:getCurrentOption().text)
-  local slots = MarketCategoryWeapons[subId].slots
-  for _, slot in pairs(slots) do
-    if table.haskey(MarketSlotFilters, slot) then
-      slotFilterList:addOption(MarketSlotFilters[slot])
-    end
-  end
-  slotFilterList:setEnabled(true)
-end
-
-local function onChangeSlotFilter(combobox, option)
-  Market.updateCurrentItems()
-end
-
-local function onChangeOfferType(combobox, option)
-  local item = selectedItem.item
-  local maximum = item.thingType:isStackable() and MarketMaxAmountStackable or MarketMaxAmount
-
-  if option == 'Sell' then
-    maximum = math.min(maximum, Market.getDepotCount(item.marketData.tradeAs))
-    amountEdit:setMaximum(maximum)
-  else
-    amountEdit:setMaximum(maximum)
-  end
-end
-
-local function onTotalPriceChange()
-  local amount = amountEdit:getValue()
-  local totalPrice = totalPriceEdit:getValue()
-  local piecePrice = math.floor(totalPrice/amount)
-
-  piecePriceEdit:setValue(piecePrice, true)
-  if Market.isItemSelected() then
-    updateFee(piecePrice, amount)
-  end
-end
-
-local function onPiecePriceChange()
-  local amount = amountEdit:getValue()
-  local totalPrice = totalPriceEdit:getValue()
-  local piecePrice = piecePriceEdit:getValue()
-
-  totalPriceEdit:setValue(piecePrice*amount, true)
-  if Market.isItemSelected() then
-    updateFee(piecePrice, amount)
-  end
-end
-
-local function onAmountChange()
-  local amount = amountEdit:getValue()
-  local piecePrice = piecePriceEdit:getValue()
-  local totalPrice = piecePrice * amount
-
-  totalPriceEdit:setValue(piecePrice*amount, true)
-  if Market.isItemSelected() then
-    updateFee(piecePrice, amount)
-  end
-end
-
-local function onMarketMessage(messageMode, message)
-  Market.displayMessage(message)
-end
-
-local function initMarketItems(items)
-  for c = MarketCategory.First, MarketCategory.Last do
-    marketItems[c] = {}
-  end
-  marketItemNames = {}
-  
-  -- save a list of items which are already added
-  local itemSet = {}
-  
-  -- parse items send by server
-  if items then
-    for _, entry in ipairs(items) do
-      local item = Item.create(entry.id)
-      local thingType = g_things.getThingType(entry.id, ThingCategoryItem)
-      if item and thingType and not marketItemNames[entry.id] then
-        -- create new marketItem block
-        local marketItem = {
-          displayItem = item,
-          thingType = thingType,
-          marketData = {
-            name = entry.name,
-            category = entry.category,
-            requiredLevel = 0,
-            restrictVocation = 0,
-            showAs = entry.id,
-            tradeAs = entry.id
-          }
-        }
-     
-        -- add new market item
-        if marketItems[entry.category] ~= nil then
-          table.insert(marketItems[entry.category], marketItem)
-          marketItemNames[entry.id] = entry.name
-        end
-      end
-    end
-    Market.updateCategories()
-    return
-  end
-
-  -- populate all market items
-  local types = g_things.findThingTypeByAttr(ThingAttrMarket, 0)
-  for i = 1, #types do
-    local itemType = types[i]
-
-    local item = Item.create(itemType:getId())
-    if item then
-      local marketData = itemType:getMarketData()
-      if not table.empty(marketData) and not itemSet[marketData.tradeAs] then
-          -- Some items use a different sprite in Market
-          item:setId(marketData.showAs)
-
-          -- create new marketItem block
-          local marketItem = {
-            displayItem = item,
-            thingType = itemType,
-            marketData = marketData
-          }
-
-          -- add new market item
-          if marketItems[marketData.category] ~= nil then
-            table.insert(marketItems[marketData.category], marketItem)
-            itemSet[marketData.tradeAs] = true
-          end
-      end
-    end
-  end
-end
-
-local function initInterface()
-  -- TODO: clean this up
-  -- setup main tabs
-  mainTabBar = marketWindow:getChildById('mainTabBar')
-  mainTabBar:setContentWidget(marketWindow:getChildById('mainTabContent'))
-
-  -- setup 'Market Offer' section tabs
-  marketOffersPanel = g_ui.loadUI('ui/marketoffers')
-  mainTabBar:addTab(tr('Market Offers'), marketOffersPanel)
-  
-  selectionTabBar = marketOffersPanel:getChildById('leftTabBar')
-  selectionTabBar:setContentWidget(marketOffersPanel:getChildById('leftTabContent'))
-
-  browsePanel = g_ui.loadUI('ui/marketoffers/browse')
-  selectionTabBar:addTab(tr('Browse'), browsePanel)
-
-  -- Currently not used
-  -- "Reserved for more functionality later"
-  --overviewPanel = g_ui.loadUI('ui/marketoffers/overview')
-  --selectionTabBar:addTab(tr('Overview'), overviewPanel)
-
-  displaysTabBar = marketOffersPanel:getChildById('rightTabBar')
-  displaysTabBar:setContentWidget(marketOffersPanel:getChildById('rightTabContent'))
-
-  itemStatsPanel = g_ui.loadUI('ui/marketoffers/itemstats')
-  displaysTabBar:addTab(tr('Statistics'), itemStatsPanel)
-
-  itemDetailsPanel = g_ui.loadUI('ui/marketoffers/itemdetails')
-  displaysTabBar:addTab(tr('Details'), itemDetailsPanel)
-
-  itemOffersPanel = g_ui.loadUI('ui/marketoffers/itemoffers')
-  displaysTabBar:addTab(tr('Offers'), itemOffersPanel)
-  displaysTabBar:selectTab(displaysTabBar:getTab(tr('Offers')))
-
-  -- setup 'My Offer' section tabs
-  myOffersPanel = g_ui.loadUI('ui/myoffers')
-  local myOffersTab = mainTabBar:addTab(tr('My Offers'), myOffersPanel)
-
-  offersTabBar = myOffersPanel:getChildById('offersTabBar')
-  offersTabBar:setContentWidget(myOffersPanel:getChildById('offersTabContent'))
-
-  currentOffersPanel = g_ui.loadUI('ui/myoffers/currentoffers')
-  myCurrentOffersTab = offersTabBar:addTab(tr('Current Offers'), currentOffersPanel)
-
-  offerHistoryPanel = g_ui.loadUI('ui/myoffers/offerhistory')
-  myOfferHistoryTab = offersTabBar:addTab(tr('Offer History'), offerHistoryPanel)
-
-  balanceLabel = marketWindow:getChildById('balanceLabel')
-
-  mainTabBar.onTabChange = function(widget, tab)
-    if tab == myOffersTab then
-      local ctab = offersTabBar:getCurrentTab()
-      if ctab == myCurrentOffersTab then
-        Market.refreshMyOffers()    
-      elseif ctab == myOfferHistoryTab then
-        Market.refreshMyOffersHistory()
-      end      
-    else
-      Market.refreshOffers()
-    end
-  end
-  
-  offersTabBar.onTabChange = function(widget, tab)
-    if tab == myCurrentOffersTab then
-      Market.refreshMyOffers()    
-    elseif tab == myOfferHistoryTab then
-      Market.refreshMyOffersHistory()
-    end
-  end
-
-  -- setup offers
-  buyButton = itemOffersPanel:getChildById('buyButton')
-  buyButton.onClick = function() openAmountWindow(Market.acceptMarketOffer, MarketAction.Buy, 'Buy') end
-
-  sellButton = itemOffersPanel:getChildById('sellButton')
-  sellButton.onClick = function() openAmountWindow(Market.acceptMarketOffer, MarketAction.Sell, 'Sell') end
-
-  -- setup selected item
-  nameLabel = marketOffersPanel:getChildById('nameLabel')
-  selectedItem = marketOffersPanel:getChildById('selectedItem')
-
-  -- setup create new offer
-  totalPriceEdit = marketOffersPanel:getChildById('totalPriceEdit')
-  piecePriceEdit = marketOffersPanel:getChildById('piecePriceEdit')
-  amountEdit = marketOffersPanel:getChildById('amountEdit')
-  feeLabel = marketOffersPanel:getChildById('feeLabel')
-  totalPriceEdit.onValueChange = onTotalPriceChange
-  piecePriceEdit.onValueChange = onPiecePriceChange
-  amountEdit.onValueChange = onAmountChange
-
-  offerTypeList = marketOffersPanel:getChildById('offerTypeComboBox')
-  offerTypeList.onOptionChange = onChangeOfferType
-
-  anonymous = marketOffersPanel:getChildById('anonymousCheckBox')
-  createOfferButton = marketOffersPanel:getChildById('createOfferButton')
-  createOfferButton.onClick = Market.createNewOffer
-  Market.enableCreateOffer(false)
-
-  -- setup filters
-  filterButtons[MarketFilters.Vocation] = browsePanel:getChildById('filterVocation')
-  filterButtons[MarketFilters.Level] = browsePanel:getChildById('filterLevel')
-  filterButtons[MarketFilters.Depot] = browsePanel:getChildById('filterDepot')
-  filterButtons[MarketFilters.SearchAll] = browsePanel:getChildById('filterSearchAll')
-
-  -- set filter default values
-  clearFilters()
-
-  -- hook filters
-  for _, filter in pairs(filterButtons) do
-    filter.onCheckChange = Market.updateCurrentItems
-  end
-
-  searchEdit = browsePanel:getChildById('searchEdit')
-  categoryList = browsePanel:getChildById('categoryComboBox')
-  subCategoryList = browsePanel:getChildById('subCategoryComboBox')
-  slotFilterList = browsePanel:getChildById('slotComboBox')
-
-  slotFilterList:addOption(MarketSlotFilters[255])
-  slotFilterList:setEnabled(false)
-  
-  Market.updateCategories()
-  
-  -- hook item filters
-  categoryList.onOptionChange = onChangeCategory
-  subCategoryList.onOptionChange = onChangeSubCategory
-  slotFilterList.onOptionChange = onChangeSlotFilter
-
-  -- setup tables
-  buyOfferTable = itemOffersPanel:recursiveGetChildById('buyingTable')
-  sellOfferTable = itemOffersPanel:recursiveGetChildById('sellingTable')
-  detailsTable = itemDetailsPanel:recursiveGetChildById('detailsTable')
-  buyStatsTable = itemStatsPanel:recursiveGetChildById('buyStatsTable')
-  sellStatsTable = itemStatsPanel:recursiveGetChildById('sellStatsTable')
-  buyOfferTable.onSelectionChange = onSelectBuyOffer
-  sellOfferTable.onSelectionChange = onSelectSellOffer
-
-  -- setup my offers
-  buyMyOfferTable = currentOffersPanel:recursiveGetChildById('myBuyingTable')
-  sellMyOfferTable = currentOffersPanel:recursiveGetChildById('mySellingTable')
-  myOfferHistoryTabel = offerHistoryPanel:recursiveGetChildById('myHistoryTable')
-  
-  buyMyOfferTable.onSelectionChange = onSelectMyBuyOffer
-  sellMyOfferTable.onSelectionChange = onSelectMySellOffer
-
-  buyCancelButton = currentOffersPanel:getChildById('buyCancelButton')
-  buyCancelButton.onClick = function() cancelMyOffer(MarketAction.Buy) end
-
-  sellCancelButton = currentOffersPanel:getChildById('sellCancelButton')
-  sellCancelButton.onClick = function() cancelMyOffer(MarketAction.Sell) end
-
-
-  buyStatsTable:setColumnWidth({120, 270})
-  sellStatsTable:setColumnWidth({120, 270})
-  detailsTable:setColumnWidth({80, 330})
-
-  buyOfferTable:setSorting(4, TABLE_SORTING_DESC)
-  sellOfferTable:setSorting(4, TABLE_SORTING_ASC)
-
-  buyMyOfferTable:setSorting(3, TABLE_SORTING_DESC)
-  sellMyOfferTable:setSorting(3, TABLE_SORTING_DESC)
-  myOfferHistoryTabel:setSorting(6, TABLE_SORTING_DESC)
+function lastPage()
+	clearEventList()
+	addFuncToList(function()
+		page = totalPages
+		updatePage(0)
+	end)
 end
 
 function init()
-  g_ui.importStyle('market')
-  g_ui.importStyle('ui/general/markettabs')
-  g_ui.importStyle('ui/general/marketbuttons')
-  g_ui.importStyle('ui/general/marketcombobox')
-  g_ui.importStyle('ui/general/amountwindow')
+	mainWindow = g_ui.loadUI("market", modules.game_interface.getRootPanel())
+	mainWindow:hide()
+	ProtocolGame.registerExtendedJSONOpcode(opcode, receiveOpcode)
+	if modules.game_request then
+		requestData()
+	end
+	panelItems = mainWindow.panelOffers
+	panelOwnItems = mainWindow.panelOwnOffers
 
-  offerExhaust[MarketAction.Sell] = 10
-  offerExhaust[MarketAction.Buy] = 20
+	configureButtons()
+	connect(g_game, { onGameEnd = function()  mainWindow:hide() end, onGameStart = requestData})
+	connect(LocalPlayer, {onPositionChange = onPositionChange})
+	checkEventList()
+end
 
-  registerMessageMode(MessageModes.Market, onMarketMessage)
-
-  protocol.initProtocol()
-  connect(g_game, { onGameEnd = Market.reset })
-  connect(g_game, { onGameEnd = Market.close })
-  connect(g_game, { onGameStart = Market.updateCategories })
-  connect(g_game, { onCoinBalance = Market.onCoinBalance })
-  
-  marketWindow = g_ui.createWidget('MarketWindow', rootWidget)
-  marketWindow:hide()
-
-  initInterface() -- build interface
+function requestData()
+	mainWindow.panelSellItem.boxCheckBox.diamondItem:setItemId(25218)
+	mainWindow.panelSellItem.boxCheckBox.moneyItem:setItemId(25220)
 end
 
 function terminate()
-  Market.close()
-
-  unregisterMessageMode(MessageModes.Market, onMarketMessage)
-
-  protocol.terminateProtocol()
-  disconnect(g_game, { onGameEnd = Market.reset })
-  disconnect(g_game, { onGameEnd = Market.close })
-  disconnect(g_game, { onGameStart = Market.updateCategories })
-  disconnect(g_game, { onCoinBalance = Market.onCoinBalance })
-
-  destroyAmountWindow()
-  marketWindow:destroy()
-
-  Market = nil
+    mainWindow:destroy()
+	ProtocolGame.unregisterExtendedJSONOpcode(opcode, receiveOpcode)
+    disconnect(g_game, { onGameEnd = function()  mainWindow:hide() end, onGameStart = requestData})
+	disconnect(LocalPlayer, {onPositionChange = onPositionChange})
 end
 
-function Market.reset()
-  balanceLabel:setColor('#bbbbbb')
-  categoryList:setCurrentOption(getMarketCategoryName(MarketCategory.First))
-  searchEdit:setText('')
-  clearFilters()
-  clearMyOffers()
-  if not table.empty(information) then
-    Market.updateCurrentItems()
-  end
+function onPositionChange()
+	mainWindow:hide()
 end
 
-function Market.updateCategories()
-  categoryList:clearOptions()
-  subCategoryList:clearOptions()
-  
-  local categories = {}
-  local addedCategories = {}
-  for _, c in ipairs(g_things.getMarketCategories()) do
-    table.insert(categories, getMarketCategoryName(c) or "Unknown")
-    addedCategories[c] = true
+function toggle()
+	if buyWindow then
+		buyWindow:destroy()
+	end
+	if mainWindow:isVisible() then
+		mainWindow:hide()
+		modules.game_walking.enableWSAD()
+
+	else
+		mainWindow:show()
+		modules.game_walking.disableWSAD()
+	end
+end
+
+function sendMarketBuffer(buffer)
+	local protocol = g_game.getProtocolGame()
+	protocol:sendExtendedOpcode(opcode, buffer)
+end
+
+local updateTimeEvent = nil
+local function updateRealTime()
+	realTime = realTime + 1
+	scheduleEvent(updateRealTime, 1000)
+end
+
+function receiveOpcode(protocol, opcode, buffer)
+	local data = buffer.data
+	local action = data.type
+	if not action then
+		return
+	end
+	if action == "loadPage" then
+		if data.subType and data.subType == "loadedBySearch" then
+			local receivePage = data.page
+			local receivedCategory = data.category
+			local text = data.text
+			if pageSearch.busca ~= text or receivePage ~= page or receivedCategory ~= category then
+				pageSearch.page = receivePage
+			else
+				pageSearch.page = 1
+			end
+			page = pageSearch.page
+		else
+			local receivePage = data.page
+			if receivePage ~= 0 then
+				page = receivePage
+			end
+			pageSearch = {busca = "", categoria = 0, page = 1}
+		end
+
+		local receivedData = data.MARKET_DATA
+		configureCategories()
+		if aba == 1 then
+			cache = reverseArray(receivedData)
+		else
+			cache = receivedData
+		end
+
+		generatePageBuyChildren(page)
+		removeEvent(updateTimeEvent)
+		updateTimeEvent = nil
+		realTime = data.realTime
+		updateTimeEvent = scheduleEvent(updateRealTime, 1000)
+
+		local size = data.abaSize
+
+		totalPages = math.max(1, math.ceil(size / MAX_ROWS_ABAS[aba]))
+		mainWindow.pages:setText(string.format("%d/%d", page, totalPages))
+		return
+	elseif action == "notify_item" then
+		MARKET_ITEM_SELECTED.selected = true
+		mainWindow.panelSellItem.itemSelected:setItemId(data.clientId)
+		if data.pokeballsInfo then
+			mainWindow.panelSellItem.itemSelected.pokeballsInfo = data.pokeballsInfo
+		end
+		MARKET_ITEM_SELECTED.maxQtd = data.maxQtd
+	elseif action == "notify_success_post" then
+		clearSellItemPanel()
+		return
+	elseif action == "toggle" then
+		updateMarketCategory(0)
+		mainWindow.marketSearch:clearText()
+		hideAll()
+		toggleOffers(true)
+		toggle()
+		return
+	end
+end
+
+function clearSellItemPanel()
+	local panel = mainWindow.panelSellItem
+	panel.itemSelected:setItemId(0)
+	panel.price:setText(0)
+	panel.qtdItems:setText(0)
+	panel.boxCheckBox.anonymous:setChecked(false)
+	panel.boxCheckBox.money:setChecked(false)
+	panel.boxCheckBox.diamond:setChecked(false)
+	local BACKUP_MARKET_ITEM_SELECTED = {
+		currency = nil,
+		price = nil,
+		selected = false,
+		anonymous = false,
+		qtd = 1,
+		maxQtd = 1,
+	}
+	MARKET_ITEM_SELECTED = BACKUP_MARKET_ITEM_SELECTED
+end
+
+function hideAll()
+	clearEventList()
+	toggleOffers(false)
+	toggleOwnOffers(false)
+end
+
+function toggleOffers(show)
+	if show then
+		mainWindow.panelOffers:show()
+		mainWindow.rowHeaderOffers:show()
+		mainWindow.categories:show()
+		mainWindow.doSearch:show()
+		mainWindow.marketSearch:show()
+		mainWindow.BuyButton:show()
+		mainWindow.offerButton:show()
+		mainWindow.Refresh:show()
+	else
+		mainWindow.panelOffers:hide()
+		mainWindow.rowHeaderOffers:hide()
+		mainWindow.categories:hide()
+		mainWindow.doSearch:hide()
+		mainWindow.marketSearch:hide()
+		mainWindow.BuyButton:hide()
+		mainWindow.offerButton:hide()
+		mainWindow.Refresh:hide()
+	end
+end
+
+function toggleOwnOffers(show)
+	if show then
+		mainWindow.panelSellItem:show()
+		mainWindow.panelOwnOffers:show()
+		mainWindow.rowHeaderOwnOffers:show()
+		mainWindow.cancelSell:show()
+	else
+		mainWindow.panelSellItem:hide()
+		mainWindow.panelOwnOffers:hide()
+		mainWindow.rowHeaderOwnOffers:hide()
+		mainWindow.cancelSell:hide()
+	end
+end
+
+function refresh()
+	updateMarketCategory(0) 
+	mainWindow.marketSearch:clearText() 
+	sendMarketBuffer(json.encode({type = "refresh", page = 1, aba = 1}))
+end
+
+function sendSearch()
+	local text = mainWindow.marketSearch:getText()
+
+	if text == "" and currentCategory == 0 then
+		return refresh()
+	end
+
+	local buffer = {
+		type = "search",
+		text = text,
+		category = currentCategory,
+		page = pageSearch.page,
+		aba = aba
+
+	}
+	sendMarketBuffer(json.encode(buffer))
+end
+
+function setupGrabber()
+	mouseGrabberWidget = g_ui.createWidget('UIWidget')
+	mouseGrabberWidget:setVisible(false)
+	mouseGrabberWidget:setFocusable(false)
+	mouseGrabberWidget.onMouseRelease = onChooseItemMouseRelease
+end
+
+function configureButtons()
+	if not mainWindow then return end
+	hideAll()
+	toggleOffers(true)
+	mainWindow.Refresh.onClick = function() refresh() end
+	mainWindow.mainList.onClick = function()
+		aba = 1
+		sendMarketBuffer(json.encode({type = "loadPage", page = 1, aba = 1}))
+		hideAll()
+		toggleOffers(true)
+	end
+	mainWindow.ownOffers.onClick = function()
+		aba = 2
+		hideAll()
+		toggleOwnOffers(true)
+		sendMarketBuffer(json.encode({type = "loadPage", page = 1, aba = 2}))
+	end
+
+	mainWindow.doSearch.onClick = function()
+		sendSearch()
+	end
+	local panelSellItem = mainWindow.panelSellItem
+	panelSellItem.select.onClick = startChooseItem
+
+	setupGrabber()
+
+	local checkBoxMoney = panelSellItem.boxCheckBox.money
+	local checkBoxDiamond = panelSellItem.boxCheckBox.diamond
+
+	checkBoxMoney.onCheckChange = function(widget, checked)
+		if checked then
+			checkBoxDiamond:setChecked(false)
+			MARKET_ITEM_SELECTED.currency = 0
+		else
+			MARKET_ITEM_SELECTED.currency = nil
+		end
+	end
+
+	checkBoxDiamond.onCheckChange = function(widget, checked)
+		if checked then
+			checkBoxMoney:setChecked(false)
+			MARKET_ITEM_SELECTED.currency = 1
+		else
+			MARKET_ITEM_SELECTED.currency = nil
+		end
+	end
+
+	panelSellItem.price.onTextChange = function(widget, text)
+		local value = tonumber(text)
+		if not value then return end
+		if value < 0 then
+			widget:setText(0)
+		end
+	end
+
+	panelSellItem.qtdItems.onTextChange = function(widget, text)
+		local value = tonumber(text)
+		if not value or value < 1 then
+			widget:setText(1)
+			MARKET_ITEM_SELECTED.qtd = 1
+			return
+		end
+		if value > MARKET_ITEM_SELECTED.maxQtd then
+			widget:setText(MARKET_ITEM_SELECTED.maxQtd)
+			MARKET_ITEM_SELECTED.qtd = MARKET_ITEM_SELECTED.maxQtd
+			return
+		end
+		MARKET_ITEM_SELECTED.qtd = value
+	end
+
+	panelSellItem.trySellItem.onClick = function()
+		if not MARKET_ITEM_SELECTED.selected or
+				not MARKET_ITEM_SELECTED.currency or
+					not tonumber(panelSellItem.price:getText()) or
+						tonumber(panelSellItem.price:getText()) < 1 then
+			return
+		end
+
+		local buffer = {
+			type = "trySellItem",
+			price = panelSellItem.price:getText(),
+			currency = MARKET_ITEM_SELECTED.currency,
+			page = page,
+			qtd = MARKET_ITEM_SELECTED.qtd,
+			anonymous = panelSellItem.boxCheckBox.anonymous:isChecked()
+		}
+		sendMarketBuffer(json.encode(buffer))
+	end
+
+	mainWindow.cancelSell.onClick = function()
+		local focusedChildren = mainWindow.panelOwnOffers:getFocusedChild()
+		if not focusedChildren then
+			return
+		end
+		local buffer = {
+			type = "cancelSell",
+			page = page,
+			offerId = focusedChildren:getId()
+		}
+		sendMarketBuffer(json.encode(buffer))
+	end
+
+	mainWindow.marketSearch.onTextChange = function(widget, text)
+		if not text then return end
+		if text == "" and currentCategory == 0 then
+			sendMarketBuffer(json.encode({type = "loadPage", page = 1, aba = 1}))
+			return
+		end
+	end
+
+	mainWindow.BuyButton.onClick = function()
+		local focusedChildren = mainWindow.panelOffers:getFocusedChild()
+		if not focusedChildren then
+			return
+		end
+		createBuyWindow(focusedChildren)
+	end
+end
+
+function createBuyWindow(focusedChildren)
+	if buyWindow then
+		buyWindow:destroy()
+	end
+	buyWindow = g_ui.createWidget('BuyMarketItemWindow', mainWindow)
+	connect(buyWindow, { onDestroy = function() buyWindow = nil end })
+	buyWindow:raise()
+	buyWindow:focus()
+	buyWindow.itemName:setText(focusedChildren.realName)
+	buyWindow.item:setItem(focusedChildren.item:getItem())
+	buyWindow.item.pokeballsInfo = focusedChildren.item.pokeballsInfo
+	buyWindow.currency:setItem(focusedChildren.currencyItem:getItem())
+	local basePrice = tonumber(focusedChildren.realPrice)
+	local priceToText = convertNumberToStringMarket(basePrice)
+	buyWindow.price:setText("Preço: " .. priceToText)
+	local maxItems = focusedChildren.amountReal
+	local minItems = 1
+	local selectedQtd = 1
+	buyWindow.qtdItems:setText(1)
+
+	local function onChangeQtd()
+		buyWindow.qtdItems:setText(selectedQtd)
+		buyWindow.item:setItemCount(selectedQtd)
+		local totalPrice = basePrice * selectedQtd
+		local priceToText = convertNumberToStringMarket(totalPrice)
+		buyWindow.price:setText("Preço: " .. priceToText)
+	end
+
+	buyWindow.qtdItems.onTextChange = function(widget, text)
+		local value = tonumber(text)
+		if not value then
+			return
+		end
+		if value < minItems then
+			widget:setText(minItems)
+			selectedQtd = minItems
+			onChangeQtd()
+			return
+		end
+		if value > maxItems then
+			widget:setText(maxItems)
+			selectedQtd = maxItems
+			onChangeQtd()
+			return
+		end
+		selectedQtd = value
+		onChangeQtd()
+	end
+
+	buyWindow.BuyButton.onClick = function ()
+		local buffer = {
+			type = "tryBuyItem",
+			offerId = focusedChildren:getId(),
+			page = page,
+			amount = selectedQtd
+		}
+		sendMarketBuffer(json.encode(buffer))
+		buyWindow:destroy()
+	end
+
+end
+
+function onChooseItemMouseRelease(self, mousePosition, mouseButton)
+	local item = nil
+	if mouseButton == MouseLeftButton then
+	  local clickedWidget = modules.game_interface.getRootPanel():recursiveGetChildByPos(mousePosition, false)
+	  if clickedWidget then
+		if clickedWidget:getClassName() == 'UIItem' and not clickedWidget:isVirtual() then
+		  item = clickedWidget:getItem()
+		end
+	  end
+	end
+
+	if not item then
+		g_mouse.popCursor('target')
+		self:ungrabMouse()
+		toggle()
+		return true
+	end
+
+	local buffer = {
+		itemData = {
+			position = item:getPosition(),
+			clientId = item:getId(),
+			stackpos = item:getStackPos(),
+		},
+		type = "checkSelectedItem"
+	}
+
+	sendMarketBuffer(json.encode(buffer))
+
+	g_mouse.popCursor('target')
+	self:ungrabMouse()
+	toggle()
+	return true
+end
+
+function startChooseItem()
+	if not mouseGrabberWidget then
+		setupGrabber()
+	end
+	if g_ui.isMouseGrabbed() then return end
+	mouseGrabberWidget:grabMouse()
+	g_mouse.pushCursor('target')
+	toggle()
+end
+
+function configureCategories()
+	local widget = mainWindow.categories
+    widget.onMouseRelease = function(widget, mousePos, mouseButton)
+		if mouseButton == MouseRightButton or mouseButton == MouseLeftButton then
+			local menu = g_ui.createWidget("PopupMenu")
+			menu:setGameMenu(true)
+			menu:addOption("All", function() updateMarketCategory(0) end)
+
+			for id, cat in ipairs(MARKET_CATEGORIES) do
+				menu:addOption(cat, function() updateMarketCategory(id) end)
+			end
+
+            menu:display(pos)
+			return
+		end
+	end
+end
+
+function updateMarketCategory(catId)
+	local cat = MARKET_CATEGORIES[catId]
+	local widget = mainWindow.categories
+	widget:setText(cat)
+	currentCategory = catId
+end
+
+function capitalizeFirstLetter(word)
+	word = string.lower(word)
+    return word:gsub("(%l)(%w*)", function(a,b) return string.upper(a)..b end)
+end
+
+function convertNumberToStringMarket(number)
+	local suffixes = {"", "k", "kk", "kkk", "kkkk", "kkkkk", "kkkkkk", "kkkkkkk"}
+	local suffixIndex = 1
+
+	while number >= 1000 do
+		number = number / 1000
+		suffixIndex = suffixIndex + 1
+	end
+
+	return string.format("%d%s", number, suffixes[suffixIndex])
+end
+
+function convertTime(seconds)
+	local seconds = tonumber(seconds)
+	if not seconds or seconds <= 0 then
+	  return "00:00:00";
+	else
+	  hours = string.format("%02.f", math.floor(seconds/3600));
+	  mins = string.format("%02.f", math.floor(seconds/60 - (hours*60)));
+	  secs = string.format("%02.f", math.floor(seconds - hours*3600 - mins *60));
+	  return hours..":"..mins..":"..secs
+	end
   end
-  for c, items in ipairs(marketItems) do
-    if #items > 0 and not addedCategories[c] then
-      table.insert(categories, getMarketCategoryName(c) or "Unknown")      
-      addedCategories[c] = true
+
+function reverseArray(arr)
+    local reversed = {}
+    for i = #arr, 1, -1 do
+        table.insert(reversed, arr[i])
     end
-  end
-  
-  table.sort(categories)
-  for _, c in ipairs(categories) do
-      categoryList:addOption(c)
-  end
-  
-  for i = MarketCategory.Ammunition, MarketCategory.WandsRods do
-    subCategoryList:addOption(getMarketCategoryName(i))
-  end
-  
-  categoryList:addOption(getMarketCategoryName(255)) -- meta weapons
-  categoryList:setCurrentOption(getMarketCategoryName(MarketCategory.First))
-  subCategoryList:setEnabled(false)
-end
-
-function Market.displayMessage(message)
-  if marketWindow:isHidden() then return end
-
-  local infoBox = displayInfoBox(tr('Market Error'), message)
-  infoBox:lock()
-end
-
-function Market.clearSelectedItem()
-  if Market.isItemSelected() then
-    Market.resetCreateOffer(true)
-    offerTypeList:clearOptions()
-    offerTypeList:setText('Please Select')
-    offerTypeList:setEnabled(false)
-
-    clearOffers()
-    radioItemSet:selectWidget(nil)
-    nameLabel:setText('No item selected.')
-    selectedItem:setItem(nil)
-    selectedItem.item = nil
-    selectedItem.ref:setChecked(false)
-    selectedItem.ref = nil
-
-    detailsTable:clearData()
-    buyStatsTable:clearData()
-    sellStatsTable:clearData()
-
-    Market.enableCreateOffer(false)
-  end
-end
-
-function Market.isItemSelected()
-  return selectedItem and selectedItem.item
-end
-
-function Market.isOfferSelected(type)
-  return selectedOffer[type] and not selectedOffer[type]:isNull()
-end
-
-function Market.getDepotCount(itemId)
-  if not information.depotItems then
-    return 0
-  end
-  return information.depotItems[itemId] or 0
-end
-
-function Market.enableCreateOffer(enable)
-  offerTypeList:setEnabled(enable)
-  totalPriceEdit:setEnabled(enable)
-  piecePriceEdit:setEnabled(enable)
-  amountEdit:setEnabled(enable)
-  anonymous:setEnabled(enable)
-  createOfferButton:setEnabled(enable)
-
-  local prevAmountButton = marketOffersPanel:recursiveGetChildById('prevAmountButton')
-  local nextAmountButton = marketOffersPanel:recursiveGetChildById('nextAmountButton')
-
-  prevAmountButton:setEnabled(enable)
-  nextAmountButton:setEnabled(enable)
-end
-
-function Market.close(notify)
-  if notify == nil then notify = true end
-  if not marketWindow:isHidden() then
-    marketWindow:hide()
-    marketWindow:unlock()
-    modules.game_interface.getRootPanel():focus()
-    Market.clearSelectedItem()
-    Market.reset()
-    if notify then
-      MarketProtocol.sendMarketLeave()
-    end
-  end
-end
-
-function Market.incrementAmount()
-  amountEdit:setValue(amountEdit:getValue() + 1)
-end
-
-function Market.decrementAmount()
-  amountEdit:setValue(amountEdit:getValue() - 1)
-end
-
-function Market.updateCurrentItems()
-  if not categoryList or not categoryList:getCurrentOption() then 
-    return 
-  end
-  local id = getMarketCategoryId(categoryList:getCurrentOption().text)
-  if id == MarketCategory.MetaWeapons then
-    id = getMarketCategoryId(subCategoryList:getCurrentOption().text)
-  end
-  Market.loadMarketItems(id)
-end
-
-function Market.resetCreateOffer(resetFee)
-  piecePriceEdit:setValue(1)
-  totalPriceEdit:setValue(1)
-  amountEdit:setValue(1)
-  refreshTypeList()
-
-  if resetFee then
-    clearFee()
-  else
-    updateFee(0, 0)
-  end
-end
-
-function Market.refreshItemsWidget(selectItem)
-  local selectItem = selectItem or 0
-  itemsPanel = browsePanel:recursiveGetChildById('itemsPanel')
-
-  local layout = itemsPanel:getLayout()
-  layout:disableUpdates()
-
-  Market.clearSelectedItem()
-  itemsPanel:destroyChildren()
-
-  if radioItemSet then
-    radioItemSet:destroy()
-  end
-  radioItemSet = UIRadioGroup.create()
-
-  local select = nil
-  for i = 1, #currentItems do
-    local item = currentItems[i]
-    local itemBox = g_ui.createWidget('MarketItemBox', itemsPanel)
-    itemBox.onCheckChange = Market.onItemBoxChecked
-    itemBox.item = item
-
-    if selectItem > 0 and item.marketData.tradeAs == selectItem then
-      select = itemBox
-      selectItem = 0
-    end
-
-    local itemWidget = itemBox:getChildById('item')
-    itemWidget:setItem(item.displayItem)
-
-    local amount = Market.getDepotCount(item.marketData.tradeAs)
-    if amount > 0 then
-      itemWidget:setText(comma_value(amount))
-      itemBox:setTooltip('You have '.. amount ..' in your depot.')
-    end
-
-    radioItemSet:addWidget(itemBox)
-  end
-
-  if select then
-    radioItemSet:selectWidget(select, false)
-  end
-
-  layout:enableUpdates()
-  layout:update()
-end
-
-function Market.refreshOffers()
-  if Market.isItemSelected() then
-    Market.onItemBoxChecked(selectedItem.ref)
-  else
-    local ctab = offersTabBar:getCurrentTab()
-    if ctab == myCurrentOffersTab then
-      Market.refreshMyOffers()    
-    elseif ctab == myOfferHistoryTab then
-      Market.refreshMyOffersHistory()
-    end
-  end
-end
-
-function Market.refreshMyOffers()
-  clearMyOffers()
-  MarketProtocol.sendMarketBrowseMyOffers()
-end
-
-function Market.refreshMyOffersHistory()
-  clearMyOffers()
-  MarketProtocol.sendMarketBrowseMyHistory()
-end
-
-
-function Market.loadMarketItems(category)
-  clearItems()
-
-  -- check search filter
-  local searchFilter = searchEdit:getText()
-  if searchFilter and searchFilter:len() > 2 then
-    if filterButtons[MarketFilters.SearchAll]:isChecked() then
-      category = MarketCategory.All
-    end
-  end
-  
-  if not marketItems[category] and category ~= MarketCategory.All then
-    return
-  end
-
-  if category == MarketCategory.All then
-    -- loop all categories
-    for category = MarketCategory.First, MarketCategory.Last do
-      if marketItems[category] then
-        for i = 1, #marketItems[category] do
-          local item = marketItems[category][i]
-          if isItemValid(item, category, searchFilter) then
-            table.insert(currentItems, item)
-          end
-        end
-      end
-    end
-  else
-    -- loop specific category
-    for i = 1, #marketItems[category] do
-      local item = marketItems[category][i]
-      if isItemValid(item, category, searchFilter) then
-        table.insert(currentItems, item)
-      end
-    end
-  end
-
-  Market.refreshItemsWidget()
-end
-
-function Market.createNewOffer()
-  local type = offerTypeList:getCurrentOption().text
-  if type == 'Sell' then
-    type = MarketAction.Sell
-  else
-    type = MarketAction.Buy
-  end
-
-  if not Market.isItemSelected() then
-    return
-  end
-
-  local spriteId = selectedItem.item.marketData.tradeAs
-
-  local piecePrice = piecePriceEdit:getValue()
-  local amount = amountEdit:getValue()
-  local anonymous = anonymous:isChecked() and 1 or 0
-
-  -- error checking
-  local errorMsg = ''
-  if type == MarketAction.Buy then
-    if information.balance < ((piecePrice * amount) + fee) then
-      errorMsg = errorMsg..'Not enough balance to create this offer.\n'
-    end
-  elseif type == MarketAction.Sell then
-    if information.balance < fee then
-      errorMsg = errorMsg..'Not enough balance to create this offer.\n'
-    end
-    if Market.getDepotCount(spriteId) < amount then
-      errorMsg = errorMsg..'Not enough items in your depot to create this offer.\n'
-    end
-  end
-
-  if piecePrice > piecePriceEdit.maximum then
-    errorMsg = errorMsg..'Price is too high.\n'
-  elseif piecePrice < piecePriceEdit.minimum then
-    errorMsg = errorMsg..'Price is too low.\n'
-  end
-
-  if amount > amountEdit.maximum then
-    errorMsg = errorMsg..'Amount is too high.\n'
-  elseif amount < amountEdit.minimum then
-    errorMsg = errorMsg..'Amount is too low.\n'
-  end
-
-  if amount * piecePrice > MarketMaxPrice then
-    errorMsg = errorMsg..'Total price is too high.\n'
-  end
-
-  if information.totalOffers >= MarketMaxOffers then
-    errorMsg = errorMsg..'You cannot create more offers.\n'
-  end
-
-  local timeCheck = os.time() - lastCreatedOffer
-  if timeCheck < offerExhaust[type] then
-    local waitTime = math.ceil(offerExhaust[type] - timeCheck)
-    errorMsg = errorMsg..'You must wait '.. waitTime ..' seconds before creating a new offer.\n'
-  end
-
-  if errorMsg ~= '' then
-    Market.displayMessage(errorMsg)
-    return
-  end
-
-  MarketProtocol.sendMarketCreateOffer(type, spriteId, amount, piecePrice, anonymous)
-  lastCreatedOffer = os.time()
-  Market.resetCreateOffer()
-end
-
-function Market.acceptMarketOffer(amount, timestamp, counter)
-  if timestamp > 0 and amount > 0 then
-    MarketProtocol.sendMarketAcceptOffer(timestamp, counter, amount)
-    Market.refreshOffers()
-  end
-end
-
-function Market.onItemBoxChecked(widget)
-  if widget:isChecked() then
-    updateSelectedItem(widget)
-  end
-end
-
--- protocol callback functions
-
-function Market.onMarketEnter(depotItems, offers, balance, vocation, items)
-  if not loaded or (items and #items > 0) then
-    initMarketItems(items)
-    loaded = true
-  end
-
-  updateBalance(balance)
-  averagePrice = 0
-
-  information.totalOffers = offers
-  local player = g_game.getLocalPlayer()
-  if player then
-    information.player = player
-  end
-  if vocation == -1 then
-    if player then
-      information.vocation = player:getVocation()
-    end
-  else
-    -- vocation must be compatible with < 950
-    information.vocation = vocation
-  end
-
-  -- set list of depot items
-  information.depotItems = depotItems
-
-  for i = 1, #marketItems[MarketCategory.TibiaCoins] do
-    local item = marketItems[MarketCategory.TibiaCoins][i].displayItem
-    depotItems[item:getId()] = tibiaCoins
-  end
-  
-  -- update the items widget to match depot items
-  if Market.isItemSelected() then
-    local spriteId = selectedItem.item.marketData.tradeAs
-    MarketProtocol.silent(true) -- disable protocol messages
-    Market.refreshItemsWidget(spriteId)
-    MarketProtocol.silent(false) -- enable protocol messages
-  else
-    Market.refreshItemsWidget()
-  end
-
-  if table.empty(currentItems) then
-    Market.loadMarketItems(MarketCategory.First)
-  end
-
-  if g_game.isOnline() then
-  --  marketWindow:lock()
-    marketWindow:show()
-  end
-end
-
-function Market.onMarketLeave()
-  Market.close(false)
-end
-
-function Market.onMarketDetail(itemId, descriptions, purchaseStats, saleStats)
-  updateDetails(itemId, descriptions, purchaseStats, saleStats)
-end
-
-function Market.onMarketBrowse(offers, offersType)    
-  if offersType == MarketRequest.MyHistory then
-    updateHistoryOffers(offers)
-  else
-    updateOffers(offers)  
-  end
-end
-
-function Market.onCoinBalance(coins, transferableCoins)
-  tibiaCoins = coins
-  if not marketItems[MarketCategory.TibiaCoins] then return end
-  for i = 1, #marketItems[MarketCategory.TibiaCoins] do
-    local item = marketItems[MarketCategory.TibiaCoins][i].displayItem
-    information.depotItems[item:getId()] = tibiaCoins
-  end  
+    return reversed
 end

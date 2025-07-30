@@ -1,0 +1,55 @@
+baseCreature < UIWidget
+  image-source: images/poke
+  UICreature
+    phantom: true
+    id: creature
+    size: 48 48
+    anchors.horizontalCenter: parent.horizontalCenter
+    anchors.verticalCenter: parent.verticalCenter
+
+MainWindow
+  size: 175 300
+  focusable: false
+  @onEscape: self:hide()
+  UIButton
+    @onClick: self:getParent():hide()
+    id: exit
+    size: 32 32
+    text: X
+    font: newfont-16px-rounded_cp1250
+    anchors.top: parent.top
+    anchors.right: parent.right
+    $hover:
+      size: 33 33
+    $pressed:
+      size: 34 34
+  UIWidget
+    image-source: images/img
+    size: 96 64
+    anchors.top: parent.top
+    margin-top: -20
+    margin-right: 10
+    phantom: true
+    anchors.horizontalCenter: parent.horizontalCenter
+
+  ScrollablePanel
+    id: panelShaders
+    size: 160 200
+    margin-top: 35
+    anchors.top: parent.top
+    anchors.left: parent.left
+    vertical-scrollbar: testetes
+    layout:
+      type: grid
+      cell-size: 64 64
+      num-columns: 2
+      flow: false
+      cell-spacing: 2
+
+  VerticalScrollBar
+    id: testetes
+    anchors.top: panelShaders.top
+    anchors.bottom: panelShaders.bottom
+    anchors.right: panelShaders.right
+    margin-right: 13
+    step: 30
