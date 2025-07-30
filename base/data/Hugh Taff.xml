@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<npc name="Hugh Taff" script="npcbattle_hughtaff.lua" walkinterval="0" floorchange="0">
+	<health now="100" max="100"/>
+	<look type="3328" head="6" body="18" legs="30" feet="30" addons="2"/>
+	<parameters>
+		<parameter key="message_greet" value="You will need to call the fire department and not the nurse Joy."/>
+		<parameter key="idletime" value="30" />
+	</parameters>
+</npc>

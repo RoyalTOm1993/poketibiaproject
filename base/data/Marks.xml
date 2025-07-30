@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<npc name="Mark VIP" script="defaultVIP.lua" walkinterval="350000" floorchange="0" speed="0">
+<health now="150" max="150"/>
+<look type="3328" head="91" body="114" legs="86" feet="0"/>
+<parameters>
+<parameter key="message_greet" value="Hello dear customer! Are you here to see my offers? Come on, lets {trade}!"/>
+<parameter key="message_farewell" value="Good bye!"/>
+<parameter key="message_idletimeout" value="Good bye!"/>
+<parameter key="message_walkaway" value="Good bye!"/>
+<parameter key="module_shop" value="1"/>
+<parameter key="shop_buyable" value="poke ball,2394,500;great ball,2391,2000;super ball,2393,5000;ultra ball,2392,12000;small potion,12347,400;great potion,12348,1000;ultra potion,12346,2200;hyper potion,12345,5000;revive,12344,18000;red pokemon bag,12325,80000000;medicine,12349,800;recording camera,12330,100000;mechanical fishing rod,10223,100000;pizza,12222,10;"/>
+    <parameter key="shop_sellable" value="
+leaf stone,26731,5000;
+boost stone,26723,120000;
+water stone,26736,5000;
+venom stone,26735,5000;
+thunder stone,26734,5000;
+rock stone,26733,5000;
+punch stone,26732,5000;
+fire stone,26728,5000;
+ice stone,26730,5000;
+cocoon stone,26724,5000;
+ancient stone,26749,50000;
+crystal stone,26725,50000;
+darkness stone,26726,5000;
+earth stone,26742,5000;
+enigma stone,26727,5000;
+metal stone,26747,50000;
+sun stone,26748,15000;
+feather stone,26743,5000;
+king's rock stone,26746,5000;
+dragon stone,5000,125;
+Bug gosme,41605,125;
+Enchanted gem,41607,125;
+Bandaid,41608,125;
+Rough Gemstone,41609,125;
+Dragon Scale,41611,125;
+Ghost Essence,41612,125;
+Earth Ball,41613,125;
+bicycle,27634,125;
+bag of pollen,27658,125;
+bird beak,27680,125;
+bitten apple,27681,125;
+bottle of poison,27672,125;
+comb,27687,125;
+strange rock,27818,125;
+feather,27706,125;
+electric box,27684,125;
+future orb,27700,125;
+sandbag,27685,125;
+horn,27686,125;
+dragon tooth,27667,125;
+nail,27665,125;
+pot of lava,27656,125;
+pot of moss bug,27679,125;
+ruby,27695,125;
+straw,27719,125;
+tooth,27683,125;
+water gem,27668,125;
+stone orb,27702,125;
+bat wing,27690,125;
+horn drill,27794,125;
+rat tail,27682,125;
+wool ball,27694,125;
+old amber,27663,125;
+helix fossil,27661,125;
+electric rat tail,27734,125;
+fox tail,27688,125;
+bug antenna,27691,125;
+leaves,27660,125;
+piece of diglett,27800,125;
+bull tail,27820,125;
+ice bra,27676,125;
+gyarados tail,27652,125;
+karate duck,27697,125;
+luck medallion,27693,125;
+magma foot,27806,125;
+male ear,27803,125;
+magnet,27704,125;
+electric tail,27677,125;
+bulb,27659,125;
+crab claw,27713,125;
+owl feather,27804,125;
+farfetch'd stick,27705,125;
+fire tail,27780,125;
+punch machine,27698,125;
+bone,27714,125;
+seed,27670,125;
+water pendant,27678,125;
+locksmith of shell,27709,125;
+bear paw,27776,125;
+blue ball,27721,125;
+psyduck mug,27696,125;
+gem star,27790,125;
+giant ruby,27778,125;
+seal tail,27781,125;
+squirrel tail,27772,125;
+steel wings,27730,125;
+cat ear,27779,125;
+moth wing,27773,125;
+dark gem,27784,125;
+old skull,27737,125;
+aerodactyl wing,27757,125;
+big bat wing,27766,125;
+mystic shell hat,27729,125;
+rock trunk,27748,125;
+magnetic tail,27754,125;
+brush tail,27728,125;
+long seal tail,27749,125;
+blue kick machine,27771,125;
+stone shell,27731,125;
+blue ball tail,27753,125;
+ice block,27707,125;
+articuno feather,27653,125;
+zapdos feather,27654,125;
+moltres feather,27655,125;
+pot of pure water,27720,125;
+evil pendant,27722,125;
+blue rat ear,27770,125;
+lava shell,27739,125;
+head top,27741,125;
+nature pendant,27742,125;
+poisonous flower,27743,125;
+ice orb,28569,125;
+thunder orb,28570,125;
+fire orb,28571,125;" />
+</parameters>
+</npc>

@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<npc name="Mark Black Diamond" script="BlackShop.lua" walkinterval="2000" floorchange="0">
+<health now="100" max="100"/>
+<look type="3328" head="87" body="0" legs="87" feet="0" addons="3"/>
+<parameters>
+<parameter key="message_greet" value="Ola |PLAYERNAME|.  {trade} Para Ver Minhas Preciosas Stones."/>
+</parameters>
+</npc>

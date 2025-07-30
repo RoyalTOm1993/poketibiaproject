@@ -1,0 +1,13 @@
+<npc name="Mark VIP" script="defaultVIP.lua" walkinterval="350000" floorchange="0" speed="0">
+<health now="150" max="150" />
+<look type="3328" head="91" body="114" legs="86" feet="0" />
+<parameters>
+<parameter key="message_greet" value="Hello dear customer! Are you here to see my offers? Come on, lets {trade}!" />
+<parameter key="message_farewell" value="Good bye!" />
+<parameter key="message_idletimeout" value="Good bye!" />
+<parameter key="message_walkaway" value="Good bye!" />
+<parameter key="module_shop" value="1" />
+<parameter key="shop_buyable" value="poke ball,2394,500;great ball,2391,2000;super ball,2393,5000;ultra ball,2392,12000;small potion,12347,400;great potion,12348,1000;ultra potion,12346,2200;hyper potion,12345,5000;revive,12344,18000;red pokemon bag,12325,80000000;medicine,12349,800;recording camera,12330,100000;mechanical fishing rod,10223,100000;pizza,12222,10;" />
+<parameter key="shop_sellable" value="essence of fire,12162,200; small stone,12337,90; pot of moss bug,12171,250; screw,12164,85; straw,2694,65; water gems,12161,20; remains of magikarp,12334,100; teeth,12175,100; bottle of poison,12165,100; water pendant,12170,800; feather,12200,500; seed,12163,25; pair of leaves,12155,500; apple bite,12173,450; bat wing,12182,550;" />
+</parameters>
+</npc>

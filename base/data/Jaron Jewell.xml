@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<npc name="Jaron Jewell" script="market.lua" walkinterval="0" floorchange="0">
+	<health now="150" max="150"/>
+	<look type="3328" head="80" body="10" legs="33" feet="33" corpse="0"/>
+	<parameters>
+		<parameter key="idletime" value="180" />
+		<parameter key="module_shop" value="1"/>
+		<parameter key="message_greet" value="Hello |PLAYERNAME|, welcome to the {market}!"/>
+	</parameters>
+</npc>
