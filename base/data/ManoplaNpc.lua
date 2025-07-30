@@ -3,13 +3,13 @@ local npcHandler = NpcHandler:new(keywordHandler)
 NpcSystem.parseParameters(npcHandler)
 
 local requiredItems = {
-    [5901] = 2500,    -- ID do primeiro item necessário
+    [23496] = 100,    -- ID do primeiro item necessÃ¡rio
 }
 
-local itemToGive = 7437 -- ID do item a ser dado ao jogador
-local mensagemPergunta = "Ah, que bom que você aceitou ouvir minha história! Havia uma vez um homem que morava perto de uma grande cratera, onde um meteorito havia caído há muitos anos. Eu sou esse homem! E eu possuía uma ferramenta especial que permitia extrair pedras lendárias do local do meteorito. No entanto, eu precisava de madeira para terminar minha casa. Estou disposto a trocar essa ferramenta por 2500 madeiras. Aceita a oferta? (sim/nao)"
-local mensagemSucesso = "Aproveite!"
-local mensagemFalha = "Você não possui todos os itens necessários para a troca."
+local targetPosition = {x = 1503, y = 2405, z = 8} -- PosiÃ§Ã£o para onde o jogador serÃ¡ teleportado
+local mensagemPergunta = "Eu estava vasculhando o esgoto quando encontrei esta entrada misteriosa. Estou disposto a deixar vocÃª passar, mas isso vai te custar 100 moedas resets. Aceita a oferta? (sim/nao)"
+local mensagemSucesso = "Prepare-se para a aventura!"
+local mensagemFalha = "VocÃª nÃ£o possui todos os itens necessÃ¡rios para a troca."
 local esperaResposta = {}
 
 function onCreatureAppear(creature)
@@ -38,7 +38,7 @@ function creatureSayCallback(creature, type, msg)
         if msg:lower() == "sim" then
             local hasAllItems = true
 
-            -- Verifica se o jogador possui todos os itens necessários
+            -- Verifica se o jogador possui todos os itens necessÃ¡rios
             for itemId, amount in pairs(requiredItems) do
                 if player:getItemCount(itemId) < amount then
                     hasAllItems = false
@@ -47,11 +47,15 @@ function creatureSayCallback(creature, type, msg)
             end
 
             if hasAllItems then
-                -- Remove os itens necessários e dá o item ao jogador
+                -- Teleporta o jogador para a posiÃ§Ã£o alvo
+                player:getPosition():sendMagicEffect(CONST_ME_TELEPORT)
+                player:teleportTo(targetPosition)
+                
+                -- Remove os itens necessÃ¡rios do jogador
                 for itemId, amount in pairs(requiredItems) do
                     player:removeItem(itemId, amount)
                 end
-                player:addItem(itemToGive, 1)
+                
                 npcHandler:say(mensagemSucesso, player)
             else
                 npcHandler:say(mensagemFalha, player)
@@ -71,6 +75,7 @@ function creatureSayCallback(creature, type, msg)
 
     return true
 end
+
 
 npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
 npcHandler:addModule(FocusModule:new())

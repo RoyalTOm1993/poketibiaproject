@@ -3,11 +3,12 @@ local npcHandler = NpcHandler:new(keywordHandler)
 NpcSystem.parseParameters(npcHandler)
 
 local requiredItems = {
-    [5901] = 2500,    -- ID do primeiro item necessário
+    [22906] = 1,    -- ID do primeiro item necessário
+    [23035] = 50,   -- ID do segundo item necessário
 }
 
-local itemToGive = 7437 -- ID do item a ser dado ao jogador
-local mensagemPergunta = "Ah, que bom que você aceitou ouvir minha história! Havia uma vez um homem que morava perto de uma grande cratera, onde um meteorito havia caído há muitos anos. Eu sou esse homem! E eu possuía uma ferramenta especial que permitia extrair pedras lendárias do local do meteorito. No entanto, eu precisava de madeira para terminar minha casa. Estou disposto a trocar essa ferramenta por 2500 madeiras. Aceita a oferta? (sim/nao)"
+local storageValue = 53476 -- Valor do storage que será concedido
+local mensagemPergunta = "Me Traga 50 Essescias Rosas E 1 Joia Da Alma Que Te Passo Uma Gloria Magica, Que Faz Nascer Um Zerark Fusao Entre Zoroark E Zeraora, Mais Voce Precisa Derrotalos E Tentar Capturar? (sim/não)"
 local mensagemSucesso = "Aproveite!"
 local mensagemFalha = "Você não possui todos os itens necessários para a troca."
 local esperaResposta = {}
@@ -38,7 +39,7 @@ function creatureSayCallback(creature, type, msg)
         if msg:lower() == "sim" then
             local hasAllItems = true
 
-            -- Verifica se o jogador possui todos os itens necessários
+            -- Check if the player has all required items
             for itemId, amount in pairs(requiredItems) do
                 if player:getItemCount(itemId) < amount then
                     hasAllItems = false
@@ -47,24 +48,24 @@ function creatureSayCallback(creature, type, msg)
             end
 
             if hasAllItems then
-                -- Remove os itens necessários e dá o item ao jogador
+                -- Remove required items and set storage value
                 for itemId, amount in pairs(requiredItems) do
                     player:removeItem(itemId, amount)
                 end
-                player:addItem(itemToGive, 1)
-                npcHandler:say(mensagemSucesso, player)
+                player:setStorageValue(storageValue, 1)
+                player:popupFYI(mensagemSucesso)
             else
-                npcHandler:say(mensagemFalha, player)
+                player:popupFYI(mensagemFalha)
             end
         else
-            npcHandler:say("A troca foi cancelada.", player)
+            player:popupFYI("A troca foi cancelada.")
         end
         esperaResposta[player:getId()] = nil
         return false
     end
 
     if msgcontains(msg, 'sim') then
-        npcHandler:say(mensagemPergunta, player)
+        player:popupFYI(mensagemPergunta)
         esperaResposta[player:getId()] = true
         return true
     end
