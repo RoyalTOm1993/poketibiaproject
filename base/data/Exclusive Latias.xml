@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<monster name="Exclusive Latias" nameDescription="a Exclusive Latias" race="psychic" race2="none" experience="4085" speed="780" manacost="0">
+	<level min="100" max="2000"/>
+	<health now="240000" max="240000" />
+	<look type="3092" head="113" body="57" legs="95" feet="113" corpse="0" />
+	<targetchange interval="5000" chance="30" />
+	<flags>
+		<flag summonable="1" />
+		<flag attackable="1" />
+		<flag hostile="1" />
+		<flag passive="0" />
+		<flag illusionable="1" />
+		<flag convinceable="1" />
+		<flag pushable="1" />
+		<flag canpushitems="1" />
+		<flag canpushcreatures="0" />
+		<flag targetdistance="1" />
+		<flag staticattack="97" />
+		<flag runonhealth="0" />
+		<flag dexentry="150" />
+		<flag portraitid="27266" />
+		<flag hasshiny="0" />
+		<flag hasmega="0" />
+		<flag flyable="1417" />
+		<flag rideable="0" />
+		<flag surfable="0" />
+		<flag canteleport="1" />
+		<flag canblink="1" />
+		<flag catchchance="0" />
+		<flag moveMagicAttackBase="12600" />
+		<flag moveMagicDefenseBase="12600" />
+	</flags>
+	<script>
+		<event name="MonsterHealthChange"/>
+	</script>
+	<moves>
+		<move name="hypnosis" interval="22000" isTarget="1"/>
+		<move name="psyusion" interval="14000" />
+		<move name="outrage" interval="11500" />
+		<move name="hyperspace hole" interval="13000" />
+		<move name="nuclear explosion" interval="15000" />
+		<move name="hyperspace hole" interval="13000" />
+		<move name="cosmic power" interval="15500" />
+        <move name="starbright" interval="12500" />
+		<move name="psyquake" interval="12500" />
+		<move name="shattered psyche" interval="12500" />
+		<move name="shadowquake" interval="12500" />
+		<move name="recover" interval="30000"/>
+
+	</moves>
+	<evolutions>
+
+	</evolutions>
+	<attacks>
+		<attack name="melee" interval="2000" min="-330" max="-330" />
+		<attack name="hypnosis" interval="22000" chance="40"/>
+		<attack name="psyusion" interval="14000" chance="40"/>
+		<attack name="outrage" interval="11500" chance="40"/>
+		<attack name="hyperspace hole" interval="13000" chance="40"/>
+		<attack name="nuclear explosion" interval="15000" chance="40"/>
+		<attack name="hyperspace hole" interval="13000" chance="40"/>
+		<attack name="cosmic power" interval="15500" chance="40"/>
+        <attack name="starbright" interval="11500" chance="40"/>
+		<attack name="psyquake" interval="11500" chance="40"/>
+		<attack name="shattered psyche" interval="11500" chance="40"/>
+		<attack name="shadowquake" interval="11500" chance="40"/>
+		<attack name="recover" interval="30000" chance="40"/>
+		<attack name="passive psychic" interval="40000" chance="60"/>
+
+	</attacks>
+	<defenses armor="0" defense="12600" >
+		<defense name="passive psychic" interval="40000" chance="100"/>
+
+	</defenses>
+	<elements>
+	</elements>
+	<immunities>
+
+	</immunities>
+	<voices interval="5000" chance="10">
+		<voice sentence="Latiaaaassss" />
+	</voices>
+	<loot>
+		<item name="enigma stone" countmax="5" chance="475"/>
+		
+
+	</loot>
+</monster>
