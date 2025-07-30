@@ -1,0 +1,67 @@
+HotkeyWindow
+  image-source: /images/ui/login/backgroundLogin
+  size: 275 210
+  
+  UIWidget
+    id: hotkey
+
+  Label
+    id: topText
+    text-auto-resize: true
+    !text: tr('ATRIBUIR ATALHO')
+    font: future-earth-18
+    anchors.horizontalCenter: parent.horizontalCenter
+    anchors.top: parent.top
+    color: #68b4db
+    draggable: false
+    phantom: true
+    margin-top: -30
+    margin-left: 6
+  
+  Label
+    anchors.top: parent.top
+    anchors.left: parent.left
+    text:  Atalho:
+    margin-top: 20
+    margin-left: 3
+    font: window
+    color: #68b4db
+    text-horizontal-auto-resize: true
+
+  FlatLabel
+    id: display
+    anchors.top: parent.top
+    anchors.left: parent.left
+    anchors.right: parent.right
+    height: 33
+    color: #b8db85
+    margin-top: 40
+    text-align: center
+    font: future-earth-18
+
+  Button
+    id: buttonClose
+    anchors.right: parent.right
+    anchors.bottom: parent.bottom
+    size: 50 22
+    font: window
+    text: Close
+    @onClick: self:getParent():destroy()
+
+  Button
+    id: buttonClear
+    anchors.right: prev.left
+    margin-right: 5
+    anchors.bottom: parent.bottom
+    size: 50 22
+    font: window
+    text: Clear
+
+  Button
+    id: buttonOk
+    anchors.right: prev.left
+    margin-right: 5
+    anchors.bottom: parent.bottom
+    size: 50 22
+    font: window
+    text: Ok

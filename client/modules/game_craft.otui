@@ -1,0 +1,248 @@
+requiredItem < Item
+  &itemVirtual: true
+  image-source: /images/ui/ModalBox_Background
+  phantom: true
+  image-size: 40 40
+  image-offset: -6 -5
+  UIWidget
+    id: requireItemTooltip
+    size: 42 42
+    anchors.verticalCenter: parent.verticalCenter
+    anchors.left: parent.left
+
+baseItem2 < UIWidget
+  size: 473 190
+  image-source: images/rework/base
+  &updateOnStates: |
+    function(self)
+      local children = self:getChildren()
+      for i=1,#children do
+        children[i]:setOn(self:isFocused())
+      end
+    end
+  @onFocusChange: self:updateOnStates()
+  @onSetup: self:updateOnStates()
+  $focus: 
+    image-source: images/rework/baseHover
+
+  UIWidget
+    id: mainItemTooltip
+    size: 48 48
+    anchors.top: parent.top
+    anchors.left: parent.left
+    margin-left: 20
+    margin-top: 20
+  UIItem
+    id: mainItem
+    size: 48 48
+    anchors.top: parent.top
+    anchors.left: parent.left
+    margin-left: 20
+    margin-top: 20
+    phantom: true
+    image-source: /images/ui/ModalBox_Background
+  UILabel
+    id: mainItemName
+    size: 200 60
+    text-wrap: true
+    font: window
+    anchors.left: parent.left
+    anchors.top: mainItem.bottom
+    margin-left: 10
+    margin-top: 10
+  UILabel
+    id: mainItemDescription
+    text-wrap: true
+    font: future-earth-18
+    anchors.top: parent.top
+    anchors.right: parent.right
+    anchors.left: parent.left
+    anchors.bottom: parent.bottom
+    margin-top: 126
+    margin-left: 8
+    margin-right: 8
+    margin-bottom: 8
+  UILabel
+    text-auto-resize: true
+    margin-left: 15
+    margin-top: -20
+    text: Chance:
+    font: window
+    anchors.left: mainItem.right
+    anchors.verticalCenter: mainItem.verticalCenter
+  UILabel
+    id: chanceItem
+    size: 50 50
+    text-wrap: true
+    margin-left: 15
+    margin-top: 10
+    font: window
+    anchors.left: mainItem.right
+    anchors.verticalCenter: mainItem.verticalCenter
+  UIWidget
+    id: panelRequired
+    phantom: false
+    anchors.top: parent.top
+    anchors.bottom: parent.bottom
+    anchors.right: parent.right
+    anchors.left: parent.left
+    margin-left: 170
+    margin-right: -50
+    margin-top: 25
+    margin-bottom: 70
+    layout:
+      type: grid
+      cell-size: 32 32
+      cell-spacing: 6
+      flow: false
+      num-columns: 7
+
+CreateWindow < UIWindow
+  id: createWindow
+  anchors.centerIn: parent
+  size: 417 350
+  image-source: images/rework/crafting_window
+  font: future-earth-18
+  text: CRAFTING WINDOW
+  color: #66c8ff
+  @onEscape: self:destroy()
+  UIWidget
+    image-source: /images/ui/ModalBox_Background
+    phantom: true
+    anchors.top: parent.top
+    anchors.horizontalCenter: parent.horizontalCenter
+    margin-top: 60
+  UIItem
+    id: item
+    size: 48 48
+    phantom: true
+    anchors.verticalCenter: prev.verticalCenter
+    anchors.horizontalCenter: prev.horizontalCenter
+    virtual: true
+  UIWidget
+    id: label
+    phantom: true
+    anchors.top: item.bottom
+    anchors.horizontalCenter: parent.horizontalCenter
+    margin-top: 8
+    font: future-earth-18
+    !text: tr('MATERIAIS NECESSÁRIOS')
+  UIWidget
+    id: recipe
+    size: 302 74
+    anchors.top: label.bottom
+    anchors.horizontalCenter: item.horizontalCenter
+    margin-top: 14
+    layout:
+      type: grid
+      cell-size: 34 34
+      num-columns: 8
+      num-lines: 2
+      cell-spacing: 12
+  Label
+    id: quantidadeCraftLabel
+    phantom: true
+    size: 100 12
+    anchors.top: next.bottom
+    anchors.horizontalCenter: next.horizontalCenter
+    text-align: center
+    text: 1 x
+  HorizontalScrollBar
+    id: quantidadeCraft
+    minimum: 1
+    maximum: 10000
+    anchors.top: recipe.bottom
+    anchors.left: recipe.left
+    anchors.right: recipe.right
+    margin-top: 20
+    step: 1
+    @onValueChange: modules.game_craft.changeQuantidade(self:getValue())
+  SpaceGreenButtonFont
+    id: craftButton
+    anchors.bottom: parent.bottom
+    font: future-earth-26
+    anchors.horizontalCenter: parent.horizontalCenter
+    margin-bottom: 10
+    text: CRAFT
+    text-align: center
+    size: 154 55
+    @onClick: modules.game_craft.sendBuffer()
+  UIButton
+    id: closeButton
+    anchors.top: parent.top
+    anchors.right: parent.right
+    margin-top: 8
+    margin-right: 2
+    size: 24 25
+    image-source: /images/ui/closeButton
+    change-cursor-image: true
+    cursor: pointer
+    @onClick: modules.game_craft.destroyCraftWindow()
+
+MainWindow
+  size: 520 645
+  text: CRAFT
+  focusable: false
+  text-offset: 0 12
+  font: future-earth-40
+  color: #66c8ff
+  image-source: images/rework/background
+  anchors.horizontalCenter: parent.horizontalCenter
+  anchors.verticalCenter: parent.verticalCenter
+  ScrollablePanel
+    id: panelItems
+    size: 440 384
+    image-source:
+    anchors.top: parent.top
+    anchors.horizontalCenter: parent.horizontalCenter
+    vertical-scrollbar: panelBar
+    margin-top: 80
+    margin-right: 7
+    layout:
+      type: grid
+      cell-size: 440 190
+      cell-spacing: 0
+      flow: true
+      num-columns: 1
+  VerticalScrollBar
+    id: panelBar
+    visible: true
+    margin-right: 16
+    margin-top: 3
+    margin-bottom: 6
+    anchors.top: panelItems.top
+    anchors.bottom: panelItems.bottom
+    anchors.right: parent.right
+    step: 150
+  UIButton
+    id: closeButton
+    anchors.top: parent.top
+    anchors.right: parent.right
+    margin-top: 8
+    margin-right: 2
+    size: 24 25
+    image-source: /images/ui/closeButton
+    change-cursor-image: true
+    cursor: pointer
+    @onClick: self:getParent():hide()
+  UIWidget
+    id: switchRank
+    anchors.bottom: parent.bottom
+    anchors.horizontalCenter: parent.horizontalCenter
+    margin-bottom: 100
+    background-color: #1c252d
+    text: rank
+    font: window
+    text-align: center
+    size: 210 26
+  SpaceGreenButtonFont
+    id: craft
+    font: future-earth-26
+    anchors.top: switchRank.bottom
+    anchors.horizontalCenter: parent.horizontalCenter
+    margin-top: 40
+    margin-left: 10
+    text: CRAFT
+    text-align: center
+    size: 154 55
+    @onClick: createWindow()

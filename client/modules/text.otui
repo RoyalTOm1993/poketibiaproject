@@ -1,0 +1,74 @@
+MainWindow
+  id: assignTextWindow
+  size: 275 210
+  Label
+    id: topText
+    text-auto-resize: true
+    !text: tr('ATRIBUIR TEXTO')
+    font: future-earth-18
+    anchors.horizontalCenter: parent.horizontalCenter
+    anchors.top: parent.top
+    color: #68b4db
+    draggable: false
+    phantom: true
+    margin-top: -30
+    margin-left: 6
+
+  Label
+    anchors.top: parent.top
+    anchors.left: parent.left
+    text:  Texto:
+    margin-top: 20
+    font: window
+    color: #68b4db
+    text-horizontal-auto-resize: true
+
+  TextEdit
+    id: text
+    anchors.top: prev.bottom
+    anchors.left: parent.left
+    anchors.right: parent.right
+    margin-top: 5
+
+  FlatPanel
+    id: checkPanel
+    anchors.top: prev.bottom
+    margin-top: 5
+    anchors.left: parent.left
+    anchors.right: parent.right
+    height: 20
+
+    CheckBox
+      id: tick
+      anchors.left: parent.left
+      anchors.verticalCenter: parent.verticalCenter
+      anchors.right: parent.right
+      margin-left: 5
+      text: Send automatically
+      checked: true
+
+  Button
+    id: buttonClose
+    anchors.right: parent.right
+    anchors.bottom: parent.bottom
+    size: 50 22
+    font: window
+    text: Close
+
+  Button
+    id: buttonApply
+    anchors.right: prev.left
+    margin-right: 5
+    anchors.bottom: parent.bottom
+    size: 50 22
+    font: window
+    text: Apply
+
+  Button
+    id: buttonOk
+    anchors.right: prev.left
+    margin-right: 5
+    anchors.bottom: parent.bottom
+    size: 50 22
+    font: window
+    text: Ok

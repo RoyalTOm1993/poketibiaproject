@@ -1,0 +1,763 @@
+panelSearchBase < UIWidget
+  size: 190 48
+  image-source: images/panel_search_base
+  margin-left: 10
+  margin-top: 0
+  $pressed:
+    image-source: images/panel_search_base_on
+  UIWidget
+    id: type
+    image-size: 15 15
+    anchors.bottom: parent.bottom
+    anchors.right: parent.right
+    margin-right: 5
+    margin-bottom: -12
+    phantom: true
+  UIWidget
+    id: type2
+    image-size: 15 15
+    anchors.top: type.top
+    anchors.left: type.left
+    margin-left: 16
+    phantom: true
+  Label
+    id: nome
+    size: 120 20
+    font: sono_bold_14
+    text-align: right
+    text-offset: 20 0
+    anchors.top: parent.top
+    anchors.right: parent.right
+    margin-right: 5
+    phantom: true
+  Label
+    id: numero
+    size: 120 40
+    font: sono_bold_12
+    text-align: right
+    text-offset: 0 0
+    phantom: true
+    anchors.top: parent.top
+    anchors.right: parent.right
+    margin-top: 2
+    margin-right: 5
+  UICreature
+    id: pokemonImageSearch
+    old-scaling: true
+    size: 28 28
+    anchors.left: parent.left 
+    anchors.verticalCenter: parent.verticalCenter
+    margin-left: 10
+    margin-top: 0
+TaskTextEdit < UITextEdit
+  font: damas
+  color: #272727
+  opacity: 0.9
+  size: 150 40
+  image-offset: -15 -8
+  padding: 2 0 0 16
+  icon-source: images/lupa
+  icon-size: 16 16
+  icon-offset: -7 -0
+  image-source: images/search_base
+  selection-color: #272727
+  selection-background-color: #cccccc
+  change-cursor-image: true
+  $disabled:
+    color: #27272788
+    opacity: 0.5
+    change-cursor-image: false
+
+efetividadeButtons < UIWidget
+  size: 16 16
+  margin-right: 0
+  margin-left: 0
+  margin-bottom: 0
+  margin-top: 0
+  
+lootButtons < UIWidget
+  size: 161 27
+  image-source: images/base_loot_button
+  margin-right: 0
+  margin-left: 0
+  margin-bottom: 0
+  margin-top: 0
+  $hover:
+    image-source: images/base_loot_button_on
+  UIItem
+    id: item
+    size: 22 22
+    anchors.top: parent.top
+    anchors.left: parent.left
+    margin-right: 0
+    margin-left: 0
+    margin-bottom: 0
+    margin-top: 0
+  Label
+    id: name
+    color: white
+    phantom: true
+    text-auto-resize: true
+    text-align: left
+    anchors.top: parent.top
+    anchors.horizontalCenter: parent.horizontalCenter
+    margin-top: 0
+    anchors.left: parent.left
+    margin-left: 21
+  Label
+    id: quantity
+    color: white
+    phantom: true
+    text-auto-resize: true
+    text-align: left
+    anchors.top: parent.top
+    anchors.horizontalCenter: parent.horizontalCenter
+    margin-top: 10
+    anchors.left: parent.left
+    margin-left: 21
+  Label
+    id: chance
+    color: white
+    phantom: true
+    text-auto-resize: true
+    anchors.top: parent.top
+    anchors.horizontalCenter: parent.horizontalCenter
+    anchors.left: parent.left
+    margin-top: 12
+    margin-left: 115
+
+movesButton < UIWidget
+  size: 24 24
+  margin-right: 0
+  margin-left: 0
+  margin-bottom: 0
+  margin-top: 0
+
+dexScrollBar < UIScrollBar
+  orientation: vertical
+  width: 0
+  height: 0
+  pixels-scroll: true
+
+  UIButton
+    id: decrementButton
+    anchors.top: parent.top
+    visible: false
+    anchors.left: parent.left
+    image-source: /images/ui/scrollbar
+    image-clip: 0 0 13 13
+    image-color: #ffffffff
+    size: 13 13
+    $hover:
+      image-clip: 13 0 13 13
+    $pressed:
+      image-clip: 26 0 13 13
+    $disabled:
+      image-color: #ffffff66
+
+  UIButton
+    id: incrementButton
+    anchors.bottom: parent.bottom
+    anchors.right: parent.right
+    visible: false
+    size: 13 13
+    image-source: /images/ui/scrollbar
+    image-clip: 0 13 13 13
+    image-color: #ffffffff
+    $hover:
+      image-clip: 13 13 13 13
+    $pressed:
+      image-clip: 26 13 13 13
+    $disabled:
+      image-color: #ffffff66
+
+  ScrollBarSlider
+
+  ScrollBarValueLabel
+
+dexScrollBar2 < UIScrollBar
+  orientation: vertical
+  width: 20
+  height: 40
+  pixels-scroll: true
+
+  UIButton
+    id: decrementButton
+    anchors.top: parent.top
+    visible: false
+    anchors.left: parent.left
+    image-source: /images/ui/scrollbar
+    image-clip: 0 0 13 13
+    image-color: #ffffffff
+    size: 13 13
+    $hover:
+      image-clip: 13 0 13 13
+    $pressed:
+      image-clip: 26 0 13 13
+    $disabled:
+      image-color: #ffffff66
+
+  UIButton
+    id: incrementButton
+    anchors.bottom: parent.bottom
+    anchors.right: parent.right
+    visible: false
+    size: 13 13
+    image-source: /images/ui/scrollbar
+    image-clip: 0 13 13 13
+    image-color: #ffffffff
+    $hover:
+      image-clip: 13 13 13 13
+    $pressed:
+      image-clip: 26 13 13 13
+    $disabled:
+      image-color: #ffffff66
+
+  ScrollBarSlider
+
+  ScrollBarValueLabel
+
+abilitiesButton < UIWidget
+  size: 16 16
+  image-source: ~
+  margin-right: 0
+  margin-left: 0
+  margin-bottom: 0
+  margin-top: 0
+
+MainWindow
+  id: mainDex
+  size: 661 528
+  image-source: new_images/background
+  @onEscape: hideDex()
+  UIWidget
+    id: basePokemon
+    size: 355 393
+    image-source: new_images/pokemon_back
+    anchors.left: parent.left
+    anchors.top: parent.top
+    margin-left: 5
+    margin-top: 50
+
+  UIWidget
+    id: baseCreature
+    size: 147 148
+    image-source: new_images/base
+    anchors.centerIn: prev
+    margin-bottom: 80
+
+  UICreature
+    id: pokemonImage
+    size: 96 96
+    image-source: ~
+    anchors.centerIn: prev
+
+  UIWidget
+    id: pokemonType
+    size: 32 32
+    anchors.top: basePokemon.top
+    anchors.right: basePokemon.right
+    margin-top: 10
+    margin-right: 50
+
+  UIWidget
+    id: pokemonType2
+    size: 32 32
+    anchors.left: pokemonType.right
+    anchors.top: pokemonType.top
+    margin-left: 7
+
+  UIWidget
+    id: funcao
+    size: 20 20
+    anchors.left: pokemonType.right
+    anchors.top: pokemonType.top
+    margin-left: -12
+    margin-top: 38
+
+  UIWidget
+    id: pokemonName
+    font: sono_bold_18
+    text-auto-resize: true
+    anchors.left: baseCreature.left
+    anchors.right: baseCreature.right
+    anchors.bottom: baseCreature.top
+    margin-bottom: 10
+    margin-left: 0
+    text-align: center
+  UIWidget
+    id: hasShiny
+    size: 27 25
+    image-source: new_images/estrela
+    anchors.top: prev.top
+    anchors.right: prev.left
+  UIWidget
+    id: pokemonRespawn
+    size: 30 29
+    anchors.left: basePokemon.left
+    anchors.top: basePokemon.top
+    margin-left: 15
+    margin-top: 12
+    image-source: new_images/respawn
+  UIWidget
+    id: pokemonEntry
+    size: 40 20
+    font: sono_bold_18
+    text: #20
+    anchors.left: basePokemon.left
+    anchors.top: prev.bottom
+    margin-left: 10
+    margin-top: 5
+  UIWidget
+    id: pokemonRank
+    size: 40 20
+    font: sono_bold_18
+    text: #20
+    anchors.left: basePokemon.left
+    anchors.top: prev.bottom
+    margin-left: 10
+    margin-top: 5
+
+  ScrollablePanel
+    id: panelAbilities
+    size: 32 90
+    image-border: 20
+    visible: true
+    anchors.top: basePokemon.top
+    anchors.right: basePokemon.right
+    margin-right: 0
+    margin-top: 82
+    vertical-scrollbar: abilitiesBar
+    padding-top: 10
+    padding-bottom: 10
+    layout:
+      type: grid
+      cell-size: 16 16
+      cell-spacing: 2
+      flow: false
+      num-columns: 1
+
+  dexScrollBar
+    id: abilitiesBar
+    visible: true
+    anchors.top: panelAbilities.top
+    anchors.bottom: panelAbilities.bottom
+    anchors.right: panelAbilities.right
+    margin-right: 0
+    step: 30
+
+  UIWidget
+    id: buttonsPokemon
+    size: 185 32
+    anchors.centerIn: basePokemon
+    margin-top: 30
+
+    UIWidget
+      id: description
+      size: 32 32
+      tooltip: Descrição
+      image-offset: 0 5
+      image-source: images/icons/description_on
+      anchors.left: parent.left
+      anchors.top: parent.top
+      margin-left: 5
+      $hover:
+        image-source: images/icons/description_off
+
+    UIWidget
+      id: estatisticas
+      size: 32 32
+      image-source: images/icons/graph_on
+      tooltip: Estatisticas
+      anchors.left: prev.right
+      anchors.top: prev.top
+      margin-left: 5
+      $hover:
+        image-source: images/icons/graph_off
+
+    UIWidget
+      id: efetividade
+      size: 32 32
+      tooltip: Efetividades
+      image-source: images/icons/efetividade_on
+      anchors.left: prev.right
+      anchors.top: prev.top
+      margin-left: 5
+      $hover:
+        image-source: images/icons/efetividade_off
+
+    UIWidget
+      id: moves
+      size: 32 32
+      tooltip: Moveset
+      image-source: images/icons/moves_on
+      anchors.left: prev.right
+      anchors.top: prev.top
+      margin-left: 5
+      $hover:
+        image-source: images/icons/moves_off
+
+    UIWidget
+      id: loot
+      tooltip: Loots
+      size: 32 32
+      image-source: images/icons/loot_on
+      anchors.left: prev.right
+      anchors.top: prev.top
+      margin-left: 5
+      $hover:
+        image-source: images/icons/loot_off
+
+  UIWidget
+    id: textButtons
+    size: 170 20
+    phantom: true
+    anchors.centerIn: basePokemon
+    margin-top: 65
+
+  Label
+    id: healthLabel
+    text: Vida
+    font: sono_bold_14
+    text-align: right
+    text-auto-resize: true
+    anchors.right: next.left
+    anchors.top: next.top
+    margin-right: 5
+
+  UIWidget
+    id: progressHP_base
+    size: 173 18
+    image-source: new_images/progressbar
+    anchors.centerIn: basePokemon
+    margin-top: 90
+
+  UIWidget
+    id: progressHP
+    size: 173 18
+    image-source: new_images/progressbarfill
+    anchors.top: prev.top
+    anchors.left: prev.left
+
+  Label
+    id: defenseLabel
+    text: Defesa
+    font: sono_bold_14
+    text-align: right
+    text-auto-resize: true
+    anchors.right: next.left
+    anchors.top: next.top
+    margin-right: 5
+
+  UIWidget
+    id: progressDEF_base
+    size: 173 18
+    image-source: new_images/progressbar
+    anchors.top: progressHP_base.bottom
+    anchors.left: progressHP_base.left
+    margin-top: 5
+
+  UIWidget
+    id: progressDEF
+    size: 173 18
+    image-source: new_images/progressbarfill
+    anchors.top: prev.top
+    anchors.left: prev.left
+
+  Label
+    id: speedLabel
+    text: Velocidade
+    font: sono_bold_14
+    text-align: right
+    text-auto-resize: true
+    anchors.right: next.left
+    anchors.top: next.top
+    margin-right: 5
+
+  UIWidget
+    id: progressSpeed_base
+    size: 173 18
+    image-source: new_images/progressbar
+    anchors.top: progressDEF_base.bottom
+    anchors.left: progressDEF_base.left
+    margin-top: 5
+
+  UIWidget
+    id: progressSpeed
+    size: 173 18
+    image-source: new_images/progressbarfill
+    anchors.top: prev.top
+    anchors.left: prev.left
+
+  Label
+    id: attackLabel
+    text: Dano
+    font: sono_bold_14
+    text-align: right
+    text-auto-resize: true
+    anchors.right: next.left
+    anchors.top: next.top
+    margin-right: 5
+
+  UIWidget
+    id: progressAttack_base
+    size: 173 18
+    image-source: new_images/progressbar
+    anchors.top: progressSpeed_base.bottom
+    anchors.left: progressSpeed_base.left
+    margin-top: 5
+
+  UIWidget
+    id: progressAttack
+    size: 173 18
+    image-source: new_images/progressbarfill
+    anchors.top: prev.top
+    anchors.left: prev.left
+
+  ScrollablePanel
+    id: panelAbilities2
+    size: 300 100
+    visible: false
+    anchors.centerIn: basePokemon
+    margin-top: 130
+    vertical-scrollbar: abilitiesBar2
+    layout: verticalBox
+
+    UIWidget
+      id: normalcontra
+      size: 170 20
+      text: Normal
+      text-align: center
+      text-offset: 0 8
+      font: sono_bold_14
+
+    ScrollablePanel
+      id: panelNormal
+      size: 150 50
+      visible: true
+      margin-right: 0
+      margin-top: 5
+      layout:
+        type: grid
+        cell-size: 24 24
+        cell-spacing: 1
+        flow: false
+        num-columns: 12
+
+    UIWidget
+      id: efetivocontra
+      size: 170 20
+      font: sono_bold_14
+      text: Efetivo
+      text-align: center
+      text-offset: 0 8
+
+    ScrollablePanel
+      id: panelEfetivo
+      size: 150 32
+      visible: true
+      margin-right: 0
+      margin-top: 5
+      horizontal-scrollbar: actionScroll2
+      layout:
+        type: grid
+        cell-size: 24 24
+        cell-spacing: 1
+        flow: false
+        num-columns: 12
+
+    HorizontalScrollBar
+      id: actionScroll2
+      margin-top: 20
+      step: 10
+      pixels-scroll: true
+      visible: false
+
+    UIWidget
+      id: inefetivocontra
+      size: 170 20
+      text: Inefetivo
+      text-align: center
+      text-offset: 0 8
+      font: sono_bold_14
+
+    ScrollablePanel
+      id: panelInefetivo
+      size: 150 32
+      visible: true
+      margin-right: 0
+      margin-top: 5
+      horizontal-scrollbar: actionScroll4
+      layout:
+        type: grid
+        cell-size: 24 24
+        cell-spacing: 1
+        flow: false
+        num-columns: 12
+
+    HorizontalScrollBar
+      id: actionScroll4
+      margin-top: 20
+      step: 10
+      pixels-scroll: true
+      visible: false
+
+    UIWidget
+      id: muitoinefetivocontra
+      size: 170 20
+      text: Muito inefetivo
+      text-align: center
+      text-offset: 0 8
+      font: sono_bold_14
+
+    ScrollablePanel
+      id: panelImune
+      size: 150 32
+      visible: true
+      margin-right: 0
+      margin-top: 5
+      horizontal-scrollbar: actionScroll5
+      layout:
+        type: grid
+        cell-size: 24 24
+        cell-spacing: 1
+        flow: false
+        num-columns: 12
+
+    HorizontalScrollBar
+      id: actionScroll5
+      margin-top: 20
+      step: 10
+      pixels-scroll: true
+      visible: false
+
+  VerticalScrollBar
+    id: abilitiesBar2
+    visible: true
+    anchors.top: panelAbilities2.top
+    anchors.bottom: panelAbilities2.bottom
+    anchors.right: panelAbilities2.right
+    margin-right: -25
+    step: 30
+
+  ScrollablePanel
+    id: panelMoves
+    size: 210 70
+    visible: false
+    anchors.centerIn: basePokemon
+    margin-top: 120
+    vertical-scrollbar: movesBar
+    layout:
+      type: grid
+      cell-size: 32 32
+      cell-spacing: 3
+      flow: false
+      num-columns: 6
+
+  VerticalScrollBar
+    id: movesBar
+    visible: false
+    anchors.top: panelAbilities2.top
+    anchors.bottom: panelAbilities2.bottom
+    anchors.right: panelAbilities2.right
+    step: 30
+
+  UIWidget
+    id: tooltipMoves
+    image-source: images/base_move_tooltip
+    anchors.top: parent.top
+    anchors.left: parent.left
+    image-size: 120 120
+    margin-left: 100
+    margin-top: 50
+    visible: false
+
+  ScrollablePanel
+    id: panelLoot
+    size: 250 100
+    visible: false
+    anchors.centerIn: basePokemon
+    margin-top: 130
+    vertical-scrollbar: lootBar
+    margin-left: 45
+    layout:
+      type: grid
+      cell-size: 161 27
+      cell-spacing: 3
+      flow: false
+      num-columns: 1
+
+  VerticalScrollBar
+    id: lootBar
+    visible: false
+    anchors.top: panelLoot.top
+    anchors.bottom: panelLoot.bottom
+    anchors.right: panelLoot.right
+    margin-right: 0
+    step: 30
+
+  ScrollablePanel
+    id: panelSearch
+    image-source: new_images/listBackground
+    padding: 12 0 16 0
+    size: 218 349
+    visible: true
+    anchors.top: basePokemon.top
+    anchors.right: parent.right
+    margin-right: 30
+    vertical-scrollbar: searchBar
+    layout:
+      type: grid
+      cell-size: 190 48
+      cell-spacing: 5
+      flow: true
+      num-columns: 1
+
+  VerticalScrollBar
+    id: searchBar
+    visible: true
+    anchors.top: panelSearch.top
+    anchors.bottom: panelSearch.bottom
+    anchors.left: panelSearch.right
+    margin-left: 10
+    step: 150
+
+  UITextEdit
+    id: search
+    size: 218 38
+    image-source: new_images/search
+    visible: true
+    padding: 12 0 0 35
+    color: #F8F8FF
+    icon-source: images/lupa
+    icon-size: 16 16
+    icon-offset: 9 10
+    anchors.left: panelSearch.left
+    anchors.top: panelSearch.bottom
+    margin-top: 7
+    max-length: 15
+
+  ScrollablePanel
+    id: panelDesc
+    size: 170 70
+    anchors.centerIn: basePokemon
+    margin-top: 90
+    vertical-scrollbar: searchBar2
+
+    layout: verticalBox
+    UIWidget
+      id: description
+      font: damas
+      size: 170 300
+      text-align: topleft
+      text-offset: 10 10
+      text-wrap: true
+
+  VerticalScrollBar
+    id: searchBar2
+    visible: true
+    anchors.top: panelDesc.top
+    anchors.bottom: panelDesc.bottom
+    anchors.right: panelDesc.right
+    margin-right: -25
+    step: 20
