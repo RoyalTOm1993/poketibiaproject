@@ -1,0 +1,208 @@
+GuildEntry < MiniPanel
+  height: 120
+  $alternate:
+    background: #aaaaaa22
+  
+  $!alternate:
+    background: #aaaaaa11
+
+  Panel
+    id: logo
+    anchors.top: parent.top
+    anchors.left: parent.left
+    size: 64 64
+    image-source: images/guild_management/emblems
+
+  Label
+    id: position
+    anchors.bottom: parent.bottom
+    anchors.left: parent.left
+    height: 20
+    padding: 1
+    width: 64
+    font: sans-bold-16px
+    text-align: center
+    image-source: images/guild_management/panel_small_dark
+    image-border: 1
+  
+  Panel
+    id: info
+    anchors.top: parent.top
+    anchors.left: prev.right
+    anchors.right: parent.right
+    anchors.bottom: parent.bottom
+    margin-left: 5
+    padding: 3
+    image-source: images/guild_management/panel_small_dark
+    image-border: 1
+
+    Panel
+      anchors.top: parent.top
+      anchors.left: parent.left
+      anchors.bottom: parent.bottom
+      width: 220
+      layout: verticalBox
+
+      Panel
+        height: 14
+        layout: horizontalBox
+
+        Label
+          width: 105
+          color: #FFAA00
+          text: Guild Leader
+
+        Label
+          id: leader
+          text-auto-resize: true
+          color: #FFDC96
+
+      Panel
+        height: 14
+        margin-top: 5
+        layout: horizontalBox
+
+        Label
+          width: 105
+          color: #FFAA00
+          text: Guild Level
+
+        Label
+          id: level
+          text-auto-resize: true
+          color: #FFDC96
+
+      Panel
+        height: 14
+        margin-top: 5
+        layout: horizontalBox
+
+        Label
+          width: 105
+          color: #FFAA00
+          text: Guild Members
+
+        Label
+          id: members
+          text-auto-resize: true
+          color: #FFDC96
+
+      Panel
+        height: 14
+        margin-top: 5
+        visible: false
+        layout: horizontalBox
+
+        Label
+          width: 105
+          color: #FFAA00
+          text: Victorious Wars
+
+        Label
+          id: wars
+          text-auto-resize: true
+          color: #FFDC96
+
+      Panel
+        height: 14
+        margin-top: 5
+        layout: horizontalBox
+
+        Label
+          width: 105
+          color: #FFAA00
+          text: Total Levels
+
+        Label
+          id: levels
+          text-auto-resize: true
+          color: #FFDC96
+
+      Panel
+        height: 14
+        margin-top: 5
+        layout: horizontalBox
+
+        Label
+          width: 105
+          color: #FFAA00
+          text: Average Level
+
+        Label
+          id: avgLevel
+          text-auto-resize: true
+          color: #FFDC96
+
+    Panel
+      anchors.top: parent.top
+      anchors.left: prev.right
+      anchors.right: parent.right
+      anchors.bottom: parent.bottom
+      layout: verticalBox
+
+      Panel
+        height: 14
+        layout: horizontalBox
+
+        Label
+          width: 85
+          color: #FFAA00
+          text: Language
+
+        Label
+          id: language
+          text-auto-resize: true
+          color: #FFDC96
+
+      Panel
+        height: 14
+        margin-top: 5
+        layout: horizontalBox
+
+        Label
+          width: 85
+          color: #FFAA00
+          text: Join Status
+
+        Label
+          id: status
+          text-auto-resize: true
+          color: #FFDC96
+
+      Panel
+        height: 14
+        margin-top: 5
+        layout: horizontalBox
+
+        Label
+          width: 85
+          color: #FFAA00
+          text: Req. Level
+
+        Label
+          id: reqLevel
+          text-auto-resize: true
+          color: #FFDC96
+      
+      ButtonGuild
+        id: request
+        margin-top: 13
+        text: Send Join Request
+
+Panel
+  UIScrollArea
+    id: list
+    anchors.fill: parent
+    vertical-scrollbar: scrollbar
+    image-source: images/ui/textedit
+    image-border: 1
+    margin-right: 10
+    layout: verticalBox
+
+  VerticalScrollBar
+    id: scrollbar
+    anchors.top: prev.top
+    anchors.bottom: prev.bottom
+    anchors.left: prev.right
+    step: 50
+    pixels-scroll: true

@@ -1,0 +1,641 @@
+GuildsTableRow < TableRow
+  height: 19
+
+GuildsTableColumn < TableColumn
+  width: 80
+  text-align: center
+
+RankTitleColumn < TableColumn
+  width: 80
+  text-align: center
+
+RanksTableRow < TableRow
+  height: 19
+
+GuildsTableHeaderRow < TableHeaderRow
+  font: verdana-11px-monochrome
+  color: #d1d1d1
+  height: 20
+
+GuildsTableHeaderColumn < SortableTableHeaderColumn
+  font: verdana-11px-monochrome
+  color: #d1d1d1
+
+  $focus:
+    color: #ffffff
+
+LatestKillEntry < Panel
+  padding-top: 2
+  height: 18
+
+  $alternate:
+    background: #00000022
+  
+  Label
+    id: killer
+    anchors.top: parent.top
+    anchors.left: parent.left
+    text-align: left
+    color: #2FA02F
+  Panel
+    anchors.centerIn: parent
+    image-source: images/guild_management/vs
+  Label
+    id: victim
+    anchors.top: parent.top
+    anchors.right: parent.right
+    text-align: right
+    color: #E72222
+
+Panel
+  Panel
+    id: peace
+    anchors.fill: parent
+
+    Panel
+      anchors.top: parent.top
+      anchors.horizontalCenter: parent.horizontalCenter
+      margin-top: 10
+      image-source: images/guild_management/peace
+
+    Label
+      anchors.top: prev.bottom
+      anchors.horizontalCenter: parent.horizontalCenter
+      margin-top: 20
+      text-align: center
+      text: Your guild is not at war!
+
+    Panel
+      anchors.top: prev.bottom
+      anchors.horizontalCenter: parent.horizontalCenter
+      margin-top: 20
+      width: 150
+      layout:
+        type: verticalBox
+        fit-children: true
+        spacing: 20
+      
+      ButtonGuild
+        text: Declare War
+        @onClick: modules.game_guildmanagement.showDeclaration()
+
+      ButtonGuild
+        text: Pacifist Mode
+        @onClick: modules.game_guildmanagement.startPacifist()
+
+    Label
+      id: pacifismStatus
+      anchors.top: prev.bottom
+      anchors.horizontalCenter: parent.horizontalCenter
+      margin-top: 20
+      text-align: center
+      text-auto-resize: true
+  
+  Panel
+    id: war
+    anchors.fill: parent
+    visible: false
+
+    MiniPanel
+      id: current
+      anchors.top: parent.top
+      anchors.left: parent.left
+      anchors.right: parent.right
+      height: 170
+      text: Current War
+
+      Panel
+        id: emblem1
+        anchors.bottom: parent.bottom
+        anchors.left: parent.left
+        margin-left: 20
+        image-source: images/guild_management/emblems
+        image-clip: 0 0 128 128
+        size: 128 128
+
+      Label
+        id: name1
+        anchors.bottom: prev.top
+        anchors.horizontalCenter: prev.horizontalCenter
+        text-auto-resize: true
+        text-align: center
+        text: Your Guild Name
+        color: #2FA02F
+
+      Panel
+        id: details
+        anchors.top: parent.top
+        anchors.horizontalCenter: parent.horizontalCenter
+        width: 160
+        layout:
+          type: verticalBox
+          fit-children: true
+
+        Panel
+          id: kills
+          height: 16
+          Label
+            id: ally
+            anchors.top: parent.top
+            anchors.right: next.left
+            margin-right: 5
+            text: 3
+            color: #2FA02F
+            text-align: right
+            text-auto-resize: true
+            font: sans-bold-16px
+          Panel
+            anchors.centerIn: parent
+            image-source: images/guild_management/vs
+            margin-top: 1
+          Label
+            id: enemy
+            anchors.top: parent.top
+            anchors.left: prev.right
+            margin-left: 5
+            text: 2
+            color: #E72222
+            text-align: left
+            text-auto-resize: true
+            font: sans-bold-16px
+
+        Label
+          margin-top: 5
+          text: Ends On
+          text-align: center
+          color: #FFDC96
+
+        Label
+          id: ends
+          text: 23/08/2021 16:18
+          text-align: center
+          color: #FFAA00
+
+        Label
+          margin-top: 3
+          text: Kills Limit
+          text-align: center
+          color: #FFDC96
+
+        Label
+          id: killsLimit
+          text: 25
+          text-align: center
+          color: #FFAA00
+
+        Label
+          margin-top: 3
+          text: Gold Pot
+          text-align: center
+          color: #FFDC96
+
+        Label
+          id: goldBet
+          text: 30.000
+          text-align: center
+          color: #FFAA00
+
+        Label
+          id: preStatus
+          margin-top: 3
+          text: Status
+          text-align: center
+          color: #FFDC96
+
+        Label
+          id: status
+          text: 30.000
+          text-align: center
+          color: #FFAA00
+
+      Panel
+        id: emblem2
+        anchors.bottom: parent.bottom
+        anchors.right: parent.right
+        margin-right: 20
+        image-source: images/guild_management/emblems
+        image-clip: 128 0 128 128
+        size: 128 128
+        
+      Label
+        id: name2
+        anchors.bottom: prev.top
+        anchors.horizontalCenter: prev.horizontalCenter
+        text-auto-resize: true
+        text-align: center
+        text: Enemy Guild Name
+        color: #E72222
+
+    MiniPanel
+      id: kills
+      anchors.top: prev.bottom
+      anchors.left: parent.left
+      anchors.bottom: parent.bottom
+      width: 300
+      margin-top: 5
+      text: Latest Kills
+
+      UIScrollArea
+        id: list
+        anchors.fill: parent
+        margin-right: 12
+        padding-left: 1
+        padding-right: 1
+        vertical-scrollbar: killsScrollbar
+        layout: verticalBox
+
+      VerticalScrollBar
+        id: killsScrollbar
+        anchors.top: prev.top
+        anchors.bottom: prev.bottom
+        anchors.left: prev.right
+        margin-left: 2
+        step: 50
+        pixels-scroll: true
+
+    MiniPanel
+      id: options
+      anchors.top: prev.top
+      anchors.left: prev.right
+      anchors.right: parent.right
+      anchors.bottom: parent.bottom
+      margin-left: 5
+      text: Options
+
+      ComboBoxGuild
+        id: selection
+        anchors.top: parent.top
+        anchors.left: parent.left
+        anchors.right: parent.right
+
+      ButtonGuild
+        anchors.top: prev.bottom
+        anchors.horizontalCenter: parent.horizontalCenter
+        margin-top: 5
+        text: Pacifist Mode
+        @onClick: modules.game_guildmanagement.startPacifist()
+
+      ButtonGuild
+        anchors.top: prev.bottom
+        anchors.horizontalCenter: parent.horizontalCenter
+        margin-top: 5
+        text: Declare War
+        @onClick: modules.game_guildmanagement.showDeclaration()
+
+      ButtonGuild
+        id: surrender
+        anchors.top: prev.bottom
+        anchors.horizontalCenter: parent.horizontalCenter
+        margin-top: 5
+        color: #E72222
+        text: Surrender
+        @onClick: modules.game_guildmanagement.surrender()
+
+  Panel
+    id: selection
+    anchors.fill: parent
+    visible: false
+
+    Panel
+      anchors.top: parent.top
+      anchors.horizontalCenter: parent.horizontalCenter
+      image-source: images/guild_management/war
+
+    Label
+      anchors.top: prev.bottom
+      anchors.horizontalCenter: parent.horizontalCenter
+      margin-top: 10
+      text-auto-resize: true
+      text-align: center
+      !text: 'Double-click to select guild from the list to continue.\nGuilds with Pacifist Mode are not listed.'
+
+    Table
+      id: guilds
+      anchors.top: prev.bottom
+      anchors.left: parent.left
+      anchors.right: parent.right
+      anchors.bottom: parent.bottom
+      margin-top: 5
+      margin-bottom: 30
+      image-source: images/ui/panel_flat
+      image-border: 1
+      focusable: false
+      table-data: guildsData
+      row-style: GuildsTableRow
+      column-style: GuildsTableColumn
+      header-column-style: false
+      header-row-style: false
+
+      GuildsTableHeaderRow
+        id: header
+        padding-left: 1
+
+        GuildsTableHeaderColumn
+          !text: '#'
+          width: 40
+
+        GuildsTableHeaderColumn
+          !text: 'Name'
+          width: 160
+
+        GuildsTableHeaderColumn
+          !text: 'Level'
+          width: 60
+
+        GuildsTableHeaderColumn
+          !text: 'Members'
+          width: 65
+
+        GuildsTableHeaderColumn
+          !text: 'Total Levels'
+          width: 90
+
+        GuildsTableHeaderColumn
+          !text: 'Avg Level'
+          width: 90
+
+    TableData
+      id: guildsData
+      anchors.fill: guilds
+      padding-top: 20
+      padding-left: 1
+      padding-right: 1
+      padding-bottom: 1
+      vertical-scrollbar: guildsDataScrollBar
+
+    VerticalScrollBar
+      id: guildsDataScrollBar
+      anchors.top: guilds.top
+      anchors.bottom: guilds.bottom
+      anchors.right: guilds.right
+      step: 28
+      pixels-scroll: true
+
+    ButtonGuild
+      anchors.horizontalCenter: parent.horizontalCenter
+      anchors.bottom: parent.bottom
+      width: 60
+      text: Back
+      @onClick: modules.game_guildmanagement.backToMainWars()
+
+  Panel
+    id: declaration
+    anchors.fill: parent
+    visible: false
+
+    Panel
+      id: emblem
+      anchors.top: parent.top
+      anchors.left: parent.left
+      image-source: images/guild_management/emblems
+      image-clip: 0 0 128 128
+      size: 128 128
+    
+    MiniPanel
+      id: stats
+      anchors.top: parent.top
+      anchors.left: prev.right
+      anchors.right: parent.right
+      anchors.bottom: prev.bottom
+      margin-left: 10
+
+      Panel
+        anchors.top: parent.top
+        anchors.left: parent.left
+        anchors.bottom: parent.bottom
+        margin-top: 5
+        width: 200
+        layout: verticalBox
+
+        Panel
+          height: 14
+          layout: horizontalBox
+
+          Label
+            width: 105
+            color: #FFAA00
+            text: Guild Leader
+
+          Label
+            id: leader
+            text-auto-resize: true
+            color: #FFDC96
+
+        Panel
+          height: 14
+          margin-top: 5
+          layout: horizontalBox
+
+          Label
+            width: 105
+            color: #FFAA00
+            text: Guild Level
+
+          Label
+            id: level
+            text-auto-resize: true
+            color: #FFDC96
+
+        Panel
+          height: 14
+          margin-top: 5
+          layout: horizontalBox
+
+          Label
+            width: 105
+            color: #FFAA00
+            text: Guild Members
+
+          Label
+            id: members
+            text-auto-resize: true
+            color: #FFDC96
+
+        Panel
+          height: 14
+          margin-top: 5
+          visible: false
+          layout: horizontalBox
+
+          Label
+            width: 105
+            color: #FFAA00
+            text: Victorious Wars
+
+          Label
+            id: wars
+            text-auto-resize: true
+            color: #FFDC96
+
+        Panel
+          height: 14
+          margin-top: 5
+          layout: horizontalBox
+
+          Label
+            width: 105
+            color: #FFAA00
+            text: Total Levels
+
+          Label
+            id: total
+            text-auto-resize: true
+            color: #FFDC96
+
+        Panel
+          height: 14
+          margin-top: 5
+          layout: horizontalBox
+
+          Label
+            width: 105
+            color: #FFAA00
+            text: Average Level
+
+          Label
+            id: avgLevel
+            text-auto-resize: true
+            color: #FFDC96
+
+      Panel
+        anchors.top: parent.top
+        anchors.left: prev.right
+        anchors.right: parent.right
+        anchors.bottom: parent.bottom
+        margin-top: 5
+        layout: verticalBox
+
+        Panel
+          height: 14
+          layout: horizontalBox
+
+          Label
+            width: 85
+            color: #FFAA00
+            text: Wars Won
+
+          Label
+            id: won
+            text-auto-resize: true
+            color: #FFDC96
+        
+        Panel
+          height: 14
+          margin-top: 5
+          layout: horizontalBox
+
+          Label
+            width: 85
+            color: #FFAA00
+            text: Wars Lost
+
+          Label
+            id: lost
+            text-auto-resize: true
+            color: #FFDC96
+
+    MiniPanel
+      id: conditions
+      anchors.top: prev.bottom
+      anchors.left: parent.left
+      anchors.bottom: parent.bottom
+      margin-top: 10
+      width: 380
+      text: War Conditions
+      layout: verticalBox
+      
+      Panel
+        height: 32
+        
+        Label
+          anchors.top: parent.top
+          anchors.horizontalCenter: parent.horizontalCenter
+          color: #FFAA00
+          text: Forced War
+          text-align: center
+
+        CheckBoxGuild
+          id: forceWar
+          anchors.bottom: parent.bottom
+          anchors.horizontalCenter: parent.horizontalCenter
+          text: Enable
+          text-auto-resize: true
+          !tooltip: 'Forced War ommits war declaration\nprocess and starts preparation timer right away.\nGold betting is disabled.'
+
+      Label
+        margin-top: 10
+        color: #FFAA00
+        text: War Duration
+        text-align: center
+      
+      HorizontalScrollBar
+        id: duration
+        margin-top: 2
+        minimum: 3
+        maximum: 30
+        step: 1
+        value: 1
+        show-value: true
+        symbol: days
+        
+      Label
+        margin-top: 5
+        color: #FFAA00
+        text: Kills Limit
+        text-align: center
+      
+      HorizontalScrollBar
+        id: kills
+        margin-top: 2
+        minimum: 10
+        maximum: 100
+        step: 1
+        value: 1
+        show-value: true
+        symbol: kills
+        
+      Label
+        margin-top: 5
+        color: #FFAA00
+        text: Gold Bet
+        text-align: center
+      
+      HorizontalScrollBar
+        id: goldBet
+        margin-top: 2
+        minimum: 1000
+        maximum: 10000000
+        step: 1000
+        value: 1000
+        show-value: true
+        symbol: gold
+
+    Label
+      anchors.top: prev.top
+      anchors.left: prev.right
+      anchors.right: parent.right
+      anchors.bottom: next.top
+      margin-left: 10
+      text-align: center
+      text-wrap: true
+      !text: 'Unless Forced War is selected, opposite guild has to accept war declaration. When war starts, both guilds gold will be stored away.'
+
+    Panel
+      anchors.left: conditions.right
+      anchors.right: parent.right
+      anchors.bottom: parent.bottom
+      margin-left: 10
+      layout:
+        type: verticalBox
+        spacing: 15
+        fit-children: true
+
+      ButtonGuild
+        text: Declare War
+        color: #FF4040
+        @onClick: modules.game_guildmanagement.declareWar()
+      
+      ButtonGuild
+        text: Back to List
+        @onClick: modules.game_guildmanagement.backToList()
+    

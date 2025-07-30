@@ -1,0 +1,140 @@
+RanksTableRow < TableRow
+  height: 19
+
+RankTitleColumn < TableColumn
+  width: 80
+  text-align: center
+
+RanksTableColumn < CheckBoxGuild
+  image-offset: 20 3
+
+RanksTableHeaderColumn < UIWidget
+  font: verdana-11px-antialised
+  color: #dfdfdf88
+  image-source: images/ui/button
+  image-clip: 0 0 22 23
+  image-border: 3
+  text-wrap: true
+
+Panel
+  Table
+    id: ranksTable
+    anchors.top: parent.top
+    anchors.left: parent.left
+    anchors.right: parent.right
+    anchors.bottom: parent.bottom
+    margin-bottom: 30
+    table-data: ranksTableData
+    row-style: RanksTableRow
+    column-style: RanksTableColumn
+    header-column-style: false
+    header-row-style: false
+
+    TableHeaderRow
+      id: header
+      height: 30
+      
+      RanksTableHeaderColumn
+        text: Title
+        width: 92
+
+      RanksTableHeaderColumn
+        text: Invite Members
+        width: 65
+
+      RanksTableHeaderColumn
+        text: Edit Members
+        width: 65
+
+      RanksTableHeaderColumn
+        text: Edit Ranks
+        width: 50
+
+      RanksTableHeaderColumn
+        text: Edit Settings
+        width: 58
+
+      RanksTableHeaderColumn
+        text: Manage Gold
+        width: 55
+
+      RanksTableHeaderColumn
+        text: Manage Wars
+        width: 60
+
+      RanksTableHeaderColumn
+        text: Manage Buffs
+        width: 60
+
+  TableData
+    id: ranksTableData
+    anchors.fill: ranksTable
+    padding: 1
+    padding-top: 30
+    vertical-scrollbar: ranksTableScroll
+
+  VerticalScrollBar
+    id: ranksTableScroll
+    anchors.top: ranksTableData.top
+    anchors.bottom: ranksTableData.bottom
+    anchors.right: ranksTableData.right
+    step: 20
+    pixels-scroll: true
+  
+  TextEdit
+    id: newRank
+    anchors.left: parent.left
+    anchors.bottom: parent.bottom
+    width: 120
+    max-length: 14
+    placeholder: New rank title
+  
+  ButtonGuild
+    anchors.left: prev.right
+    anchors.bottom: parent.bottom
+    margin-left: 5
+    width: 90
+    text: Create New
+    @onClick: modules.game_guildmanagement.createRank()
+  
+  ButtonGuild
+    id: default
+    anchors.left: prev.right
+    anchors.bottom: parent.bottom
+    width: 60
+    margin-left: 4
+    image-color: orange
+    text: Default
+    @onClick: modules.game_guildmanagement.makeDefault()
+    enabled: false
+  
+  ButtonGuild
+    id: delete
+    anchors.left: prev.right
+    anchors.bottom: parent.bottom
+    width: 60
+    margin-left: 5
+    image-color: red
+    text: Delete
+    @onClick: modules.game_guildmanagement.deleteRank()
+    enabled: false
+  
+  ButtonGuild
+    id: reset
+    anchors.left: prev.right
+    anchors.bottom: parent.bottom
+    width: 60
+    margin-left: 5
+    text: Reset
+    @onClick: modules.game_guildmanagement.resetRanks()
+    enabled: false
+  
+  ButtonGuild
+    id: save
+    anchors.right: parent.right
+    anchors.bottom: parent.bottom
+    image-color: green
+    width: 60
+    text: Save
+    @onClick: modules.game_guildmanagement.saveRanks()
+    enabled: false

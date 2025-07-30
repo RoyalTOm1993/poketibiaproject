@@ -1,0 +1,249 @@
+BuffRow < Panel
+  height: 87
+
+BuffButton < UICheckBox
+  anchors.centerIn: parent
+  size: 64 64
+  image-color: #666666
+  phantom: false
+
+  $checked:
+    image-color: #ffffff
+
+Panel
+  Panel
+    id: buffs
+    anchors.top: parent.top
+    anchors.left: parent.left
+    anchors.right: parent.right
+    anchors.bottom: next.top
+    margin-left: 1
+    margin-right: 1
+    margin-bottom: 5
+    image-source: images/guild_management/buffs_bg
+    layout: horizontalBox
+
+    Panel
+      width: 172
+      layout: verticalBox
+
+      BuffRow
+        id: row1
+
+        BuffButton
+          id: 1
+          image-source: images/guild_management/buffs/iconguild/def
+          margin-right: 48
+          tooltip: Defense +3%
+
+        BuffButton
+          id: 2
+          image-source: images/guild_management/buffs/iconguild/atk
+          margin-left: 48
+          tooltip: Attack +5%
+
+        Panel
+          anchors.fill: parent
+          background: #000000aa
+          text: Unlocks at level 5
+          text-align: center
+          visible: false
+
+      BuffRow
+        id: row4
+
+        BuffButton
+          id: 1
+          image-source: images/guild_management/buffs/iconguild/critical catch
+          margin-right: 48
+          tooltip: Critical Catch 10% (2x catch base chance)
+
+        BuffButton
+          id: 2
+          image-source: images/guild_management/buffs/iconguild/lucky
+          margin-left: 48
+          tooltip: Loot Lucky 15%
+
+        Panel
+          anchors.fill: parent
+          background: #000000aa
+          text: Unlocks at level 10
+          text-align: center
+          visible: false
+
+      BuffRow
+        id: row7
+
+        BuffButton
+          id: 1
+          image-source: images/guild_management/buffs/iconguild/none
+          margin-right: 48
+          tooltip: soon
+
+        BuffButton
+          id: 2
+          image-source: images/guild_management/buffs/iconguild/none
+          margin-left: 48
+          tooltip: soon
+
+        Panel
+          anchors.fill: parent
+          background: #000000aa
+          text: Coming soon...
+          font: verdana-11px-rounded
+          text-align: center
+
+    Panel
+      width: 172
+      layout: verticalBox
+
+      BuffRow
+        id: row2
+
+        BuffButton
+          id: 1
+          image-source: images/guild_management/buffs/iconguild/critical
+          margin-right: 48
+          tooltip: Critical Chance +5%
+
+        BuffButton
+          id: 2
+          image-source: images/guild_management/buffs/iconguild/crit dmg
+          margin-left: 48
+          tooltip: Critical Damage +5%
+
+        Panel
+          anchors.fill: parent
+          background: #000000aa
+          text: Unlocks at level 5
+          text-align: center
+          visible: false
+
+      BuffRow
+        id: row5
+
+        BuffButton
+          id: 1
+          image-source: images/guild_management/buffs/iconguild/dungeon reward
+          margin-right: 48
+          tooltip: Dungeon Reward +5%
+
+        BuffButton
+          id: 2
+          image-source: images/guild_management/buffs/iconguild/dungeon exp
+          margin-left: 48
+          tooltip: Dungeon Experience +50%
+
+        Panel
+          anchors.fill: parent
+          background: #000000aa
+          text: Unlocks at level 10
+          text-align: center
+          visible: false
+
+      BuffRow
+        id: row8
+
+        BuffButton
+          id: 1
+          image-source: images/guild_management/buffs/iconguild/none
+          margin-right: 48
+          tooltip: soon
+
+        BuffButton
+          id: 2
+          image-source: images/guild_management/buffs/iconguild/none
+          margin-left: 48
+          tooltip: soon
+
+        Panel
+          anchors.fill: parent
+          background: #000000aa
+          text: Coming soon...
+          font: verdana-11px-rounded
+          text-align: center
+
+    Panel
+      width: 172
+      layout: verticalBox
+
+      BuffRow
+        id: row3
+
+        BuffButton
+          id: 1
+          image-source: images/guild_management/buffs/iconguild/player speed
+          margin-right: 48
+          tooltip: Player Speed +50
+
+        BuffButton
+          id: 2
+          image-source: images/guild_management/buffs/iconguild/pokespeed
+          margin-left: 48
+          tooltip: Pokemon Speed +10%
+
+        Panel
+          anchors.fill: parent
+          background: #000000aa
+          text: Unlocks at level 5
+          text-align: center
+          visible: false
+
+      BuffRow
+        id: row6
+
+        BuffButton
+          id: 1
+          image-source: images/guild_management/buffs/iconguild/health
+          margin-right: 48
+          tooltip: Pokemon Health +5%
+
+        BuffButton
+          id: 2
+          image-source: images/guild_management/buffs/iconguild/block
+          margin-left: 48
+          tooltip: Block Chance +5%
+
+        Panel
+          anchors.fill: parent
+          background: #000000aa
+          text: Unlocks at level 10
+          text-align: center
+
+      BuffRow
+        id: row9
+
+        BuffButton
+          id: 1
+          image-source: images/guild_management/buffs/iconguild/none
+          margin-right: 48
+          tooltip: soon
+
+        BuffButton
+          id: 2
+          image-source: images/guild_management/buffs/iconguild/none
+          margin-left: 48
+          tooltip: soon
+
+        Panel
+          anchors.fill: parent
+          background: #000000aa
+          text: Coming soon...
+          font: verdana-11px-rounded
+          text-align: center
+    
+  Label
+    id: delay
+    anchors.bottom: next.top
+    anchors.horizontalCenter: parent.horizontalCenter
+    margin-bottom: 5
+    text-auto-resize: true
+    text: Buffs can be saved once every 24 hour
+  
+  ButtonGuild
+    id: save
+    anchors.bottom: parent.bottom
+    anchors.horizontalCenter: parent.horizontalCenter
+    width: 80
+    text: Save
+    enabled: false
