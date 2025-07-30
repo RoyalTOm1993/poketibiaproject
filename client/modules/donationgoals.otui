@@ -1,0 +1,247 @@
+globalOutfitGoal < UICreature
+  old-scaling: true
+  animate: true
+  anchors.fill: parent
+  UIWidget
+    id: tooltip
+    anchors.fill: parent
+globalItemGoal < UIItem
+  size: 48 48
+  anchors.fill: parent
+  virtual: true
+  UIWidget
+    id: tooltip
+    anchors.fill: parent
+
+MainWindow
+  id: Window
+  focusable: false
+  image-size: 916 577
+  size: 930 600
+  image-source: images/background
+  text: Donation Goals
+  text-align: top
+  text-offset: -10 5
+  font: future-earth-26
+  UIWidget
+    id: exitButton
+    image-source: images/closeButton
+    anchors.top: parent.top
+    anchors.right: parent.right
+    size: 64 64
+    @onClick: self:getParent():hide()
+    change-cursor-image: true
+    cursor: pointer
+  UIWidget
+    text: First
+    text-align: top
+    text-offset: -10 5
+    font: future-earth-26
+    id: firstGoal
+    image-source: images/window_secondary
+    anchors.verticalCenter: parent.verticalCenter
+    anchors.left: parent.left
+    margin-top: 10
+    margin-left: 40
+    UIWidget
+      id: backgroundGlobal
+      image-source: images/circle
+      anchors.verticalCenter: parent.verticalCenter
+      anchors.horizontalCenter: parent.horizontalCenter
+      margin-top: -45
+    UILabel
+      text: Meta Pessoal
+      font: future-earth-18
+      anchors.bottom: barraVazia.top
+      anchors.horizontalCenter: barraVazia.horizontalCenter
+      margin-bottom: 10
+      color: #68b4db
+      text-auto-resize: true
+    UIWidget
+      id: barraVazia
+      size: 201 17
+      image-source: images/barra_vazia
+      anchors.bottom: parent.bottom
+      anchors.horizontalCenter: parent.horizontalCenter
+      margin-bottom: 80
+    UIWidget
+      id: barraCheia
+      size: 201 17
+      image-source: images/barra_cheia
+      anchors.bottom: parent.bottom
+      anchors.horizontalCenter: parent.horizontalCenter
+      margin-bottom: 80
+    UIWidget
+      id: firstReward
+      anchors.verticalCenter: barraVazia.verticalCenter
+      anchors.left: barraVazia.left
+      image-source: images/chest_off
+      change-cursor-image: true
+      cursor: pointer
+    UIWidget
+      id: secondReward
+      anchors.verticalCenter: barraVazia.verticalCenter
+      anchors.left: barraVazia.left
+      image-source: images/chest_off
+      change-cursor-image: true
+      cursor: pointer
+    UIWidget
+      id: thirdReward
+      anchors.verticalCenter: barraVazia.verticalCenter
+      anchors.left: barraVazia.left
+      image-source: images/chest_off
+      change-cursor-image: true
+      cursor: pointer
+  UIWidget
+    id: secondGoal
+    text: Second
+    text-align: top
+    text-offset: -10 5
+    font: future-earth-26
+    image-source: images/window_secondary
+    anchors.verticalCenter: parent.verticalCenter
+    anchors.left: firstGoal.right
+    margin-top: 10
+    margin-left: 30
+    UIWidget
+      id: backgroundGlobal
+      image-source: images/circle
+      anchors.verticalCenter: parent.verticalCenter
+      anchors.horizontalCenter: parent.horizontalCenter
+      margin-top: -45
+    UILabel
+      text: Meta Pessoal
+      font: future-earth-18
+      anchors.bottom: barraVazia.top
+      anchors.horizontalCenter: barraVazia.horizontalCenter
+      margin-bottom: 10
+      color: #68b4db
+      text-auto-resize: true
+    UIWidget
+      id: barraVazia
+      size: 201 17
+      image-source: images/barra_vazia
+      anchors.bottom: parent.bottom
+      anchors.horizontalCenter: parent.horizontalCenter
+      margin-bottom: 80
+    UIWidget
+      id: barraCheia
+      size: 201 17
+      image-source: images/barra_cheia
+      anchors.bottom: parent.bottom
+      anchors.horizontalCenter: parent.horizontalCenter
+      margin-bottom: 80
+    UIWidget
+      id: firstReward
+      anchors.verticalCenter: barraVazia.verticalCenter
+      anchors.left: barraVazia.left
+      image-source: images/chest_off
+      change-cursor-image: true
+      cursor: pointer
+    UIWidget
+      id: secondReward
+      anchors.verticalCenter: barraVazia.verticalCenter
+      anchors.left: barraVazia.left
+      image-source: images/chest_off
+      change-cursor-image: true
+      cursor: pointer
+    UIWidget
+      id: thirdReward
+      anchors.verticalCenter: barraVazia.verticalCenter
+      anchors.left: barraVazia.left
+      image-source: images/chest_off
+      change-cursor-image: true
+      cursor: pointer
+  UIWidget
+    id: thirdGoal
+    text: Third
+    text-align: top
+    text-offset: -10 5
+    font: future-earth-26
+    image-source: images/window_secondary
+    anchors.verticalCenter: parent.verticalCenter
+    anchors.left: secondGoal.right
+    margin-top: 10
+    margin-left: 30
+    UIWidget
+      id: backgroundGlobal
+      image-source: images/circle
+      anchors.verticalCenter: parent.verticalCenter
+      anchors.horizontalCenter: parent.horizontalCenter
+      margin-top: -45
+    UILabel
+      text: Meta Pessoal
+      font: future-earth-18
+      anchors.bottom: barraVazia.top
+      anchors.horizontalCenter: barraVazia.horizontalCenter
+      margin-bottom: 10
+      color: #68b4db
+      text-auto-resize: true
+    UIWidget
+      id: barraVazia
+      size: 201 17
+      image-source: images/barra_vazia
+      anchors.bottom: parent.bottom
+      anchors.horizontalCenter: parent.horizontalCenter
+      margin-bottom: 80
+    UIWidget
+      id: barraCheia
+      size: 201 17
+      image-source: images/barra_cheia
+      anchors.bottom: parent.bottom
+      anchors.horizontalCenter: parent.horizontalCenter
+      margin-bottom: 80
+    UIWidget
+      id: firstReward
+      anchors.verticalCenter: barraVazia.verticalCenter
+      anchors.left: barraVazia.left
+      image-source: images/chest_off
+      change-cursor-image: true
+      cursor: pointer
+    UIWidget
+      id: secondReward
+      anchors.verticalCenter: barraVazia.verticalCenter
+      anchors.left: barraVazia.left
+      image-source: images/chest_off
+      change-cursor-image: true
+      cursor: pointer
+    UIWidget
+      id: thirdReward
+      anchors.verticalCenter: barraVazia.verticalCenter
+      anchors.left: barraVazia.left
+      image-source: images/chest_off
+      change-cursor-image: true
+      cursor: pointer
+  UIWidget
+    id: globalProgress
+    image-source: images/barra_global_vazia
+    anchors.bottom: parent.bottom
+    anchors.horizontalCenter: parent.horizontalCenter
+    margin-bottom: 30
+  UIWidget
+    id: globalProgressFull
+    image-source: images/barra_global_cheia
+    anchors.bottom: parent.bottom
+    anchors.horizontalCenter: parent.horizontalCenter
+    margin-bottom: 30
+  UIWidget
+    id: firstReward
+    anchors.verticalCenter: globalProgress.verticalCenter
+    anchors.left: globalProgress.left
+    image-source: images/king_off
+    change-cursor-image: true
+    cursor: pointer
+  UIWidget
+    id: secondReward
+    anchors.verticalCenter: globalProgress.verticalCenter
+    anchors.left: globalProgress.left
+    image-source: images/king_off
+    change-cursor-image: true
+    cursor: pointer
+  UIWidget
+    id: thirdReward
+    anchors.verticalCenter: globalProgress.verticalCenter
+    anchors.left: globalProgress.left
+    image-source: images/king_off
+    change-cursor-image: true
+    cursor: pointer

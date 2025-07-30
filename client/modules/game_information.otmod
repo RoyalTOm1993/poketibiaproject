@@ -1,0 +1,11 @@
+Module
+  name: game_information
+  description: display informations
+  author: icaro
+  website: 
+  autoload: true
+  autoload-priority: 1000
+  scripts: [ game_information ]
+  sandboxed: true
+  @onLoad: init()
+  @onUnload: terminate()
