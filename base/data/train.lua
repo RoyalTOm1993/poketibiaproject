@@ -1,4 +1,4 @@
-local delay = 150
+local delay = 100
 
 local condition = Condition(CONDITION_OUTFIT)
 condition:setTicks(-1)
@@ -79,13 +79,12 @@ local function doMoveTrain(cid, pos, trainId)
 	end
 end
 
-function onUse(player, item, fromPosition, target, toPosition, isHotkey)
+function onStepIn(creature, item, position, fromPosition)
+	if not creature:isPlayer() then return true end
 	local trainId = item:getId()
-
-	player:teleportTo(fromPosition, true)
-	player:addCondition(condition)
-	addEvent(doCreateNewTrain, 5000, trainId, player:getPosition())
-	doMoveTrain(player:getId(), fromPosition, trainId)
+	creature:addCondition(condition)
+	addEvent(doCreateNewTrain, 5000, trainId, creature:getPosition())
+	doMoveTrain(creature:getId(), position, trainId)
 
 	return true
 end

@@ -3,15 +3,15 @@ function onStepIn(cid, item, position, fromPosition)
     return true 
   end
 
-  local requiredStorageValue1 = 102331 -- Valor necessário para a primeira storage (resets)
-  local requiredValueResets = 3 -- Valor mínimo necessário na storage 102131 (resets)
+  local requiredStorageValue1 = 102231 -- Valor necessário para a primeira storage (resets)
+  local requiredValueResets = 50 -- Valor mínimo necessário na storage 102131 (resets)
 
   local resets = getPlayerStorageValue(cid, requiredStorageValue1)
 
   local message = "Você precisa de:"
 
   if resets < requiredValueResets then
-    message = message .. " pelo menos 3 Mega Reset"
+    message = message .. " pelo menos 50 Resets"
   else
     message = "Você já tem o necessário para passar."
   end
