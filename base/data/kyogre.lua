@@ -1,19 +1,19 @@
 
-local mType = Game.createMonsterType("Regirock")
+local mType = Game.createMonsterType("Kyogre")
 local pokemon = {}
 pokemon.eventFile = false -- will try to load the file example.lua in data/scripts/pokemons/events
 pokemon.eventFile = "default" -- will try to load the file test.lua in data/scripts/pokemons/events
-pokemon.description = "a Regirock"
+pokemon.description = "a Kyogre"
 pokemon.experience = 1
 pokemon.outfit = {
-    lookType = 1625
+    lookType = 1630
 }
 
 pokemon.health = 10000000
 pokemon.maxHealth = pokemon.health
-pokemon.race = "rock"
+pokemon.race = "water"
 pokemon.race2 = "none"
-pokemon.corpse = 27949
+pokemon.corpse = 27954
 pokemon.speed = 180
 pokemon.maxSummons = 0
 
@@ -69,36 +69,44 @@ pokemon.voices = {
 }
 
 pokemon.loot = {
-{id = "small stone", chance = 8000000, maxCount = 13},
-{id = "stone orb", chance = 3250000, maxCount = 1},
+{id = "water gem", chance = 8000000, maxCount = 13},
+{id = "water pendant", chance = 3250000, maxCount = 1},
 }
 
 pokemon.moves = {
 	{name = "melee", power = 3, interval = 2000},
-    {name = "Rock Throw", power = 12, interval = 10000},
-    {name = "Rock Slide", power = 15, interval = 15000},
-    {name = "Rock Tomb", power = 7, interval = 15000},
-    {name = "Stone Edge", power = 7, interval = 20000},
-    {name = "Hammer Arm", power = 17, interval = 25000},
-    {name = "Ancient Power", power = 20, interval = 50000},
-    {name = "Rock Wrecker", power = 25, interval = 50000},
-    {name = "Hyper Beam", power = 15, interval = 50000},
-    {name = "Harden", power = 0, interval = 40000},
+    {name = "Aqua Tail", power = 8, interval = 10000},
+    {name = "Water Pulse", power = 9, interval = 12000},
+    {name = "Ice Beam", power = 12, interval = 15000},
+    {name = "Body Slam", power = 9, interval = 15000},
+    {name = "Ancient Power", power = 20, interval = 22000},
+    {name = "Surf", power = 20, interval = 30000},
+    {name = "Water Spout", power = 30, interval = 50000},
+    {name = "Hydro Pump", power = 20, interval = 40000},
+    {name = "Sheer Cold", power = 7, interval = 45000},
+    {name = "Origin Pulse", power = 7, interval = 60000},
+    {name = "Calm Mind", power = 7, interval = 30000},
+    {name = "Scary Face", power = 0, interval = 20000},
+    {name = "Aqua Ring", power = 20, interval = 45000},
 }
 
 
 
 pokemon.attacks = {
 	{name = "melee", power = 3, interval = 2000, chance = 100},
-    {name = "Rock Throw", power = 12, interval = 10000, chance = 100},
-    {name = "Rock Slide", power = 15, interval = 15000, chance = 100},
-    {name = "Rock Tomb", power = 7, interval = 15000, chance = 100},
-    {name = "Stone Edge", power = 7, interval = 20000, chance = 100},
-    {name = "Hammer Arm", power = 17, interval = 25000, chance = 100},
-    {name = "Ancient Power", power = 20, interval = 50000, chance = 100},
-    {name = "Rock Wrecker", power = 25, interval = 50000, chance = 100},
-    {name = "Hyper Beam", power = 15, interval = 50000, chance = 100},
-    {name = "Harden", power = 0, interval = 40000, chance = 100},
+    {name = "Aqua Tail", power = 8, interval = 10000, chance = 100},
+    {name = "Water Pulse", power = 9, interval = 12000, chance = 100},
+    {name = "Ice Beam", power = 12, interval = 15000, chance = 100},
+    {name = "Body Slam", power = 9, interval = 15000, chance = 100},
+    {name = "Ancient Power", power = 20, interval = 22000, chance = 100},
+    {name = "Surf", power = 20, interval = 30000, chance = 100},
+    {name = "Water Spout", power = 30, interval = 50000, chance = 100},
+    {name = "Hydro Pump", power = 20, interval = 40000, chance = 100},
+    {name = "Sheer Cold", power = 7, interval = 45000, chance = 100},
+    {name = "Origin Pulse", power = 7, interval = 60000, chance = 100},
+    {name = "Calm Mind", power = 7, interval = 30000, chance = 100},
+    {name = "Scary Face", power = 0, interval = 20000, chance = 100},
+    {name = "Aqua Ring", power = 20, interval = 45000, chance = 100},
 }
 
 

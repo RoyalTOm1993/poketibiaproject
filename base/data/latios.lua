@@ -1,19 +1,19 @@
 
-local mType = Game.createMonsterType("Regirock")
+local mType = Game.createMonsterType("Latios")
 local pokemon = {}
 pokemon.eventFile = false -- will try to load the file example.lua in data/scripts/pokemons/events
 pokemon.eventFile = "default" -- will try to load the file test.lua in data/scripts/pokemons/events
-pokemon.description = "a Regirock"
+pokemon.description = "a Latios"
 pokemon.experience = 1
 pokemon.outfit = {
-    lookType = 1625
+    lookType = 1629
 }
 
-pokemon.health = 10000000
+pokemon.health = 18545
 pokemon.maxHealth = pokemon.health
-pokemon.race = "rock"
-pokemon.race2 = "none"
-pokemon.corpse = 27949
+pokemon.race = "dragon"
+pokemon.race2 = "psychic"
+pokemon.corpse = 27953
 pokemon.speed = 180
 pokemon.maxSummons = 0
 
@@ -69,36 +69,41 @@ pokemon.voices = {
 }
 
 pokemon.loot = {
-{id = "small stone", chance = 8000000, maxCount = 13},
-{id = "stone orb", chance = 3250000, maxCount = 1},
+{id = "dragon scale", chance = 8000000, maxCount = 13},
+{id = "enchanted gem", chance = 8000000, maxCount = 13},
+{id = "future orb", chance = 3250000, maxCount = 1},
 }
 
 pokemon.moves = {
 	{name = "melee", power = 3, interval = 2000},
-    {name = "Rock Throw", power = 12, interval = 10000},
-    {name = "Rock Slide", power = 15, interval = 15000},
-    {name = "Rock Tomb", power = 7, interval = 15000},
-    {name = "Stone Edge", power = 7, interval = 20000},
-    {name = "Hammer Arm", power = 17, interval = 25000},
-    {name = "Ancient Power", power = 20, interval = 50000},
-    {name = "Rock Wrecker", power = 25, interval = 50000},
-    {name = "Hyper Beam", power = 15, interval = 50000},
-    {name = "Harden", power = 0, interval = 40000},
+    {name = "Psychock", power = 12, interval = 30000},
+    {name = "Psywave", power = 7, interval = 15000},
+    {name = "Ice Beam", power = 12, interval = 20000},
+    {name = "Charge Beam", power = 7, interval = 30000},
+    {name = "Dragon Flight", power = 7, interval = 22000},
+    {name = "Dragon Breath", power = 15, interval = 25000},
+    {name = "Twister", power = 7, interval = 35000},
+    {name = "Luster Purge", power = 7, interval = 50000},
+    {name = "Dragon Pulse", power = 7, interval = 40000},
+    {name = "Draco Meteor", power = 20, interval = 80000},
+    {name = "Safeguard", power = 7, interval = 40000},
 }
 
 
 
 pokemon.attacks = {
 	{name = "melee", power = 3, interval = 2000, chance = 100},
-    {name = "Rock Throw", power = 12, interval = 10000, chance = 100},
-    {name = "Rock Slide", power = 15, interval = 15000, chance = 100},
-    {name = "Rock Tomb", power = 7, interval = 15000, chance = 100},
-    {name = "Stone Edge", power = 7, interval = 20000, chance = 100},
-    {name = "Hammer Arm", power = 17, interval = 25000, chance = 100},
-    {name = "Ancient Power", power = 20, interval = 50000, chance = 100},
-    {name = "Rock Wrecker", power = 25, interval = 50000, chance = 100},
-    {name = "Hyper Beam", power = 15, interval = 50000, chance = 100},
-    {name = "Harden", power = 0, interval = 40000, chance = 100},
+    {name = "Psychock", power = 12, interval = 30000, chance = 100},
+    {name = "Psywave", power = 7, interval = 15000, chance = 100},
+    {name = "Ice Beam", power = 12, interval = 20000, chance = 100},
+    {name = "Charge Beam", power = 7, interval = 30000, chance = 100},
+    {name = "Dragon Flight", power = 7, interval = 22000, chance = 100},
+    {name = "Dragon Breath", power = 15, interval = 25000, chance = 100},
+    {name = "Twister", power = 7, interval = 35000, chance = 100},
+    {name = "Luster Purge", power = 7, interval = 50000, chance = 100},
+    {name = "Dragon Pulse", power = 7, interval = 40000, chance = 100},
+    {name = "Draco Meteor", power = 20, interval = 80000, chance = 100},
+    {name = "Safeguard", power = 7, interval = 40000, chance = 100},
 }
 
 

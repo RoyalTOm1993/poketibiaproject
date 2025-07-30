@@ -1,19 +1,19 @@
 
-local mType = Game.createMonsterType("Regirock")
+local mType = Game.createMonsterType("Suicune")
 local pokemon = {}
 pokemon.eventFile = false -- will try to load the file example.lua in data/scripts/pokemons/events
 pokemon.eventFile = "default" -- will try to load the file test.lua in data/scripts/pokemons/events
-pokemon.description = "a Regirock"
+pokemon.description = "a Suicune"
 pokemon.experience = 1
 pokemon.outfit = {
-    lookType = 1625
+    lookType = 921
 }
 
 pokemon.health = 10000000
 pokemon.maxHealth = pokemon.health
-pokemon.race = "rock"
+pokemon.race = "water"
 pokemon.race2 = "none"
-pokemon.corpse = 27949
+pokemon.corpse = 27106
 pokemon.speed = 180
 pokemon.maxSummons = 0
 
@@ -69,36 +69,40 @@ pokemon.voices = {
 }
 
 pokemon.loot = {
-{id = "small stone", chance = 8000000, maxCount = 13},
-{id = "stone orb", chance = 3250000, maxCount = 1},
+{id = "water gem", chance = 8000000, maxCount = 13},
+{id = "water pendant", chance = 3250000, maxCount = 1},
 }
 
 pokemon.moves = {
-	{name = "melee", power = 3, interval = 2000},
-    {name = "Rock Throw", power = 12, interval = 10000},
-    {name = "Rock Slide", power = 15, interval = 15000},
-    {name = "Rock Tomb", power = 7, interval = 15000},
-    {name = "Stone Edge", power = 7, interval = 20000},
-    {name = "Hammer Arm", power = 17, interval = 25000},
-    {name = "Ancient Power", power = 20, interval = 50000},
-    {name = "Rock Wrecker", power = 25, interval = 50000},
-    {name = "Hyper Beam", power = 15, interval = 50000},
-    {name = "Harden", power = 0, interval = 40000},
+	{name = "melee", power = 1, interval = 2000},
+    {name = "Bubbles", power = 1, interval = 6000},
+    {name = "Bubble Beam", power = 1, interval = 8000},
+    {name = "Water Ball", power = 1, interval = 9000},
+    {name = "Water Pulse", power = 1, interval = 21000},
+    {name = "Waterfall", power = 1, interval = 15000},
+    {name = "Hyper Beam", power = 1, interval = 29000},
+    {name = "Hydro Pump", power = 1, interval = 26000},
+    {name = "Water Spout", power = 1, interval = 40000},
+    {name = "Heavy Rain", power = 1, interval = 20000},
+    {name = "Aqua Ring", power = 1, interval = 43000},
+    {name = "Extreme Speed", power = 1, interval = 5000},
 }
 
 
 
 pokemon.attacks = {
-	{name = "melee", power = 3, interval = 2000, chance = 100},
-    {name = "Rock Throw", power = 12, interval = 10000, chance = 100},
-    {name = "Rock Slide", power = 15, interval = 15000, chance = 100},
-    {name = "Rock Tomb", power = 7, interval = 15000, chance = 100},
-    {name = "Stone Edge", power = 7, interval = 20000, chance = 100},
-    {name = "Hammer Arm", power = 17, interval = 25000, chance = 100},
-    {name = "Ancient Power", power = 20, interval = 50000, chance = 100},
-    {name = "Rock Wrecker", power = 25, interval = 50000, chance = 100},
-    {name = "Hyper Beam", power = 15, interval = 50000, chance = 100},
-    {name = "Harden", power = 0, interval = 40000, chance = 100},
+	{name = "melee", power = 1, interval = 2000, chance = 100},
+    {name = "Bubbles", power = 1, interval = 6000, chance = 100},
+    {name = "Bubble Beam", power = 1, interval = 8000, chance = 100},
+    {name = "Water Ball", power = 1, interval = 9000, chance = 100},
+    {name = "Water Pulse", power = 1, interval = 21000, chance = 100},
+    {name = "Waterfall", power = 1, interval = 15000, chance = 100},
+    {name = "Hyper Beam", power = 1, interval = 29000, chance = 100},
+    {name = "Hydro Pump", power = 1, interval = 26000, chance = 100},
+    {name = "Water Spout", power = 1, interval = 40000, chance = 100},
+    {name = "Heavy Rain", power = 1, interval = 20000, chance = 100},
+    {name = "Aqua Ring", power = 1, interval = 43000, chance = 100},
+    {name = "Extreme Speed", power = 1, interval = 5000, chance = 100},
 }
 
 
