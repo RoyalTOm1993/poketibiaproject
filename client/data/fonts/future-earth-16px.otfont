@@ -1,0 +1,7 @@
+Font
+  name: future-earth-16px
+  texture: future-earth-16px
+  height: 20
+  glyph-size: 20 20
+  spacing: 1 0
+  space-width: 6

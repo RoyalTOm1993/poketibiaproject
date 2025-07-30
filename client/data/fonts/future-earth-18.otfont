@@ -1,0 +1,7 @@
+Font
+  name: future-earth-18
+  texture: future-earth-18
+  height: 18
+  glyph-size: 22 22
+  spacing: 1 0
+  space-width: 6
