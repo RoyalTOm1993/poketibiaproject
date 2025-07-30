@@ -1,0 +1,114 @@
+WriteWindow < UIWindow
+  anchors.centerIn: parent
+  image-source: /images/ui/login/backgroundLogin
+  size: 275 210
+  Label
+    anchors.top: parent.top
+    anchors.left: parent.left
+    text:  Valor:
+    margin-top: 45
+    margin-left: 15
+    font: window
+    color: #68b4db
+    text-horizontal-auto-resize: true
+  TextEdit
+    id: text
+    anchors.top: prev.bottom
+    anchors.left: parent.left
+    anchors.right: parent.right
+    margin-right: 20
+    margin-left: 20
+    margin-top: 5
+  Button
+    id: buttonClose
+    anchors.horizontalCenter: parent.horizontalCenter
+    anchors.bottom: parent.bottom
+    size: 50 22
+    font: window
+    text: Close
+    margin-bottom: 20
+  Button
+    id: buttonOk
+    anchors.left: prev.right
+    margin-right: 5
+    anchors.bottom: buttonClose.bottom
+    size: 50 22
+    font: window
+    text: Ok
+
+childCurrency < UIWidget
+  image-source: images/childBackground2
+  UIWidget
+    id: quantidade
+    size: 32 32
+    anchors.left: parent.left
+    margin-left: 7
+    anchors.verticalCenter: parent.verticalCenter
+  Item
+    id: childItem
+    phantom: true
+    image-source: ~
+    size: 32 32
+    anchors.left: parent.left
+    margin-left: 7
+    anchors.verticalCenter: parent.verticalCenter
+  SpaceBlueButton
+    id: buttonWithdraw
+    text: Sacar
+    size: 75 20
+    anchors.verticalCenter: parent.verticalCenter
+    anchors.left: childItem.right
+    margin-left: 20
+  SpaceGreenButton
+    id: buttonDeposit
+    text: Depositar
+    size: 75 20
+    anchors.verticalCenter: parent.verticalCenter
+    anchors.left: prev.right
+    margin-left: 3
+MainWindow
+  image-source: images/background
+  image-size: 278 398
+  focusable: false
+  image-offset: 20 28
+  size: 320 450
+  text: BANK
+  text-offset: 0 28
+  font: future-earth-26
+  color: #66c8ff
+  @onEscape: self:hide()
+  ScrollablePanel
+    id: panelCurrencies
+    size: 218 320
+    anchors.bottom: parent.bottom
+    anchors.right: parent.right
+    margin-right: 37
+    margin-bottom: 15
+    vertical-scrollbar: scrollbar
+    layout:
+      type: grid
+      cell-size: 218 47
+      cell-spacing: 4
+      flow: false
+      num-columns: 1
+  VerticalScrollBar
+    id: scrollbar
+    visible: true
+    anchors.top: panelCurrencies.top
+    anchors.bottom: panelCurrencies.bottom
+    anchors.left: panelCurrencies.right
+    margin-left: 13
+    margin-top: 10
+    margin-bottom: 31
+    step: 30
+  UIWidget
+    id: closeButton
+    image-source: /images/ui/closeButton
+    size: 24 24
+    anchors.top: parent.top
+    anchors.right: parent.right
+    margin-right: 20
+    @onClick: self:getParent():hide()
+    $hover:
+      change-cursor-image: true
+      cursor: pointer
