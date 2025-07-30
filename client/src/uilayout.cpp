@@ -20,37 +20,53 @@
  * THE SOFTWARE.
  */
 
-#ifndef FRAMEWORK_GLOBAL_H
-#define FRAMEWORK_GLOBAL_H
+#include "uilayout.h"
+#include "uiwidget.h"
 
-#include "stdext/compiler.h"
+#include <framework/core/eventdispatcher.h>
 
-// common C/C++ headers
-#include "pch.h"
+void UILayout::update()
+{
+    //logTraceCounter();
+    if(!m_parentWidget)
+        return;
 
-// error handling
-#if defined(NDEBUG)
-#define VALIDATE(expression) ((void)0)
-#else
-extern void fatalError(const char* error, const char* file, int line);
-#define VALIDATE(expression) { if(!(expression)) fatalError(#expression, __FILE__, __LINE__); };
-#endif
+    /*
+    UIWidgetPtr parent = parentWidget;
+    do {
+        UILayoutPtr ownerLayout = parent->getLayout();
+        if(ownerLayout && ownerLayout->isUpdateDisabled())
+            return;
+        parent = parent->getParent();
+    } while(parent);
+    */
 
+    if(m_updateDisabled)
+        return;
 
-// global constants
-#include "const.h"
+    if(m_updating) {
+        updateLater();
+        return;
+    }
 
-// stdext which includes additional C++ algorithms
-#include "stdext/stdext.h"
+    m_updating = true;
+    internalUpdate();
+    m_parentWidget->onLayoutUpdate();
+    m_updating = false;
+}
 
-// additional utilities
-#include "util/point.h"
-#include "util/color.h"
-#include "util/rect.h"
-#include "util/size.h"
-#include "util/matrix.h"
+void UILayout::updateLater()
+{
+    if(m_updateDisabled || m_updateScheduled)
+        return;
 
-// logger
-#include "core/logger.h"
+    if(!getParentWidget())
+        return;
 
-#endif
+    auto self = static_self_cast<UILayout>();
+    g_dispatcher.addEvent([self] {
+        self->m_updateScheduled = false;
+        self->update();
+    });
+    m_updateScheduled = true;
+}

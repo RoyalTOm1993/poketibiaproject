@@ -20,37 +20,19 @@
  * THE SOFTWARE.
  */
 
-#ifndef FRAMEWORK_GLOBAL_H
-#define FRAMEWORK_GLOBAL_H
+#ifndef TRANSLATOR_H
+#define TRANSLATOR_H
 
-#include "stdext/compiler.h"
+#include "../const.h"
+#include <string>
 
-// common C/C++ headers
-#include "pch.h"
+namespace Fw {
 
-// error handling
-#if defined(NDEBUG)
-#define VALIDATE(expression) ((void)0)
-#else
-extern void fatalError(const char* error, const char* file, int line);
-#define VALIDATE(expression) { if(!(expression)) fatalError(#expression, __FILE__, __LINE__); };
-#endif
+AlignmentFlag translateAlignment(std::string aligment);
+AnchorEdge translateAnchorEdge(std::string anchorEdge);
+WidgetState translateState(std::string state);
+AutoFocusPolicy translateAutoFocusPolicy(std::string policy);
 
-
-// global constants
-#include "const.h"
-
-// stdext which includes additional C++ algorithms
-#include "stdext/stdext.h"
-
-// additional utilities
-#include "util/point.h"
-#include "util/color.h"
-#include "util/rect.h"
-#include "util/size.h"
-#include "util/matrix.h"
-
-// logger
-#include "core/logger.h"
+};
 
 #endif

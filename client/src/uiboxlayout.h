@@ -20,37 +20,29 @@
  * THE SOFTWARE.
  */
 
-#ifndef FRAMEWORK_GLOBAL_H
-#define FRAMEWORK_GLOBAL_H
+#ifndef UIBOXLAYOUT_H
+#define UIBOXLAYOUT_H
 
-#include "stdext/compiler.h"
+#include "uilayout.h"
 
-// common C/C++ headers
-#include "pch.h"
+// @bindclass
+class UIBoxLayout : public UILayout
+{
+public:
+    UIBoxLayout(UIWidgetPtr parentWidget);
 
-// error handling
-#if defined(NDEBUG)
-#define VALIDATE(expression) ((void)0)
-#else
-extern void fatalError(const char* error, const char* file, int line);
-#define VALIDATE(expression) { if(!(expression)) fatalError(#expression, __FILE__, __LINE__); };
-#endif
+    void applyStyle(const OTMLNodePtr& styleNode);
+    void addWidget(const UIWidgetPtr& widget) { update(); }
+    void removeWidget(const UIWidgetPtr& widget) { update(); }
 
+    void setSpacing(int spacing) { m_spacing = spacing; update(); }
+    void setFitChildren(bool fitParent) { m_fitChildren = fitParent; update(); }
 
-// global constants
-#include "const.h"
+    bool isUIBoxLayout() { return true; }
 
-// stdext which includes additional C++ algorithms
-#include "stdext/stdext.h"
-
-// additional utilities
-#include "util/point.h"
-#include "util/color.h"
-#include "util/rect.h"
-#include "util/size.h"
-#include "util/matrix.h"
-
-// logger
-#include "core/logger.h"
+protected:
+    stdext::boolean<false> m_fitChildren;
+    int m_spacing;
+};
 
 #endif

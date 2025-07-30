@@ -20,37 +20,23 @@
  * THE SOFTWARE.
  */
 
-#ifndef FRAMEWORK_GLOBAL_H
-#define FRAMEWORK_GLOBAL_H
+#include "uiboxlayout.h"
+#include "uiwidget.h"
 
-#include "stdext/compiler.h"
+UIBoxLayout::UIBoxLayout(UIWidgetPtr parentWidget) : UILayout(parentWidget)
+{
+    m_spacing = 0;
+}
 
-// common C/C++ headers
-#include "pch.h"
+void UIBoxLayout::applyStyle(const OTMLNodePtr& styleNode)
+{
+    UILayout::applyStyle(styleNode);
 
-// error handling
-#if defined(NDEBUG)
-#define VALIDATE(expression) ((void)0)
-#else
-extern void fatalError(const char* error, const char* file, int line);
-#define VALIDATE(expression) { if(!(expression)) fatalError(#expression, __FILE__, __LINE__); };
-#endif
+    for(const OTMLNodePtr& node : styleNode->children()) {
+        if(node->tag() == "spacing")
+            setSpacing(node->value<int>());
+        else if(node->tag() == "fit-children")
+            setFitChildren(node->value<bool>());
+    }
+}
 
-
-// global constants
-#include "const.h"
-
-// stdext which includes additional C++ algorithms
-#include "stdext/stdext.h"
-
-// additional utilities
-#include "util/point.h"
-#include "util/color.h"
-#include "util/rect.h"
-#include "util/size.h"
-#include "util/matrix.h"
-
-// logger
-#include "core/logger.h"
-
-#endif

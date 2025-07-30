@@ -20,40 +20,35 @@
  * THE SOFTWARE.
  */
 
-#ifdef FW_SOUND
-
-#ifndef FRAMEWORK_SOUND_DECLARATIONS_H
-#define FRAMEWORK_SOUND_DECLARATIONS_H
+#ifndef FRAMEWORK_UI_DECLARATIONS_H
+#define FRAMEWORK_UI_DECLARATIONS_H
 
 #include <framework/global.h>
 
-#define AL_LIBTYPE_STATIC
+class UIManager;
+class UIWidget;
+class UITextEdit;
+class UILayout;
+class UIBoxLayout;
+class UIHorizontalLayout;
+class UIVerticalLayout;
+class UIGridLayout;
+class UIAnchor;
+class UIAnchorGroup;
+class UIAnchorLayout;
 
-#if defined(__APPLE__)
-#include <OpenAL/al.h>
-#include <OpenAL/alc.h>
-#else
-#include <AL/al.h>
-#include <AL/alc.h>
-#endif
+typedef stdext::shared_object_ptr<UIWidget> UIWidgetPtr;
+typedef stdext::shared_object_ptr<UITextEdit> UITextEditPtr;
+typedef stdext::shared_object_ptr<UILayout> UILayoutPtr;
+typedef stdext::shared_object_ptr<UIBoxLayout> UIBoxLayoutPtr;
+typedef stdext::shared_object_ptr<UIHorizontalLayout> UIHorizontalLayoutPtr;
+typedef stdext::shared_object_ptr<UIVerticalLayout> UIVerticalLayoutPtr;
+typedef stdext::shared_object_ptr<UIGridLayout> UIGridLayoutPtr;
+typedef stdext::shared_object_ptr<UIAnchor> UIAnchorPtr;
+typedef stdext::shared_object_ptr<UIAnchorGroup> UIAnchorGroupPtr;
+typedef stdext::shared_object_ptr<UIAnchorLayout> UIAnchorLayoutPtr;
 
-class SoundManager;
-class SoundSource;
-class SoundBuffer;
-class SoundFile;
-class SoundChannel;
-class StreamSoundSource;
-class CombinedSoundSource;
-class OggSoundFile;
-
-typedef stdext::shared_object_ptr<SoundSource> SoundSourcePtr;
-typedef stdext::shared_object_ptr<SoundFile> SoundFilePtr;
-typedef stdext::shared_object_ptr<SoundBuffer> SoundBufferPtr;
-typedef stdext::shared_object_ptr<SoundChannel> SoundChannelPtr;
-typedef stdext::shared_object_ptr<StreamSoundSource> StreamSoundSourcePtr;
-typedef stdext::shared_object_ptr<CombinedSoundSource> CombinedSoundSourcePtr;
-typedef stdext::shared_object_ptr<OggSoundFile> OggSoundFilePtr;
-
-#endif
+typedef std::deque<UIWidgetPtr> UIWidgetList;
+typedef std::vector<UIAnchorPtr> UIAnchorList;
 
 #endif
