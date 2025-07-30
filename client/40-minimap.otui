@@ -1,0 +1,296 @@
+UIMiniMapCreature < UICreature
+  size: 16 16
+  UIWidget
+    id: name
+    text-auto-resize: true
+    font: small-9px
+    anchors.top: parent.top
+    anchors.horizontalCenter: parent.horizontalCenter
+
+SpaceTextEdit < UITextEdit
+  id: description
+  margin-top: 3
+  font: future-earth-14
+  image-source: /images/ui/basicTextEdit
+  anchors.left: parent.left
+  anchors.top: prev.bottom
+  change-cursor-image: true
+  size: 216 46
+
+MinimapFlag < UIWidget
+  size: 11 11
+  focusable: false
+
+MinimapCross < UIWidget
+  focusable: false
+  phantom: true
+  image: /images/game/minimap/cross
+  size: 16 16
+
+MinimapFloorUpButton < UIButton
+  size: 16 16
+  image-clip: 0 0 16 16
+  icon-source: /images/game/minimap/floor_up
+
+MinimapFloorDownButton < UIButton
+  size: 16 16
+  image-clip: 0 0 16 16
+  icon-source: /images/game/minimap/floor_down
+
+MinimapZoomInButton < UIButton
+  image-source: /images/game/minimap/zoom_in
+  size: 16 16
+
+MinimapZoomOutButton < UIButton
+  image-source: /images/game/minimap/zoom_out
+  size: 16 16
+
+MinimapResetButton < SpaceBlueButton
+  !text: tr('Center')
+  size: 52 18
+
+Minimap < UIMinimap
+  draggable: true
+  focusable: false
+  cross: true
+  color: black
+
+  MinimapFloorUpButton
+    id: floorUpWidget
+    anchors.top: parent.top
+    anchors.right: parent.right
+    margin-right: 10
+    margin-top: 6
+    @onClick: self:getParent():floorUp(1)
+
+  MinimapFloorDownButton
+    id: floorDownWidget
+    anchors.top: prev.top
+    anchors.right: prev.right
+    margin-right: 26
+    @onClick: self:getParent():floorDown(1)
+
+  MinimapZoomInButton
+    id: zoomInWidget
+    anchors.top: parent.top
+    anchors.left: parent.left
+    margin-left: 10
+    margin-top: 6
+    @onClick: self:getParent():zoomIn()
+
+  MinimapZoomOutButton
+    id: zoomOutWidget
+    anchors.top: prev.top
+    anchors.left: prev.left
+    margin-left: 26
+    @onClick: self:getParent():zoomOut()
+
+  MinimapResetButton
+    id: resetWidget
+    anchors.horizontalCenter: parent.horizontalCenter
+    anchors.top: parent.top
+    margin-top: 5
+    @onClick: self:getParent():reset()
+
+
+// Minimap Flag Create Window
+
+
+MinimapFlagCheckBox < CheckBox
+  size: 15 15
+  margin-left: 2
+  image-source: /images/game/minimap/flagcheckbox
+  image-size: 15 15
+  image-border: 3
+  icon-source: /images/game/minimap/mapflags
+  icon-size: 11 11
+  icon-offset: 2 4
+  anchors.left: prev.right
+  anchors.top: prev.top
+  $!checked:
+    image-clip: 26 0 26 26
+  $hover !checked:
+    image-clip: 78 0 26 26
+  $checked:
+    image-clip: 0 0 26 26
+  $hover checked:
+    image-clip: 52 0 26 26
+
+MinimapFlagWindow < SpaceWindowCreateAccount
+  !text: tr('CRIE UMA MARCA')
+  font: future-earth-18
+  size: 362 356
+
+  Label
+    !text: tr('Position') .. ':'
+    image-source: images/loginTextEdit
+    text-auto-resize: true
+    anchors.top: parent.top
+    font: future-earth-16px
+    anchors.left: parent.left
+    margin-top: 2
+
+  Label
+    id: position
+    text-auto-resize: true
+    anchors.top: parent.top
+    font: future-earth-16px
+    anchors.right: parent.right
+    margin-top: 2
+
+  Label
+    !text: tr('Description') .. ':'
+    anchors.left: parent.left
+    anchors.top: prev.bottom
+    font: future-earth-16px
+    margin-top: 7
+
+  SpaceTextEdit
+    id: description
+    margin-top: 3
+    anchors.top: prev.bottom
+    anchors.left: parent.left
+
+  MinimapFlagCheckBox
+    id: flag0
+    icon-source: /images/game/minimap/flag0
+    anchors.left: parent.left
+    anchors.top: prev.bottom
+    margin-top: 6
+    margin-left: 4
+
+  MinimapFlagCheckBox
+    id: flag1
+    icon-source: /images/game/minimap/flag1
+
+  MinimapFlagCheckBox
+    id: flag2
+    icon-source: /images/game/minimap/flag2
+
+  MinimapFlagCheckBox
+    id: flag3
+    icon-source: /images/game/minimap/flag3
+
+  MinimapFlagCheckBox
+    id: flag4
+    icon-source: /images/game/minimap/flag4
+
+  MinimapFlagCheckBox
+    id: flag5
+    icon-source: /images/game/minimap/flag5
+
+  MinimapFlagCheckBox
+    id: flag6
+    icon-source: /images/game/minimap/flag6
+
+  MinimapFlagCheckBox
+    id: flag7
+    icon-source: /images/game/minimap/flag7
+
+  MinimapFlagCheckBox
+    id: flag8
+    icon-source: /images/game/minimap/flag8
+
+  MinimapFlagCheckBox
+    id: flag9
+    icon-source: /images/game/minimap/flag9
+
+  MinimapFlagCheckBox
+    id: flag10
+    icon-source: /images/game/minimap/flag10
+    anchors.left: parent.left
+    anchors.top: prev.bottom
+    margin-top: 6
+    margin-left: 0  
+
+  MinimapFlagCheckBox
+    id: flag11
+    icon-source: /images/game/minimap/flag11
+
+  MinimapFlagCheckBox
+    id: flag12
+    icon-source: /images/game/minimap/flag12
+
+  MinimapFlagCheckBox
+    id: flag13
+    icon-source: /images/game/minimap/flag13
+
+  MinimapFlagCheckBox
+    id: flag14
+    icon-source: /images/game/minimap/flag14
+
+  MinimapFlagCheckBox
+    id: flag15
+    icon-source: /images/game/minimap/flag15
+
+  MinimapFlagCheckBox
+    id: flag16
+    icon-source: /images/game/minimap/flag16
+
+  MinimapFlagCheckBox
+    id: flag17
+    icon-source: /images/game/minimap/flag17
+
+  MinimapFlagCheckBox
+    id: flag18
+    icon-source: /images/game/minimap/flag18
+
+  MinimapFlagCheckBox
+    id: flag19
+    icon-source: /images/game/minimap/flag19
+
+  Button
+    id: okButton
+    !text: tr('Ok')
+    width: 64
+    anchors.right: next.left
+    anchors.bottom: parent.bottom
+    margin-right: 10
+
+  Button
+    id: cancelButton
+    !text: tr('Cancel')
+    width: 64
+    anchors.right: parent.right
+    anchors.bottom: parent.bottom
+
+MinimapWindow < MiniWindow
+  height: 150
+  image-source: /images/ui/spaceWindowMiniMap
+
+  Label
+    text: ?
+    text-align: center
+    phantom: false
+    !tooltip: tr('Hold left mouse button to navigate\nScroll mouse middle button to zoom\nRight mouse button to create map marks\nPress Ctrl+Shift+M to view the entire game map')
+    anchors.top: parent.top
+    anchors.right: parent.left
+    margin-right: 3
+    size: 14 14
+
+  MiniWindowContents
+    Minimap
+      id: minimap
+      anchors.fill: parent
+      margin-top: 23
+      margin-bottom: 20
+      margin-left: 8
+      margin-right: 7
+    UIWidget
+      id: playerPos
+      anchors.bottom: parent.bottom
+      anchors.horizontalCenter: parent.horizontalCenter
+      text-auto-resize: true
+      //margin-left: 52
+      margin-bottom: 5
+  ResizeBorder
+    id: bottomResizeBorder
+    anchors.bottom: parent.bottom
+    anchors.left: parent.left
+    anchors.right: parent.right
+    height: 3
+    minimum: 110
+    maximum: 450
+    margin-left: 3
+    margin-right: 3
+    background: #ffffff88

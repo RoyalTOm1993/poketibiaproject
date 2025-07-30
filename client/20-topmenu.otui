@@ -1,0 +1,93 @@
+TopToggleButtonNew < UIButton
+  id: TopToggleButtonNew
+  size: 136 33
+  image-source: /images/topbuttons/hide
+  anchors.top: parent.top
+  anchors.horizontalCenter: parent.horizontalCenter
+  margin-top: 50
+  opacity: 0.0
+  @onClick: toggleTopMenu()
+
+  $hover:
+    opacity: 1.0
+    cursor: pointer
+
+TopButton < UIButton
+  size: 32 32
+  change-cursor-image: true
+  cursor: pointer
+
+TopToggleButton < UIButton
+  size: 32 32
+  change-cursor-image: true
+  cursor: pointer
+
+TopMenuButtonsPanel < Panel
+  layout:
+    type: horizontalBox
+    spacing: 24
+    fit-children: true
+  padding: 10
+  margin: 0
+
+TopMenuPanel < Panel
+  margin-top: 6
+  focusable: false
+
+TopMenuFrameCounterLabel < Label
+  font: window
+  color: #F8F8FF
+  margin-top: 40
+  margin-left: 80
+
+TopMenu < TopMenuPanel
+  id: topMenu
+  size: 735 52
+  image-size: 735 60
+  image-border: 20
+  margin-top: 0
+  anchors.horizontalCenter: parent.horizontalCenter
+  anchors.top: parent.top
+
+  UIWidget
+    phantom: false
+    anchors.fill: parent
+    image-source: /images/ui/topMenuBackground
+
+  TopMenuButtonsPanel
+    id: leftButtonsPanel
+    anchors.top: parent.top
+    anchors.bottom: parent.bottom
+    anchors.left: parent.left
+
+  TopMenuButtonsPanel
+    id: leftGameButtonsPanel
+    anchors.top: parent.top
+    anchors.bottom: parent.bottom
+    anchors.left: leftButtonsPanel.right
+    margin-left: 6
+    visible: false
+
+  TopMenuButtonsPanel
+    id: rightButtonsPanel
+    anchors.top: parent.top
+    anchors.bottom: parent.bottom
+    anchors.left: leftGameButtonsPanel.right
+    margin-left: 6
+
+  TopMenuButtonsPanel
+    id: rightGameButtonsPanel
+    anchors.top: parent.top
+    anchors.bottom: parent.bottom
+    anchors.left: rightButtonsPanel.right
+    margin-left: 6
+    visible: false
+
+  Label
+    id: onlineLabel
+    anchors.top: parent.top
+    anchors.bottom: parent.bottom
+    anchors.horizontalCenter: parent.horizontalCenter
+    font: verdana-11px-antialised
+    text-align: center
+    text-auto-resize: true

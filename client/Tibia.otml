@@ -1,0 +1,85 @@
+items:
+effects:
+  1:
+    effect-displacement:
+      opacity: 1
+      x: 0
+      y: 0
+  2:
+    effect-displacement:
+      opacity: 1
+      x: 40
+      y: 0
+  3:
+    effect-displacement:
+      opacity: 1
+      x: 0
+      y: 0
+  5:
+    effect-displacement:
+      opacity: 1
+      x: 0
+      y: 0
+  12:
+    effect-displacement:
+      opacity: 1
+      x: 0
+      y: 0
+  20:
+    effect-displacement:
+      opacity: 1
+      x: 0
+      y: 0
+  1741:
+    effect-displacement:
+      opacity: 1
+      x: 10
+      y: 10
+  2535:
+    effect-displacement:
+      opacity: 1
+      x: 0
+      y: 0
+  2536:
+    effect-displacement:
+      opacity: 1
+      x: 16
+      y: 16
+  2540:
+    effect-displacement:
+      opacity: 1
+      x: 0
+      y: 0
+creatures:
+  6:
+    name-displacement:
+      North: 0 0
+      East: 0 0
+      South: 0 -90
+      West: 0 0
+    outfit-displacement:
+      North: 0 0
+      East: 0 0
+      South: 19 0
+      West: 0 0
+  20:
+    outfit-displacement:
+      opacity: 1
+      North: 0 0
+      East: 0 0
+      South: 50 0
+      West: 0 0
+  89:
+    outfit-displacement:
+      opacity: 1
+      North: 0 0
+      East: 0 0
+      South: 10 0
+      West: 0 0
+  94:
+    outfit-displacement:
+      opacity: 1
+      North: 4 0
+      East: 6 0
+      South: 4 0
+      West: 2 0

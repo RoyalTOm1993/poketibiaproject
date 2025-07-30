@@ -1,0 +1,114 @@
+Label < UILabel
+  font: verdana-11px-monochrome
+  color: #dfdfdf
+
+  $disabled:
+    color: #dfdfdf88
+
+FlatLabel < UILabel
+  font: future-earth-16px
+  color: #68b4db
+  color: #dfdfdf
+  size: 86 20
+  text-offset: 3 3
+  image-source: /images/ui/panel_flat
+  image-border: 1
+
+  $disabled:
+    color: #dfdfdf88
+
+MenuLabel < Label
+
+GameLabel < UILabel
+  font: future-earth-16px
+  color: #dfdfdf
+
+
+
+HoverLabel < UILabel
+  font: sono_medium_12
+  color: #dfdfdf
+  width: 240
+  phantom: true
+  anchors.top: parent.top
+  anchors.horizontalCenter: parent.horizontalCenter
+  text-vertical-auto-resize: true
+  text-align: left
+  text-wrap: true
+  $!first:
+    anchors.top: prev.bottom
+    margin-top: 3
+
+HoverUseTipLabel < UILabel
+  font: sono_medium_12
+  color: #ffee9b
+  width: 236
+  phantom: true
+  anchors.top: parent.top
+  anchors.horizontalCenter: parent.horizontalCenter
+  text-vertical-auto-resize: true
+  text-align: right
+  text-wrap: true
+  $!first:
+    anchors.top: prev.bottom
+    margin-top: 3
+
+HoverNPCTipLabel < UILabel
+  font: sono_medium_12
+  color: #9bcbff
+  width: 236
+  phantom: true
+  anchors.top: parent.top
+  anchors.horizontalCenter: parent.horizontalCenter
+  text-vertical-auto-resize: true
+  text-align: right
+  text-wrap: true
+  $!first:
+    anchors.top: prev.bottom
+    margin-top: 3
+
+HoverSPACETipLabel < UILabel
+  font: sono_medium_12
+  color: #ffffff
+  width: 236
+  phantom: true
+  anchors.top: parent.top
+  anchors.horizontalCenter: parent.horizontalCenter
+  text-vertical-auto-resize: true
+  text-align: right
+  text-wrap: true
+  $!first:
+    anchors.top: prev.bottom
+    margin-top: 3
+
+HoldingLabel < UILabel
+  font: sono_medium_12
+  color: #dfdfdf
+  width: 188
+  phantom: true
+  text-align: left
+  text-wrap: true
+  
+HoldingTitleLabel < UILabel
+  font: sono_medium_12
+  color: #dfdfdf
+  text-auto-resize: true
+  phantom: true
+  text-align: left
+
+HoverMoneyLabel < UILabel
+  font: sono_medium_12
+  height: 16
+  phantom: true
+  text-horizontal-auto-resize: true
+  text-align: right
+
+HoverNameLabel < UILabel
+  font: sono_medium_12
+  color: #dfdfdf
+  text-auto-resize: true
+  phantom: true
+
+SpaceLabel < UILabel
+  text-auto-resize: true
+  phantom: true
