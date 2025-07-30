@@ -1,0 +1,10 @@
+Module
+  name: game_spectate
+  description: Spectate system
+  author: Oen
+  website: https://github.com/Oen44
+  sandboxed: true
+  autoload: true
+  scripts: [ spectate ]
+  @onLoad: init()
+  @onUnload: terminate()

@@ -1,0 +1,141 @@
+SlotProgressBar < UIProgressBar
+  background-color: #ff4444
+  image-source: images/progressbar
+  phantom: true
+  color: #db1814
+
+SlotBar < UIWidget
+  size: 231 56
+  draggable: true
+  &dragLeave: 0
+  margin-top: 7
+
+  UIWidget
+    size: 64 64
+    id: backgroundPortrait
+    image-source: images/base_color
+    anchors.top: parent.top
+    anchors.left: parent.left
+    margin-left: -4
+    margin-top: -4
+    phantom: true
+
+  UICreature
+    size: 32 32
+    id: portrait
+    anchors.top: parent.top
+    anchors.left: parent.left
+    margin: 14 0 0 12
+    phantom: true
+
+  UIWidget
+    id: background
+    size: 231 56
+    anchors.fill: parent
+    image-source: images/slotbar
+    image-clip: 0 56 231 56
+    phantom: true
+    checked: false
+
+    $on !$checked:
+      image-clip: 0 0 231 56
+
+    $disabled:
+      image-clip: 0 112 231 56
+
+  Label
+    id: name
+    color: #2da5db
+    anchors.top: parent.top
+    anchors.left: portrait.right
+    anchors.right: parent.right
+    font: window
+    margin: 8 0 0 30
+    text-auto-resize: true
+
+  SlotProgressBar
+    id: progress
+    size: 123 16
+    anchors.top: prev.bottom
+    anchors.right: prev.right
+    margin-top: 6
+    margin-right: 19
+
+  Label
+    id: health
+    color: #daffaec5
+    anchors.top: prev.top
+    anchors.horizontalCenter: prev.horizontalCenter
+    margin-top: 1
+    text-auto-resize: true
+
+  UIWidget
+    id: gender
+    anchors.bottom: parent.bottom
+    anchors.right: portrait.right
+    margin: 0 -3 4 0
+
+PokeBase < UIWidget
+  size: 64 64
+  image-source: images/base
+  image-border: 7
+  UIWidget
+    id: base_color2
+    size: 64 64
+    opacity: 0.7
+    image-color: green
+    image-source: images/base_color
+    phantom: true
+    anchors.horizontalCenter: parent.horizontalCenter
+    anchors.verticalCenter: parent.verticalCenter
+  UIWidget
+    id: base_color
+    size: 64 64
+    opacity: 0.7
+    image-source: images/base_color
+    phantom: true
+    anchors.horizontalCenter: parent.horizontalCenter
+    anchors.verticalCenter: parent.verticalCenter
+  UIWidget
+    id: loading
+    size: 64 64
+    image-source: images/loading
+    opacity: 0
+    phantom: true
+    anchors.horizontalCenter: parent.horizontalCenter
+    anchors.verticalCenter: parent.verticalCenter
+  UIWidget
+    id: keyNumber
+    !text: '0'
+    text-auto-resize: true
+    anchors.top: parent.top
+    anchors.left: parent.left
+    margin-top: 9
+    margin-left: 12
+  UICreature
+    id: icon
+    size: 40 30
+    anchors.horizontalCenter: parent.horizontalCenter
+    anchors.verticalCenter: parent.verticalCenter
+    margin-left: 1
+
+UIWindow
+  id: poketeam
+  focusable: false
+  size: 64 6
+  anchors.left: parent.left
+  anchors.top: parent.top
+  margin-top: 4
+  margin-left: 20
+  UIWidget
+    id: pokes
+    phantom: true
+    layout:
+      type: verticalBox
+      cell-size: 48 48
+      cell-spacing: 20
+    anchors.top: parent.top
+    anchors.bottom: parent.bottom
+    anchors.left: parent.left
+    anchors.right: parent.right
+    margin-top: 15

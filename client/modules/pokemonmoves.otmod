@@ -1,0 +1,10 @@
+Module
+  name: game_pokemonmoves
+  description: movebar
+  author: icaro
+  autoload: true
+  autoload-priority: 1000
+  scripts: [ pokemonmoves ]
+  sandboxed: true
+  @onLoad: init()
+  @onUnload: terminate()
