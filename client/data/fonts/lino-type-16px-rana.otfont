@@ -1,0 +1,7 @@
+Font
+  name: lino-type-16px-rana
+  texture: lino-type-16px-rana
+  height: 16
+  glyph-size: 22 22
+  y-offset: -5
+  space-width: 3
