@@ -1,0 +1,6 @@
+Font
+  name: sono_bold_border_20
+  texture: sono_bold_border_20
+  height: 26
+  glyph-size: 26 26
+  space-width: 3

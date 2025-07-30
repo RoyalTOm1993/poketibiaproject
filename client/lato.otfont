@@ -1,0 +1,8 @@
+Font
+  name: lato
+  texture: lato
+  height: 18
+  glyph-size: 18 18
+  y-offset: -2
+  spacing: 0 1
+  space-width: 3

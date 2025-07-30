@@ -1,0 +1,9 @@
+Font
+  name: damas
+  texture: damas
+  height: 13
+  glyph-size: 16 16
+  y-offset: -2
+  spacing: 0 1
+  space-width: 3
+  default: true

@@ -1,0 +1,7 @@
+Font
+  name: future-earth-40
+  texture: future-earth-40
+  height: 44
+  glyph-size: 44 44
+  space-width: 12
+  spacing: 1 4

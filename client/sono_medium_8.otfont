@@ -1,0 +1,6 @@
+Font
+  name: sono_medium_8
+  texture: sono_medium_8
+  height: 8
+  glyph-size: 10 10
+  space-width: 3
