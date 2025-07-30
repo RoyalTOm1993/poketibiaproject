@@ -6,10 +6,9 @@ uniform sampler2D u_Tex0;
 uniform float u_Time;
 
 // CONFIG
-float speed = 20.0;
-float height = 12.0;
-float angle = 50.0; // degrees
-float intensity = 2.0;
+float speed = 13.0;
+float height = 1.0;
+float radius = 7.0;
 // CONFIG END
 
 vec2 rotate(vec2 v, float a) {
@@ -31,12 +30,8 @@ void main()
         gl_FragColor *= u_Color[3];
     }
     
-    if(texcolor.a > 0.9) {
-        vec2 p = rotate(v_Position, (angle / 60.0) * 3.14);
-        float frame = mod(p.y, height);
-        float timeFrame = mod(u_Time * speed, height);
-        float dist = min(abs(frame - timeFrame), min(abs(frame - timeFrame - height), abs(frame - timeFrame + height)));
-        gl_FragColor.xyz *= intensity / sqrt(max(0.5, dist));
+    if(texcolor.a > 0.5) {
+        gl_FragColor.xyz *= max(1.0, height / sqrt(abs(abs(sqrt(v_Position.x * v_Position.x + v_Position.y * v_Position.y) / 8.0) - abs(mod(u_Time * speed, radius * 2.0) - radius))));
     }
     if(gl_FragColor.a < 0.01) discard;
 }
