@@ -1,0 +1,256 @@
+UIWindow
+  id: newPokemon
+  image-source: interface/newpoke.png
+  size: 591 553
+  anchors.verticalCenter: parent.verticalCenter
+  anchors.horizontalCenter: parent.horizontalCenter
+  &save: true
+  @onEnter: hide()
+  @onEscape: hide()
+
+  UIButton
+    id: closebutton
+    size: 32 32
+    image-source: interface/closebutton.png
+    anchors.top: parent.top
+    anchors.right: parent.right
+    margin-top: 6
+    margin-right: 6
+    @onClick: modules.NewPokemon.hide()
+
+    $hover:
+      opacity: 1.0
+
+    $pressed:
+      opacity: 1.0
+
+  UIButton
+    id: squirtle
+    size: 125 125
+    image-source: interface/squirtle.png
+    anchors.top: parent.top
+    anchors.left: parent.left
+    margin-top: 125
+    margin-left: 7
+    !tooltip: tr('Squirtle, um pokemon do tipo agua com alta defesa e vida.')
+    @onClick: modules.NewPokemon.firstpoke('Squirtle')
+
+  UIButton
+    id: charmander
+    size: 125 125
+    image-source: interface/charmander.png
+    anchors.top: parent.top
+    anchors.left: parent.left
+    margin-top: 125
+    margin-left: 90
+    !tooltip: tr('Charmander, um pokemon do tipo fogo com grande dano em area.')
+    @onClick: modules.NewPokemon.firstpoke('Charmander')
+
+  UIButton
+    id: bulbasaur
+    size: 125 125
+    image-source: interface/bulbasaur.png
+    anchors.top: parent.top
+    anchors.left: parent.left
+    margin-top: 130
+    margin-left: 168
+    !tooltip: tr('Bulbasaur, um pokemon do tipo planta com dano e defesa equilibrados.')
+    @onClick: modules.NewPokemon.firstpoke('Bulbasaur')
+
+  UIButton
+    id: totodile
+    size: 125 125
+    image-source: interface/totodile.png
+    anchors.top: parent.top
+    anchors.left: parent.left
+    margin-top: 235
+    margin-left: 7
+    !tooltip: tr('Totodile, um pokemon do tipo agua com alto dano de alvo unico.')
+    @onClick: modules.NewPokemon.firstpoke('Totodile')
+
+  UIButton
+    id: cyndaquil
+    size: 125 125
+    image-source: interface/cyndaquil.png
+    anchors.top: parent.top
+    anchors.left: parent.left
+    margin-top: 238
+    margin-left: 90
+    !tooltip: tr('Cyndaquil, um pokemon do tipo fogo com potencial de hunt.')
+    @onClick: modules.NewPokemon.firstpoke('Cyndaquil')
+
+  UIButton
+    id: chikorita
+    size: 125 125
+    image-source: interface/chikorita.png
+    anchors.top: parent.top
+    anchors.left: parent.left
+    margin-top: 235
+    margin-left: 170
+    !tooltip: tr('Chikorita, um pokemon do tipo planta com habilidades de suporte.')
+    @onClick: modules.NewPokemon.firstpoke('Chikorita')
+
+  UIButton
+    id: mudkip
+    size: 58 64
+    image-source: interface/mudkip.png
+    anchors.top: parent.top
+    anchors.left: parent.left
+    margin-top: 380
+    margin-left: 35
+    !tooltip: tr('Mudkip, um pokemon do tipo agua com ataque e defesa equilibrados.')
+    @onClick: modules.NewPokemon.firstpoke('Mudkip')
+
+  UIButton
+    id: torchic
+    size: 40 64
+    image-source: interface/torchic.png
+    anchors.top: parent.top
+    anchors.left: parent.left
+    margin-top: 380
+    margin-left: 125
+    !tooltip: tr('Torchic, um pokemon do tipo fogo com alto dano de alvo unico.')
+    @onClick: modules.NewPokemon.firstpoke('Torchic')
+
+  UIButton
+    id: treecko
+    size: 54 64
+    image-source: interface/treecko.png
+    anchors.top: parent.top
+    anchors.left: parent.left
+    margin-top: 380
+    margin-left: 210
+    !tooltip: tr('Treecko, um pokemon do tipo planta com otima agilidade.')
+    @onClick: modules.NewPokemon.firstpoke('Treecko')
+
+  UIButton
+    id: piplup
+    size: 56 54
+    image-source: interface/piplup.png
+    anchors.top: parent.top
+    anchors.left: parent.left
+    margin-top: 115
+    margin-left: 330
+    !tooltip: tr('Piplup, um pokemon do tipo agua com alta defesa e dano de alvo unico.')
+    @onClick: modules.NewPokemon.firstpoke('Piplup')
+
+  UIButton
+    id: chimchar
+    size: 64 62
+    image-source: interface/chimchar.png
+    anchors.top: parent.top
+    anchors.left: parent.left
+    margin-top: 105
+    margin-left: 410
+    !tooltip: tr('Chimchar, um pokemon do tipo fogo com otima agilidade.')
+    @onClick: modules.NewPokemon.firstpoke('Chimchar')
+
+  UIButton
+    id: turtwig
+    size: 56 60
+    image-source: interface/turtwig.png
+    anchors.top: parent.top
+    anchors.left: parent.left
+    margin-top: 105
+    margin-left: 490
+    !tooltip: tr('Turtwig, um pokemon do tipo planta com alta vida e defesa.')
+    @onClick: modules.NewPokemon.firstpoke('Turtwig')
+
+  UIButton
+    id: oshawott
+    size: 54 58
+    image-source: interface/oshawott.png
+    anchors.top: parent.top
+    anchors.left: parent.left
+    margin-top: 225
+    margin-left: 330
+    !tooltip: tr('Oshawott, um pokemon do tipo agua com alto dano de alvo unico.')
+    @onClick: modules.NewPokemon.firstpoke('Oshawott')
+
+  UIButton
+    id: tepig
+    size: 56 60
+    image-source: interface/tepig.png
+    anchors.top: parent.top
+    anchors.left: parent.left
+    margin-top: 220
+    margin-left: 405
+    !tooltip: tr('Tepig, um pokemon do tipo fogo com alto grande dano em area.')
+    @onClick: modules.NewPokemon.firstpoke('Tepig')
+
+  UIButton
+    id: snivy
+    size: 60 60
+    image-source: interface/snivy.png
+    anchors.top: parent.top
+    anchors.left: parent.left
+    margin-top: 220
+    margin-left: 490
+    !tooltip: tr('Snivy, um pokemon do tipo planta com alta defesa e agilidade.')
+    @onClick: modules.NewPokemon.firstpoke('Snivy')
+
+  UIButton
+    id: froakie
+    size: 50 54
+    image-source: interface/froakie.png
+    anchors.top: parent.top
+    anchors.left: parent.left
+    margin-top: 335
+    margin-left: 330
+    !tooltip: tr('Froakie, um pokemon do tipo agua com dano e agilidade equilibrados.\nUnico inicial com uma terceira evolucao.')
+    @onClick: modules.NewPokemon.firstpoke('Froakie')
+
+  UIButton
+    id: fennekin
+    size: 56 60
+    image-source: interface/fennekin.png
+    anchors.top: parent.top
+    anchors.left: parent.left
+    margin-top: 330
+    margin-left: 406
+    !tooltip: tr('Fennekin, um pokemon do tipo fogo com alto dano de status.')
+    @onClick: modules.NewPokemon.firstpoke('Fennekin')
+
+  UIButton
+    id: chespin
+    size: 56 60
+    image-source: interface/chespin.png
+    anchors.top: parent.top
+    anchors.left: parent.left
+    margin-top: 330
+    margin-left: 488
+    !tooltip: tr('Chespin, um pokemon do tipo planta com ataque e defesa equilibrados.')
+    @onClick: modules.NewPokemon.firstpoke('Chespin')
+
+  UIButton
+    id: popplio
+    size: 56 58	
+    image-source: interface/popplio.png
+    anchors.top: parent.top
+    anchors.left: parent.left
+    margin-top: 440
+    margin-left: 325
+    !tooltip: tr('Popplio, um pokemon do tipo agua com alta defesa e ataque.')
+    @onClick: modules.NewPokemon.firstpoke('Popplio')
+
+  UIButton
+    id: litten
+    size: 58 60
+    image-source: interface/litten.png
+    anchors.top: parent.top
+    anchors.left: parent.left
+    margin-top: 440
+    margin-left: 405
+    !tooltip: tr('Litten, um pokemon do tipo fogo com ataque e vida equilibrados.')
+    @onClick: modules.NewPokemon.firstpoke('Litten')
+
+  UIButton
+    id: rowlet
+    size: 52 56
+    image-source: interface/rowlet.png
+    anchors.top: parent.top
+    anchors.left: parent.left
+    margin-top: 448
+    margin-left: 495
+    !tooltip: tr('Rowlet, um pokemon do tipo planta com ataque e defesa equilibrados.')
+    @onClick: modules.NewPokemon.firstpoke('Rowlet')

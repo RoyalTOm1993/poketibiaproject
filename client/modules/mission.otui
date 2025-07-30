@@ -1,0 +1,6 @@
+MainWindow
+  id: missionWindow
+  size: 290 400
+  !text: tr('Missions')
+  @onEnter: modules.game_pass.hideMissions()
+  @onEscape: modules.game_pass.hideMissions()
