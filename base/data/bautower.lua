@@ -5,33 +5,25 @@ local t = {
     reward = {14435, 13234, 14434, 16361, 20653, 12237} -- Items to be gained.
 }
 
-function isBossNearby(pos, name)
-    local monsters = {
-        {pos = {x = 3929, y = 2508, z = 0}, name = "Boss Houndoom M1"},
-        -- Add more bosses if needed
-    }
-
-    for _, monsterinfo in ipairs(monsters) do
-        local distance = math.max(math.abs(pos.x - monsterinfo.pos.x), math.abs(pos.y - monsterinfo.pos.y))
-        if distance <= 10 and name == monsterinfo.name then
-            return true
-        end
-    end
-    return false
-end
-
 function onUse(cid, item, fromPos, itemEx, toPos)
     local player = Player(cid)
     if not player then
         return true
     end
 
-    local playerPosition = player:getPosition()
-    local playerName = player:getName()
+    -- Check if a boss monster is nearby
+    local monsters = {
+        {pos = {x = 3929, y = 2508, z = 0}, name = "Boss Houndoom M1"},
+    }
 
-    if isBossNearby(playerPosition, playerName) then
-        player:sendCancelMessage("Um boss ainda está próximo. Você não pode pegar o item.")
-        return true
+    for _, monsterinfo in ipairs(monsters) do
+        local spectator = Game.getSpectators(monsterinfo.pos, false, true, 10, 10)
+        for _, v in ipairs(spectator) do
+            if v:isCreature() and v:getName() == monsterinfo.name then
+                player:sendCancelMessage("Um boss ainda está próximo. Você não pode pegar o item.")
+                return true
+            end
+        end
     end
 
     if player:getStorageValue(t.storage) < os.time() then
