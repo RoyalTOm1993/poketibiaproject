@@ -20,40 +20,50 @@
  * THE SOFTWARE.
  */
 
-#ifdef FW_SOUND
+#include "otmldocument.h"
+#include "otmlparser.h"
+#include "otmlemitter.h"
 
-#ifndef FRAMEWORK_SOUND_DECLARATIONS_H
-#define FRAMEWORK_SOUND_DECLARATIONS_H
+#include <framework/core/resourcemanager.h>
 
-#include <framework/global.h>
+OTMLDocumentPtr OTMLDocument::create()
+{
+    OTMLDocumentPtr doc(new OTMLDocument);
+    doc->setTag("doc");
+    return doc;
+}
 
-#define AL_LIBTYPE_STATIC
+OTMLDocumentPtr OTMLDocument::parse(const std::string& fileName)
+{
+    std::stringstream fin;
+    std::string source = g_resources.resolvePath(fileName);
+    g_resources.readFileStream(source, fin);
+    return parse(fin, source);
+}
 
-#if defined(__APPLE__)
-#include <OpenAL/al.h>
-#include <OpenAL/alc.h>
-#else
-#include <AL/al.h>
-#include <AL/alc.h>
-#endif
+OTMLDocumentPtr OTMLDocument::parseString(const std::string& data, const std::string& source)
+{
+    std::istringstream is(data);
+    return parse(is, source);
+}
 
-class SoundManager;
-class SoundSource;
-class SoundBuffer;
-class SoundFile;
-class SoundChannel;
-class StreamSoundSource;
-class CombinedSoundSource;
-class OggSoundFile;
+OTMLDocumentPtr OTMLDocument::parse(std::istream& in, const std::string& source)
+{
+    OTMLDocumentPtr doc(new OTMLDocument);
+    doc->setSource(source);
+    OTMLParser parser(doc, in);
+    parser.parse();
+    return doc;
+}
 
-typedef stdext::shared_object_ptr<SoundSource> SoundSourcePtr;
-typedef stdext::shared_object_ptr<SoundFile> SoundFilePtr;
-typedef stdext::shared_object_ptr<SoundBuffer> SoundBufferPtr;
-typedef stdext::shared_object_ptr<SoundChannel> SoundChannelPtr;
-typedef stdext::shared_object_ptr<StreamSoundSource> StreamSoundSourcePtr;
-typedef stdext::shared_object_ptr<CombinedSoundSource> CombinedSoundSourcePtr;
-typedef stdext::shared_object_ptr<OggSoundFile> OggSoundFilePtr;
+std::string OTMLDocument::emit()
+{
+    return OTMLEmitter::emitNode(asOTMLNode()) + "\n";
+}
 
-#endif
+bool OTMLDocument::save(const std::string& fileName)
+{
+    m_source = fileName;
+    return g_resources.writeFileContents(fileName, emit());
+}
 
-#endif

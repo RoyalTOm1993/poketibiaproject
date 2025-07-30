@@ -20,40 +20,45 @@
  * THE SOFTWARE.
  */
 
-#ifdef FW_SOUND
+#include "server.h"
+#include "connection.h"
 
-#ifndef FRAMEWORK_SOUND_DECLARATIONS_H
-#define FRAMEWORK_SOUND_DECLARATIONS_H
+extern asio::io_service g_ioService;
 
-#include <framework/global.h>
+Server::Server(int port)
+    : m_acceptor(g_ioService, asio::ip::tcp::endpoint(asio::ip::tcp::v4(), port))
+{
+}
 
-#define AL_LIBTYPE_STATIC
+ServerPtr Server::create(int port)
+{
+    try {
+        Server *server = new Server(port);
+        return ServerPtr(server);
+    }
+    catch(const std::exception& e) {
+        g_logger.error(stdext::format("Failed to initialize server: %s", e.what()));
+        return ServerPtr();
+    }
+}
 
-#if defined(__APPLE__)
-#include <OpenAL/al.h>
-#include <OpenAL/alc.h>
-#else
-#include <AL/al.h>
-#include <AL/alc.h>
-#endif
+void Server::close()
+{
+    m_isOpen = false;
+    m_acceptor.cancel();
+    m_acceptor.close();
+}
 
-class SoundManager;
-class SoundSource;
-class SoundBuffer;
-class SoundFile;
-class SoundChannel;
-class StreamSoundSource;
-class CombinedSoundSource;
-class OggSoundFile;
-
-typedef stdext::shared_object_ptr<SoundSource> SoundSourcePtr;
-typedef stdext::shared_object_ptr<SoundFile> SoundFilePtr;
-typedef stdext::shared_object_ptr<SoundBuffer> SoundBufferPtr;
-typedef stdext::shared_object_ptr<SoundChannel> SoundChannelPtr;
-typedef stdext::shared_object_ptr<StreamSoundSource> StreamSoundSourcePtr;
-typedef stdext::shared_object_ptr<CombinedSoundSource> CombinedSoundSourcePtr;
-typedef stdext::shared_object_ptr<OggSoundFile> OggSoundFilePtr;
-
-#endif
-
-#endif
+void Server::acceptNext()
+{
+    ConnectionPtr connection = ConnectionPtr(new Connection);
+    connection->m_connecting = true;
+    auto self = static_self_cast<Server>();
+    m_acceptor.async_accept(connection->m_socket, [=](const boost::system::error_code& error) {
+        if(!error) {
+            connection->m_connected = true;
+            connection->m_connecting = false;
+        }
+        self->callLuaField("onAccept", connection, error.message(), error.value());
+    });
+}

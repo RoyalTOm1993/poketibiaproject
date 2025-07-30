@@ -20,40 +20,29 @@
  * THE SOFTWARE.
  */
 
-#ifdef FW_SOUND
+#ifndef STDEXT_DEMANGLE_H
+#define STDEXT_DEMANGLE_H
 
-#ifndef FRAMEWORK_SOUND_DECLARATIONS_H
-#define FRAMEWORK_SOUND_DECLARATIONS_H
+#include <typeinfo>
+#include <string>
 
-#include <framework/global.h>
+namespace stdext {
 
-#define AL_LIBTYPE_STATIC
+/// Demangle names for GNU g++ compiler
+const char* demangle_name(const char* name);
 
-#if defined(__APPLE__)
-#include <OpenAL/al.h>
-#include <OpenAL/alc.h>
+/// Returns the name of a class
+template<typename T> std::string demangle_class() {
+#ifdef _MSC_VER
+    return demangle_name(typeid(T).name()) + 6;
 #else
-#include <AL/al.h>
-#include <AL/alc.h>
+    return demangle_name(typeid(T).name());
 #endif
+}
 
-class SoundManager;
-class SoundSource;
-class SoundBuffer;
-class SoundFile;
-class SoundChannel;
-class StreamSoundSource;
-class CombinedSoundSource;
-class OggSoundFile;
+/// Returns the name of a type
+template<typename T> std::string demangle_type() { return demangle_name(typeid(T).name()); }
 
-typedef stdext::shared_object_ptr<SoundSource> SoundSourcePtr;
-typedef stdext::shared_object_ptr<SoundFile> SoundFilePtr;
-typedef stdext::shared_object_ptr<SoundBuffer> SoundBufferPtr;
-typedef stdext::shared_object_ptr<SoundChannel> SoundChannelPtr;
-typedef stdext::shared_object_ptr<StreamSoundSource> StreamSoundSourcePtr;
-typedef stdext::shared_object_ptr<CombinedSoundSource> CombinedSoundSourcePtr;
-typedef stdext::shared_object_ptr<OggSoundFile> OggSoundFilePtr;
-
-#endif
+}
 
 #endif

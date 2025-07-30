@@ -20,40 +20,17 @@
  * THE SOFTWARE.
  */
 
-#ifdef FW_SOUND
+#ifndef STDEXT_NET_H
+#define STDEXT_NET_H
 
-#ifndef FRAMEWORK_SOUND_DECLARATIONS_H
-#define FRAMEWORK_SOUND_DECLARATIONS_H
+#include "types.h"
+#include <string>
+#include <vector>
 
-#include <framework/global.h>
-
-#define AL_LIBTYPE_STATIC
-
-#if defined(__APPLE__)
-#include <OpenAL/al.h>
-#include <OpenAL/alc.h>
-#else
-#include <AL/al.h>
-#include <AL/alc.h>
-#endif
-
-class SoundManager;
-class SoundSource;
-class SoundBuffer;
-class SoundFile;
-class SoundChannel;
-class StreamSoundSource;
-class CombinedSoundSource;
-class OggSoundFile;
-
-typedef stdext::shared_object_ptr<SoundSource> SoundSourcePtr;
-typedef stdext::shared_object_ptr<SoundFile> SoundFilePtr;
-typedef stdext::shared_object_ptr<SoundBuffer> SoundBufferPtr;
-typedef stdext::shared_object_ptr<SoundChannel> SoundChannelPtr;
-typedef stdext::shared_object_ptr<StreamSoundSource> StreamSoundSourcePtr;
-typedef stdext::shared_object_ptr<CombinedSoundSource> CombinedSoundSourcePtr;
-typedef stdext::shared_object_ptr<OggSoundFile> OggSoundFilePtr;
-
-#endif
+namespace stdext {
+    std::string ip_to_string(uint32 ip);
+    uint32 string_to_ip(const std::string& string);
+    std::vector<uint32> listSubnetAddresses(uint32 address, uint8 mask);
+}
 
 #endif

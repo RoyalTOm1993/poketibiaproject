@@ -20,40 +20,48 @@
  * THE SOFTWARE.
  */
 
-#ifdef FW_SOUND
+#ifndef STDEXT_DYNAMICSTORAGE_H
+#define STDEXT_DYNAMICSTORAGE_H
 
-#ifndef FRAMEWORK_SOUND_DECLARATIONS_H
-#define FRAMEWORK_SOUND_DECLARATIONS_H
+#include "types.h"
+#include "any.h"
+#include <unordered_map>
 
-#include <framework/global.h>
+namespace stdext {
 
-#define AL_LIBTYPE_STATIC
+template<typename Key>
+class dynamic_storage {
+public:
+    template<typename T> void set(const Key& k, const T& value) {
+        if(m_data.size() <= k)
+            m_data.resize(k+1);
+        m_data[k] = value;
+    }
+    bool remove(const Key& k) {
+        if(m_data.size() < k)
+            return false;
+        if(m_data[k].empty())
+            return false;
+        m_data[k] = any();
+        return true;
+    }
+    template<typename T> T get(const Key& k) const { return has(k) ? any_cast<T>(m_data[k]) : T(); }
+    bool has(const Key& k) const { return k < m_data.size() && !m_data[k].empty(); }
 
-#if defined(__APPLE__)
-#include <OpenAL/al.h>
-#include <OpenAL/alc.h>
-#else
-#include <AL/al.h>
-#include <AL/alc.h>
-#endif
+    std::size_t size() const {
+        std::size_t count = 0;
+        for(std::size_t i=0;i<m_data.size();++i)
+            if(!m_data[i].empty())
+                count++;
+        return count;
+    }
 
-class SoundManager;
-class SoundSource;
-class SoundBuffer;
-class SoundFile;
-class SoundChannel;
-class StreamSoundSource;
-class CombinedSoundSource;
-class OggSoundFile;
+    void clear() { m_data.clear(); }
 
-typedef stdext::shared_object_ptr<SoundSource> SoundSourcePtr;
-typedef stdext::shared_object_ptr<SoundFile> SoundFilePtr;
-typedef stdext::shared_object_ptr<SoundBuffer> SoundBufferPtr;
-typedef stdext::shared_object_ptr<SoundChannel> SoundChannelPtr;
-typedef stdext::shared_object_ptr<StreamSoundSource> StreamSoundSourcePtr;
-typedef stdext::shared_object_ptr<CombinedSoundSource> CombinedSoundSourcePtr;
-typedef stdext::shared_object_ptr<OggSoundFile> OggSoundFilePtr;
+private:
+    std::vector<any> m_data;
+};
 
-#endif
+}
 
 #endif

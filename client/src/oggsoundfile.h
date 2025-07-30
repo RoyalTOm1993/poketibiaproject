@@ -22,37 +22,32 @@
 
 #ifdef FW_SOUND
 
-#ifndef FRAMEWORK_SOUND_DECLARATIONS_H
-#define FRAMEWORK_SOUND_DECLARATIONS_H
+#ifndef OGGSOUNDFILE_H
+#define OGGSOUNDFILE_H
 
-#include <framework/global.h>
+#include "soundfile.h"
 
-#define AL_LIBTYPE_STATIC
+#include <vorbis/vorbisfile.h>
 
-#if defined(__APPLE__)
-#include <OpenAL/al.h>
-#include <OpenAL/alc.h>
-#else
-#include <AL/al.h>
-#include <AL/alc.h>
-#endif
+class OggSoundFile : public SoundFile
+{
+public:
+    OggSoundFile(const FileStreamPtr& fileStream);
+    virtual ~OggSoundFile();
 
-class SoundManager;
-class SoundSource;
-class SoundBuffer;
-class SoundFile;
-class SoundChannel;
-class StreamSoundSource;
-class CombinedSoundSource;
-class OggSoundFile;
+    bool prepareOgg();
 
-typedef stdext::shared_object_ptr<SoundSource> SoundSourcePtr;
-typedef stdext::shared_object_ptr<SoundFile> SoundFilePtr;
-typedef stdext::shared_object_ptr<SoundBuffer> SoundBufferPtr;
-typedef stdext::shared_object_ptr<SoundChannel> SoundChannelPtr;
-typedef stdext::shared_object_ptr<StreamSoundSource> StreamSoundSourcePtr;
-typedef stdext::shared_object_ptr<CombinedSoundSource> CombinedSoundSourcePtr;
-typedef stdext::shared_object_ptr<OggSoundFile> OggSoundFilePtr;
+    int read(void *buffer, int bufferSize);
+    void reset();
+
+private:
+    static size_t cb_read(void* ptr, size_t size, size_t nmemb, void* source);
+    static int cb_seek(void* source, ogg_int64_t offset, int whence);
+    static int cb_close(void* source);
+    static long cb_tell(void* source);
+
+    OggVorbis_File m_vorbisFile;
+};
 
 #endif
 

@@ -20,40 +20,41 @@
  * THE SOFTWARE.
  */
 
-#ifdef FW_SOUND
+#include "net.h"
+#include <boost/lexical_cast.hpp>
+#include <boost/algorithm/string.hpp>
+#include <boost/asio/ip/address_v4.hpp>
 
-#ifndef FRAMEWORK_SOUND_DECLARATIONS_H
-#define FRAMEWORK_SOUND_DECLARATIONS_H
+namespace stdext {
 
-#include <framework/global.h>
+std::string ip_to_string(uint32 ip)
+{
+    ip = boost::asio::detail::socket_ops::network_to_host_long(ip);
+    boost::asio::ip::address_v4 address_v4 = boost::asio::ip::address_v4(ip);
+    return address_v4.to_string();
+}
 
-#define AL_LIBTYPE_STATIC
+uint32 string_to_ip(const std::string& string)
+{
+    boost::asio::ip::address_v4 address_v4 = boost::asio::ip::address_v4::from_string(string);
+    return boost::asio::detail::socket_ops::host_to_network_long(address_v4.to_ulong());
+}
 
-#if defined(__APPLE__)
-#include <OpenAL/al.h>
-#include <OpenAL/alc.h>
-#else
-#include <AL/al.h>
-#include <AL/alc.h>
-#endif
+std::vector<uint32> listSubnetAddresses(uint32 address, uint8 mask)
+{
+    std::vector<uint32> list;
+    if(mask < 32) {
+        uint32 bitmask = (0xFFFFFFFF >> mask);
+        for(uint32 i = 0; i <= bitmask; i++) {
+            uint32 ip = boost::asio::detail::socket_ops::host_to_network_long((boost::asio::detail::socket_ops::network_to_host_long(address) & (~bitmask)) | i);
+            if((ip >> 24) != 0 && (ip >> 24) != 0xFF)
+                list.push_back(ip);
+        }
+    }
+    else
+        list.push_back(address);
 
-class SoundManager;
-class SoundSource;
-class SoundBuffer;
-class SoundFile;
-class SoundChannel;
-class StreamSoundSource;
-class CombinedSoundSource;
-class OggSoundFile;
+    return list;
+}
 
-typedef stdext::shared_object_ptr<SoundSource> SoundSourcePtr;
-typedef stdext::shared_object_ptr<SoundFile> SoundFilePtr;
-typedef stdext::shared_object_ptr<SoundBuffer> SoundBufferPtr;
-typedef stdext::shared_object_ptr<SoundChannel> SoundChannelPtr;
-typedef stdext::shared_object_ptr<StreamSoundSource> StreamSoundSourcePtr;
-typedef stdext::shared_object_ptr<CombinedSoundSource> CombinedSoundSourcePtr;
-typedef stdext::shared_object_ptr<OggSoundFile> OggSoundFilePtr;
-
-#endif
-
-#endif
+}

@@ -20,40 +20,28 @@
  * THE SOFTWARE.
  */
 
-#ifdef FW_SOUND
+#include "otmlexception.h"
+#include "otmldocument.h"
 
-#ifndef FRAMEWORK_SOUND_DECLARATIONS_H
-#define FRAMEWORK_SOUND_DECLARATIONS_H
+OTMLException::OTMLException(const OTMLNodePtr& node, const std::string& error)
+{
+    std::stringstream ss;
+    ss << "OTML error";
+    if(!node->source().empty())
+        ss << " in '" << node->source() << "'";
+    ss << ": " << error;
+    m_what = ss.str();
+}
 
-#include <framework/global.h>
-
-#define AL_LIBTYPE_STATIC
-
-#if defined(__APPLE__)
-#include <OpenAL/al.h>
-#include <OpenAL/alc.h>
-#else
-#include <AL/al.h>
-#include <AL/alc.h>
-#endif
-
-class SoundManager;
-class SoundSource;
-class SoundBuffer;
-class SoundFile;
-class SoundChannel;
-class StreamSoundSource;
-class CombinedSoundSource;
-class OggSoundFile;
-
-typedef stdext::shared_object_ptr<SoundSource> SoundSourcePtr;
-typedef stdext::shared_object_ptr<SoundFile> SoundFilePtr;
-typedef stdext::shared_object_ptr<SoundBuffer> SoundBufferPtr;
-typedef stdext::shared_object_ptr<SoundChannel> SoundChannelPtr;
-typedef stdext::shared_object_ptr<StreamSoundSource> StreamSoundSourcePtr;
-typedef stdext::shared_object_ptr<CombinedSoundSource> CombinedSoundSourcePtr;
-typedef stdext::shared_object_ptr<OggSoundFile> OggSoundFilePtr;
-
-#endif
-
-#endif
+OTMLException::OTMLException(const OTMLDocumentPtr& doc, const std::string& error, int line)
+{
+    std::stringstream ss;
+    ss << "OTML error";
+    if(doc && !doc->source().empty()) {
+        ss  << " in '" << doc->source() << "'";
+        if(line >= 0)
+            ss << " at line " << line;
+    }
+    ss << ": "  << error;
+    m_what = ss.str();
+}

@@ -20,40 +20,31 @@
  * THE SOFTWARE.
  */
 
-#ifdef FW_SOUND
+#ifndef STDEXT_TIME_H
+#define STDEXT_TIME_H
 
-#ifndef FRAMEWORK_SOUND_DECLARATIONS_H
-#define FRAMEWORK_SOUND_DECLARATIONS_H
+#include "types.h"
 
-#include <framework/global.h>
+namespace stdext {
 
-#define AL_LIBTYPE_STATIC
+ticks_t time();
+ticks_t millis();
+ticks_t micros();
+void millisleep(size_t ms);
+void microsleep(size_t us);
 
-#if defined(__APPLE__)
-#include <OpenAL/al.h>
-#include <OpenAL/alc.h>
-#else
-#include <AL/al.h>
-#include <AL/alc.h>
-#endif
+struct timer {
+public:
+    timer() { restart(); }
+    float elapsed_seconds() { return (float)((stdext::micros() - m_start)/1000000.0); }
+    ticks_t elapsed_millis() { return (stdext::micros() - m_start)/1000; }
+    ticks_t elapsed_micros() { return stdext::micros() - m_start; }
+    void restart(int shift = 0) { m_start = stdext::micros() - shift; }
+private:
+    ticks_t m_start;
+};
 
-class SoundManager;
-class SoundSource;
-class SoundBuffer;
-class SoundFile;
-class SoundChannel;
-class StreamSoundSource;
-class CombinedSoundSource;
-class OggSoundFile;
-
-typedef stdext::shared_object_ptr<SoundSource> SoundSourcePtr;
-typedef stdext::shared_object_ptr<SoundFile> SoundFilePtr;
-typedef stdext::shared_object_ptr<SoundBuffer> SoundBufferPtr;
-typedef stdext::shared_object_ptr<SoundChannel> SoundChannelPtr;
-typedef stdext::shared_object_ptr<StreamSoundSource> StreamSoundSourcePtr;
-typedef stdext::shared_object_ptr<CombinedSoundSource> CombinedSoundSourcePtr;
-typedef stdext::shared_object_ptr<OggSoundFile> OggSoundFilePtr;
+}
 
 #endif
 
-#endif

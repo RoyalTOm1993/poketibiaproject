@@ -20,40 +20,37 @@
  * THE SOFTWARE.
  */
 
-#ifdef FW_SOUND
+#ifndef OTMLDOCUMENT_H
+#define OTMLDOCUMENT_H
 
-#ifndef FRAMEWORK_SOUND_DECLARATIONS_H
-#define FRAMEWORK_SOUND_DECLARATIONS_H
+#include "otmlnode.h"
 
-#include <framework/global.h>
+class OTMLDocument : public OTMLNode
+{
+public:
+    virtual ~OTMLDocument() { }
 
-#define AL_LIBTYPE_STATIC
+    /// Create a new OTML document for filling it with nodes
+    static OTMLDocumentPtr create();
 
-#if defined(__APPLE__)
-#include <OpenAL/al.h>
-#include <OpenAL/alc.h>
-#else
-#include <AL/al.h>
-#include <AL/alc.h>
-#endif
+    /// Parse OTML from a file
+    static OTMLDocumentPtr parse(const std::string& fileName);
 
-class SoundManager;
-class SoundSource;
-class SoundBuffer;
-class SoundFile;
-class SoundChannel;
-class StreamSoundSource;
-class CombinedSoundSource;
-class OggSoundFile;
+    /// Parse OTML from a string
+    static OTMLDocumentPtr parseString(const std::string& data, const std::string& source);
 
-typedef stdext::shared_object_ptr<SoundSource> SoundSourcePtr;
-typedef stdext::shared_object_ptr<SoundFile> SoundFilePtr;
-typedef stdext::shared_object_ptr<SoundBuffer> SoundBufferPtr;
-typedef stdext::shared_object_ptr<SoundChannel> SoundChannelPtr;
-typedef stdext::shared_object_ptr<StreamSoundSource> StreamSoundSourcePtr;
-typedef stdext::shared_object_ptr<CombinedSoundSource> CombinedSoundSourcePtr;
-typedef stdext::shared_object_ptr<OggSoundFile> OggSoundFilePtr;
+    /// Parse OTML from input stream
+    /// @param source is the file name that will be used to show errors messages
+    static OTMLDocumentPtr parse(std::istream& in, const std::string& source);
 
-#endif
+    /// Emits this document and all it's children to a std::string
+    std::string emit();
+
+    /// Save this document to a file
+    bool save(const std::string& fileName);
+
+private:
+    OTMLDocument() { }
+};
 
 #endif

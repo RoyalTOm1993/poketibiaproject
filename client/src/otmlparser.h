@@ -20,40 +20,37 @@
  * THE SOFTWARE.
  */
 
-#ifdef FW_SOUND
+#ifndef OTMLPARSER_H
+#define OTMLPARSER_H
 
-#ifndef FRAMEWORK_SOUND_DECLARATIONS_H
-#define FRAMEWORK_SOUND_DECLARATIONS_H
+#include "declarations.h"
 
-#include <framework/global.h>
+class OTMLParser
+{
+public:
+    OTMLParser(OTMLDocumentPtr doc, std::istream& in);
 
-#define AL_LIBTYPE_STATIC
+    /// Parse the entire document
+    void parse();
 
-#if defined(__APPLE__)
-#include <OpenAL/al.h>
-#include <OpenAL/alc.h>
-#else
-#include <AL/al.h>
-#include <AL/alc.h>
-#endif
+private:
+    /// Retrieve next line from the input stream
+    std::string getNextLine();
+    /// Counts depth of a line (every 2 spaces increments one depth)
+    int getLineDepth(const std::string& line, bool multilining = false);
 
-class SoundManager;
-class SoundSource;
-class SoundBuffer;
-class SoundFile;
-class SoundChannel;
-class StreamSoundSource;
-class CombinedSoundSource;
-class OggSoundFile;
+    /// Parse each line of the input stream
+    void parseLine(std::string line);
+    /// Parse nodes tag and value
+    void parseNode(const std::string& data);
 
-typedef stdext::shared_object_ptr<SoundSource> SoundSourcePtr;
-typedef stdext::shared_object_ptr<SoundFile> SoundFilePtr;
-typedef stdext::shared_object_ptr<SoundBuffer> SoundBufferPtr;
-typedef stdext::shared_object_ptr<SoundChannel> SoundChannelPtr;
-typedef stdext::shared_object_ptr<StreamSoundSource> StreamSoundSourcePtr;
-typedef stdext::shared_object_ptr<CombinedSoundSource> CombinedSoundSourcePtr;
-typedef stdext::shared_object_ptr<OggSoundFile> OggSoundFilePtr;
-
-#endif
+    int currentDepth;
+    int currentLine;
+    OTMLDocumentPtr doc;
+    OTMLNodePtr currentParent;
+    std::unordered_map<OTMLNodePtr, OTMLNodePtr> parentMap;
+    OTMLNodePtr previousNode;
+    std::istream& in;
+};
 
 #endif

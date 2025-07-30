@@ -22,37 +22,40 @@
 
 #ifdef FW_SOUND
 
-#ifndef FRAMEWORK_SOUND_DECLARATIONS_H
-#define FRAMEWORK_SOUND_DECLARATIONS_H
+#ifndef COMBINEDSOUNDSOURCE_H
+#define COMBINEDSOUNDSOURCE_H
 
-#include <framework/global.h>
+#include "soundsource.h"
 
-#define AL_LIBTYPE_STATIC
+class CombinedSoundSource : public SoundSource
+{
+public:
+    CombinedSoundSource();
 
-#if defined(__APPLE__)
-#include <OpenAL/al.h>
-#include <OpenAL/alc.h>
-#else
-#include <AL/al.h>
-#include <AL/alc.h>
-#endif
+    void addSource(const SoundSourcePtr& source);
+    std::vector<SoundSourcePtr> getSources() { return m_sources; }
 
-class SoundManager;
-class SoundSource;
-class SoundBuffer;
-class SoundFile;
-class SoundChannel;
-class StreamSoundSource;
-class CombinedSoundSource;
-class OggSoundFile;
+    void play();
+    void stop();
 
-typedef stdext::shared_object_ptr<SoundSource> SoundSourcePtr;
-typedef stdext::shared_object_ptr<SoundFile> SoundFilePtr;
-typedef stdext::shared_object_ptr<SoundBuffer> SoundBufferPtr;
-typedef stdext::shared_object_ptr<SoundChannel> SoundChannelPtr;
-typedef stdext::shared_object_ptr<StreamSoundSource> StreamSoundSourcePtr;
-typedef stdext::shared_object_ptr<CombinedSoundSource> CombinedSoundSourcePtr;
-typedef stdext::shared_object_ptr<OggSoundFile> OggSoundFilePtr;
+    bool isBuffering();
+    bool isPlaying();
+
+    void setLooping(bool looping);
+    void setRelative(bool relative);
+    void setReferenceDistance(float distance);
+    void setGain(float gain);
+    void setPitch(float pitch);
+    void setPosition(const Point& pos);
+    void setVelocity(const Point& velocity);
+    void setFading(FadeState state, float fadetime);
+
+protected:
+    virtual void update();
+
+private:
+    std::vector<SoundSourcePtr> m_sources;
+};
 
 #endif
 

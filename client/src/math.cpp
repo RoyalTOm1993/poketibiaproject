@@ -20,40 +20,50 @@
  * THE SOFTWARE.
  */
 
-#ifdef FW_SOUND
+#include "math.h"
+#include <random>
 
-#ifndef FRAMEWORK_SOUND_DECLARATIONS_H
-#define FRAMEWORK_SOUND_DECLARATIONS_H
-
-#include <framework/global.h>
-
-#define AL_LIBTYPE_STATIC
-
-#if defined(__APPLE__)
-#include <OpenAL/al.h>
-#include <OpenAL/alc.h>
-#else
-#include <AL/al.h>
-#include <AL/alc.h>
+#ifdef _MSC_VER
+    #pragma warning(disable:4267) // '?' : conversion from 'A' to 'B', possible loss of data
 #endif
 
-class SoundManager;
-class SoundSource;
-class SoundBuffer;
-class SoundFile;
-class SoundChannel;
-class StreamSoundSource;
-class CombinedSoundSource;
-class OggSoundFile;
+namespace stdext {
 
-typedef stdext::shared_object_ptr<SoundSource> SoundSourcePtr;
-typedef stdext::shared_object_ptr<SoundFile> SoundFilePtr;
-typedef stdext::shared_object_ptr<SoundBuffer> SoundBufferPtr;
-typedef stdext::shared_object_ptr<SoundChannel> SoundChannelPtr;
-typedef stdext::shared_object_ptr<StreamSoundSource> StreamSoundSourcePtr;
-typedef stdext::shared_object_ptr<CombinedSoundSource> CombinedSoundSourcePtr;
-typedef stdext::shared_object_ptr<OggSoundFile> OggSoundFilePtr;
+uint32_t adler32(const uint8_t *buffer, size_t size) {
+    size_t a = 1, b = 0, tlen;
+    while(size > 0) {
+        tlen = size > 5552 ? 5552 : size;
+        size -= tlen;
+        do {
+            a += *buffer++;
+            b += a;
+        } while (--tlen);
 
-#endif
+        a %= 65521;
+        b %= 65521;
+    }
+    return (b << 16) | a;
+}
 
-#endif
+long random_range(long min, long max)
+{
+    static std::random_device rd;
+    static std::mt19937 gen(rd());
+    static std::uniform_int_distribution<long> dis(0, 2147483647);
+    return min + (dis(gen) % (max - min + 1));
+}
+
+float random_range(float min, float max)
+{
+    static std::random_device rd;
+    static std::mt19937 gen(rd());
+    static std::uniform_real_distribution<float> dis(0.0, 1.0);
+    return min + (max - min)*dis(gen);
+}
+
+double round(double r)
+{
+    return (r > 0.0) ? floor(r + 0.5) : ceil(r - 0.5);
+}
+
+}

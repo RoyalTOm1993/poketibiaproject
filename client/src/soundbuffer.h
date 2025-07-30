@@ -22,37 +22,27 @@
 
 #ifdef FW_SOUND
 
-#ifndef FRAMEWORK_SOUND_DECLARATIONS_H
-#define FRAMEWORK_SOUND_DECLARATIONS_H
+#ifndef SOUNDBUFFER_H
+#define SOUNDBUFFER_H
 
-#include <framework/global.h>
+#include "declarations.h"
 
-#define AL_LIBTYPE_STATIC
+#include <framework/util/databuffer.h>
 
-#if defined(__APPLE__)
-#include <OpenAL/al.h>
-#include <OpenAL/alc.h>
-#else
-#include <AL/al.h>
-#include <AL/alc.h>
-#endif
+class SoundBuffer : public stdext::shared_object
+{
+public:
+    SoundBuffer();
+    ~SoundBuffer();
 
-class SoundManager;
-class SoundSource;
-class SoundBuffer;
-class SoundFile;
-class SoundChannel;
-class StreamSoundSource;
-class CombinedSoundSource;
-class OggSoundFile;
+    bool fillBuffer(const SoundFilePtr& soundFile);
+    bool fillBuffer(ALenum sampleFormat, const DataBuffer<char>& data, int size, int rate);
 
-typedef stdext::shared_object_ptr<SoundSource> SoundSourcePtr;
-typedef stdext::shared_object_ptr<SoundFile> SoundFilePtr;
-typedef stdext::shared_object_ptr<SoundBuffer> SoundBufferPtr;
-typedef stdext::shared_object_ptr<SoundChannel> SoundChannelPtr;
-typedef stdext::shared_object_ptr<StreamSoundSource> StreamSoundSourcePtr;
-typedef stdext::shared_object_ptr<CombinedSoundSource> CombinedSoundSourcePtr;
-typedef stdext::shared_object_ptr<OggSoundFile> OggSoundFilePtr;
+    uint getBufferId() { return m_bufferId; }
+
+private:
+    uint m_bufferId;
+};
 
 #endif
 

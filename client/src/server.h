@@ -20,40 +20,25 @@
  * THE SOFTWARE.
  */
 
-#ifdef FW_SOUND
+#ifndef SERVER_H
+#define SERVER_H
 
-#ifndef FRAMEWORK_SOUND_DECLARATIONS_H
-#define FRAMEWORK_SOUND_DECLARATIONS_H
+#include "declarations.h"
+#include <framework/luaengine/luaobject.h>
 
-#include <framework/global.h>
+class Server : public LuaObject
+{
+public:
+    Server(int port);
+    static ServerPtr create(int port);
+    bool isOpen() { return m_isOpen; }
+    void close();
 
-#define AL_LIBTYPE_STATIC
+    void acceptNext();
 
-#if defined(__APPLE__)
-#include <OpenAL/al.h>
-#include <OpenAL/alc.h>
-#else
-#include <AL/al.h>
-#include <AL/alc.h>
-#endif
-
-class SoundManager;
-class SoundSource;
-class SoundBuffer;
-class SoundFile;
-class SoundChannel;
-class StreamSoundSource;
-class CombinedSoundSource;
-class OggSoundFile;
-
-typedef stdext::shared_object_ptr<SoundSource> SoundSourcePtr;
-typedef stdext::shared_object_ptr<SoundFile> SoundFilePtr;
-typedef stdext::shared_object_ptr<SoundBuffer> SoundBufferPtr;
-typedef stdext::shared_object_ptr<SoundChannel> SoundChannelPtr;
-typedef stdext::shared_object_ptr<StreamSoundSource> StreamSoundSourcePtr;
-typedef stdext::shared_object_ptr<CombinedSoundSource> CombinedSoundSourcePtr;
-typedef stdext::shared_object_ptr<OggSoundFile> OggSoundFilePtr;
-
-#endif
+private:
+    stdext::boolean<true> m_isOpen;
+    asio::ip::tcp::acceptor m_acceptor;
+};
 
 #endif

@@ -20,40 +20,21 @@
  * THE SOFTWARE.
  */
 
-#ifdef FW_SOUND
+#ifndef BOOLEAN_H
+#define BOOLEAN_H
 
-#ifndef FRAMEWORK_SOUND_DECLARATIONS_H
-#define FRAMEWORK_SOUND_DECLARATIONS_H
+namespace stdext {
 
-#include <framework/global.h>
+template<bool def>
+struct boolean {
+    boolean() : v(def) { }
+    operator bool &() { return v; }
+    operator bool const &() const { return v; }
+    bool& operator=(const bool& o) { v = o; return v; }
+private:
+    bool v;
+};
 
-#define AL_LIBTYPE_STATIC
-
-#if defined(__APPLE__)
-#include <OpenAL/al.h>
-#include <OpenAL/alc.h>
-#else
-#include <AL/al.h>
-#include <AL/alc.h>
-#endif
-
-class SoundManager;
-class SoundSource;
-class SoundBuffer;
-class SoundFile;
-class SoundChannel;
-class StreamSoundSource;
-class CombinedSoundSource;
-class OggSoundFile;
-
-typedef stdext::shared_object_ptr<SoundSource> SoundSourcePtr;
-typedef stdext::shared_object_ptr<SoundFile> SoundFilePtr;
-typedef stdext::shared_object_ptr<SoundBuffer> SoundBufferPtr;
-typedef stdext::shared_object_ptr<SoundChannel> SoundChannelPtr;
-typedef stdext::shared_object_ptr<StreamSoundSource> StreamSoundSourcePtr;
-typedef stdext::shared_object_ptr<CombinedSoundSource> CombinedSoundSourcePtr;
-typedef stdext::shared_object_ptr<OggSoundFile> OggSoundFilePtr;
-
-#endif
+}
 
 #endif

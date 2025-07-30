@@ -20,40 +20,45 @@
  * THE SOFTWARE.
  */
 
-#ifdef FW_SOUND
+#include "demangle.h"
 
-#ifndef FRAMEWORK_SOUND_DECLARATIONS_H
-#define FRAMEWORK_SOUND_DECLARATIONS_H
+#ifdef _MSC_VER
 
-#include <framework/global.h>
+#include <winsock2.h>
+#include <windows.h>
 
-#define AL_LIBTYPE_STATIC
+#pragma warning (push)
+#pragma warning (disable:4091) // warning C4091: 'typedef ': ignored on left of '' when no variable is declared
+#include <dbghelp.h>
+#pragma warning (pop)
 
-#if defined(__APPLE__)
-#include <OpenAL/al.h>
-#include <OpenAL/alc.h>
 #else
-#include <AL/al.h>
-#include <AL/alc.h>
-#endif
 
-class SoundManager;
-class SoundSource;
-class SoundBuffer;
-class SoundFile;
-class SoundChannel;
-class StreamSoundSource;
-class CombinedSoundSource;
-class OggSoundFile;
-
-typedef stdext::shared_object_ptr<SoundSource> SoundSourcePtr;
-typedef stdext::shared_object_ptr<SoundFile> SoundFilePtr;
-typedef stdext::shared_object_ptr<SoundBuffer> SoundBufferPtr;
-typedef stdext::shared_object_ptr<SoundChannel> SoundChannelPtr;
-typedef stdext::shared_object_ptr<StreamSoundSource> StreamSoundSourcePtr;
-typedef stdext::shared_object_ptr<CombinedSoundSource> CombinedSoundSourcePtr;
-typedef stdext::shared_object_ptr<OggSoundFile> OggSoundFilePtr;
+#include <cxxabi.h>
+#include <cstring>
+#include <cstdlib>
 
 #endif
 
+namespace stdext {
+
+const char* demangle_name(const char* name)
+{
+#ifdef _MSC_VER
+    static char buffer[1024];
+    UnDecorateSymbolName(name, buffer, sizeof(buffer), UNDNAME_COMPLETE);
+    return buffer;
+#else
+    size_t len;
+    int status;
+    static char buffer[1024];
+    char* demangled = abi::__cxa_demangle(name, 0, &len, &status);
+    if(demangled) {
+        strcpy(buffer, demangled);
+        free(demangled);
+    }
+    return buffer;
 #endif
+}
+
+}

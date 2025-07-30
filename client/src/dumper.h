@@ -20,40 +20,23 @@
  * THE SOFTWARE.
  */
 
-#ifdef FW_SOUND
+#ifndef STDEXT_DUMPER_H
+#define STDEXT_DUMPER_H
 
-#ifndef FRAMEWORK_SOUND_DECLARATIONS_H
-#define FRAMEWORK_SOUND_DECLARATIONS_H
+#include <iostream>
 
-#include <framework/global.h>
+namespace stdext {
 
-#define AL_LIBTYPE_STATIC
+static struct {
+    struct dumper_dummy {
+        ~dumper_dummy() { std::cout << std::endl; }
+        template<class T> dumper_dummy& operator<<(const T& v) { std::cout << v << " "; return *this; }
+    };
+    template<class T> dumper_dummy operator<<(const T& v) const { dumper_dummy d; d << v; return d; }
+} dump;
 
-#if defined(__APPLE__)
-#include <OpenAL/al.h>
-#include <OpenAL/alc.h>
-#else
-#include <AL/al.h>
-#include <AL/alc.h>
-#endif
+}
 
-class SoundManager;
-class SoundSource;
-class SoundBuffer;
-class SoundFile;
-class SoundChannel;
-class StreamSoundSource;
-class CombinedSoundSource;
-class OggSoundFile;
-
-typedef stdext::shared_object_ptr<SoundSource> SoundSourcePtr;
-typedef stdext::shared_object_ptr<SoundFile> SoundFilePtr;
-typedef stdext::shared_object_ptr<SoundBuffer> SoundBufferPtr;
-typedef stdext::shared_object_ptr<SoundChannel> SoundChannelPtr;
-typedef stdext::shared_object_ptr<StreamSoundSource> StreamSoundSourcePtr;
-typedef stdext::shared_object_ptr<CombinedSoundSource> CombinedSoundSourcePtr;
-typedef stdext::shared_object_ptr<OggSoundFile> OggSoundFilePtr;
-
-#endif
+using stdext::dump;
 
 #endif

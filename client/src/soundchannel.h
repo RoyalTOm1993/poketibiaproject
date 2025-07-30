@@ -22,37 +22,47 @@
 
 #ifdef FW_SOUND
 
-#ifndef FRAMEWORK_SOUND_DECLARATIONS_H
-#define FRAMEWORK_SOUND_DECLARATIONS_H
+#ifndef SHOUNDCHANNEL_H
+#define SHOUNDCHANNEL_H
 
-#include <framework/global.h>
+#include "soundsource.h"
 
-#define AL_LIBTYPE_STATIC
+// @bindclass
+class SoundChannel : public LuaObject
+{
+public:
+    SoundChannel(int id) : m_id(id), m_gain(1) { }
 
-#if defined(__APPLE__)
-#include <OpenAL/al.h>
-#include <OpenAL/alc.h>
-#else
-#include <AL/al.h>
-#include <AL/alc.h>
-#endif
+    SoundSourcePtr play(const std::string& filename, float fadetime = 0, float gain = 1.0f);
+    void stop(float fadetime = 0);
+    void enqueue(const std::string& filename, float fadetime = 0, float gain = 1.0f);
+    void enable() { setEnabled(true); }
+    void disable() { setEnabled(false); }
 
-class SoundManager;
-class SoundSource;
-class SoundBuffer;
-class SoundFile;
-class SoundChannel;
-class StreamSoundSource;
-class CombinedSoundSource;
-class OggSoundFile;
+    void setGain(float gain);
+    float getGain() { return m_gain; }
 
-typedef stdext::shared_object_ptr<SoundSource> SoundSourcePtr;
-typedef stdext::shared_object_ptr<SoundFile> SoundFilePtr;
-typedef stdext::shared_object_ptr<SoundBuffer> SoundBufferPtr;
-typedef stdext::shared_object_ptr<SoundChannel> SoundChannelPtr;
-typedef stdext::shared_object_ptr<StreamSoundSource> StreamSoundSourcePtr;
-typedef stdext::shared_object_ptr<CombinedSoundSource> CombinedSoundSourcePtr;
-typedef stdext::shared_object_ptr<OggSoundFile> OggSoundFilePtr;
+    void setEnabled(bool enable);
+    bool isEnabled() { return m_enabled; }
+
+    int getId() { return m_id; }
+
+protected:
+    void update();
+    friend class SoundManager;
+
+private:
+    struct QueueEntry {
+        std::string filename;
+        float fadetime;
+        float gain;
+    };
+    std::deque<QueueEntry> m_queue;
+    SoundSourcePtr m_currentSource;
+    stdext::boolean<true> m_enabled;
+    int m_id;
+    float m_gain;
+};
 
 #endif
 
