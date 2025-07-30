@@ -1,0 +1,8 @@
+Font
+  name: sono_medium_16
+  texture: sono_medium_16
+  height: 19
+  glyph-size: 19 19
+  y-offset: 1
+  space-width: 1
+  spacing: 1 0
