@@ -20,30 +20,47 @@
  * THE SOFTWARE.
  */
 
-#ifndef FRAMEWORK_CORE_DECLARATIONS_H
-#define FRAMEWORK_CORE_DECLARATIONS_H
+#ifndef CONFIG_H
+#define CONFIG_H
 
-#include <framework/global.h>
+#include "declarations.h"
 
-class ConfigManager;
-class ModuleManager;
-class ResourceManager;
-class Module;
-class Config;
-class Event;
-class ScheduledEvent;
-class FileStream;
-class BinaryTree;
-class OutputBinaryTree;
+#include <framework/luaengine/luaobject.h>
+#include <framework/otml/declarations.h>
 
-typedef stdext::shared_object_ptr<Module> ModulePtr;
-typedef stdext::shared_object_ptr<Config> ConfigPtr;
-typedef stdext::shared_object_ptr<Event> EventPtr;
-typedef stdext::shared_object_ptr<ScheduledEvent> ScheduledEventPtr;
-typedef stdext::shared_object_ptr<FileStream> FileStreamPtr;
-typedef stdext::shared_object_ptr<BinaryTree> BinaryTreePtr;
-typedef stdext::shared_object_ptr<OutputBinaryTree> OutputBinaryTreePtr;
+// @bindclass
+class Config : public LuaObject
+{
+public:
+    Config();
 
-typedef std::vector<BinaryTreePtr> BinaryTreeVec;
+    bool load(const std::string& file);
+    bool unload();
+    bool save();
+    void clear();
+
+    void setValue(const std::string& key, const std::string& value);
+    void setList(const std::string& key, const std::vector<std::string>& list);
+    std::string getValue(const std::string& key);
+    std::vector<std::string> getList(const std::string& key);
+
+    void setNode(const std::string& key, const OTMLNodePtr& node);
+    void mergeNode(const std::string& key, const OTMLNodePtr& node);
+    OTMLNodePtr getNode(const std::string& key);
+    int getNodeSize(const std::string& key);
+
+    bool exists(const std::string& key);
+    void remove(const std::string& key);
+
+    std::string getFileName();
+    bool isLoaded();
+
+    // @dontbind
+    ConfigPtr asConfig() { return static_self_cast<Config>(); }
+
+private:
+    std::string m_fileName;
+    OTMLDocumentPtr m_confsDoc;
+};
 
 #endif

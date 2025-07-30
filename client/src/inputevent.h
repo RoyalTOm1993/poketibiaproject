@@ -20,30 +20,36 @@
  * THE SOFTWARE.
  */
 
-#ifndef FRAMEWORK_CORE_DECLARATIONS_H
-#define FRAMEWORK_CORE_DECLARATIONS_H
+#ifndef INPUTEVENT_H
+#define INPUTEVENT_H
 
-#include <framework/global.h>
+#include "declarations.h"
 
-class ConfigManager;
-class ModuleManager;
-class ResourceManager;
-class Module;
-class Config;
-class Event;
-class ScheduledEvent;
-class FileStream;
-class BinaryTree;
-class OutputBinaryTree;
+struct InputEvent {
+    InputEvent() {
+        reset();
+        keyboardModifiers = 0;
+    }
 
-typedef stdext::shared_object_ptr<Module> ModulePtr;
-typedef stdext::shared_object_ptr<Config> ConfigPtr;
-typedef stdext::shared_object_ptr<Event> EventPtr;
-typedef stdext::shared_object_ptr<ScheduledEvent> ScheduledEventPtr;
-typedef stdext::shared_object_ptr<FileStream> FileStreamPtr;
-typedef stdext::shared_object_ptr<BinaryTree> BinaryTreePtr;
-typedef stdext::shared_object_ptr<OutputBinaryTree> OutputBinaryTreePtr;
+    void reset(Fw::InputEventType eventType = Fw::NoInputEvent) {
+        type = eventType;
+        wheelDirection = Fw::MouseNoWheel;
+        mouseButton = Fw::MouseNoButton;
+        keyCode = Fw::KeyUnknown;
+        keyText = "";
+        autoRepeatTicks = 0;
+        mouseMoved = Point();
+    };
 
-typedef std::vector<BinaryTreePtr> BinaryTreeVec;
+    Fw::InputEventType type;
+    Fw::MouseWheelDirection wheelDirection;
+    Fw::MouseButton mouseButton;
+    Fw::Key keyCode;
+    std::string keyText;
+    int keyboardModifiers;
+    Point mousePos;
+    Point mouseMoved;
+    int autoRepeatTicks;
+};
 
 #endif

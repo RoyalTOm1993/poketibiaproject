@@ -20,30 +20,52 @@
  * THE SOFTWARE.
  */
 
-#ifndef FRAMEWORK_CORE_DECLARATIONS_H
-#define FRAMEWORK_CORE_DECLARATIONS_H
+#include "asyncdispatcher.h"
 
-#include <framework/global.h>
+AsyncDispatcher g_asyncDispatcher;
 
-class ConfigManager;
-class ModuleManager;
-class ResourceManager;
-class Module;
-class Config;
-class Event;
-class ScheduledEvent;
-class FileStream;
-class BinaryTree;
-class OutputBinaryTree;
+void AsyncDispatcher::init()
+{
+    spawn_thread();
+}
 
-typedef stdext::shared_object_ptr<Module> ModulePtr;
-typedef stdext::shared_object_ptr<Config> ConfigPtr;
-typedef stdext::shared_object_ptr<Event> EventPtr;
-typedef stdext::shared_object_ptr<ScheduledEvent> ScheduledEventPtr;
-typedef stdext::shared_object_ptr<FileStream> FileStreamPtr;
-typedef stdext::shared_object_ptr<BinaryTree> BinaryTreePtr;
-typedef stdext::shared_object_ptr<OutputBinaryTree> OutputBinaryTreePtr;
+void AsyncDispatcher::terminate()
+{
+    stop();
+    m_tasks.clear();
+}
 
-typedef std::vector<BinaryTreePtr> BinaryTreeVec;
+void AsyncDispatcher::spawn_thread()
+{
+    m_running = true;
+    m_threads.push_back(std::thread(std::bind(&AsyncDispatcher::exec_loop, this)));
+}
 
-#endif
+void AsyncDispatcher::stop()
+{
+    m_mutex.lock();
+    m_running = false;
+    m_condition.notify_all();
+    m_mutex.unlock();
+    for(std::thread& thread : m_threads)
+        thread.join();
+    m_threads.clear();
+};
+
+void AsyncDispatcher::exec_loop() {
+    std::unique_lock<std::mutex> lock(m_mutex);
+    while(true) {
+        while(m_tasks.size() == 0 && m_running)
+            m_condition.wait(lock);
+
+        if(!m_running)
+            return;
+
+        std::function<void()> task = m_tasks.front();
+        m_tasks.pop_front();
+
+        lock.unlock();
+        task();
+        lock.lock();
+    }
+}

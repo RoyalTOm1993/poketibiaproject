@@ -20,30 +20,38 @@
  * THE SOFTWARE.
  */
 
-#ifndef FRAMEWORK_CORE_DECLARATIONS_H
-#define FRAMEWORK_CORE_DECLARATIONS_H
+#include "scheduledevent.h"
 
-#include <framework/global.h>
+ScheduledEvent::ScheduledEvent(const std::string& function, const std::function<void()>& callback, int delay, int maxCycles, bool botSafe) : Event(function, callback, botSafe)
+{
+    m_ticks = g_clock.millis() + delay;
+    m_delay = delay;
+    m_maxCycles = maxCycles;
+    m_cyclesExecuted = 0;
+}
 
-class ConfigManager;
-class ModuleManager;
-class ResourceManager;
-class Module;
-class Config;
-class Event;
-class ScheduledEvent;
-class FileStream;
-class BinaryTree;
-class OutputBinaryTree;
+void ScheduledEvent::execute()
+{
+    if(!m_canceled && m_callback && (m_maxCycles == 0 || m_cyclesExecuted < m_maxCycles)) {
+        m_callback();
+        m_executed = true;
+        // callback may be used in the next cycle
+    } else {
+        // reset callback to free object refs
+        m_callback = nullptr;
+    }
 
-typedef stdext::shared_object_ptr<Module> ModulePtr;
-typedef stdext::shared_object_ptr<Config> ConfigPtr;
-typedef stdext::shared_object_ptr<Event> EventPtr;
-typedef stdext::shared_object_ptr<ScheduledEvent> ScheduledEventPtr;
-typedef stdext::shared_object_ptr<FileStream> FileStreamPtr;
-typedef stdext::shared_object_ptr<BinaryTree> BinaryTreePtr;
-typedef stdext::shared_object_ptr<OutputBinaryTree> OutputBinaryTreePtr;
+    m_cyclesExecuted++;
+}
 
-typedef std::vector<BinaryTreePtr> BinaryTreeVec;
+bool ScheduledEvent::nextCycle()
+{
+    if(m_callback && !m_canceled && (m_maxCycles == 0 || m_cyclesExecuted < m_maxCycles)) {
+        m_ticks += m_delay;
+        return true;
+    }
 
-#endif
+    // reset callback to free object refs
+    m_callback = nullptr;
+    return false;
+}

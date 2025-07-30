@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2017 OTClient <https://github.com/edubart/otclient>
+ * Copyright (c) 2010-2013 OTClient <https://github.com/edubart/otclient>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,30 +20,21 @@
  * THE SOFTWARE.
  */
 
-#ifndef FRAMEWORK_CORE_DECLARATIONS_H
-#define FRAMEWORK_CORE_DECLARATIONS_H
 
-#include <framework/global.h>
+#ifndef CONSOLEAPPLICATION_H
+#define CONSOLEAPPLICATION_H
 
-class ConfigManager;
-class ModuleManager;
-class ResourceManager;
-class Module;
-class Config;
-class Event;
-class ScheduledEvent;
-class FileStream;
-class BinaryTree;
-class OutputBinaryTree;
+#include "application.h"
 
-typedef stdext::shared_object_ptr<Module> ModulePtr;
-typedef stdext::shared_object_ptr<Config> ConfigPtr;
-typedef stdext::shared_object_ptr<Event> EventPtr;
-typedef stdext::shared_object_ptr<ScheduledEvent> ScheduledEventPtr;
-typedef stdext::shared_object_ptr<FileStream> FileStreamPtr;
-typedef stdext::shared_object_ptr<BinaryTree> BinaryTreePtr;
-typedef stdext::shared_object_ptr<OutputBinaryTree> OutputBinaryTreePtr;
+class ConsoleApplication : public Application
+{
+public:
+    void run();
 
-typedef std::vector<BinaryTreePtr> BinaryTreeVec;
+protected:
+
+};
+
+extern ConsoleApplication g_app;
 
 #endif

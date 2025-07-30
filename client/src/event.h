@@ -20,30 +20,33 @@
  * THE SOFTWARE.
  */
 
-#ifndef FRAMEWORK_CORE_DECLARATIONS_H
-#define FRAMEWORK_CORE_DECLARATIONS_H
+#ifndef EVENT_H
+#define EVENT_H
 
-#include <framework/global.h>
+#include <framework/luaengine/luaobject.h>
 
-class ConfigManager;
-class ModuleManager;
-class ResourceManager;
-class Module;
-class Config;
-class Event;
-class ScheduledEvent;
-class FileStream;
-class BinaryTree;
-class OutputBinaryTree;
+// @bindclass
+class Event : public LuaObject
+{
+public:
+    Event(const std::string& function, const std::function<void()>& callback, bool botSafe = false);
+    virtual ~Event();
 
-typedef stdext::shared_object_ptr<Module> ModulePtr;
-typedef stdext::shared_object_ptr<Config> ConfigPtr;
-typedef stdext::shared_object_ptr<Event> EventPtr;
-typedef stdext::shared_object_ptr<ScheduledEvent> ScheduledEventPtr;
-typedef stdext::shared_object_ptr<FileStream> FileStreamPtr;
-typedef stdext::shared_object_ptr<BinaryTree> BinaryTreePtr;
-typedef stdext::shared_object_ptr<OutputBinaryTree> OutputBinaryTreePtr;
+    virtual void execute();
+    void cancel();
 
-typedef std::vector<BinaryTreePtr> BinaryTreeVec;
+    bool isCanceled() { return m_canceled; }
+    bool isExecuted() { return m_executed; }
+    bool isBotSafe() { return m_botSafe; }
+
+    const std::string& getFunction() { return m_function; }
+
+protected:
+    std::string m_function;
+    std::function<void()> m_callback;
+    bool m_canceled;
+    bool m_executed;
+    bool m_botSafe;
+};
 
 #endif

@@ -20,30 +20,37 @@
  * THE SOFTWARE.
  */
 
-#ifndef FRAMEWORK_CORE_DECLARATIONS_H
-#define FRAMEWORK_CORE_DECLARATIONS_H
+#ifndef MODULEMANAGER_H
+#define MODULEMANAGER_H
 
-#include <framework/global.h>
+#include "module.h"
 
-class ConfigManager;
-class ModuleManager;
-class ResourceManager;
-class Module;
-class Config;
-class Event;
-class ScheduledEvent;
-class FileStream;
-class BinaryTree;
-class OutputBinaryTree;
+// @bindsingleton g_modules
+class ModuleManager
+{
+public:
+    void clear();
 
-typedef stdext::shared_object_ptr<Module> ModulePtr;
-typedef stdext::shared_object_ptr<Config> ConfigPtr;
-typedef stdext::shared_object_ptr<Event> EventPtr;
-typedef stdext::shared_object_ptr<ScheduledEvent> ScheduledEventPtr;
-typedef stdext::shared_object_ptr<FileStream> FileStreamPtr;
-typedef stdext::shared_object_ptr<BinaryTree> BinaryTreePtr;
-typedef stdext::shared_object_ptr<OutputBinaryTree> OutputBinaryTreePtr;
+    void discoverModules();
+    void autoLoadModules(int maxPriority);
+    ModulePtr discoverModule(const std::string& moduleFile);
+    void ensureModuleLoaded(const std::string& moduleName);
+    void unloadModules();
+    void reloadModules();
 
-typedef std::vector<BinaryTreePtr> BinaryTreeVec;
+    ModulePtr getModule(const std::string& moduleName);
+    std::deque<ModulePtr> getModules() { return m_modules; }
+
+protected:
+    void updateModuleLoadOrder(ModulePtr module);
+
+    friend class Module;
+
+private:
+    std::deque<ModulePtr> m_modules;
+    std::multimap<int, ModulePtr> m_autoLoadModules;
+};
+
+extern ModuleManager g_modules;
 
 #endif

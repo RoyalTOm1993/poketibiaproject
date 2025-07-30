@@ -20,30 +20,38 @@
  * THE SOFTWARE.
  */
 
-#ifndef FRAMEWORK_CORE_DECLARATIONS_H
-#define FRAMEWORK_CORE_DECLARATIONS_H
+#ifndef SCHEDULEDEVENT_H
+#define SCHEDULEDEVENT_H
 
 #include <framework/global.h>
+#include "event.h"
+#include "clock.h"
 
-class ConfigManager;
-class ModuleManager;
-class ResourceManager;
-class Module;
-class Config;
-class Event;
-class ScheduledEvent;
-class FileStream;
-class BinaryTree;
-class OutputBinaryTree;
+// @bindclass
+class ScheduledEvent : public Event
+{
+public:
+    ScheduledEvent(const std::string& function, const std::function<void()>& callback, int delay, int maxCycles, bool botSafe = false);
+    void execute();
+    bool nextCycle();
 
-typedef stdext::shared_object_ptr<Module> ModulePtr;
-typedef stdext::shared_object_ptr<Config> ConfigPtr;
-typedef stdext::shared_object_ptr<Event> EventPtr;
-typedef stdext::shared_object_ptr<ScheduledEvent> ScheduledEventPtr;
-typedef stdext::shared_object_ptr<FileStream> FileStreamPtr;
-typedef stdext::shared_object_ptr<BinaryTree> BinaryTreePtr;
-typedef stdext::shared_object_ptr<OutputBinaryTree> OutputBinaryTreePtr;
+    int ticks() { return m_ticks; }
+    int remainingTicks() { return m_ticks - g_clock.millis(); }
+    int delay() { return m_delay; }
+    int cyclesExecuted() { return m_cyclesExecuted; }
+    int maxCycles() { return m_maxCycles; }
 
-typedef std::vector<BinaryTreePtr> BinaryTreeVec;
+private:
+    ticks_t m_ticks;
+    int m_delay;
+    int m_maxCycles;
+    int m_cyclesExecuted;
+};
+
+struct lessScheduledEvent {
+    bool operator()(const ScheduledEventPtr& a, const ScheduledEventPtr& b) {
+        return  b->ticks() < a->ticks();
+    }
+};
 
 #endif

@@ -20,30 +20,36 @@
  * THE SOFTWARE.
  */
 
-#ifndef FRAMEWORK_CORE_DECLARATIONS_H
-#define FRAMEWORK_CORE_DECLARATIONS_H
+#include "event.h"
 
-#include <framework/global.h>
+Event::Event(const std::string& function, const std::function<void()>& callback, bool botSafe) :
+    m_function(function),
+    m_callback(callback),
+    m_canceled(false),
+    m_executed(false),
+    m_botSafe(botSafe)
+{
+}
 
-class ConfigManager;
-class ModuleManager;
-class ResourceManager;
-class Module;
-class Config;
-class Event;
-class ScheduledEvent;
-class FileStream;
-class BinaryTree;
-class OutputBinaryTree;
+Event::~Event()
+{
+    // assure that we lost callback refs
+    //VALIDATE(m_callback == nullptr);
+}
 
-typedef stdext::shared_object_ptr<Module> ModulePtr;
-typedef stdext::shared_object_ptr<Config> ConfigPtr;
-typedef stdext::shared_object_ptr<Event> EventPtr;
-typedef stdext::shared_object_ptr<ScheduledEvent> ScheduledEventPtr;
-typedef stdext::shared_object_ptr<FileStream> FileStreamPtr;
-typedef stdext::shared_object_ptr<BinaryTree> BinaryTreePtr;
-typedef stdext::shared_object_ptr<OutputBinaryTree> OutputBinaryTreePtr;
+void Event::execute()
+{
+    if(!m_canceled && !m_executed && m_callback) {
+        m_callback();
+        m_executed = true;
+    }
 
-typedef std::vector<BinaryTreePtr> BinaryTreeVec;
+    // reset callback to free object refs
+    m_callback = nullptr;
+}
 
-#endif
+void Event::cancel()
+{
+    m_canceled = true;
+    m_callback = nullptr;
+}

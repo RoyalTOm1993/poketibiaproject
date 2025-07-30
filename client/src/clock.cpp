@@ -20,30 +20,30 @@
  * THE SOFTWARE.
  */
 
-#ifndef FRAMEWORK_CORE_DECLARATIONS_H
-#define FRAMEWORK_CORE_DECLARATIONS_H
+#include "clock.h"
 
-#include <framework/global.h>
+Clock g_clock;
 
-class ConfigManager;
-class ModuleManager;
-class ResourceManager;
-class Module;
-class Config;
-class Event;
-class ScheduledEvent;
-class FileStream;
-class BinaryTree;
-class OutputBinaryTree;
+Clock::Clock()
+{
+    m_currentMicros = 0;
+    m_currentMillis = 0;
+    m_currentSeconds = 0;
+}
 
-typedef stdext::shared_object_ptr<Module> ModulePtr;
-typedef stdext::shared_object_ptr<Config> ConfigPtr;
-typedef stdext::shared_object_ptr<Event> EventPtr;
-typedef stdext::shared_object_ptr<ScheduledEvent> ScheduledEventPtr;
-typedef stdext::shared_object_ptr<FileStream> FileStreamPtr;
-typedef stdext::shared_object_ptr<BinaryTree> BinaryTreePtr;
-typedef stdext::shared_object_ptr<OutputBinaryTree> OutputBinaryTreePtr;
+void Clock::update()
+{
+    m_currentMicros = stdext::micros();
+    m_currentMillis = m_currentMicros / 1000;
+    m_currentSeconds = m_currentMicros / 1000000.0f;
+}
 
-typedef std::vector<BinaryTreePtr> BinaryTreeVec;
+ticks_t Clock::realMicros()
+{
+    return stdext::micros();
+}
 
-#endif
+ticks_t Clock::realMillis()
+{
+    return stdext::millis();
+}

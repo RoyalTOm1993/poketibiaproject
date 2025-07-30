@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2017 OTClient <https://github.com/edubart/otclient>
+ * Copyright (c) 2010-2013 OTClient <https://github.com/edubart/otclient>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,30 +20,36 @@
  * THE SOFTWARE.
  */
 
-#ifndef FRAMEWORK_CORE_DECLARATIONS_H
-#define FRAMEWORK_CORE_DECLARATIONS_H
 
-#include <framework/global.h>
+#include "consoleapplication.h"
+#include <framework/core/clock.h>
+#include <framework/luaengine/luainterface.h>
 
-class ConfigManager;
-class ModuleManager;
-class ResourceManager;
-class Module;
-class Config;
-class Event;
-class ScheduledEvent;
-class FileStream;
-class BinaryTree;
-class OutputBinaryTree;
-
-typedef stdext::shared_object_ptr<Module> ModulePtr;
-typedef stdext::shared_object_ptr<Config> ConfigPtr;
-typedef stdext::shared_object_ptr<Event> EventPtr;
-typedef stdext::shared_object_ptr<ScheduledEvent> ScheduledEventPtr;
-typedef stdext::shared_object_ptr<FileStream> FileStreamPtr;
-typedef stdext::shared_object_ptr<BinaryTree> BinaryTreePtr;
-typedef stdext::shared_object_ptr<OutputBinaryTree> OutputBinaryTreePtr;
-
-typedef std::vector<BinaryTreePtr> BinaryTreeVec;
-
+#ifdef FW_NET
+#include <framework/net/connection.h>
 #endif
+
+ConsoleApplication g_app;
+
+void ConsoleApplication::run()
+{
+    m_running = true;
+
+    // run the first poll
+    poll();
+
+    // first clock update
+    g_clock.update();
+
+    g_lua.callGlobalField("g_app", "onRun");
+
+    while(!m_stopping) {
+        poll();
+        stdext::millisleep(1);
+        g_clock.update();
+        m_frameCounter.update();
+    }
+
+    m_stopping = false;
+    m_running = false;
+}

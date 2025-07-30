@@ -20,30 +20,32 @@
  * THE SOFTWARE.
  */
 
-#ifndef FRAMEWORK_CORE_DECLARATIONS_H
-#define FRAMEWORK_CORE_DECLARATIONS_H
+#ifndef CLOCK_H
+#define CLOCK_H
 
-#include <framework/global.h>
+#include "declarations.h"
 
-class ConfigManager;
-class ModuleManager;
-class ResourceManager;
-class Module;
-class Config;
-class Event;
-class ScheduledEvent;
-class FileStream;
-class BinaryTree;
-class OutputBinaryTree;
+// @bindsingleton g_clock
+class Clock
+{
+public:
+    Clock();
 
-typedef stdext::shared_object_ptr<Module> ModulePtr;
-typedef stdext::shared_object_ptr<Config> ConfigPtr;
-typedef stdext::shared_object_ptr<Event> EventPtr;
-typedef stdext::shared_object_ptr<ScheduledEvent> ScheduledEventPtr;
-typedef stdext::shared_object_ptr<FileStream> FileStreamPtr;
-typedef stdext::shared_object_ptr<BinaryTree> BinaryTreePtr;
-typedef stdext::shared_object_ptr<OutputBinaryTree> OutputBinaryTreePtr;
+    void update();
 
-typedef std::vector<BinaryTreePtr> BinaryTreeVec;
+    ticks_t micros() { return m_currentMicros; }
+    ticks_t millis() { return m_currentMillis; }
+    float seconds() { return m_currentSeconds; }
+    ticks_t realMicros();
+    ticks_t realMillis();
+
+private:
+    std::atomic<ticks_t> m_currentMicros;
+    std::atomic<ticks_t> m_currentMillis;
+    std::atomic<float> m_currentSeconds;
+};
+
+extern Clock g_clock;
 
 #endif
+

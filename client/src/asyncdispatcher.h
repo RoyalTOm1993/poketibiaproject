@@ -20,30 +20,46 @@
  * THE SOFTWARE.
  */
 
-#ifndef FRAMEWORK_CORE_DECLARATIONS_H
-#define FRAMEWORK_CORE_DECLARATIONS_H
+#ifndef ASYNCDISPATCHER_H
+#define ASYNCDISPATCHER_H
 
-#include <framework/global.h>
+#include "declarations.h"
+#include <framework/stdext/thread.h>
 
-class ConfigManager;
-class ModuleManager;
-class ResourceManager;
-class Module;
-class Config;
-class Event;
-class ScheduledEvent;
-class FileStream;
-class BinaryTree;
-class OutputBinaryTree;
+class AsyncDispatcher {
+public:
+    void init();
+    void terminate();
 
-typedef stdext::shared_object_ptr<Module> ModulePtr;
-typedef stdext::shared_object_ptr<Config> ConfigPtr;
-typedef stdext::shared_object_ptr<Event> EventPtr;
-typedef stdext::shared_object_ptr<ScheduledEvent> ScheduledEventPtr;
-typedef stdext::shared_object_ptr<FileStream> FileStreamPtr;
-typedef stdext::shared_object_ptr<BinaryTree> BinaryTreePtr;
-typedef stdext::shared_object_ptr<OutputBinaryTree> OutputBinaryTreePtr;
+    void spawn_thread();
+    void stop();
 
-typedef std::vector<BinaryTreePtr> BinaryTreeVec;
+    template<class F>
+    std::shared_future<typename std::invoke_result<F>::type> schedule(const F& task) {
+        std::lock_guard<std::mutex> lock(m_mutex);
+        auto prom = std::make_shared<std::promise<typename std::invoke_result<F>::type>>();
+        m_tasks.push_back([=]() { prom->set_value(task()); });
+        m_condition.notify_all();
+        return std::shared_future<typename std::invoke_result<F>::type>(prom->get_future());
+    }
+
+    void dispatch(std::function<void()> f) {
+        std::lock_guard<std::mutex> lock(m_mutex);
+        m_tasks.push_back(f);
+        m_condition.notify_all();
+    }
+
+protected:
+    void exec_loop();
+
+private:
+    std::list<std::function<void()>> m_tasks;
+    std::list<std::thread> m_threads;
+    std::mutex m_mutex;
+    std::condition_variable m_condition;
+    stdext::boolean<false> m_running;
+};
+
+extern AsyncDispatcher g_asyncDispatcher;
 
 #endif

@@ -20,30 +20,29 @@
  * THE SOFTWARE.
  */
 
-#ifndef FRAMEWORK_CORE_DECLARATIONS_H
-#define FRAMEWORK_CORE_DECLARATIONS_H
+#ifndef TIMER_H
+#define TIMER_H
 
 #include <framework/global.h>
 
-class ConfigManager;
-class ModuleManager;
-class ResourceManager;
-class Module;
-class Config;
-class Event;
-class ScheduledEvent;
-class FileStream;
-class BinaryTree;
-class OutputBinaryTree;
+class Timer
+{
+public:
+    Timer() { restart(); }
 
-typedef stdext::shared_object_ptr<Module> ModulePtr;
-typedef stdext::shared_object_ptr<Config> ConfigPtr;
-typedef stdext::shared_object_ptr<Event> EventPtr;
-typedef stdext::shared_object_ptr<ScheduledEvent> ScheduledEventPtr;
-typedef stdext::shared_object_ptr<FileStream> FileStreamPtr;
-typedef stdext::shared_object_ptr<BinaryTree> BinaryTreePtr;
-typedef stdext::shared_object_ptr<OutputBinaryTree> OutputBinaryTreePtr;
+    void restart();
+    void stop() { m_stopped = true; }
+    void adjust(ticks_t value) { m_startTicks += value; }
 
-typedef std::vector<BinaryTreePtr> BinaryTreeVec;
+    ticks_t startTicks() { return m_startTicks; }
+    ticks_t ticksElapsed();
+    float timeElapsed() { return ticksElapsed()/1000.0f; }
+
+    bool running() { return !m_stopped; }
+
+private:
+    ticks_t m_startTicks;
+    stdext::boolean<false> m_stopped;
+};
 
 #endif

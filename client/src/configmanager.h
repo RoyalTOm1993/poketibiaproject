@@ -20,30 +20,35 @@
  * THE SOFTWARE.
  */
 
-#ifndef FRAMEWORK_CORE_DECLARATIONS_H
-#define FRAMEWORK_CORE_DECLARATIONS_H
+#ifndef CONFIGMANAGER_H
+#define CONFIGMANAGER_H
 
-#include <framework/global.h>
+#include "config.h"
 
-class ConfigManager;
-class ModuleManager;
-class ResourceManager;
-class Module;
-class Config;
-class Event;
-class ScheduledEvent;
-class FileStream;
-class BinaryTree;
-class OutputBinaryTree;
+// @bindsingleton g_configs
+class ConfigManager
+{
+public:
+    void init();
+    void terminate();
 
-typedef stdext::shared_object_ptr<Module> ModulePtr;
-typedef stdext::shared_object_ptr<Config> ConfigPtr;
-typedef stdext::shared_object_ptr<Event> EventPtr;
-typedef stdext::shared_object_ptr<ScheduledEvent> ScheduledEventPtr;
-typedef stdext::shared_object_ptr<FileStream> FileStreamPtr;
-typedef stdext::shared_object_ptr<BinaryTree> BinaryTreePtr;
-typedef stdext::shared_object_ptr<OutputBinaryTree> OutputBinaryTreePtr;
+    ConfigPtr getSettings();
+    ConfigPtr get(const std::string& file);
 
-typedef std::vector<BinaryTreePtr> BinaryTreeVec;
+    ConfigPtr create(const std::string& file);
+    ConfigPtr loadSettings(const std::string file);
+    ConfigPtr load(const std::string& file);
+
+    bool unload(const std::string& file);
+    void remove(const ConfigPtr config);
+
+protected:
+    ConfigPtr m_settings;
+
+private:
+    std::list<ConfigPtr> m_configs;
+};
+
+extern ConfigManager g_configs;
 
 #endif
