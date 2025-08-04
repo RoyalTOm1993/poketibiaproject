@@ -6,7 +6,9 @@ TopToggleButtonNew < UIButton
   anchors.horizontalCenter: parent.horizontalCenter
   margin-top: 50
   opacity: 0.0
+  phantom: false
   @onClick: toggleTopMenu()
+  @onHoverChange: self:setOpacity(hovered and 1.0 or (topMenu:isVisible() and 0.0 or 0.15))
 
   $hover:
     opacity: 1.0
@@ -14,38 +16,41 @@ TopToggleButtonNew < UIButton
 
 TopButton < UIButton
   size: 32 32
+  icon-size: 28 28
   change-cursor-image: true
   cursor: pointer
+  margin-top: 8
+  icon-offset: 2 2
+  icon-color: #FFFFFF
 
-TopToggleButton < UIButton
-  size: 32 32
-  change-cursor-image: true
-  cursor: pointer
+  $hover:
+    icon-size: 32 32
+    icon-offset: 0 0
+    icon-color: #FCE584
+
+  $pressed:
+    icon-color: #e4dedee3
+
+TopToggleButton < TopButton
 
 TopMenuButtonsPanel < Panel
   layout:
     type: horizontalBox
-    spacing: 24
+    spacing: 12
     fit-children: true
-  padding: 10
-  margin: 0
+  padding-top: 4
+  padding-bottom: 2
+  padding-right: 10
+  padding-left: 10
 
 TopMenuPanel < Panel
-  margin-top: 6
+  margin-top: 0
   focusable: false
-
-TopMenuFrameCounterLabel < Label
-  font: window
-  color: #F8F8FF
-  margin-top: 40
-  margin-left: 80
 
 TopMenu < TopMenuPanel
   id: topMenu
   size: 735 52
   image-size: 735 60
-  image-border: 20
-  margin-top: 0
   anchors.horizontalCenter: parent.horizontalCenter
   anchors.top: parent.top
 
@@ -55,39 +60,23 @@ TopMenu < TopMenuPanel
     image-source: /images/ui/topMenuBackground
 
   TopMenuButtonsPanel
-    id: leftButtonsPanel
+    id: centerButtonsPanel
     anchors.top: parent.top
     anchors.bottom: parent.bottom
-    anchors.left: parent.left
+    anchors.horizontalCenter: parent.horizontalCenter
 
   TopMenuButtonsPanel
     id: leftGameButtonsPanel
     anchors.top: parent.top
     anchors.bottom: parent.bottom
-    anchors.left: leftButtonsPanel.right
+    anchors.left: parent.left
     margin-left: 6
     visible: false
-
-  TopMenuButtonsPanel
-    id: rightButtonsPanel
-    anchors.top: parent.top
-    anchors.bottom: parent.bottom
-    anchors.left: leftGameButtonsPanel.right
-    margin-left: 6
 
   TopMenuButtonsPanel
     id: rightGameButtonsPanel
     anchors.top: parent.top
     anchors.bottom: parent.bottom
-    anchors.left: rightButtonsPanel.right
-    margin-left: 6
+    anchors.right: parent.right
+    margin-right: 6
     visible: false
-
-  Label
-    id: onlineLabel
-    anchors.top: parent.top
-    anchors.bottom: parent.bottom
-    anchors.horizontalCenter: parent.horizontalCenter
-    font: verdana-11px-antialised
-    text-align: center
-    text-auto-resize: true
