@@ -9,7 +9,7 @@ local menuHeight = 52
 local animationStep = 5
 local animationInterval = 15
 
--- private functions
+-- Função necessária para criar os botões nos painéis
 local function addButton(id, description, icon, callback, panel, toggle, front, index)
   local class = toggle and 'TopToggleButton' or 'TopButton'
   if topMenu.reverseButtons then front = not front end
@@ -23,9 +23,11 @@ local function addButton(id, description, icon, callback, panel, toggle, front, 
       panel:addChild(button)
     end
   end
+
   button:setId(id)
   button:setTooltip(description)
   button:setIcon(resolvepath(icon, 3))
+
   button.onMouseRelease = function(widget, mousePos, mouseButton)
     if widget:containsPoint(mousePos) and mouseButton ~= MouseMidButton and mouseButton ~= MouseTouch then
       callback()
@@ -33,12 +35,15 @@ local function addButton(id, description, icon, callback, panel, toggle, front, 
     end
   end
   button.onTouchRelease = button.onMouseRelease
+
   if not button.index and type(index) == 'number' then
     button.index = index
   end
+
   return button
 end
 
+-- private functions
 local function stopAnimation()
   if animationEvent then
     removeEvent(animationEvent)
@@ -59,6 +64,7 @@ local function animateHide()
       topMenu:setMarginTop(menuMargin)
       topMenu:hide()
       TopToggleButtonNew:setMarginTop(toggleMargin)
+      TopToggleButtonNew:setOpacity(0.15)
       stopAnimation()
       updatePing()
       updateFps()
@@ -88,6 +94,7 @@ local function animateShow()
       toggleMargin = 50
       topMenu:setMarginTop(menuMargin)
       TopToggleButtonNew:setMarginTop(toggleMargin)
+      TopToggleButtonNew:setOpacity(0.0)
       stopAnimation()
       updatePing()
       updateFps()
@@ -110,23 +117,28 @@ function init()
   })
 
   topMenu = g_ui.createWidget('TopMenu', g_ui.getRootWidget())
-  TopToggleButtonNew = g_ui.createWidget('TopToggleButtonNew', g_ui.getRootWidget())
+  topMenu:hide()
 
-  topMenu:setMarginTop(0)
+  TopToggleButtonNew = g_ui.createWidget('TopToggleButtonNew', g_ui.getRootWidget())
   TopToggleButtonNew:setMarginTop(50)
   TopToggleButtonNew:setOpacity(0.0)
-  TopToggleButtonNew:show()
+  TopToggleButtonNew:hide()
 
-  -- Efeito de fade ao passar o mouse
   TopToggleButtonNew.onHoverChange = function(widget, hovered)
     if hovered then
-      g_effects.fadeIn(widget, 250)
+      widget:setOpacity(1.0)
     else
-      g_effects.fadeOut(widget, 250)
+      widget:setOpacity(topMenu:isVisible() and 0.0 or 0.15)
     end
   end
 
-  topMenu:hide()
+  TopToggleButtonNew.onMouseRelease = function(widget, mousePos, mouseButton)
+    if widget:containsPoint(mousePos) and mouseButton ~= MouseMidButton and mouseButton ~= MouseTouch then
+      toggleTopMenu()
+      return true
+    end
+  end
+  TopToggleButtonNew.onTouchRelease = TopToggleButtonNew.onMouseRelease
 
   g_keyboard.bindKeyDown('Ctrl+Shift+T', toggleTopMenu)
 
@@ -158,6 +170,7 @@ function online()
   topMenu:show()
   topMenu:setMarginTop(0)
   TopToggleButtonNew:setMarginTop(50)
+  TopToggleButtonNew:setOpacity(0.0)
   TopToggleButtonNew:show()
 
   if topMenu.onlineLabel then topMenu.onlineLabel:hide() end
@@ -176,7 +189,9 @@ end
 
 function offline()
   topMenu:hide()
+  TopToggleButtonNew:setOpacity(0.15)
   TopToggleButtonNew:hide()
+
   if topMenu.hideIngame then show() end
   if topMenu.onlineLabel then topMenu.onlineLabel:show() end
 
@@ -184,7 +199,6 @@ function offline()
   if topMenu.pingLabel then topMenu.pingLabel:hide() end
   updateStatus()
 
-  hideGameButtons()
   if topMenu.fpsLabel then topMenu.fpsLabel:hide() end
   updateFps()
 end
@@ -236,22 +250,24 @@ function setFpsVisible(enable)
   topMenu.fpsLabel:setVisible(enable)
 end
 
+-- Botões centrais (todos vão para centerButtonsPanel agora)
 function addLeftButton(id, description, icon, callback, front, index)
-  return addButton(id, description, icon, callback, topMenu.leftButtonsPanel, false, front, index)
+  return addButton(id, description, icon, callback, topMenu.centerButtonsPanel, false, front, index)
 end
 
 function addLeftToggleButton(id, description, icon, callback, front, index)
-  return addButton(id, description, icon, callback, topMenu.leftButtonsPanel, true, front, index)
+  return addButton(id, description, icon, callback, topMenu.centerButtonsPanel, true, front, index)
 end
 
 function addRightButton(id, description, icon, callback, front, index)
-  return addButton(id, description, icon, callback, topMenu.rightButtonsPanel, false, front, index)
+  return addButton(id, description, icon, callback, topMenu.centerButtonsPanel, false, front, index)
 end
 
 function addRightToggleButton(id, description, icon, callback, front, index)
-  return addButton(id, description, icon, callback, topMenu.rightButtonsPanel, true, front, index)
+  return addButton(id, description, icon, callback, topMenu.centerButtonsPanel, true, front, index)
 end
 
+-- Botões exclusivos do jogo
 function addLeftGameButton(id, description, icon, callback, front, index)
   local button = addButton(id, description, icon, callback, topMenu.leftGameButtonsPanel, false, front, index)
   if modules.game_buttons then modules.game_buttons.takeButton(button) end
