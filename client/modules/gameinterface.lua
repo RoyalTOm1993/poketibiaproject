@@ -227,9 +227,9 @@ function tryExit()
 
   exitWindow = displayGeneralBox(tr('Exit'),
     tr(
-    "Se voce desligar o programa o seu personagem pode continuar no jogo.\nClique em 'Sair' para assegurar que seu personagem saia do jogo adequadamente.\nClique em 'Forçar Saída' para fechar o programa sem desconectar seu personagem."),
+    "Se voce desligar o programa o seu personagem pode continuar no jogo.\nClique em 'Sair' para assegurar que seu personagem saia do jogo adequadamente.\nClique em 'Forï¿½ar Saï¿½da' para fechar o programa sem desconectar seu personagem."),
     {
-      { text = tr('Forçar Saída'), callback = exitFunc },
+      { text = tr('Forï¿½ar Saï¿½da'), callback = exitFunc },
       { text = tr('Deslogar'),   callback = logoutFunc },
       { text = tr('Cancelar'),   callback = cancelFunc },
       anchor = AnchorHorizontalCenter
