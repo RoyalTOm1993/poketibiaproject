@@ -36,12 +36,13 @@ TopToggleButton < TopButton
 TopMenuButtonsPanel < Panel
   layout:
     type: horizontalBox
-    spacing: 12
+    spacing: 6
     fit-children: true
   padding-top: 4
   padding-bottom: 2
   padding-right: 10
   padding-left: 10
+  
 
 TopMenuPanel < Panel
   margin-top: 0
@@ -60,23 +61,7 @@ TopMenu < TopMenuPanel
     image-source: /images/ui/topMenuBackground
 
   TopMenuButtonsPanel
-    id: centerButtonsPanel
+    id: gameButtonsPanel
     anchors.top: parent.top
     anchors.bottom: parent.bottom
     anchors.horizontalCenter: parent.horizontalCenter
-
-  TopMenuButtonsPanel
-    id: leftGameButtonsPanel
-    anchors.top: parent.top
-    anchors.bottom: parent.bottom
-    anchors.left: parent.left
-    margin-left: 6
-    visible: false
-
-  TopMenuButtonsPanel
-    id: rightGameButtonsPanel
-    anchors.top: parent.top
-    anchors.bottom: parent.bottom
-    anchors.right: parent.right
-    margin-right: 6
-    visible: false
