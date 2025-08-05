@@ -24,6 +24,30 @@ local function addButton(id, description, icon, callback, panel, toggle, front, 
     end
   end
 
+  local function updateTopMenuButtonOrder()
+  if not topMenu or not topMenu.gameButtonsPanel then
+    return
+  end
+
+  local children = topMenu.gameButtonsPanel:getChildren()
+  table.sort(children, function(a, b)
+    return (a.index or math.huge) < (b.index or math.huge)
+  end)
+  topMenu.gameButtonsPanel:reorderChildren(children)
+end
+
+  local function updateTopMenuButtonOrder()
+  if not topMenu or not topMenu.gameButtonsPanel then
+    return
+  end
+
+  local children = topMenu.gameButtonsPanel:getChildren()
+  table.sort(children, function(a, b)
+    return (a.index or math.huge) < (b.index or math.huge)
+  end)
+  topMenu.gameButtonsPanel:reorderChildren(children)
+end
+
   button:setId(id)
   button:setTooltip(description)
   button:setIcon(resolvepath(icon, 3))
@@ -40,6 +64,8 @@ local function addButton(id, description, icon, callback, panel, toggle, front, 
     button.index = index
   end
 
+  updateTopMenuButtonOrder()
+  
   return button
 end
 
@@ -250,62 +276,59 @@ function setFpsVisible(enable)
   topMenu.fpsLabel:setVisible(enable)
 end
 
--- Botões centrais (todos vão para centerButtonsPanel agora)
+-- Botões do menu superior
 function addLeftButton(id, description, icon, callback, front, index)
-  return addButton(id, description, icon, callback, topMenu.centerButtonsPanel, false, front, index)
+  return addButton(id, description, icon, callback, topMenu.gameButtonsPanel, false, front, index)
 end
 
 function addLeftToggleButton(id, description, icon, callback, front, index)
-  return addButton(id, description, icon, callback, topMenu.centerButtonsPanel, true, front, index)
+  return addButton(id, description, icon, callback, topMenu.gameButtonsPanel, true, front, index)
 end
 
 function addRightButton(id, description, icon, callback, front, index)
-  return addButton(id, description, icon, callback, topMenu.centerButtonsPanel, false, front, index)
+  return addButton(id, description, icon, callback, topMenu.gameButtonsPanel, false, front, index)
 end
 
 function addRightToggleButton(id, description, icon, callback, front, index)
-  return addButton(id, description, icon, callback, topMenu.centerButtonsPanel, true, front, index)
+  return addButton(id, description, icon, callback, topMenu.gameButtonsPanel, true, front, index)
 end
 
 -- Botões exclusivos do jogo
 function addLeftGameButton(id, description, icon, callback, front, index)
-  local button = addButton(id, description, icon, callback, topMenu.leftGameButtonsPanel, false, front, index)
+  local button = addButton(id, description, icon, callback, topMenu.gameButtonsPanel, false, front, index)
   if modules.game_buttons then modules.game_buttons.takeButton(button) end
   return button
 end
 
 function addLeftGameToggleButton(id, description, icon, callback, front, index)
-  local button = addButton(id, description, icon, callback, topMenu.leftGameButtonsPanel, true, front, index)
+  local button = addButton(id, description, icon, callback, topMenu.gameButtonsPanel, true, front, index)
   if modules.game_buttons then modules.game_buttons.takeButton(button) end
   return button
 end
 
 function addRightGameButton(id, description, icon, callback, front, index)
-  local button = addButton(id, description, icon, callback, topMenu.rightGameButtonsPanel, false, front, index)
+  local button = addButton(id, description, icon, callback, topMenu.gameButtonsPanel, false, front, index)
   if modules.game_buttons then modules.game_buttons.takeButton(button) end
   return button
 end
 
 function addRightGameToggleButton(id, description, icon, callback, front, index)
-  local button = addButton(id, description, icon, callback, topMenu.rightGameButtonsPanel, true, front, index)
+  local button = addButton(id, description, icon, callback, topMenu.gameButtonsPanel, true, front, index)
   if modules.game_buttons then modules.game_buttons.takeButton(button) end
   return button
 end
 
 function showGameButtons()
   if not topMenu then return end
-  topMenu.leftGameButtonsPanel:show()
-  topMenu.rightGameButtonsPanel:show()
+  topMenu.gameButtonsPanel:show()
   if modules.game_buttons then
-    modules.game_buttons.takeButtons(topMenu.leftGameButtonsPanel:getChildren())
-    modules.game_buttons.takeButtons(topMenu.rightGameButtonsPanel:getChildren())
+    modules.game_buttons.takeButtons(topMenu.gameButtonsPanel:getChildren())
   end
 end
 
 function hideGameButtons()
   if not topMenu then return end
-  topMenu.leftGameButtonsPanel:hide()
-  topMenu.rightGameButtonsPanel:hide()
+  topMenu.gameButtonsPanel:hide()
 end
 
 function getButton(id)
