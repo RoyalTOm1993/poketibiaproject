@@ -1,7 +1,7 @@
 Font
-  name: carlito-regular-26
-  texture: carlito-regular-26
-  height: 30
+  name: carlito-26px
+  texture: carlito-26px
+  height: 26
   glyph-size: 26 26
+  space-width: 8
   spacing: 1 3
-  space-width: 9
