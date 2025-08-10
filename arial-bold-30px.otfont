@@ -1,0 +1,6 @@
+Font
+  name: arial-bold-30px
+  texture: arial-bold-30px
+  height: 40
+  glyph-size: 41 41
+  space-width: 3
