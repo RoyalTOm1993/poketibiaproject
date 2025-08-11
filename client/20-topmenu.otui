@@ -16,27 +16,38 @@ TopToggleButtonNew < UIButton
 
 TopButton < UIButton
   size: 32 32
-  icon-size: 28 28
+  icon-size: 32 32
   change-cursor-image: true
   cursor: pointer
   margin-top: 8
   icon-offset: 2 2
-  icon-color: #FFFFFF
+  icon-color: #CECECE
 
   $hover:
-    icon-size: 32 32
+    icon-size: 36 36
     icon-offset: 0 0
-    icon-color: #FCE584
+    icon-color: #fcd630ff
 
   $pressed:
     icon-color: #e4dedee3
 
 TopToggleButton < TopButton
 
+TopButtonLogout < TopButton
+  icon-color: #CECECE
+
+  $hover:
+    icon-size: 36 36
+    icon-offset: 0 0
+    icon-color: #fd1f48ff
+
+  $pressed:
+    icon-color: #e4dedee3
+
 TopMenuButtonsPanel < Panel
   layout:
     type: horizontalBox
-    spacing: 6
+    spacing: 12
     fit-children: true
   padding-top: 4
   padding-bottom: 2

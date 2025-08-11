@@ -132,7 +132,7 @@ SelectionButton < Panel
 OutfitWindow < UIWindow
   image-source: /images/ui/escolherRoupaWindow
   size: 750 582
-  text: CUSTOMIZAÇÃO DE PERSONAGEM
+  text: CUSTOMIZAO DE PERSONAGEM
   font: future-earth-26
   text-offset: -10 14
   color: #aeebff

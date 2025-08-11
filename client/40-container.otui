@@ -124,7 +124,7 @@ ContainerWindow < MiniWindow
       anchors.left: parent.left
     Label
       id: title
-      !text: tr('Pokémon Center Machine')
+      !text: tr('Pokmon Center Machine')
       font: sono_bold_16
       color: white
       text-auto-resize: true

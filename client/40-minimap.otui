@@ -10,7 +10,7 @@ UIMiniMapCreature < UICreature
 SpaceTextEdit < UITextEdit
   id: description
   margin-top: 3
-  font: future-earth-14
+  font: sono_medium_14
   image-source: /images/ui/basicTextEdit
   anchors.left: parent.left
   anchors.top: prev.bottom
@@ -118,7 +118,7 @@ MinimapFlagCheckBox < CheckBox
 
 MinimapFlagWindow < SpaceWindowCreateAccount
   !text: tr('CRIE UMA MARCA')
-  font: future-earth-18
+  font: sono_medium_18
   size: 362 356
 
   Label
@@ -126,7 +126,7 @@ MinimapFlagWindow < SpaceWindowCreateAccount
     image-source: images/loginTextEdit
     text-auto-resize: true
     anchors.top: parent.top
-    font: future-earth-16px
+    font: sono_medium_16
     anchors.left: parent.left
     margin-top: 2
 
@@ -134,7 +134,7 @@ MinimapFlagWindow < SpaceWindowCreateAccount
     id: position
     text-auto-resize: true
     anchors.top: parent.top
-    font: future-earth-16px
+    font: sono_medium_16
     anchors.right: parent.right
     margin-top: 2
 
@@ -142,7 +142,7 @@ MinimapFlagWindow < SpaceWindowCreateAccount
     !text: tr('Description') .. ':'
     anchors.left: parent.left
     anchors.top: prev.bottom
-    font: future-earth-16px
+    font: sono_medium_16
     margin-top: 7
 
   SpaceTextEdit

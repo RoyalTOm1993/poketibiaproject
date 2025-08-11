@@ -1,5 +1,5 @@
 ConsoleLabel < UITextEdit
-  font: verdana-11px-antialised
+  font: manrope-medium-11px
   height: 14
   color: yellow
   margin-left: 2
@@ -15,7 +15,7 @@ ConsoleLabel < UITextEdit
   focusable: false
 
 ConsolePhantomLabel < UILabel
-  font: verdana-11px-antialised
+  font: manrope-medium-11px
   height: 14
   color: yellow
   text-wrap: true
@@ -37,10 +37,7 @@ ConsoleTabBarPanel < MoveableTabBarPanel
     layout:
       type: verticalBox
       align-bottom: true
-    border-width: 1
-    border-color: #202327
-    border-color-top: #665f5a
-    background: #00000066
+    background: #232323
     inverted-scroll: true
     padding: 1
 
@@ -62,15 +59,8 @@ ConsoleTabBarButton < MoveableTabBarButton
 ConsolePanel < Panel
   image-source: /images/ui/panel_bottom
   image-border: 4
-  
-  $first:
-    anchors.fill: parent
-    
-  $!first:
-    anchors.top: prev.bottom
-    anchors.bottom: parent.bottom
-    anchors.left: parent.left
-    anchors.right: parent.right
+  draggable: true
+  focusable: true
 
   TabButton
     id: chatButton
@@ -210,6 +200,22 @@ ConsolePanel < Panel
 
     $hover checked:
       image-clip: 48 0 17 17
+
+  ResizeBorder
+    id: topResizeBorder
+    anchors.top: parent.top
+    anchors.left: parent.left
+    anchors.right: parent.right
+    height: 3
+    enabled: false
+
+  ResizeBorder
+    id: rightResizeBorder
+    anchors.right: parent.right
+    anchors.top: parent.top
+    anchors.bottom: parent.bottom
+    width: 3
+    enabled: false
 
 
 

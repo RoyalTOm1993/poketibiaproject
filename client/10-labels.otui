@@ -6,7 +6,7 @@ Label < UILabel
     color: #dfdfdf88
 
 FlatLabel < UILabel
-  font: future-earth-16px
+  font: sono_medium_16
   color: #68b4db
   color: #dfdfdf
   size: 86 20
@@ -20,7 +20,7 @@ FlatLabel < UILabel
 MenuLabel < Label
 
 GameLabel < UILabel
-  font: future-earth-16px
+  font: sono_medium_16
   color: #dfdfdf
 
 
