@@ -48,6 +48,18 @@ end
   topMenu.gameButtonsPanel:reorderChildren(children)
 end
 
+  local function updateTopMenuButtonOrder()
+  if not topMenu or not topMenu.gameButtonsPanel then
+    return
+  end
+
+  local children = topMenu.gameButtonsPanel:getChildren()
+  table.sort(children, function(a, b)
+    return (a.index or math.huge) < (b.index or math.huge)
+  end)
+  topMenu.gameButtonsPanel:reorderChildren(children)
+end
+
   button:setId(id)
   button:setTooltip(description)
   button:setIcon(resolvepath(icon, 3))
@@ -65,7 +77,7 @@ end
   end
 
   updateTopMenuButtonOrder()
-  
+
   return button
 end
 

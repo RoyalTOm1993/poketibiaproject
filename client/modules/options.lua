@@ -140,7 +140,7 @@ function init()
   -- customPanel = g_ui.loadUI('custom')
   -- optionsTabBar:addTab(tr('Custom'), customPanel, '/images/optionstab/features')
 
-  optionsButton = modules.client_topmenu.addLeftGameButton('optionsButton', tr('Opcoes'), '/images/topbuttons/options', toggle)
+  optionsButton = modules.client_topmenu.addLeftGameButton('optionsButton', tr('Opcoes'), '/images/topbuttons/options', toggle, false, 2)
 
   
   addEvent(function() setup() end)

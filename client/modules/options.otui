@@ -38,7 +38,7 @@ SpaceConfiguracoes
     size: 100 32
     !text: tr('PRONTO')
     color: #ffffff
-    font: future-earth-18
+    font: sono_medium_18
     margin-right: 16
     margin-bottom: 10
     anchors.right: parent.right
@@ -51,7 +51,7 @@ SpaceConfiguracoes
     id: topText
     text-auto-resize: true
     !text: tr('Options')
-    font: future-earth-40
+    font: arial-bold-30px
     anchors.horizontalCenter: parent.horizontalCenter
     anchors.top: parent.top
     color: #ffffff

@@ -9,7 +9,7 @@ HotkeyWindow
     id: topText
     text-auto-resize: true
     !text: tr('ATRIBUIR ATALHO')
-    font: future-earth-18
+    font: sono_medium_18
     anchors.horizontalCenter: parent.horizontalCenter
     anchors.top: parent.top
     color: #68b4db
@@ -37,7 +37,7 @@ HotkeyWindow
     color: #b8db85
     margin-top: 40
     text-align: center
-    font: future-earth-18
+    font: sono_medium_18
 
   Button
     id: buttonClose

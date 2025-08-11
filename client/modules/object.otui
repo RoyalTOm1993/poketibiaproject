@@ -100,7 +100,7 @@ MainWindow
     id: topText
     text-auto-resize: true
     !text: tr('ATRIBUIR OBJETO')
-    font: future-earth-18
+    font: sono_medium_18
     anchors.horizontalCenter: parent.horizontalCenter
     anchors.top: parent.top
     color: #68b4db
