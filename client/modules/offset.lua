@@ -45,7 +45,7 @@ function init()
     backupOtmlFile()
 
     offsetButton = modules.client_topmenu.addLeftGameButton('offsetButton', tr('Offset Manager'),
-        '/images/game/offset/icon', OffsetManager.toggle, false, 1)
+        '/images/game/offset/icon', OffsetManager.toggle)
 
     offsetWindow = g_ui.createWidget('OffsetWindow', modules.game_interface.getRootPanel())
 

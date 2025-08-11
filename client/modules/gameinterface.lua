@@ -57,9 +57,9 @@ function init()
   gameLeftActions = gameRootPanel:getChildById('gameLeftActions')
   connect(gameLeftPanel, { onVisibilityChange = onLeftPanelVisibilityChange })
 
-  logoutButton = modules.client_topmenu.addLeftGameToggleButton('logoutButton', tr('Exit'),
-    '/images/topbuttons/logout', tryLogout, true)
-
+  logoutButton = modules.client_topmenu.addLeftGameToggleButton('logoutButton', tr('EXIT'),
+    '/images/topbuttons/logout', tryLogout, true, 1)
+  logoutButton:setStyle('TopButtonLogout')
 
   gameRightPanels:addChild(g_ui.createWidget('GameSidePanel'))
 
@@ -227,9 +227,9 @@ function tryExit()
 
   exitWindow = displayGeneralBox(tr('Exit'),
     tr(
-    "Se voce desligar o programa o seu personagem pode continuar no jogo.\nClique em 'Sair' para assegurar que seu personagem saia do jogo adequadamente.\nClique em 'Forï¿½ar Saï¿½da' para fechar o programa sem desconectar seu personagem."),
+    "Se voce desligar o programa o seu personagem pode continuar no jogo.\nClique em 'Sair' para assegurar que seu personagem saia do jogo adequadamente.\nClique em 'Forçar Saída' para fechar o programa sem desconectar seu personagem."),
     {
-      { text = tr('Forï¿½ar Saï¿½da'), callback = exitFunc },
+      { text = tr('Forçar Saída'), callback = exitFunc },
       { text = tr('Deslogar'),   callback = logoutFunc },
       { text = tr('Cancelar'),   callback = cancelFunc },
       anchor = AnchorHorizontalCenter
@@ -281,7 +281,7 @@ function tryLogout(prompt)
   end
 
   if prompt then
-    logoutWindow = displayGeneralBox(tr('Logout'), tr(msg), {
+    logoutWindow = displayGeneralBox(tr('LOGOUT'), tr(msg), {
       { text = tr('Yes'), callback = yesCallback },
       { text = tr('No'), callback = noCallback },
       anchor = AnchorHorizontalCenter
@@ -559,7 +559,7 @@ function createThingMenu(menuPosition, lookThing, useThing, creatureThing)
             scheduleEvent(g_game.talkChannel(11, 0, "hi"), 500)
           else
             modules.game_textmessage.displayFailureMessage(
-            "Vocï¿½ nï¿½o pode conversar com o npc, vocï¿½ estï¿½ muito longe")
+            "Você não pode conversar com o NPC, você está muito longe")
           end
         end, shortcut)
       end
@@ -760,7 +760,7 @@ function processMouseAction(menuPosition, mouseButton, autoWalkPos, lookThing, u
         scheduleEvent(g_game.talkChannel(11, 0, "hi"), 500)
       else
         modules.game_textmessage.displayFailureMessage(
-        "Vocï¿½ nï¿½o pode conversar com o npc, vocï¿½ estï¿½ muito longe")
+        "Você não pode conversar com o NPC, você esté muito longe")
       end
       return true
     end
@@ -777,7 +777,7 @@ function processMouseAction(menuPosition, mouseButton, autoWalkPos, lookThing, u
             scheduleEvent(g_game.talkChannel(11, 0, "hi"), 500)
           else
             modules.game_textmessage.displayFailureMessage(
-            "Vocï¿½ nï¿½o pode conversar com o npc, vocï¿½ estï¿½ muito longe")
+            "Você não pode conversar com o NPC, você esté muito longe")
           end
         end
         return true

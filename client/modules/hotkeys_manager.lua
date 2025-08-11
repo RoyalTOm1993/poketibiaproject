@@ -61,7 +61,7 @@ configValueChanged = false
 -- public functions
 function init()
   if not g_app.isMobile() then
-    hotkeysButton = modules.client_topmenu.addLeftGameButton('hotkeysButton', tr('Hotkeys') .. ' (Ctrl+K)', '/images/topbuttons/hotkeys', toggle)
+    hotkeysButton = modules.client_topmenu.addLeftGameButton('hotkeysButton', tr('Hotkeys') .. ' (Ctrl+K)', '/images/topbuttons/hotkeys', toggle, false, 3)
   end
   g_keyboard.bindKeyDown('Ctrl+K', toggle)
   hotkeysWindow = g_ui.displayUI('hotkeys_manager')

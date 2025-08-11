@@ -111,10 +111,10 @@ function UIGameMap:onDrop(widget, mousePos)
 			acceptWindow[#acceptWindow + 1] =
 				displayGeneralBox(
 				tr("Tem certeza?"),
-				tr("VocÔøΩ realmente deseja dropar este item?"),
+				tr("Vocù realmente deseja dropar este item?"),
 				{
 					{text = tr("Sim"), callback = acceptFunc},
-					{text = tr("NÔøΩo"), callback = cancelFunc},
+					{text = tr("Nùo"), callback = cancelFunc},
 					anchor = AnchorHorizontalCenter
 				},
 				acceptFunc,

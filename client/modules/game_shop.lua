@@ -13,7 +13,7 @@ function init()
   categoryVerticalPanel = mainWindow.verticalPanel
   -- categoryHorizontalPanel = mainWindow.horizontalPanel
   ProtocolGame.registerExtendedOpcode(OPCODE, receiveOpcode)
-  buttonShop = modules.client_topmenu.addRightGameToggleButton("buttonShop", tr("Loja"), "/images/topbuttons/diamond", toggleShop, true)
+  buttonShop = modules.client_topmenu.addRightGameToggleButton("buttonShop", tr("Loja"), "/images/topbuttons/diamond", toggleShop, true, 11)
   mainWindow:hide()
   connect(g_game, { onGameStart = function()  mainWindow:hide() end, onGameEnd = function()  mainWindow:hide() end} )
 end
@@ -236,7 +236,7 @@ function sendBuffer(id)
     if #acceptWindow > 0 then
       acceptWindow[#acceptWindow]:destroy()
     end
-	local text = "VocÍ deseja comprar?"
+	local text = "Vocù deseja comprar?"
 	acceptWindow[#acceptWindow + 1] =
 		displayGeneralBox("CONFIRMAR", text,
 		{

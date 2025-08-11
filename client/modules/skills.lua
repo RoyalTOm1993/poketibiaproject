@@ -25,7 +25,7 @@ function init()
     onGameEnd = offline
   })
 
-  skillsButton = modules.client_topmenu.addLeftGameButton('skillsButton', tr('Skills'), '/images/topbuttons/skills', toggle, false, 1)
+  skillsButton = modules.client_topmenu.addLeftGameButton('skillsButton', tr('Skills'), '/images/topbuttons/skills', toggle, false, 4)
   skillsButton:setOn(true)
   skillsWindow = g_ui.loadUI('skills', modules.game_interface.getRightPanel())
   

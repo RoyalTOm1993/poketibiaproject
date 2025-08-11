@@ -1,4 +1,3 @@
-local keepPos = 0
 SpeakTypesSettings = {
   none = {},
   say = { speakType = MessageModes.Say, color = '#FFFF00' },
@@ -85,6 +84,10 @@ ignoredChannels = {}
 filters = {}
 
 floatingMode = false
+floatingPos = nil
+dragOffset = nil
+topResizeBorder = nil
+rightResizeBorder = nil
 
 local communicationSettings = {
   useIgnoreList = true,
@@ -119,8 +122,35 @@ function init()
   consoleTextEdit = consolePanel:getChildById('consoleTextEdit')
   consoleContentPanel = consolePanel:getChildById('consoleContentPanel')
   consoleTabBar = consolePanel:getChildById('consoleTabBar')
+  topResizeBorder = consolePanel:getChildById('topResizeBorder')
+  rightResizeBorder = consolePanel:getChildById('rightResizeBorder')
   consoleTabBar:setContentWidget(consoleContentPanel)
   channels = {}
+
+  topResizeBorder.onMouseMove = function(self, mousePos, mouseMoved)
+    if self:isPressed() then
+      local parent = self:getParent()
+      local bottom = parent:getY() + parent:getHeight()
+      local newY = math.min(math.max(mousePos.y - self:getHeight()/2, bottom - self.maximum), bottom - self.minimum)
+      local newHeight = bottom - newY
+      parent:setY(newY)
+      parent:setHeight(newHeight)
+      self:checkBoundary(newHeight)
+      return true
+    end
+  end
+
+  consolePanel.onGeometryChange = function()
+    if floatingMode then
+      g_settings.setNumber('consolePanelWidth', consolePanel:getWidth())
+      g_settings.setNumber('consolePanelHeight', consolePanel:getHeight())
+    end
+  end
+
+  topResizeBorder:disable()
+  topResizeBorder:hide()
+  rightResizeBorder:disable()
+  rightResizeBorder:hide()
     
   consolePanel.onDragEnter = onDragEnter
   consolePanel.onDragLeave = onDragLeave
@@ -148,6 +178,7 @@ function init()
   g_keyboard.bindKeyPress('Shift+Tab', function() consoleTabBar:selectPrevTab() end, consolePanel)
   g_keyboard.bindKeyDown('Enter', sendCurrentMessage, consolePanel)
   g_keyboard.bindKeyPress('Ctrl+A', function() consoleTextEdit:clearText() end, consolePanel)
+  g_keyboard.bindKeyDown('Ctrl+Shift+F', function() switchMode(not floatingMode) end, modules.game_interface.getRootPanel())
 
   -- apply buttom functions after loaded
   consoleTabBar:setNavigation(consolePanel:getChildById('prevChannelButton'), consolePanel:getChildById('nextChannelButton'))
@@ -314,6 +345,10 @@ end
 function save()
   local settings = {}
   settings.messageHistory = messageHistory
+  settings.floatingMode = floatingMode
+  if floatingPos then
+    settings.floatingPos = floatingPos
+  end
   g_settings.setNode('game_console', settings)
 end
 
@@ -321,6 +356,10 @@ function load()
   local settings = g_settings.getNode('game_console')
   if settings then
     messageHistory = settings.messageHistory or {}
+    floatingPos = settings.floatingPos
+    if settings.floatingMode then
+      switchMode(true)
+    end
   end
   loadCommunicationSettings()
 end
@@ -388,26 +427,65 @@ function clear()
   end
 end
 
-function switchMode(newView)
-
-  --consolePanel:setDraggable(floating)
-  --consoleTabBar:setDraggable(floating)
-  --floatingMode = floating
+function switchMode(floating)
+  consolePanel:setDraggable(floating)
+  consoleTabBar:setDraggable(floating)
+  floatingMode = floating
+  if floating then
+    consolePanel:breakAnchors()
+    local width = g_settings.getNumber('consolePanelWidth')
+    local height = g_settings.getNumber('consolePanelHeight')
+    if not width or width <= 0 then width = consolePanel:getWidth() end
+    if not height or height <= 0 then height = consolePanel:getHeight() end
+    consolePanel:setSize({ width = width, height = height })
+    consolePanel:setPosition({ x = 0, y = g_window.getHeight() - height })
+    topResizeBorder:enable()
+    rightResizeBorder:enable()
+    topResizeBorder:show()
+    rightResizeBorder:show()
+  else
+    g_settings.setNumber('consolePanelWidth', consolePanel:getWidth())
+    g_settings.setNumber('consolePanelHeight', consolePanel:getHeight())
+    topResizeBorder:disable()
+    rightResizeBorder:disable()
+    topResizeBorder:hide()
+    rightResizeBorder:hide()
+    consolePanel:fill('parent')
+  end
+  if floating then
+    consolePanel:setParent(modules.game_interface.getRootPanel())
+    consolePanel:raise()
+    if floatingPos then
+      consolePanel:setPosition(floatingPos)
+    end
+  else
+    floatingPos = consolePanel:getPosition()
+    consolePanel:setParent(modules.game_interface.getBottomPanel())
+    consolePanel:setPosition({x = 0, y = 0})
+  end
 end
 
 function onDragEnter(widget, pos)
-  return floatingMode
+  if not floatingMode then
+  return false
+  end
+  local panelPos = consolePanel:getPosition()
+  dragOffset = { x = pos.x - panelPos.x, y = pos.y - panelPos.y }
+  return true
 end
 
 function onDragMove(widget, pos, moved)
   if not floatingMode then
     return
   end
-  -- update margin
+  local newPos = { x = pos.x - dragOffset.x, y = pos.y - dragOffset.y }
+  consolePanel:setPosition(newPos)
+  floatingPos = newPos
   return true
 end
 
 function onDragLeave(widget, pos)
+  dragOffset = nil
   return floatingMode
 end
 
@@ -1563,7 +1641,6 @@ end
 
 function hideAndShowChat(visible)
   addEvent(function()
-    local bottomSplitter = modules.game_interface.getBottomSplitter()
     local chatButton = modules.game_interface.getChatButton()
 
     if visible or consoleToggleChat:isChecked() then
@@ -1575,14 +1652,8 @@ function hideAndShowChat(visible)
 
     consoleTextEdit:clearText()
     chatButton:setVisible(visible)
-    bottomSplitter:setEnabled(not visible)
-    modules.game_actionbar.switchMode(visible) 
+    consolePanel:setVisible(not visible)
 
-	if visible then
-		keepPos = bottomSplitter:getMarginBottom()
-	end
-
-    bottomSplitter:setMarginBottom(visible and -8 or keepPos == 0 and 250 or keepPos)
   end)
 end
 

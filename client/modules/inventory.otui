@@ -81,7 +81,7 @@ NewInventoryWindow < MiniWindow
 
   UILabel
     id: text
-    font: future-earth-16px
+    font: sono_medium_16
     color: #aeebff
     height: 16
     anchors.verticalCenter: iconBackground.verticalCenter

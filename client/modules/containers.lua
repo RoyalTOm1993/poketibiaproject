@@ -9,7 +9,7 @@ OthersID = {}
 
 FILTER_BUTTONS = {
 	{ name = "All", image = "/images/ui/miniwindowbtn/filter_icon/all", action = "all" },
-	{ name = "PokÈmons", image = "/images/ui/miniwindowbtn/filter_icon/pokemon", action = "pokemon" },
+	{ name = "Pokùmons", image = "/images/ui/miniwindowbtn/filter_icon/pokemon", action = "pokemon" },
 	{ name = "Pokeballs", image = "/images/ui/miniwindowbtn/filter_icon/pokeballs", action = "pokeballs" },
 	{ name = "Loot", image = "/images/ui/miniwindowbtn/filter_icon/loot", action = "loot" },
 	{ name = "Foods", image = "/images/ui/miniwindowbtn/filter_icon/food", action = "food" },
@@ -433,7 +433,7 @@ function onContainerOpen(container, previousContainer)
 	containerWindow.backgroundTopTittle:setVisible(false)
 
   elseif doCheckDepotStatus(container) then
-	-- 3497 -- POK…MON CENTER MACHINE
+	-- 3497 -- POKùMON CENTER MACHINE
 	-- 3502 -- DEPOT 
 	-- 3498 -- MAIL
 	

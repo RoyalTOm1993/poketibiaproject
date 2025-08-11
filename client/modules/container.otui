@@ -168,7 +168,7 @@ InboxHistoryPanel < UIWidget
     anchors.left: parent.left
   UIWidget
     id: tittle
-    !text: tr('Histórico de Recebidos')
+    !text: tr('Histrico de Recebidos')
     font: sono_bold_16
     color: #ffffff
     text-auto-resize: true

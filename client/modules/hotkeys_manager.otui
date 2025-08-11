@@ -10,8 +10,8 @@ HotkeyListLabel < UILabel
 
 HotkeyWindow
   id: hotkeysWindow
-  !text: tr('Hotkeys')
-  font: future-earth-26
+  !text: tr('HOTKEYS')
+  font: sono_medium_26
   color: #66c8ff
   size: 352 503
 

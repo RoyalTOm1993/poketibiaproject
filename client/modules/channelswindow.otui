@@ -1,19 +1,19 @@
 ChannelListLabel < Label
   height: 22
   font: damas
-  background-color: alpha
+  background-color: #232323
   text-offset: 3 7
   focusable: true
-  color: #6b6b6b
+  color: #ffffffff
 
   $focus:
-    background-color: #ffffff22
+    background-color: #191919
     color: #ffffff
 
 MainWindow
   id: channelsWindow
   !text: tr('Channels')
-  font: future-earth-18
+  font: sono_medium_18
   size: 280 324
   padding: 30 13 13 13
   @onEscape: self:destroy()
@@ -57,7 +57,7 @@ MainWindow
     color: #daffae
     margin-right: 6
     image-source: /images/ui/greenButton
-    font: future-earth-14
+    font: sono_medium_14
     size: 104 30
     anchors.horizontalCenter: parent.horizontalCenter
     anchors.bottom: parent.bottom

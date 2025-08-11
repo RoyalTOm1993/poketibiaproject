@@ -74,7 +74,7 @@ function init()
   
   -- g_keyboard.bindKeyDown(Key, toggle)
   
-  MainButton = modules.client_topmenu.addRightGameToggleButton('MainButton', tr('Pass') .. ' ('..Key..')', '/images/topbuttons/pass', toggle)
+  MainButton = modules.client_topmenu.addRightGameToggleButton('MainButton', tr('Pass') .. ' ('..Key..')', '/images/topbuttons/pass', toggle, false, 8)
   MainButton:setOn(false)
 --   MainButton:setWidth(56)
   ProtocolGame.registerExtendedOpcode(Opcode, getPass)
@@ -222,11 +222,11 @@ function getPass(protocol, opcode, buffer)
       end
     end
     if HasPremium then
-      if PassLevel < MaxPassLevel then --- caso já tenha o passe executar isso
+      if PassLevel < MaxPassLevel then --- caso jï¿½ tenha o passe executar isso
 	    PassInfo:getChildById('atualPass'):setImageSource('images/info/elite')
 		
 	  end
-    else --- caso não tenha o passe, executar isso aqui...
+    else --- caso nï¿½o tenha o passe, executar isso aqui...
 	    PassInfo:getChildById('atualPass'):setImageSource('images/info/basico')
     end
 		-- ImageShow:getChildById('separator'):hide()

@@ -79,7 +79,7 @@ ItemSelectorWindow < MainWindow
     id: topText
     text-auto-resize: true
     !text: tr('Selecione o item')
-    font: future-earth-16px
+    font: sono_medium_16
     anchors.horizontalCenter: parent.horizontalCenter
     anchors.top: parent.top
     color: #68b4db

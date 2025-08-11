@@ -78,7 +78,7 @@ quantityWindow < UIWindow
     id: topText
     text-auto-resize: true
     !text: tr('COMPRANDO')
-    font: future-earth-18
+    font: sono_medium_18
     anchors.horizontalCenter: parent.horizontalCenter
     anchors.top: parent.top
     color: #68b4db
@@ -95,7 +95,7 @@ itemClube < UIItem
 
 baseCategoria < UIWidget
   text-offset: 48 0
-  font: future-earth-18
+  font: sono_medium_18
   color: #66c8ff
   image-source: assets/button_unselect
   &updateOnStates: |
@@ -249,7 +249,7 @@ MainWindow
   text: MASTER SHOP
   focusable: false
   text-offset: -6 6
-  font: future-earth-40
+  font: sono_medium_30
   color: #aeebff
   @onEscape: self:hide()
   UIButton
@@ -267,7 +267,7 @@ MainWindow
     id: donateButton
     size: 150 48
     text: DONATE
-    font: future-earth-26
+    font: sono_medium_26
     color: #b8db85
     anchors.bottom: parent.bottom
     anchors.left: parent.left
