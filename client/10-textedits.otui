@@ -4,11 +4,11 @@ TextEdit < UITextEdit
   size: 86 22
   text-offset: 0 4
   padding: 4
-  image-source: /images/ui/textedit
-  image-border: 1
+  color: #ffffffff
   change-cursor-image: true
-  $disabled:
-    color: #27272788
+
+    $disabled:
+    color: #232323
     opacity: 0.8
     change-cursor-image: false
 

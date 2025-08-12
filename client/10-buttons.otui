@@ -93,6 +93,22 @@ AddButton < UIButton
     image-color: #dfdfdf55
     change-cursor-image: false
 
+ChatIconButton < UIButton
+  size: 20 20
+  icon-color: #dfdfdf
+  change-cursor-image: true
+  cursor: pointer
+
+  $hover !disabled:
+    icon-color: #dfdfdf99
+
+  $pressed:
+    icon-color: #dfdfdf44
+
+  $disabled:
+    icon-color: #dfdfdf55
+    change-cursor-image: false
+
 SpaceBlueButton < UIButton
   size: 138 44
   image-source: /images/ui/blueButton
@@ -170,3 +186,23 @@ ButtonGuild < UIButton
     color: #dfdfdf88
     opacity: 0.8
     change-cursor-image: false
+
+BorderedButton < UIButton
+  font: arial-medium-14px
+  color: #68b4db
+  size: 138 44
+  text-offset: 0 1
+  padding: 5 10 5 10
+  opacity: 1.0
+  border: 1 #dfdfdf
+  change-cursor-image: true
+  cursor: pointer
+
+BorderedTabButton < UIButton
+  size: 22 23
+  text-offset: 0 1
+  icon-color: #dfdfdf
+  color: #dfdfdf
+  border: 1 #dfdfdf
+  change-cursor-image: true
+  cursor: pointer

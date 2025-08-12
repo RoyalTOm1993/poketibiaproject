@@ -4,3 +4,4 @@ ImageView < UIImageView
   draggable: true
   border-width: 2
   border-color: #000000
+  border-radius: 4
