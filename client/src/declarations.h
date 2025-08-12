@@ -20,30 +20,40 @@
  * THE SOFTWARE.
  */
 
-#ifndef FRAMEWORK_CORE_DECLARATIONS_H
-#define FRAMEWORK_CORE_DECLARATIONS_H
+#ifdef FW_SOUND
+
+#ifndef FRAMEWORK_SOUND_DECLARATIONS_H
+#define FRAMEWORK_SOUND_DECLARATIONS_H
 
 #include <framework/global.h>
 
-class ConfigManager;
-class ModuleManager;
-class ResourceManager;
-class Module;
-class Config;
-class Event;
-class ScheduledEvent;
-class FileStream;
-class BinaryTree;
-class OutputBinaryTree;
+#define AL_LIBTYPE_STATIC
 
-typedef stdext::shared_object_ptr<Module> ModulePtr;
-typedef stdext::shared_object_ptr<Config> ConfigPtr;
-typedef stdext::shared_object_ptr<Event> EventPtr;
-typedef stdext::shared_object_ptr<ScheduledEvent> ScheduledEventPtr;
-typedef stdext::shared_object_ptr<FileStream> FileStreamPtr;
-typedef stdext::shared_object_ptr<BinaryTree> BinaryTreePtr;
-typedef stdext::shared_object_ptr<OutputBinaryTree> OutputBinaryTreePtr;
+#if defined(__APPLE__)
+#include <OpenAL/al.h>
+#include <OpenAL/alc.h>
+#else
+#include <AL/al.h>
+#include <AL/alc.h>
+#endif
 
-typedef std::vector<BinaryTreePtr> BinaryTreeVec;
+class SoundManager;
+class SoundSource;
+class SoundBuffer;
+class SoundFile;
+class SoundChannel;
+class StreamSoundSource;
+class CombinedSoundSource;
+class OggSoundFile;
+
+typedef stdext::shared_object_ptr<SoundSource> SoundSourcePtr;
+typedef stdext::shared_object_ptr<SoundFile> SoundFilePtr;
+typedef stdext::shared_object_ptr<SoundBuffer> SoundBufferPtr;
+typedef stdext::shared_object_ptr<SoundChannel> SoundChannelPtr;
+typedef stdext::shared_object_ptr<StreamSoundSource> StreamSoundSourcePtr;
+typedef stdext::shared_object_ptr<CombinedSoundSource> CombinedSoundSourcePtr;
+typedef stdext::shared_object_ptr<OggSoundFile> OggSoundFilePtr;
+
+#endif
 
 #endif
