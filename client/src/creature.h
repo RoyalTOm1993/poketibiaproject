@@ -1,25 +1,3 @@
-/*
- * Copyright (c) 2010-2017 OTClient <https://github.com/edubart/otclient>
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- */
-
 #ifndef CREATURE_H
 #define CREATURE_H
 
@@ -34,7 +12,7 @@
 #include <framework/graphics/cachedtext.h>
 #include <framework/ui/uiwidget.h>
 
- // @bindclass
+// @bindclass
 class Creature : public Thing
 {
 public:
@@ -50,6 +28,13 @@ public:
     virtual void drawOutfit(const Rect& destRect, Otc::Direction direction = Otc::InvalidDirection, const Color& color = Color::white, bool animate = false, bool ui = false, bool oldScaling = false);
     
     void drawShadow(const Point& dest);
+
+    // Adicionado mapa estático para offsets customizados do nome (X, Y)
+    static std::unordered_map<std::string, std::pair<int, int>> m_customNameOffsets;
+
+    // Adicionado mapa estático para offsets customizados do selector/círculo
+    static std::unordered_map<std::string, Point> m_customSelectorOffset;
+    Point getSelectorOffset() const;
 
     void drawInformation(const Point& point, bool useGray, const Rect& parentRect, int drawFlags);
 
@@ -103,8 +88,8 @@ public:
     uint32 getId() { return m_id; }
     std::string getName() { return m_name; }
 
-	//uint8_t getNameColor() { return m_nameColor; }
-	Point getWingsOffset() { return m_wingsOffset; }
+    //uint8_t getNameColor() { return m_nameColor; }
+    Point getWingsOffset() { return m_wingsOffset; }
     void setWingsOffset(int x, int y) {
         m_wingsOffset.x = x;
         m_wingsOffset.y = y;
@@ -114,7 +99,7 @@ public:
     Otc::Direction getDirection() { return m_direction; }
     Otc::Direction getWalkDirection() { return m_walkDirection; }
     Outfit getOutfit() { return m_outfit; }
-	int getWings() { return m_outfit.getWings(); }
+    int getWings() { return m_outfit.getWings(); }
     Light getLight() { return m_light; }
     uint16 getSpeed() { return m_speed; }
     double getBaseSpeed() { return m_baseSpeed; }
@@ -197,7 +182,7 @@ public:
     void removeDirectionalWidget(const UIWidgetPtr& widget);
     std::list<UIWidgetPtr> getTopWidgets();
     std::list<UIWidgetPtr> getBottomWidgets();
-    std::list<UIWidgetPtr> getDirectionalWdigets();
+    std::list<UIWidgetPtr> getDirectionalWidgets();
     void clearWidgets();
     void clearTopWidgets();
     void clearBottomWidgets();
@@ -216,8 +201,6 @@ public:
     void setFly(bool fly) { m_flying = fly; }
     bool m_flying { false };
     bool isGhost = false;
-
-
     bool isShake();
     int getShakePower() { return m_shakeintensity; }
     void screenShake(uint32_t intensity, uint32_t duration);
@@ -281,7 +264,7 @@ protected:
     Color m_informationColor;
     bool m_useCustomInformationColor = false;
     Point m_informationOffset;
-	Point m_wingsOffset;
+    Point m_wingsOffset;
     Color m_outfitColor;
     ScheduledEventPtr m_outfitColorUpdateEvent;
     Timer m_outfitColorTimer;

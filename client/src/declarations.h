@@ -20,18 +20,18 @@
  * THE SOFTWARE.
  */
 
-#ifndef FRAMEWORK_LUA_DECLARATIONS_H
-#define FRAMEWORK_LUA_DECLARATIONS_H
+#ifndef FRAMEWORK_OTML_DECLARATIONS_H
+#define FRAMEWORK_OTML_DECLARATIONS_H
 
 #include <framework/global.h>
 
-#include <memory>
+class OTMLNode;
+class OTMLDocument;
+class OTMLParser;
+class OTMLEmitter;
 
-class LuaInterface;
-class LuaObject;
-
-typedef std::function<int(LuaInterface*)> LuaCppFunction;
-typedef std::unique_ptr<LuaCppFunction> LuaCppFunctionPtr;
-typedef stdext::shared_object_ptr<LuaObject> LuaObjectPtr;
+typedef stdext::shared_object_ptr<OTMLNode> OTMLNodePtr;
+typedef stdext::shared_object_ptr<OTMLDocument> OTMLDocumentPtr;
+typedef std::vector<OTMLNodePtr> OTMLNodeList;
 
 #endif

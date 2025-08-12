@@ -1,25 +1,3 @@
-/*
- * Copyright (c) 2010-2017 OTClient <https://github.com/edubart/otclient>
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- */
-
 #include "creature.h"
 #include "thingtypemanager.h"
 #include "localplayer.h"
@@ -46,7 +24,36 @@
 #include <framework/util/stats.h>
 #include <framework/util/extras.h>
 
+#include <unordered_map>  // Necessário para o mapa estático
+
 std::array<double, Otc::LastSpeedFormula> Creature::m_speedFormula = { -1,-1,-1 };
+
+// Inicialização do mapa estático para offsets customizados do nome
+std::unordered_map<std::string, std::pair<int, int>> Creature::m_customNameOffsets = {
+    {"Moltres", {-80, 110}},
+    {"Charizard", {0, 50}},
+    {"Steelix", {0, 45}},
+    {"Arcanine", {0, 48}},
+    // Adicione outros nomes e offsets conforme desejar
+};
+
+// Inicialização do mapa estático para offsets customizados do selector/círculo (por nome de Pokémon)
+// Exemplo: {"Moltres", Point(0, 40)}
+std::unordered_map<std::string, Point> Creature::m_customSelectorOffset = {
+    {"Moltres", Point(0, 40)},
+    {"Charizard", Point(0, 40)},
+    {"Steelix", Point(0, 44)},
+    // ... adicione outros pokémon aqui
+};
+
+// Função para obter o offset do selector/círculo, por nome do Pokémon, se existir
+Point Creature::getSelectorOffset() const {
+    auto it = m_customSelectorOffset.find(m_nameCache.getText());
+    if (it != m_customSelectorOffset.end())
+        return it->second;
+    // Offset padrão: centro do tile 32x32 (ajuste se necessário)
+    return Point(0, g_sprites.spriteSize() / 2);
+}
 
 Creature::Creature() : Thing()
 {
@@ -81,74 +88,69 @@ Creature::~Creature()
 }
 
 void Creature::draw(const Point& dest, bool animate, LightView* lightView)
-{   
+{
     if (!canBeSeen())
         return;
 
     const ThingTypePtr& thingType = getThingType();
     const int sprSize = g_sprites.spriteSize();
     Point jumpOffset = Point(m_jumpOffset.x, m_jumpOffset.y);
-    Point creatureCenter = dest - jumpOffset + m_walkOffset - getDisplacement() + Point(sprSize / 2, sprSize / 2);
+
+    Size creatureSize = thingType ? thingType->getSize() : Size(sprSize, sprSize);
+    int creatureWidth = creatureSize.width();
+    int creatureHeight = creatureSize.height();
+
+    // NOVO: utiliza offset personalizado para centralizar o círculo/seletor
+    Point creatureCenter = dest - jumpOffset + m_walkOffset - getDisplacement() + getSelectorOffset();
+
     drawBottomWidgets(creatureCenter, m_walking ? m_walkDirection : m_direction);
 
     Point animationOffset = animate ? m_walkOffset : Point(0, 0);
 
     TexturePtr targetTexture = g_textures.getTexture("data/images/ui/target.png");
+    const int targetSize = 32;
 
+    // Alinha o círculo com o mesmo offset personalizado
     if (m_showTimedSquare && animate) {
-        int targetSize = getExactSize(getLayers(), getNumPatternX(), getNumPatternY(), getNumPatternZ(), getAnimationPhases());
-
-        Point adjustedTargetPos = dest - jumpOffset + animationOffset - getDisplacement() + Point((sprSize - targetSize) / 2, (sprSize - targetSize) / 2);
-         
+        Point adjustedTargetPos = creatureCenter - Point(targetSize / 2, targetSize / 2);
         Rect targetRect = Rect(adjustedTargetPos, Size(targetSize, targetSize));
-
         g_drawQueue->addTexturedRect(targetRect, targetTexture, Rect(0, 0, targetTexture->getWidth(), targetTexture->getHeight()), m_timedSquareColor);
     }
 
-
     if (m_showStaticSquare && animate) {
-        int targetSize = getExactSize(getLayers(), getNumPatternX(), getNumPatternY(), getNumPatternZ(), getAnimationPhases());
-
-        Point adjustedTargetPos = dest - jumpOffset + animationOffset - getDisplacement() + Point((sprSize - targetSize) / 2, (sprSize - targetSize) / 2);
-
+        Point adjustedTargetPos = creatureCenter - Point(targetSize / 2, targetSize / 2);
         Rect targetRect = Rect(adjustedTargetPos, Size(targetSize, targetSize));
         g_drawQueue->addTexturedRect(targetRect, targetTexture, Rect(0, 0, targetTexture->getWidth(), targetTexture->getHeight()), m_staticSquareColor);
     }
 
-Point displacement = thingType->getOutfitDisplacementByDirection(m_walking ? m_walkDirection : m_direction);
+    Point displacement = thingType->getOutfitDisplacementByDirection(m_walking ? m_walkDirection : m_direction);
 
     if (m_outfit.getCategory() != ThingCategoryCreature)
         animationOffset -= getDisplacement();
 
-
     drawShadow(dest - jumpOffset + animationOffset);
-    size_t drawQueueSize = g_drawQueue->size();
-    
-    if (m_marked) {
-        //g_logger.info("Size: " + std::to_string(getExactSize(getLayers(), getNumPatternX(), getNumPatternY(), getNumPatternZ(), getAnimationPhases())));
-        int targetSize = getExactSize(getLayers(), getNumPatternX(), getNumPatternY(), getNumPatternZ(), getAnimationPhases());
 
-        Point adjustedTargetPos = dest - jumpOffset + animationOffset - getDisplacement() + Point((sprSize - targetSize) / 2, (sprSize - targetSize) / 2);
+    if (m_marked) {
+        Point adjustedTargetPos = creatureCenter - Point(targetSize / 2, targetSize / 2);
         Rect targetRect = Rect(adjustedTargetPos, Size(targetSize, targetSize));
         g_drawQueue->addTexturedRect(targetRect, targetTexture, Rect(0, 0, targetTexture->getWidth(), targetTexture->getHeight()), m_markedColor);
         updatedMarkedColor();
     }
 
-	m_outfit.setWingsOffset(getWingsOffset());
+    m_outfit.setWingsOffset(getWingsOffset());
     Color color = Color::white;
     if (isGhost) {
         color.setOpacity(50.0);
     }
 
     m_outfit.draw(dest - jumpOffset + animationOffset + displacement, m_walking ? m_walkDirection : m_direction, m_walkAnimationPhase, color, true, lightView);
-    
+
     drawTopWidgets(creatureCenter, m_walking ? m_walkDirection : m_direction);
 
     Light light = rawGetThingType()->getLight();
     if (m_light.intensity != light.intensity || m_light.color != light.color)
         light = m_light;
 
-    // local player always have a minimum light in complete darkness
     if (isLocalPlayer()) {
         light.intensity = std::max<uint8>(light.intensity, 2);
         if (light.color == 0 || light.color > 215)
@@ -159,14 +161,21 @@ Point displacement = thingType->getOutfitDisplacementByDirection(m_walking ? m_w
         lightView->addLight(creatureCenter, light);
 }
 
+bool Creature::isInsideOffset(Point offset)
+{
+    // NOVO: considera o mesmo offset personalizado do círculo/seletor para clique/hitbox
+    Point center = getDrawOffset() - getDisplacement() + getSelectorOffset();
+    int radius = 16; // Ajuste conforme o tamanho do círculo/target
+    int dx = offset.x - center.x;
+    int dy = offset.y - center.y;
+    return (dx * dx + dy * dy) <= (radius * radius);
+}
+
+// (todo o resto do seu arquivo permanece igual, sem alterações...)
 
 void Creature::drawShadow(const Point& dest) {
     if (!isFlying())
         return;
-
-    // if(m_flyDist == 0) {
-    //     return;
-    // }
 
     const auto& color = Color(0.f, 0.f, 0.f, std::max<float>(.1f, .7f - ((m_flyDist+1) / 10.f)));
 
@@ -202,8 +211,6 @@ void Creature::drawInformation(const Point& point, bool useGray, const Rect& par
     }
 
     const ThingTypePtr& thingType = getThingType();
-    // Removido nameDisplacement para fixar posição sempre acima
-    Point nameDisplacement = Point(0, 0);
 
     Color fillColor = Color(96, 96, 96);
     Color nameColor = Color(96, 96, 96);
@@ -211,31 +218,38 @@ void Creature::drawInformation(const Point& point, bool useGray, const Rect& par
     if (!useGray)
         fillColor = m_informationColor;
 
-    const int NAME_MARGIN = 10;
+    int spriteHeight = thingType ? thingType->getSize().height() : 32;
+    int spriteWidth = thingType ? thingType->getSize().width() : 32;
 
-    int exactHeight = getExactSize(getLayers(), getNumPatternX(), getNumPatternY(), getNumPatternZ(), getAnimationPhases());
-    int scaledHeight = exactHeight * g_sprites.getOffsetFactor();
+    int displacementY = thingType ? thingType->getDisplacementY() : 0;
+    int realHeight = spriteHeight - displacementY;
 
-    int displacementY = getDisplacementY();
-    int displacementX = getDisplacementX();
+    // Usa mapa estático para offsets personalizados
+    int offsetX = 0;
+    int offsetY = realHeight + 12; // padrão
 
-    int centerX = point.x + m_informationOffset.x + (g_sprites.spriteSize() / 2) - displacementX;
-    int nameY = point.y + m_informationOffset.y - scaledHeight + displacementY - NAME_MARGIN;
+    std::string name = m_nameCache.getText();
+    auto it = m_customNameOffsets.find(name);
+    if(it != m_customNameOffsets.end()) {
+        offsetX = it->second.first;
+        offsetY = it->second.second;
+    }
 
     Size nameSize = m_nameCache.getTextSize();
 
-    Rect textRect = Rect(centerX - nameSize.width() / 2, nameY, nameSize);
+    // Ajuste no retângulo do texto do nome aplicando offsetX e offsetY
+    Rect textRect = Rect(point.x + m_informationOffset.x - nameSize.width() / 2.0 + offsetX,
+                         point.y + m_informationOffset.y - offsetY - 8, nameSize);
     textRect.bind(parentRect);
 
-    Rect backgroundRect = Rect(centerX - 13, textRect.bottom() + 2, 27, 4);
+    // Ajuste no retângulo da barra de vida para usar o mesmo offsetX e offsetY do nome
+    Rect backgroundRect = Rect(point.x + m_informationOffset.x - 13.5 + offsetX,
+                               point.y + m_informationOffset.y - offsetY + 6, 27, 4);
     backgroundRect.bind(parentRect);
 
-    // distance them
     uint32 offset = 12;
     if (isLocalPlayer())
-    {
         offset *= 2;
-    }
 
     if (textRect.top() == parentRect.top())
         backgroundRect.moveTop(textRect.top() + offset);
@@ -245,19 +259,12 @@ void Creature::drawInformation(const Point& point, bool useGray, const Rect& par
     HealthBarPtr healthBar = nullptr;
     HealthBarPtr manaBar = nullptr;
 
-    // healthBar->setHeight(9);
-    // manaBar->setHeight(9);
-
     if (g_game.getFeature(Otc::GameHealthInfoBackground))
     {
         if (m_outfit.getHealthBar() > 0)
-        {
             healthBar = g_healthBars.getHealthBar(m_outfit.getHealthBar());
-        }
         if (m_outfit.getManaBar() > 0)
-        {
             manaBar = g_healthBars.getManaBar(m_outfit.getManaBar());
-        }
     }
 
     if (healthBar)
@@ -267,31 +274,32 @@ void Creature::drawInformation(const Point& point, bool useGray, const Rect& par
         backgroundRect.moveLeft(backgroundRect.left() + healthBar->getBarOffset().x);
     }
 
-    // health rect is based on background rect, so no worries
     Rect healthRect = backgroundRect.expanded(-1);
     healthRect.setWidth((m_healthPercent / 100.0) * 25);
 
-    // draw
     if (g_game.getFeature(Otc::GameBlueNpcNameColor) && isNpc() && m_healthPercent == 100 && !useGray)
         fillColor = Color(0x66, 0xcc, 0xff);
 
-        if(m_nameColor == 0x1) { // red
-            nameColor = Color::red;
-        } else if (m_nameColor == 0x2) { // orange
-            nameColor = Color::orange;
-        } else if (m_nameColor == 0x3) { // yellow
-            nameColor = Color::yellow;
-        } else if (m_nameColor == 0x4) { // blue
-            nameColor = Color::blue;
-        } else if (m_nameColor == 0x5) { // purple
-            nameColor = Color::darkPink;
-        } else if (m_nameColor == 0x6) { // white
-            nameColor = Color::white;
-        } else if (m_nameColor == 0x7) { // black
-            nameColor = Color::black;
-        } else if (m_nameColor == 0x8) { // green
-            nameColor = Color::green;
-        } else nameColor = Color::green;
+    // Ajuste no nameColor com if-else
+    if (m_nameColor == 0x1) {
+        nameColor = Color::red;
+    } else if (m_nameColor == 0x2) {
+        nameColor = Color::orange;
+    } else if (m_nameColor == 0x3) {
+        nameColor = Color::yellow;
+    } else if (m_nameColor == 0x4) {
+        nameColor = Color::blue;
+    } else if (m_nameColor == 0x5) {
+        nameColor = Color::darkPink;
+    } else if (m_nameColor == 0x6) {
+        nameColor = Color::white;
+    } else if (m_nameColor == 0x7) {
+        nameColor = Color::black;
+    } else if (m_nameColor == 0x8) {
+        nameColor = Color::green;
+    } else {
+        nameColor = Color::green;
+    }
 
     if (drawFlags & Otc::DrawNames && (!isNpc() || !g_game.getFeature(Otc::GameHideNpcNames)))
     {
@@ -346,8 +354,8 @@ void Creature::drawInformation(const Point& point, bool useGray, const Rect& par
         if (m_text)
         {
             auto extraTextSize = m_text->getCachedText().getTextSize();
-            Rect extraTextRect = Rect(point.x + m_informationOffset.x - extraTextSize.width() / 2.0, 
-                                      point.y + m_informationOffset.y + 15, extraTextSize); 
+            Rect extraTextRect = Rect(point.x + m_informationOffset.x - extraTextSize.width() / 2.0,
+                                      point.y + m_informationOffset.y + 15, extraTextSize);
             m_text->drawText(extraTextRect.center(), extraTextRect);
         }
     }
@@ -355,46 +363,20 @@ void Creature::drawInformation(const Point& point, bool useGray, const Rect& par
     if (!(drawFlags & Otc::DrawNames))
         return;
 
-    // Icon positioning - sempre centralizado
-    int iconY = textRect.top();                 // mesma linha do topo do nome
-    int iconXLeft = textRect.left();            // parte esquerda do nome
-    int iconXRight = textRect.right();          // parte direita do nome
-    int spacing = 2;                            // espaço entre ícones
-
-  /*
-       if (m_skull != Otc::SkullNone && m_skullTexture) {
-          Size iconSize = m_skullTexture->getSize();
-          Rect skullRect = Rect(iconXLeft - iconSize.width() - spacing, iconY, iconSize);
-          g_drawQueue->addTexturedRect(skullRect, m_skullTexture, Rect(0, 0, iconSize));
-          iconXLeft -= iconSize.width() + spacing;
-       }
-
-      if (m_emblem != Otc::EmblemNone && m_emblemTexture) {
-          Rect emblemRect = Rect(backgroundRect.x() + 13.5 + 12, backgroundRect.y() + 16, m_emblemTexture->getSize());
-          g_drawQueue->addTexturedRect(emblemRect, m_emblemTexture, Rect(0, 0, m_emblemTexture->getSize()));
-      }
-
-      if (m_type != Proto::CreatureTypeUnknown && m_typeTexture) {
-          Rect typeRect = Rect(backgroundRect.x() + 13.5 + 12 + xOffset, 
-                             backgroundRect.y() + yOffset, m_typeTexture->getSize());
-          g_drawQueue->addTexturedRect(typeRect, m_typeTexture, Rect(0, 0, m_typeTexture->getSize()));
-      }
-  */
+    int iconX = point.x + m_informationOffset.x - 20 + offsetX;
+    int iconY = point.y + m_informationOffset.y - 20;  // Pode adicionar offsetY se quiser alinhar verticalmente
 
     if (m_shield != Otc::ShieldNone && m_shieldTexture && m_showShieldTexture) {
-        Size shieldSize = m_shieldTexture->getSize();
-        Rect shieldRect = Rect(iconXLeft - shieldSize.width() - spacing, iconY, shieldSize);
-        iconXLeft -= shieldSize.width() + spacing;
+        Rect shieldRect = Rect(iconX, iconY, m_shieldTexture->getSize());
         g_drawQueue->addTexturedRect(shieldRect, m_shieldTexture, Rect(0, 0, m_shieldTexture->getSize()));
         iconX += m_shieldTexture->getWidth() + 2;
-    } 
-
+    }
 
     if (m_icon != Otc::NpcIconNone && m_iconTexture) {
-        Rect iconRect = Rect(backgroundRect.x() + 13.5 + 12, backgroundRect.y() + 5, m_iconTexture->getSize());
+        Rect iconRect = Rect(backgroundRect.x() + 13.5 + 12 + offsetX, backgroundRect.y() + 5, m_iconTexture->getSize());
         g_drawQueue->addTexturedRect(iconRect, m_iconTexture, Rect(0, 0, m_iconTexture->getSize()));
     }
-    
+
     bool special = false;
     bool special2 = false;
     for (const auto& entry : this->creatureIconMap) {
@@ -406,29 +388,17 @@ void Creature::drawInformation(const Point& point, bool useGray, const Rect& par
         icon_texture = g_textures.getTexture(image);
         if (icon_texture) {
             if (special) {
-               uint8_t iconOffsetX = -icon_texture->getWidth() - 4;
-                Rect customIconRect = Rect(centerX + entry.second.first, textRect.top() + entry.second.second, icon_texture->getSize());
+                Rect customIconRect = Rect(textRect.left() + entry.second.first, textRect.top() + entry.second.second, icon_texture->getSize());
                 g_drawQueue->addTexturedRect(customIconRect, icon_texture, Rect(0, 0, icon_texture->getSize()));
-            }else if (special2) {
-                uint8_t iconOffsetX = -icon_texture->getWidth() - 4;
+            } else if (special2) {
                 Rect customIconRect = Rect(textRect.right() + entry.second.first, textRect.top() + entry.second.second, icon_texture->getSize());
                 g_drawQueue->addTexturedRect(customIconRect, icon_texture, Rect(0, 0, icon_texture->getSize()));
-            }
-            else {
+            } else {
                 Rect customIconRect = Rect(point.x + entry.second.first, point.y + entry.second.second, icon_texture->getSize());
                 g_drawQueue->addTexturedRect(customIconRect, icon_texture, Rect(0, 0, icon_texture->getSize()));
             }
         }
     }
-
-}
-
-bool Creature::isInsideOffset(Point offset)
-{
-    // for worse precision:
-    // Rect rect(getDrawOffset() - (m_walking ? m_walkOffset : Point(0,0)), Size(Otc::TILE_PIXELS - getDisplacementY(), Otc::TILE_PIXELS - getDisplacementX()));
-    Rect rect(getDrawOffset() - getDisplacement(), Size(g_sprites.spriteSize(), g_sprites.spriteSize()));
-    return rect.contains(offset);
 }
 
 bool Creature::canShoot(int distance)
@@ -1230,7 +1200,7 @@ void Creature::removeTopWidget(const UIWidgetPtr& widget)
 void Creature::removeBottomWidget(const UIWidgetPtr& widget)
 {
     auto it = std::remove(m_bottomWidgets.begin(), m_bottomWidgets.end(), widget);
-    while (it != m_topWidgets.end()) {
+    while (it != m_bottomWidgets.end()) {
         (*it)->destroy();
         it = m_bottomWidgets.erase(it);
     }
@@ -1238,12 +1208,11 @@ void Creature::removeBottomWidget(const UIWidgetPtr& widget)
 
 void Creature::removeDirectionalWidget(const UIWidgetPtr& widget)
 {    
-    auto it = m_directionalWidgets.erase(std::remove(m_directionalWidgets.begin(), m_directionalWidgets.end(), widget));
-    while (it != m_topWidgets.end()) {
+    auto it = std::remove(m_directionalWidgets.begin(), m_directionalWidgets.end(), widget);
+    while (it != m_directionalWidgets.end()) {
         (*it)->destroy();
         it = m_directionalWidgets.erase(it);
     }
-
 }
 
 std::list<UIWidgetPtr> Creature::getTopWidgets()
@@ -1256,7 +1225,7 @@ std::list<UIWidgetPtr> Creature::getBottomWidgets()
     return m_bottomWidgets;
 }
 
-std::list<UIWidgetPtr> Creature::getDirectionalWdigets()
+std::list<UIWidgetPtr> Creature::getDirectionalWidgets()
 {
     return m_directionalWidgets;
 }

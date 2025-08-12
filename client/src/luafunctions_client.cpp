@@ -573,7 +573,7 @@ void Client::registerLuaFunctions()
     g_lua.bindClassMemberFunction<Creature>("removeDirectionalWidget", &Creature::removeDirectionalWidget);
     g_lua.bindClassMemberFunction<Creature>("getTopWidgets", &Creature::getTopWidgets);
     g_lua.bindClassMemberFunction<Creature>("getBottomWidgets", &Creature::getBottomWidgets);
-    g_lua.bindClassMemberFunction<Creature>("getDirectionalWdigets", &Creature::getDirectionalWdigets);
+    g_lua.bindClassMemberFunction<Creature>("getDirectionalWidgets", &Creature::getDirectionalWidgets);
     g_lua.bindClassMemberFunction<Creature>("clearWidgets", &Creature::clearWidgets);
     g_lua.bindClassMemberFunction<Creature>("clearTopWidgets", &Creature::clearTopWidgets);
     g_lua.bindClassMemberFunction<Creature>("clearBottomWidgets", &Creature::clearBottomWidgets);
