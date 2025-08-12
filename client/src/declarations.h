@@ -20,40 +20,18 @@
  * THE SOFTWARE.
  */
 
-#ifdef FW_SOUND
-
-#ifndef FRAMEWORK_SOUND_DECLARATIONS_H
-#define FRAMEWORK_SOUND_DECLARATIONS_H
+#ifndef FRAMEWORK_LUA_DECLARATIONS_H
+#define FRAMEWORK_LUA_DECLARATIONS_H
 
 #include <framework/global.h>
 
-#define AL_LIBTYPE_STATIC
+#include <memory>
 
-#if defined(__APPLE__)
-#include <OpenAL/al.h>
-#include <OpenAL/alc.h>
-#else
-#include <AL/al.h>
-#include <AL/alc.h>
-#endif
+class LuaInterface;
+class LuaObject;
 
-class SoundManager;
-class SoundSource;
-class SoundBuffer;
-class SoundFile;
-class SoundChannel;
-class StreamSoundSource;
-class CombinedSoundSource;
-class OggSoundFile;
-
-typedef stdext::shared_object_ptr<SoundSource> SoundSourcePtr;
-typedef stdext::shared_object_ptr<SoundFile> SoundFilePtr;
-typedef stdext::shared_object_ptr<SoundBuffer> SoundBufferPtr;
-typedef stdext::shared_object_ptr<SoundChannel> SoundChannelPtr;
-typedef stdext::shared_object_ptr<StreamSoundSource> StreamSoundSourcePtr;
-typedef stdext::shared_object_ptr<CombinedSoundSource> CombinedSoundSourcePtr;
-typedef stdext::shared_object_ptr<OggSoundFile> OggSoundFilePtr;
-
-#endif
+typedef std::function<int(LuaInterface*)> LuaCppFunction;
+typedef std::unique_ptr<LuaCppFunction> LuaCppFunctionPtr;
+typedef stdext::shared_object_ptr<LuaObject> LuaObjectPtr;
 
 #endif
