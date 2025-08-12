@@ -20,35 +20,30 @@
  * THE SOFTWARE.
  */
 
-#ifndef FRAMEWORK_UI_DECLARATIONS_H
-#define FRAMEWORK_UI_DECLARATIONS_H
+#ifndef FRAMEWORK_CORE_DECLARATIONS_H
+#define FRAMEWORK_CORE_DECLARATIONS_H
 
 #include <framework/global.h>
 
-class UIManager;
-class UIWidget;
-class UITextEdit;
-class UILayout;
-class UIBoxLayout;
-class UIHorizontalLayout;
-class UIVerticalLayout;
-class UIGridLayout;
-class UIAnchor;
-class UIAnchorGroup;
-class UIAnchorLayout;
+class ConfigManager;
+class ModuleManager;
+class ResourceManager;
+class Module;
+class Config;
+class Event;
+class ScheduledEvent;
+class FileStream;
+class BinaryTree;
+class OutputBinaryTree;
 
-typedef stdext::shared_object_ptr<UIWidget> UIWidgetPtr;
-typedef stdext::shared_object_ptr<UITextEdit> UITextEditPtr;
-typedef stdext::shared_object_ptr<UILayout> UILayoutPtr;
-typedef stdext::shared_object_ptr<UIBoxLayout> UIBoxLayoutPtr;
-typedef stdext::shared_object_ptr<UIHorizontalLayout> UIHorizontalLayoutPtr;
-typedef stdext::shared_object_ptr<UIVerticalLayout> UIVerticalLayoutPtr;
-typedef stdext::shared_object_ptr<UIGridLayout> UIGridLayoutPtr;
-typedef stdext::shared_object_ptr<UIAnchor> UIAnchorPtr;
-typedef stdext::shared_object_ptr<UIAnchorGroup> UIAnchorGroupPtr;
-typedef stdext::shared_object_ptr<UIAnchorLayout> UIAnchorLayoutPtr;
+typedef stdext::shared_object_ptr<Module> ModulePtr;
+typedef stdext::shared_object_ptr<Config> ConfigPtr;
+typedef stdext::shared_object_ptr<Event> EventPtr;
+typedef stdext::shared_object_ptr<ScheduledEvent> ScheduledEventPtr;
+typedef stdext::shared_object_ptr<FileStream> FileStreamPtr;
+typedef stdext::shared_object_ptr<BinaryTree> BinaryTreePtr;
+typedef stdext::shared_object_ptr<OutputBinaryTree> OutputBinaryTreePtr;
 
-typedef std::deque<UIWidgetPtr> UIWidgetList;
-typedef std::vector<UIAnchorPtr> UIAnchorList;
+typedef std::vector<BinaryTreePtr> BinaryTreeVec;
 
 #endif
