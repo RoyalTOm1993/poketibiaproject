@@ -311,6 +311,7 @@ protected:
     Fw::AlignmentFlag m_iconAlign;
     EdgeGroup<Color> m_borderColor;
     EdgeGroup<int> m_borderWidth;
+    int m_borderRadius;
     EdgeGroup<int> m_margin;
     EdgeGroup<int> m_padding;
     float m_opacity;
@@ -356,6 +357,7 @@ public:
     void setBorderColorRight(const Color& color) { m_borderColor.right = color; }
     void setBorderColorBottom(const Color& color) { m_borderColor.bottom = color; }
     void setBorderColorLeft(const Color& color) { m_borderColor.left = color; }
+    void setBorderRadius(int radius) { m_borderRadius = radius; }
     void setMargin(int margin) { m_margin.set(margin); updateParentLayout(); }
     void setMarginHorizontal(int margin) { m_margin.right = m_margin.left = margin; updateParentLayout(); }
     void setMarginVertical(int margin) { m_margin.bottom = m_margin.top = margin; updateParentLayout(); }
@@ -410,6 +412,7 @@ public:
     int getBorderRightWidth() { return m_borderWidth.right; }
     int getBorderBottomWidth() { return m_borderWidth.bottom; }
     int getBorderLeftWidth() { return m_borderWidth.left; }
+    int getBorderRadius() { return m_borderRadius; }
     int getMarginTop() { return m_margin.top; }
     int getMarginRight() { return m_margin.right; }
     int getMarginBottom() { return m_margin.bottom; }

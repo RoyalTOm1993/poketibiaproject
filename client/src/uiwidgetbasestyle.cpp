@@ -30,6 +30,94 @@
 #include <framework/graphics/painter.h>
 #include <framework/graphics/texture.h>
 #include <framework/graphics/texturemanager.h>
+#include <framework/graphics/coordsbuffer.h>
+#include <cmath>
+#include <vector>
+
+namespace {
+    void buildRoundedRect(CoordsBuffer& coordsBuffer, const Rect& rect, int radius) {
+        if (rect.isEmpty())
+            return;
+        if (radius <= 0) {
+            coordsBuffer.addRect(rect);
+            return;
+        }
+        int r = std::min(radius, std::min(rect.width() / 2, rect.height() / 2));
+        const Point center = rect.center();
+        const int segments = 16;
+        const float pi = std::acos(-1.f);
+        const float delta = (pi / 2.f) / segments;
+        std::vector<Point> points;
+        auto addArc = [&](const Point& c, float start) {
+            for (int i = 0; i <= segments; ++i) {
+                float a = start + i * delta;
+                int x = std::lround(c.x + r * std::cos(a));
+                int y = std::lround(c.y + r * std::sin(a));
+                points.emplace_back(x, y);
+            }
+        };
+        addArc(Point(rect.left() + r, rect.top() + r), pi);
+        addArc(Point(rect.right() - r, rect.top() + r), -pi / 2.f);
+        addArc(Point(rect.right() - r, rect.bottom() - r), 0.f);
+        addArc(Point(rect.left() + r, rect.bottom() - r), pi / 2.f);
+
+        for (size_t i = 0, n = points.size(); i < n; ++i)
+            coordsBuffer.addTriangle(center, points[i], points[(i + 1) % n]);
+    }
+
+    void buildRoundedRectRing(CoordsBuffer& coordsBuffer, const Rect& rect, int radius, int width) {
+        if (rect.isEmpty() || width <= 0)
+            return;
+        int r = std::min(radius, std::min(rect.width() / 2, rect.height() / 2));
+        width = std::min(width, r);
+        int innerRadius = r - width;
+        const int segments = 16;
+        const float pi = std::acos(-1.f);
+        const float delta = (pi / 2.f) / segments;
+
+        Rect inner(rect.left() + width, rect.top() + width,
+                   rect.width() - 2 * width, rect.height() - 2 * width);
+
+        auto addArcRing = [&](const Point& outerCenter, const Point& innerCenter, float start) {
+            for (int i = 0; i < segments; ++i) {
+                float a0 = start + i * delta;
+                float a1 = start + (i + 1) * delta;
+                Point p1Outer(std::lround(outerCenter.x + r * std::cos(a0)),
+                              std::lround(outerCenter.y + r * std::sin(a0)));
+                Point p2Outer(std::lround(outerCenter.x + r * std::cos(a1)),
+                              std::lround(outerCenter.y + r * std::sin(a1)));
+                Point p1Inner(std::lround(innerCenter.x + innerRadius * std::cos(a0)),
+                              std::lround(innerCenter.y + innerRadius * std::sin(a0)));
+                Point p2Inner(std::lround(innerCenter.x + innerRadius * std::cos(a1)),
+                              std::lround(innerCenter.y + innerRadius * std::sin(a1)));
+                coordsBuffer.addTriangle(p1Outer, p1Inner, p2Outer);
+                coordsBuffer.addTriangle(p2Outer, p1Inner, p2Inner);
+            }
+        };
+
+        if (rect.width() > 2 * r)
+            coordsBuffer.addRect(Rect(rect.left() + r, rect.top(), rect.width() - 2 * r, width));
+        if (rect.width() > 2 * r)
+            coordsBuffer.addRect(Rect(rect.left() + r, rect.bottom() - width + 1, rect.width() - 2 * r, width));
+        if (rect.height() > 2 * r)
+            coordsBuffer.addRect(Rect(rect.right() - width + 1, rect.top() + r, width, rect.height() - 2 * r));
+        if (rect.height() > 2 * r)
+            coordsBuffer.addRect(Rect(rect.left(), rect.top() + r, width, rect.height() - 2 * r));
+
+        addArcRing(Point(rect.left() + r, rect.top() + r),
+                   Point(inner.left() + innerRadius, inner.top() + innerRadius),
+                   pi);
+        addArcRing(Point(rect.right() - r, rect.top() + r),
+                   Point(inner.right() - innerRadius, inner.top() + innerRadius),
+                   -pi / 2.f);
+        addArcRing(Point(rect.right() - r, rect.bottom() - r),
+                   Point(inner.right() - innerRadius, inner.bottom() - innerRadius),
+                   0.f);
+        addArcRing(Point(rect.left() + r, rect.bottom() - r),
+                   Point(inner.left() + innerRadius, inner.bottom() - innerRadius),
+                   pi / 2.f);
+    }
+}
 
 void UIWidget::initBaseStyle()
 {
@@ -182,6 +270,8 @@ void UIWidget::parseBaseStyle(const OTMLNodePtr& styleNode)
             setBorderColorBottom(node->value<Color>());
         else if(node->tag() == "border-color-left")
             setBorderColorLeft(node->value<Color>());
+        else if(node->tag() == "border-radius")
+            setBorderRadius(node->value<int>());
         else if(node->tag() == "margin-top")
             setMarginTop(node->value<int>());
         else if(node->tag() == "margin-right")
@@ -346,12 +436,27 @@ void UIWidget::drawBackground(const Rect& screenCoords)
         drawRect.translate(m_backgroundRect.topLeft());
         if(m_backgroundRect.isValid())
             drawRect.resize(m_backgroundRect.size());
-        g_drawQueue->addFilledRect(drawRect, m_backgroundColor);
+        if(m_borderRadius > 0) {
+            CoordsBuffer buffer;
+            buildRoundedRect(buffer, drawRect, m_borderRadius);
+            g_drawQueue->addFillCoords(buffer, m_backgroundColor);
+        } else {
+            g_drawQueue->addFilledRect(drawRect, m_backgroundColor);
+        }
     }
 }
 
 void UIWidget::drawBorder(const Rect& screenCoords)
 {
+     if(m_borderRadius > 0) {
+        int width = m_borderWidth.top;
+        if(width > 0) {
+            CoordsBuffer buffer;
+            buildRoundedRectRing(buffer, screenCoords, m_borderRadius, width);
+            g_drawQueue->addFillCoords(buffer, m_borderColor.top);
+        }
+        return;
+    }
     // top
     if(m_borderWidth.top > 0) {
         Rect borderRect(screenCoords.topLeft(), screenCoords.width(), m_borderWidth.top);
