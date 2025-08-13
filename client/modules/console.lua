@@ -176,14 +176,21 @@ function init()
 
   g_keyboard.bindKeyPress('Shift+Up', function() navigateMessageHistory(1) end, consolePanel)
   g_keyboard.bindKeyPress('Shift+Down', function() navigateMessageHistory(-1) end, consolePanel)
-  g_keyboard.bindKeyPress('Tab', function() consoleTabBar:selectNextTab() end, consolePanel)
-  g_keyboard.bindKeyPress('Shift+Tab', function() consoleTabBar:selectPrevTab() end, consolePanel)
+  local function scrollTabsBy(direction)
+    local step = consoleTabBar:getWidth() * 0.5
+    consoleTabBar:scrollTabs(step * direction)
+  end
+  g_keyboard.bindKeyPress('Tab', function() scrollTabsBy(1) end, consolePanel)
+  g_keyboard.bindKeyPress('Shift+Tab', function() scrollTabsBy(-1) end, consolePanel)
   g_keyboard.bindKeyDown('Enter', sendCurrentMessage, consolePanel)
   g_keyboard.bindKeyPress('Ctrl+A', function() consoleTextEdit:clearText() end, consolePanel)
   g_keyboard.bindKeyDown('Ctrl+Shift+F', function() switchMode(not floatingMode) end, modules.game_interface.getRootPanel())
 
   -- apply buttom functions after loaded
-  consoleTabBar:setNavigation(consolePanel:getChildById('prevChannelButton'), consolePanel:getChildById('nextChannelButton'))
+  consoleTabBar.prevNavigation = consolePanel:getChildById('prevChannelButton')
+  consoleTabBar.nextNavigation = consolePanel:getChildById('nextChannelButton')
+  consoleTabBar.prevNavigation.onClick = function() scrollTabsBy(-1) end
+  consoleTabBar.nextNavigation.onClick = function() scrollTabsBy(1) end
   consoleTabBar.onTabChange = onTabChange
 
   -- tibia like hotkeys
