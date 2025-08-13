@@ -13,21 +13,6 @@ MoveableTabBarButton < UIButton
   anchors.left: parent.left
   padding: 5
 
-  UIImage
-    id: closeIcon
-    anchors.right: parent.right
-    anchors.verticalCenter: parent.verticalCenter
-    size: 12 12
-    visible: false
-    image-source: /images/ui/container/close_button
-    @onClick: tab.tabBar:removeTab(tab)
-
-  $hover:
-    closeIcon.visible: true
-
-  $!hover:
-    closeIcon.visible: false
-
   $hover !checked:
     background-color: #3f3e3eff
     border-color: white
@@ -39,8 +24,7 @@ MoveableTabBarButton < UIButton
     icon-color: #dfdfdf
 
   $checked:
-    background-color: #3f3e3eff
-    border-color: white
+    image-clip: 0 42 20 21
     color: #dfdfdf
 
   $on !checked:
