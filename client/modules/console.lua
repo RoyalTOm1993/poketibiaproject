@@ -182,12 +182,9 @@ function init()
   g_keyboard.bindKeyPress('Ctrl+A', function() consoleTextEdit:clearText() end, consolePanel)
   g_keyboard.bindKeyDown('Ctrl+Shift+F', function() switchMode(not floatingMode) end, modules.game_interface.getRootPanel())
 
-  -- apply button functions after loaded
-  local prevChannelButton = consolePanel:getChildById('prevChannelButton')
-  local nextChannelButton = consolePanel:getChildById('nextChannelButton')
-  consoleTabBar:setNavigation(prevChannelButton, nextChannelButton)
-  prevChannelButton.onClick = function() consoleTabBar:scroll(-consoleTabBar.scrollStep) end
-  nextChannelButton.onClick = function() consoleTabBar:scroll(consoleTabBar.scrollStep) end
+  -- apply buttom functions after loaded
+  consoleTabBar:setNavigation(consolePanel:getChildById('prevChannelButton'), consolePanel:getChildById('nextChannelButton'))
+  consoleTabBar.onTabChange = onTabChange
 
   -- tibia like hotkeys
   local gameRootPanel = modules.game_interface.getRootPanel()
@@ -645,8 +642,7 @@ function addText(text, speaktype, tabName, creatureName)
 end
 
 -- Contains letter width for font "verdana-11px-antialised" as console is based on it
-local letterWidth =  -- New line (10) and Space (32) have width 1 because they are printed and not replaced with spacer
-{
+local letterWidth = {  -- New line (10) and Space (32) have width 1 because they are printed and not replaced with spacer
   [10] = 1, [32] = 1, [33] = 3, [34] = 6, [35] = 8, [36] = 7, [37] = 13, [38] = 9, [39] = 3, [40] = 5, [41] = 5, [42] = 6, [43] = 8, [44] = 4, [45] = 5, [46] = 3, [47] = 8,
   [48] = 7, [49] = 6, [50] = 7, [51] = 7, [52] = 7, [53] = 7, [54] = 7, [55] = 7, [56] = 7, [57] = 7, [58] = 3, [59] = 4, [60] = 8, [61] = 8, [62] = 8, [63] = 6,
   [64] = 10, [65] = 9, [66] = 7, [67] = 7, [68] = 8, [69] = 7, [70] = 7, [71] = 8, [72] = 8, [73] = 5, [74] = 5, [75] = 7, [76] = 7, [77] = 9, [78] = 8, [79] = 8,
@@ -665,6 +661,19 @@ local letterWidth =  -- New line (10) and Space (32) have width 1 because they a
 
 -- Return information about start, end in the string and the highlighted words
 function getHighlightedText(text)
+  local tmpData = {}
+
+  repeat
+    local tmp = {string.find(text, "{([^}]+)}", tmpData[#tmpData-1])}
+    for _, v in pairs(tmp) do
+      table.insert(tmpData, v)
+    end
+  until not(string.find(text, "{([^}]+)}", tmpData[#tmpData-1]))
+
+  return tmpData
+end
+
+function getNewHighlightedText(text, color, highlightColor)
   local tmpData = {}
   
   for i, part in ipairs(text:split("{")) do
@@ -712,27 +721,27 @@ function addTabText(text, speaktype, tab, creatureName)
   end
   label:setId('consoleLabel' .. consoleBuffer:getChildCount())
   consoleTabBar:blinkTab(tab)
-
   local highlightData
+
   if speaktype.npcChat and (g_game.getCharacterName() ~= creatureName or g_game.getCharacterName() == 'Account Manager') then
     highlightData = getNewHighlightedText(text, speaktype.color, "#1f9ffe")
   end
 
   if showTimestamp then
     local coloredText = { timestampText, '#b6b6b6', ' ', '#b6b6b6' }
-    if highlightData and #highlightData > 0 then
+    if highlightData and #highlightData > 2 then
       for i = 1, #highlightData do
-        coloredText[#coloredText + 1] = highlightData[i]
+        table.insert(coloredText, highlightData[i])
       end
     else
-      coloredText[#coloredText + 1] = text
-      coloredText[#coloredText + 1] = speaktype.color
+      table.insert(coloredText, text)
+      table.insert(coloredText, speaktype.color)
     end
     label:setColoredText(coloredText)
   else
     label:setText(displayText)
     label:setColor(speaktype.color)
-    if highlightData and #highlightData > 0 then
+    if highlightData and #highlightData > 2 then
       label:setColoredText(highlightData)
     end
   end
@@ -828,18 +837,6 @@ function addTabText(text, speaktype, tab, creatureName)
     end
 
     return true
-  end
-end
-
-function refreshConsoleBuffer(tab)
-  if not tab then return end
-  local panel = consoleTabBar:getTabPanel(tab)
-  if not panel then return end
-  local consoleBuffer = panel:getChildById('consoleBuffer')
-  for _, label in pairs(consoleBuffer:getChildren()) do
-    if label.coloredText then
-      label:setColoredText(label.coloredText)
-    end
   end
 end
 
