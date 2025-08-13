@@ -124,6 +124,8 @@ function init()
   consoleTabBar = consolePanel:getChildById('consoleTabBar')
   topResizeBorder = consolePanel:getChildById('topResizeBorder')
   rightResizeBorder = consolePanel:getChildById('rightResizeBorder')
+  topResizeBorder.minimum = 122
+  rightResizeBorder.minimum = 448
   consoleTabBar:setContentWidget(consoleContentPanel)
   channels = {}
 
@@ -182,7 +184,6 @@ function init()
 
   -- apply buttom functions after loaded
   consoleTabBar:setNavigation(consolePanel:getChildById('prevChannelButton'), consolePanel:getChildById('nextChannelButton'))
-  consoleTabBar.onTabChange = onTabChange
 
   -- tibia like hotkeys
   local gameRootPanel = modules.game_interface.getRootPanel()
@@ -256,7 +257,7 @@ function enableChat(temporarily)
 
   modules.game_walking.disableWSAD()
 
-  consoleToggleChat:setTooltip(tr("Disable chat mode, allow to walk using ASDW"))
+  consoleToggleChat:setTooltip(tr("Disable chat mode, allow to walk using WASD."))
 end
 
 function disableChat(temporarily)
@@ -362,14 +363,6 @@ function load()
     end
   end
   loadCommunicationSettings()
-end
-
-function onTabChange(tabBar, tab)
-  if tab == defaultTab or tab == serverTab then
-    consolePanel:getChildById('closeChannelButton'):disable()
-  else
-    consolePanel:getChildById('closeChannelButton'):enable()
-  end
 end
 
 function clear()
@@ -697,8 +690,12 @@ end
 function addTabText(text, speaktype, tab, creatureName)
   if not tab or tab.locked or not text or #text == 0 then return end
 
-  if modules.client_options.getOption('showTimestampsInConsole') then
-    text = os.date('%H:%M') .. ' ' .. text
+  local showTimestamp = modules.client_options.getOption('showTimestampsInConsole')
+  local timestampText
+  local displayText = text
+  if showTimestamp then
+    timestampText = os.date('%H:%M')
+    displayText = timestampText .. ' ' .. text
   end
 
   local panel = consoleTabBar:getTabPanel(tab)
@@ -714,13 +711,28 @@ function addTabText(text, speaktype, tab, creatureName)
     label = g_ui.createWidget('ConsoleLabel', consoleBuffer)
   end
   label:setId('consoleLabel' .. consoleBuffer:getChildCount())
-  label:setText(text)
-  label:setColor(speaktype.color)
   consoleTabBar:blinkTab(tab)
+  local highlightData
 
   if speaktype.npcChat and (g_game.getCharacterName() ~= creatureName or g_game.getCharacterName() == 'Account Manager') then
-    local highlightData = getNewHighlightedText(text, speaktype.color, "#1f9ffe")
-    if #highlightData > 2 then
+    highlightData = getNewHighlightedText(text, speaktype.color, "#1f9ffe")
+  end
+
+  if showTimestamp then
+    local coloredText = { timestampText, '#b6b6b6', ' ', '#b6b6b6' }
+    if highlightData and #highlightData > 2 then
+      for i = 1, #highlightData do
+        table.insert(coloredText, highlightData[i])
+      end
+    else
+      table.insert(coloredText, text)
+      table.insert(coloredText, speaktype.color)
+    end
+    label:setColoredText(coloredText)
+  else
+    label:setText(displayText)
+    label:setColor(speaktype.color)
+    if highlightData and #highlightData > 2 then
       label:setColoredText(highlightData)
     end
   end
@@ -730,7 +742,7 @@ function addTabText(text, speaktype, tab, creatureName)
     processMessageMenu(mousePos, mouseButton, nil, nil, nil, tab)
   end
   label.onMouseRelease = function(self, mousePos, mouseButton)
-    processMessageMenu(mousePos, mouseButton, creatureName, text, self, tab)
+    processMessageMenu(mousePos, mouseButton, creatureName, displayText, self, tab)
   end
   label.onMousePress = function(self, mousePos, button)
     if button == MouseLeftButton then clearSelection(consoleBuffer) end
@@ -1656,4 +1668,3 @@ function hideAndShowChat(visible)
 
   end)
 end
-
