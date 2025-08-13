@@ -59,22 +59,23 @@ ConsoleTabBarButton < MoveableTabBarButton
   padding: 15
   background-color: #191919
   border-radius: 12
-  border: 1 black
+  border-width: 1
+  border-color: #232323
   clipping: true
   $hover:
     background-color: #3f3e3eff
-    border: 1 black
+    border-color: #232323
   $focus:
     background-color: #3f3e3eff
-    border: 1 white
+    border-color: #232323
   $checked:
     background-color: red
+    border-color: #232323
 
 ConsolePanel < Panel
-  border: 4 #333333
   background-color: #232323
+  border: 1 #232323
   border-radius: 12
-  border: 1 black
   draggable: true
   focusable: true
   minimum-size: 448 122
@@ -239,6 +240,7 @@ ConsolePanel < Panel
     anchors.right: parent.right
     height: 3
     enabled: false
+    background: #00000000
 
   ResizeBorder
     id: rightResizeBorder
@@ -247,6 +249,7 @@ ConsolePanel < Panel
     anchors.bottom: parent.bottom
     width: 3
     enabled: false
+    background: #00000000
     
 
 
