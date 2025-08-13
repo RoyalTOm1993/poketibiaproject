@@ -3,23 +3,54 @@ MoveableTabBar < UIMoveableTabBar
 MoveableTabBarPanel < Panel
 MoveableTabBarButton < UIButton
   size: 20 21
-  image-source: /images/ui/tabbutton_square
-  image-color: #dfdfdf
-  image-clip: 0 0 20 21
-  image-border: 3
-  image-border-bottom: 0
+  background-color: #191919
+  border-width: 1
+  border-color: white
+  border-radius: 4
   icon-color: #dfdfdf
   color: #dfdfdf
   anchors.top: parent.top
   anchors.left: parent.left
   padding: 5
+  
+  UIImage
+    id: closeIcon
+    anchors.right: parent.right
+    anchors.verticalCenter: parent.verticalCenter
+    size: 12 12
+    visible: false
+    image-source: /images/game/console/close_chat_icon
+    @onClick: tabBar:removeTab(tab)
+
+  $hover:
+    closeIcon.visible: true
+
+  $!hover:
+    closeIcon.visible: false
+
+  UIImage
+    id: closeIcon
+    anchors.right: parent.right
+    anchors.verticalCenter: parent.verticalCenter
+    size: 12 12
+    visible: false
+    image-source: /images/game/console/close_tab_placeholder
+    @onClick: tabBar:removeTab(tab)
+
+  $hover:
+    closeIcon.visible: true
+
+  $!hover:
+    closeIcon.visible: false
 
   $hover !checked:
-    image-clip: 0 21 20 21
+    background-color: #3f3e3eff
+    border-color: white
     color: #dfdfdf
 
   $disabled:
-    image-color: #dfdfdf88
+    background-color: #19191988
+    border-color: white
     icon-color: #dfdfdf
 
   $checked:
@@ -27,6 +58,8 @@ MoveableTabBarButton < UIButton
     color: #dfdfdf
 
   $on !checked:
+    background-color: #3f3e3eff
+    border-color: black
     color: #de6f6f
 
 TabBar < UITabBar
