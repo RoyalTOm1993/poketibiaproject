@@ -54,18 +54,19 @@ ConsoleTabBarPanel < MoveableTabBarPanel
 ConsoleTabBarButton < MoveableTabBarButton
   size: 22 23
   padding: 15
+  background-color: #232323
+  border-color: #333333
 
-  UIImage
-    id: closeIcon
-    anchors.right: parent.right
-    anchors.verticalCenter: parent.verticalCenter
-    size: 12 12
-    visible: false
-    image-source: /images/game/console/close_chat_icon
-    @onClick: tabBar:removeTab(tab)
-    
+  closeIcon:
+   image-source: /images/game/console/close_chat_icon
+
+  $hover !checked:
+    background-color: #3f3e3eff
+    border-color: #333333
+
   $checked:
-    background-color: red
+    background-color: #3f3e3eff
+    border-color: #333333
 
 ConsolePanel < Panel
   background-color: #232323
@@ -75,13 +76,13 @@ ConsolePanel < Panel
   draggable: true
   focusable: true
   minimum-size: 448 122
+  anchors.top: gameMap.bottom
   anchors.bottom: parent.bottom
-  anchors.top: gameMapPanel.bottom
 
   ChatIconButton
     id: prevChannelButton
     icon: /images/game/console/leftarrow
-    anchors.left: prev.left
+    anchors.left: parent.left
     anchors.top: parent.top
     margin-left: 8
     margin-top: 7
@@ -120,7 +121,7 @@ ConsolePanel < Panel
     id: clearChannelButton
     !tooltip: tr('Clear current message window')
     icon: /images/game/console/clearchannel
-    anchors.right: next.left
+    anchors.right: channelsButton.left
     anchors.top: parent.top
     margin-right: 5
     margin-top: 6
@@ -132,7 +133,7 @@ ConsolePanel < Panel
     id: channelsButton
     !tooltip: tr('Open new channel') .. ' (Ctrl+O)'
     icon: /images/game/console/channels
-    anchors.right: next.left
+    anchors.right: ignoreButton.left
     anchors.top: parent.top
     margin-right: 5
     margin-top: 6
@@ -142,7 +143,7 @@ ConsolePanel < Panel
     id: ignoreButton
     !tooltip: tr('Ignore players')
     icon: /images/game/console/ignore
-    anchors.right: next.left
+    anchors.right: chatButton.left
     anchors.top: parent.top
     margin-right: 5
     margin-top: 6
