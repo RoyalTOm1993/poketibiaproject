@@ -1,7 +1,6 @@
 UIMoveableTabBar = extends(UIWidget, "UIMoveableTabBar")
 
 local TAB_MAX_WIDTH = 150
-local TAB_MIN_WIDTH = 80
 
 local function clamp(v, min, max)
   return math.max(min, math.min(max, v))
@@ -17,36 +16,19 @@ local function updateMargins(tabBar)
 
   local currentMargin = -tabBar.scrollOffset
   for i = 1, #tabBar.tabs do
-    tabBar.tabs[i]:setMarginLeft(currentMargin)
-    currentMargin = currentMargin + tabBar.tabs[i]:getWidth() + tabBar.tabSpacing
+    local tab = tabBar.tabs[i]
+    if tab:isVisible() then
+      tab:setMarginLeft(currentMargin)
+      currentMargin = currentMargin + tab:getWidth() + tabBar.tabSpacing
+    end
   end
-end
 
 local function updateNavigation(tabBar)
   if tabBar.prevNavigation then
     if tabBar.scrollOffset > 0 then
       tabBar.prevNavigation:enable()
     else
-      tabBar.prevNavigation:disable()
-    end
-  end
-
-  if tabBar.nextNavigation then
-    if tabBar.scrollOffset < tabBar.maxScrollOffset then
-      tabBar.nextNavigation:enable()
-    else
-      tabBar.nextNavigation:disable()
-    end
-  end
-end
-
-local function updateIndexes(tabBar, tab, xoff)
-  local tabs = tabBar.tabs
-  local currentMargin = 0
-  local prevIndex = table.find(tabs, tab)
-  local newIndex = prevIndex
-  local xmid = xoff + tab:getWidth()/2 + tabBar.scrollOffset
-  for i = 1, #tabs do
+    local function updateIndexes(tabBar, tab, xoff)
     local nextTab = tabs[i]
     if xmid >= currentMargin + nextTab:getWidth()/2 then
       newIndex = table.find(tabs, nextTab)
@@ -63,42 +45,48 @@ end
 local function getMaxMargin(tabBar, tab)
   if #tabBar.tabs == 0 then return 0 end
 
-  local maxMargin = 0
+  local count = 0
   for i = 1, #tabBar.tabs do
-    if tabBar.tabs[i] ~= tab then
-      maxMargin = maxMargin + tabBar.tabs[i]:getWidth()
+    local t = tabBar.tabs[i]
+    if t ~= tab and t:isVisible() then
+      maxMargin = maxMargin + t:getWidth()
+      count = count + 1
     end
   end
-  return maxMargin + tabBar.tabSpacing * (#tabBar.tabs - 1)
+  return maxMargin + tabBar.tabSpacing * math.max(count - 1, 0)
 end
 
-local function updateLayout(tabBar)
-  if #tabBar.tabs == 0 then
-    updateNavigation(tabBar)
+function UIMoveableTabBar:updateTabs()
+  if #self.tabs == 0 then
+    updateNavigation(self)
     return
   end
 
-  local parentWidth = tabBar:getWidth()
-  local count = #tabBar.tabs
-  local availableWidth = parentWidth - (count - 1) * tabBar.tabSpacing
-  local tabWidth = clamp(math.floor(availableWidth / count), TAB_MIN_WIDTH, TAB_MAX_WIDTH)
+  local parentWidth = self:getWidth()
+  local count = #self.tabs
+  local availableWidth = parentWidth - (count - 1) * self.tabSpacing
+  local tabWidth = math.min(math.floor(availableWidth / count), TAB_MAX_WIDTH)
 
   for i = 1, count do
-    tabBar.tabs[i]:setWidth(tabWidth)
+    local tab = self.tabs[i]
+    tab:setWidth(tabWidth)
   end
 
-  tabBar.totalWidth = tabWidth * count + (count - 1) * tabBar.tabSpacing
-  tabBar.maxScrollOffset = math.max(0, tabBar.totalWidth - parentWidth)
-  tabBar.scrollStep = tabWidth + tabBar.tabSpacing
-  if tabBar.scrollOffset > tabBar.maxScrollOffset then
-    tabBar.scrollOffset = tabBar.maxScrollOffset
-  end
+  self.totalWidth = tabWidth * count + (count - 1) * self.tabSpacing
+  self.maxScrollOffset = 0
+  self.scrollOffset = 0
+  self.scrollStep = tabWidth + self.tabSpacing
 
-  updateMargins(tabBar)
-  updateNavigation(tabBar)
-  if not tabBar.currentTab and #tabBar.tabs > 0 then
-    tabBar:selectTab(tabBar.tabs[1])
+  updateMargins(self)
+  updateNavigation(self)
+  if not self.currentTab and #self.tabs > 0 then
+    self:selectTab(self.tabs[1])
   end
+end
+
+function UIMoveableTabBar:hideTabs()
+  -- tabs remain visible; recompute widths and rely on clipping to truncate
+  self:updateTabs()
 end
 
 local function onTabMousePress(tab, mousePos, mouseButton)
@@ -126,19 +114,7 @@ local function onTabDragMove(tab, mousePos, mouseMoved)
     local xoff = mousePos.x - tab.hotSpot
 
     -- update indexes
-    updateIndexes(tab.tabBar, tab, xoff)
-    updateIndexes(tab.tabBar, tab, xoff)
-
-    -- update margins
-    updateMargins(tab.tabBar)
-    xoff = math.max(xoff, -tab.tabBar.scrollOffset)
-    xoff = math.min(xoff, getMaxMargin(tab.tabBar, tab) - tab.tabBar.scrollOffset)
-    tab:setMarginLeft(xoff)
-  end
-end
-
 local function tabBlink(tab, step)
-  local step = step or 0
   tab:setOn(not tab:isOn())
 
   removeEvent(tab.blinkEvent)
@@ -164,7 +140,7 @@ function UIMoveableTabBar.create()
   tabbar.maxScrollOffset = 0
   tabbar.scrollStep = 0
   tabbar.onGeometryChange = function()
-                              updateLayout(tabbar)
+                              tabbar:updateTabs()
                             end
   return tabbar
 end
@@ -191,7 +167,7 @@ end
 
 function UIMoveableTabBar:setTabSpacing(tabSpacing)
   self.tabSpacing = tabSpacing
-  updateLayout(self)
+  self:updateTabs()
 end
 
 function UIMoveableTabBar:addTab(text, panel, menuCallback)
@@ -207,6 +183,7 @@ function UIMoveableTabBar:addTab(text, panel, menuCallback)
   tab:setId('tab')
   tab:setDraggable(self.tabsMoveable)
   tab:setText(text)
+  tab:setClipping(true)
   tab:setWidth(tab:getTextSize().width + tab:getPaddingLeft() + tab:getPaddingRight())
   tab.menuCallback = menuCallback or nil
   tab.onClick = onTabClick
@@ -221,7 +198,7 @@ function UIMoveableTabBar:addTab(text, panel, menuCallback)
     self:selectTab(tab)
   end
 
-  updateLayout(self)
+  self:updateTabs()
   return tab
 end
 
@@ -247,10 +224,6 @@ function UIMoveableTabBar:moveTab(tab, units)
 end
 
 function UIMoveableTabBar:onStyleApply(styleName, styleNode)
-  if styleNode['movable'] then
-    self.tabsMoveable = styleNode['movable']
-  end
-  if styleNode['tab-spacing'] then
     self:setTabSpacing(styleNode['tab-spacing'])
   end
 end
@@ -266,17 +239,23 @@ function UIMoveableTabBar:removeTab(tab)
   if not index then
     return
   end
+
+  local wasCurrent = (self.currentTab == tab)
   table.remove(self.tabs, index)
-  if self.currentTab == tab then
-    self:selectPrevTab()
-    if #self.tabs == 0 then
+  if wasCurrent then
+    if #self.tabs > 0 then
+      local newIndex = math.min(index, #self.tabs)
+      self:selectTab(self.tabs[newIndex])
+    else
       self.currentTab = nil
     end
   end
+
   if tab.blinkEvent then
     removeEvent(tab.blinkEvent)
+
   end
-  updateLayout(self)
+  self:updateTabs()
   tab:destroy()
 end
 
@@ -396,19 +375,15 @@ function UIMoveableTabBar:getCurrentTabPanel()
   end
 end
 
-function UIMoveableTabBar:getCurrentTab()
-  return self.currentTab
-end
-
 function UIMoveableTabBar:setNavigation(prevButton, nextButton)
   self.prevNavigation = prevButton
   self.nextNavigation = nextButton
 
   if self.prevNavigation then
-    self.prevNavigation.onClick = function() self:scroll(-self.scrollStep) end
+     self.prevNavigation.onClick = function() self:scroll(-self.scrollStep) end
   end
   if self.nextNavigation then
-    self.nextNavigation.onClick = function() self:scroll(self.scrollStep) end
+     self.nextNavigation.onClick = function() self:scroll(self.scrollStep) end
   end
   updateNavigation(self)
 end
