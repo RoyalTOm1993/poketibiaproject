@@ -6,7 +6,7 @@ MoveableTabBarButton < UIButton
   background-color: #191919
   border-width: 1
   border-color: white
-  border-radius: 4
+  border-radius: 12
   icon-color: #dfdfdf
   color: #dfdfdf
   anchors.top: parent.top
