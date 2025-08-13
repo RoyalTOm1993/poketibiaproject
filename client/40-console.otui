@@ -54,74 +54,81 @@ ConsoleTabBarPanel < MoveableTabBarPanel
 ConsoleTabBarButton < MoveableTabBarButton
   size: 22 23
   padding: 15
-  background-color: #232323
-  border-color: #333333
-
-  closeIcon:
-   image-source: /images/game/console/close_chat_icon
-
-  $hover !checked:
+  background-color: #191919
+  border-radius: 4
+  border: 1 black
+  $hover:
     background-color: #3f3e3eff
-    border-color: #333333
-
+    border: 1 black
+  $focus:
+    background-color: #3f3e3eff
+    border: 1 white
   $checked:
-    background-color: #3f3e3eff
-    border-color: #333333
+    background-color: red
 
 ConsolePanel < Panel
+  border: 4 #333333
   background-color: #232323
-  border-width: 1
-  border-color: #333333
   border-radius: 4
+  border: 1 black
   draggable: true
   focusable: true
   minimum-size: 448 122
-  anchors.top: gameMap.bottom
-  anchors.bottom: parent.bottom
+
+  ChatIconButton
+    id: chatButton
+    icon: /images/game/console/hide
+    anchors.left: parent.left
+    anchors.top: parent.top
+    margin: 7 0 0 8
+    !tooltip: tr('Hide Chat')
+    @onClick: hideAndShowChat(true)
+    $mobile:
+      visible: false
 
   ChatIconButton
     id: prevChannelButton
     icon: /images/game/console/leftarrow
-    anchors.left: parent.left
+    anchors.left: prev.right
     anchors.top: parent.top
-    margin-left: 8
+    margin-left: 3
     margin-top: 7
 
   ConsoleTabBar
     id: consoleTabBar
-    anchors.left: prevChannelButton.right
+    anchors.left: prev.right
     anchors.top: parent.top
-    anchors.right: nextChannelButton.left
+    anchors.right: next.left
     margin-left: 5
     margin-top: 7
     margin-right: 5
     tab-spacing: 2
     movable: true
 
-    Panel
-      id: tabBarFade
-      anchors.top: parent.top
-      anchors.bottom: parent.bottom
-      anchors.right: parent.right
-      width: 20
-      background: linear-gradient(to right, transparent, #232323)
-      focusable: false
-      phantom: true
-      visible: false
-
   ChatIconButton
     id: nextChannelButton
     icon: /images/game/console/rightarrow
-    anchors.right: channelsButton.left
+    anchors.right: next.left
     anchors.top: parent.top
     margin-right: 5
     margin-top: 6
 
   ChatIconButton
+    id: closeChannelButton
+    !tooltip: tr('Close this channel') .. ' (Ctrl+E)'
+    icon: /images/game/console/closechannel
+    anchors.right: next.left
+    anchors.top: parent.top
+    enabled: false
+    margin-right: 5
+    margin-top: 6
+    @onClick: removeCurrentTab()
+
+  ChatIconButton
     id: clearChannelButton
     !tooltip: tr('Clear current message window')
     icon: /images/game/console/clearchannel
-    anchors.right: channelsButton.left
+    anchors.right: next.left
     anchors.top: parent.top
     margin-right: 5
     margin-top: 6
@@ -133,7 +140,7 @@ ConsolePanel < Panel
     id: channelsButton
     !tooltip: tr('Open new channel') .. ' (Ctrl+O)'
     icon: /images/game/console/channels
-    anchors.right: ignoreButton.left
+    anchors.right: next.left
     anchors.top: parent.top
     margin-right: 5
     margin-top: 6
@@ -143,23 +150,11 @@ ConsolePanel < Panel
     id: ignoreButton
     !tooltip: tr('Ignore players')
     icon: /images/game/console/ignore
-    anchors.right: chatButton.left
-    anchors.top: parent.top
-    margin-right: 5
-    margin-top: 6
-    @onClick: onClickIgnoreButton()
-
-  ChatIconButton
-    id: chatButton
-    icon: /images/game/console/hide
     anchors.right: parent.right
     anchors.top: parent.top
     margin-right: 5
     margin-top: 6
-    !tooltip: tr('Hide Chat')
-    @onClick: hideAndShowChat(true)
-    $mobile:
-      visible: false
+    @onClick: onClickIgnoreButton()
 
   Panel
     id: consoleContentPanel
@@ -236,10 +231,6 @@ ConsolePanel < Panel
     anchors.right: parent.right
     height: 3
     enabled: false
-    background-color: #232323
-    border-width: 1
-    border-color: #333333
-    border-radius: 4
 
   ResizeBorder
     id: rightResizeBorder
@@ -248,7 +239,8 @@ ConsolePanel < Panel
     anchors.bottom: parent.bottom
     width: 3
     enabled: false
-    background-color: #232323
-    border-width: 1
-    border-color: #333333
-    border-radius: 4
+    
+
+
+
+
