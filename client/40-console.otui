@@ -54,12 +54,16 @@ ConsoleTabBarPanel < MoveableTabBarPanel
 ConsoleTabBarButton < MoveableTabBarButton
   size: 22 23
   padding: 15
-  $focus:
-    background-color: #3f3e3eff
-    border-color: white
-    closeIcon.visible: true
-  $!hover:
-    closeIcon.visible: false
+
+  UIImage
+    id: closeIcon
+    anchors.right: parent.right
+    anchors.verticalCenter: parent.verticalCenter
+    size: 12 12
+    visible: false
+    image-source: /images/game/console/close_chat_icon
+    @onClick: tabBar:removeTab(tab)
+    
   $checked:
     background-color: red
 
@@ -71,6 +75,8 @@ ConsolePanel < Panel
   draggable: true
   focusable: true
   minimum-size: 448 122
+  anchors.bottom: parent.bottom
+  anchors.top: gameMapPanel.bottom
 
   ChatIconButton
     id: prevChannelButton
@@ -82,9 +88,9 @@ ConsolePanel < Panel
 
   ConsoleTabBar
     id: consoleTabBar
-    anchors.left: prev.right
+    anchors.left: prevChannelButton.right
     anchors.top: parent.top
-    anchors.right: next.left
+    anchors.right: nextChannelButton.left
     margin-left: 5
     margin-top: 7
     margin-right: 5
@@ -105,7 +111,7 @@ ConsolePanel < Panel
   ChatIconButton
     id: nextChannelButton
     icon: /images/game/console/rightarrow
-    anchors.right: next.left
+    anchors.right: channelsButton.left
     anchors.top: parent.top
     margin-right: 5
     margin-top: 6
@@ -245,8 +251,3 @@ ConsolePanel < Panel
     border-width: 1
     border-color: #333333
     border-radius: 4
-    
-
-
-
-
