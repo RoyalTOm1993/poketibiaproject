@@ -1,35 +1,181 @@
+-- @docclass
 UIMoveableTabBar = extends(UIWidget, "UIMoveableTabBar")
 
 -- private functions
+local hideTabs
 local function onTabClick(tab)
   tab.tabBar:selectTab(tab)
 end
 
 local function updateMargins(tabBar)
-  local pos = -tabBar.scrollOffset
+  if #tabBar.tabs == 0 then return end
 
+  local currentMargin = 0
   for i = 1, #tabBar.tabs do
-    local tab = tabBar.tabs[i]
-    tab:setMarginLeft(pos)
-    pos = pos + tab:getWidth() + tabBar.tabSpacing
+    tabBar.tabs[i]:setMarginLeft(currentMargin)
+    currentMargin = currentMargin + tabBar.tabSpacing + tabBar.tabs[i]:getWidth()
   end
 end
 
 local function updateNavigation(tabBar)
   if tabBar.prevNavigation then
-    if tabBar.scrollOffset > 0 then
+    if #tabBar.preTabs > 0 or table.find(tabBar.tabs, tabBar.currentTab) ~= 1 then
       tabBar.prevNavigation:enable()
     else
-    tabBar.prevNavigation:disable()
+      tabBar.prevNavigation:disable()
     end
   end
+
   if tabBar.nextNavigation then
-    if tabBar.scrollOffset < tabBar.maxScrollOffset then
+    if #tabBar.postTabs > 0 or table.find(tabBar.tabs, tabBar.currentTab) ~= #tabBar.tabs then
       tabBar.nextNavigation:enable()
     else
       tabBar.nextNavigation:disable()
     end
   end
+end
+
+local function resetTabs(tabBar)
+  for i = 1, #tabBar.tabs do
+    local tab = tabBar.tabs[i]
+    local fullWidth = tab:getTextSize().width + tab:getPaddingLeft() + tab:getPaddingRight()
+    tab:setWidth(fullWidth)
+    tab:setClipping(false)
+  end
+end
+
+local function updateFade(tabBar)
+  local fade = tabBar:getChildById('tabBarFade')
+  if not fade then return end
+  local needsFade = (#tabBar.postTabs > 0) or (#tabBar.tabs > 0 and tabBar.tabs[#tabBar.tabs]:isClipping())
+  fade:setVisible(needsFade)
+end
+
+local function updateIndexes(tabBar, tab, xoff)
+  local tabs = tabBar.tabs
+  local currentMargin = 0
+  local prevIndex = table.find(tabs, tab)
+  local newIndex = prevIndex
+  local xmid = xoff + tab:getWidth()/2
+  for i = 1, #tabs do
+    local nextTab = tabs[i]
+    if xmid >= currentMargin + nextTab:getWidth()/2 then
+      newIndex = table.find(tabs, nextTab)
+    end
+    currentMargin = currentMargin + tabBar.tabSpacing * (i - 1) + tabBar.tabs[i]:getWidth()
+  end
+  if newIndex ~= prevIndex then
+    table.remove(tabs, table.find(tabs, tab))
+    table.insert(tabs, newIndex, tab)
+  end
+  updateNavigation(tabBar)
+end
+
+local function getMaxMargin(tabBar, tab)
+  if #tabBar.tabs == 0 then return 0 end
+
+  local maxMargin = 0
+  for i = 1, #tabBar.tabs do
+    if tabBar.tabs[i] ~= tab then
+      maxMargin = maxMargin + tabBar.tabs[i]:getWidth()
+    end
+  end
+  return maxMargin + tabBar.tabSpacing * (#tabBar.tabs - 1)
+end
+
+local function updateTabs(tabBar)
+  resetTabs(tabBar)
+  if #tabBar.postTabs > 0 then
+    local i = 1
+    while i <= #tabBar.postTabs do
+      local tab = tabBar.postTabs[i]
+      if getMaxMargin(tabBar) + tab:getWidth() > tabBar:getWidth() then
+        break
+      end
+
+      table.remove(tabBar.postTabs, i)
+      table.insert(tabBar.tabs, tab)
+      tab:setVisible(true)
+  end
+  end
+  if #tabBar.preTabs > 0 then
+    for i = #tabBar.preTabs, 1, -1 do
+      local tab = tabBar.preTabs[i]
+      if getMaxMargin(tabBar) + tab:getWidth() > tabBar:getWidth() then
+        break
+      end
+
+      table.remove(tabBar.preTabs, i)
+      table.insert(tabBar.tabs, 1, tab)
+      tab:setVisible(true)
+    end
+  end
+  updateNavigation(tabBar)
+  updateMargins(tabBar)
+  if not tabBar.currentTab and #tabBar.tabs > 0 then
+    tabBar:selectTab(tabBar.tabs[1])
+  end
+  hideTabs(tabBar, true, tabBar.postTabs, 0)
+  updateFade(tabBar)
+end
+
+hideTabs = function(tabBar, fromBack, toArray, width)
+
+  resetTabs(tabBar)
+  while #tabBar.tabs > 0 and getMaxMargin(tabBar) + width > tabBar:getWidth() do
+    local overflow = getMaxMargin(tabBar) + width - tabBar:getWidth()
+    local index = fromBack and #tabBar.tabs or 1
+    local tab = tabBar.tabs[index]
+    if overflow < tab:getWidth() then
+      tab:setWidth(tab:getWidth() - overflow)
+      tab:setClipping(true)
+      break
+    end
+    table.remove(tabBar.tabs, index)
+    if fromBack then
+      table.insert(toArray, 1, tab)
+    else
+      table.insert(toArray, tab)
+    end
+    if tabBar.currentTab == tab then
+      if #tabBar.tabs > 0 then
+        tabBar:selectTab(tabBar.tabs[#tabBar.tabs])
+      else
+        tabBar.currentTab:setChecked(false)
+        tabBar.currentTab = nil
+      end
+    end
+    tab:setVisible(false)
+  end
+end
+
+local function showPreTab(tabBar)
+  if #tabBar.preTabs == 0 then
+    return nil
+  end
+
+  local tmpTab = tabBar.preTabs[#tabBar.preTabs]
+  hideTabs(tabBar, true, tabBar.postTabs, tmpTab:getWidth())
+
+  table.remove(tabBar.preTabs, #tabBar.preTabs)
+  table.insert(tabBar.tabs, 1, tmpTab)
+  tmpTab:setVisible(true)
+  return tmpTab
+end
+
+local function showPostTab(tabBar)
+  if #tabBar.postTabs == 0 then
+    return nil
+  end
+
+  local tmpTab = tabBar.postTabs[1]
+  hideTabs(tabBar, false, tabBar.preTabs, tmpTab:getWidth())
+
+  table.remove(tabBar.postTabs, 1)
+  table.insert(tabBar.tabs, tmpTab)
+  tmpTab:setVisible(true)
+  return tmpTab
+end
 
 local function onTabMousePress(tab, mousePos, mouseButton)
   if mouseButton == MouseRightButton then
@@ -52,67 +198,31 @@ local function onTabDragLeave(tab)
 end
 
 local function onTabDragMove(tab, mousePos, mouseMoved)
-   if tab ~= tab.tabBar.selected then return true end
+  if tab == tab.tabBar.selected then
+    local xoff = mousePos.x - tab.hotSpot
 
-  local xoff = mousePos.x - tab.hotSpot
-  tab:setMarginLeft(xoff)
+    -- update indexes
+    updateIndexes(tab.tabBar, tab, xoff)
+    updateIndexes(tab.tabBar, tab, xoff)
 
-  local tabs = tab.tabBar.tabs
-  local prevIndex = table.find(tabs, tab)
-  local newIndex = prevIndex
-  local current = -tab.tabBar.scrollOffset
-
-  for i = 1, #tabs do
-    local nextTab = tabs[i]
-    if nextTab ~= tab then
-      local mid = xoff + tab:getWidth() / 2
-      if mid >= current + nextTab:getWidth() / 2 then
-        newIndex = i
-      end
-      current = current + nextTab:getWidth() + tab.tabBar.tabSpacing
-    end
+    -- update margins
+    updateMargins(tab.tabBar)
+    xoff = math.max(xoff, 0)
+    xoff = math.min(xoff, getMaxMargin(tab.tabBar, tab))
+    tab:setMarginLeft(xoff)
   end
-
-  if newIndex ~= prevIndex then
-    table.remove(tabs, prevIndex)
-    table.insert(tabs, newIndex, tab)
-  end
-
-  return true
 end
 
 local function tabBlink(tab, step)
+  local step = step or 0
   tab:setOn(not tab:isOn())
+
   removeEvent(tab.blinkEvent)
   if step < 4 then
-    tab.blinkEvent = scheduleEvent(function() tabBlink(tab, step + 1) end, 500)
+    tab.blinkEvent = scheduleEvent(function() tabBlink(tab, step+1) end, 500)
   else
     tab:setOn(true)
     tab.blinkEvent = nil
-  end
-end
-
-function UIMoveableTabBar:updateTabs()
-  if #self.tabs == 0 then
-    updateNavigation(self)
-    return
-  end
-
-  local totalWidth = 0
-  for i = 1, #self.tabs do
-    totalWidth = totalWidth + self.tabs[i]:getWidth()
-  end
-  totalWidth = totalWidth + (#self.tabs - 1) * self.tabSpacing
-
-  self.totalWidth = totalWidth
-  self.maxScrollOffset = math.max(0, totalWidth - self:getWidth())
-  self.scrollOffset = math.min(self.scrollOffset, self.maxScrollOffset)
-  self.scrollStep = (self.tabs[1] and (self.tabs[1]:getWidth() + self.tabSpacing) or 0)
-
-  updateMargins(self)
-  updateNavigation(self)
-  if not self.currentTab and #self.tabs > 0 then
-    self:selectTab(self.tabs[1])
   end
 end
 
@@ -124,13 +234,13 @@ function UIMoveableTabBar.create()
   tabbar.selected = nil  -- dragged tab
   tabbar.tabSpacing = 0
   tabbar.tabsMoveable = false
+  tabbar.preTabs = {}
+  tabbar.postTabs = {}
   tabbar.prevNavigation = nil
   tabbar.nextNavigation = nil
-  tabbar.scrollOffset = 0
-  tabbar.maxScrollOffset = 0
-  tabbar.scrollStep = 0
   tabbar.onGeometryChange = function()
-                              tabbar:updateTabs()
+                              hideTabs(tabbar, true, tabbar.postTabs, 0)
+                              updateTabs(tabbar)
                             end
   return tabbar
 end
@@ -157,7 +267,7 @@ end
 
 function UIMoveableTabBar:setTabSpacing(tabSpacing)
   self.tabSpacing = tabSpacing
-  self:updateTabs()
+  updateMargins(self)
 end
 
 function UIMoveableTabBar:addTab(text, panel, menuCallback)
@@ -173,7 +283,6 @@ function UIMoveableTabBar:addTab(text, panel, menuCallback)
   tab:setId('tab')
   tab:setDraggable(self.tabsMoveable)
   tab:setText(text)
-  tab:setClipping(true)
   tab:setWidth(tab:getTextSize().width + tab:getPaddingLeft() + tab:getPaddingRight())
   tab.menuCallback = menuCallback or nil
   tab.onClick = onTabClick
@@ -183,12 +292,27 @@ function UIMoveableTabBar:addTab(text, panel, menuCallback)
   tab.onDragMove = onTabDragMove
   tab.onDestroy = function() tab.tabPanel:destroy() end
 
+  if #self.tabs == 0 then
+    self:selectTab(tab)
+    tab:setMarginLeft(0)
+    table.insert(self.tabs, tab)
+  else
+    local newMargin = self.tabSpacing * #self.tabs
+    for i = 1, #self.tabs do
+      newMargin = newMargin + self.tabs[i]:getWidth()
+    end
+    tab:setMarginLeft(newMargin)
+
+    hideTabs(self, true, self.postTabs, tab:getWidth())
   table.insert(self.tabs, tab)
   if #self.tabs == 1 then
     self:selectTab(tab)
   end
+    updateMargins(self)
+  end
 
-  self:updateTabs()
+  updateNavigation(self)
+  updateFade(self)
   return tab
 end
 
@@ -209,11 +333,14 @@ function UIMoveableTabBar:moveTab(tab, units)
   table.insert(self.tabs, newIndex, tab)
   if focus then self:selectTab(tab) end
   updateMargins(self)
-  updateNavigation(self)
   return newIndex
 end
 
 function UIMoveableTabBar:onStyleApply(styleName, styleNode)
+  if styleNode['movable'] then
+    self.tabsMoveable = styleNode['movable']
+  end
+  if styleNode['tab-spacing'] then
     self:setTabSpacing(styleNode['tab-spacing'])
   end
 end
@@ -225,32 +352,46 @@ function UIMoveableTabBar:clearTabs()
 end
 
 function UIMoveableTabBar:removeTab(tab)
-  local index = table.find(self.tabs, tab)
-  if not index then
-    return
-  end
-
-  local wasCurrent = (self.currentTab == tab)
-  table.remove(self.tabs, index)
-  if wasCurrent then
-    if #self.tabs > 0 then
-      local newIndex = math.min(index, #self.tabs)
-      self:selectTab(self.tabs[newIndex])
-    else
-      self.currentTab = nil
+  local tabTables = {self.tabs, self.preTabs, self.postTabs}
+  local index = nil
+  local tabTable = nil
+  for i = 1, #tabTables do
+    index = table.find(tabTables[i], tab)
+    if index ~= nil then
+      tabTable = tabTables[i]
+      break
     end
   end
 
+  if tabTable == nil then
+    return
+  end
+  table.remove(tabTable, index)
+  if self.currentTab == tab then
+    self:selectPrevTab()
+    if #self.tabs == 1 then
+      self.currentTab = nil
+    end
+  end
   if tab.blinkEvent then
     removeEvent(tab.blinkEvent)
-
   end
-  self:updateTabs()
+  updateTabs(self)
   tab:destroy()
 end
 
 function UIMoveableTabBar:getTab(text)
-  for _, tab in pairs(self.tabs) do
+  for k,tab in pairs(self.tabs) do
+    if tab:getText():lower() == text:lower() then
+      return tab
+    end
+  end
+  for k,tab in pairs(self.preTabs) do
+    if tab:getText():lower() == text:lower() then
+      return tab
+    end
+  end
+  for k,tab in pairs(self.postTabs) do
     if tab:getText():lower() == text:lower() then
       return tab
     end
@@ -284,7 +425,6 @@ function UIMoveableTabBar:selectTab(tab)
 
   local parent = tab:getParent()
   parent:focusChild(tab, MouseFocusReason)
-  self:ensureVisible(tab)
   updateNavigation(self)
 end
 
@@ -300,12 +440,28 @@ function UIMoveableTabBar:selectNextTab()
 
   local newIndex = index + 1
   if newIndex > #self.tabs then
-    newIndex = 1
+    if #self.postTabs > 0 then
+      local widget = showPostTab(self)
+      self:selectTab(widget)
+    else
+      if #self.preTabs > 0 then
+        for i = 1, #self.preTabs do
+          showPreTab(self)
+        end
+      end
+
+      self:selectTab(self.tabs[1])
+    end
+    updateTabs(self)
+    return
   end
+
   local nextTab = self.tabs[newIndex]
-  if nextTab then
-    self:selectTab(nextTab)
+  if not nextTab then
+    return
   end
+
+  self:selectTab(nextTab)
 end
 
 function UIMoveableTabBar:selectPrevTab()
@@ -320,33 +476,28 @@ function UIMoveableTabBar:selectPrevTab()
 
   local newIndex = index - 1
   if newIndex <= 0 then
-    newIndex = #self.tabs
+    if #self.preTabs > 0 then
+      local widget = showPreTab(self)
+      self:selectTab(widget)
+    else
+      if #self.postTabs > 0 then
+        for i = 1, #self.postTabs do
+          showPostTab(self)
   end
+end
+
+      self:selectTab(self.tabs[#self.tabs])
+    end
+    updateTabs(self)
+    return
+  end
+
   local prevTab = self.tabs[newIndex]
-  if prevTab then
-    self:selectTab(prevTab)
+  if not prevTab then
+    return
   end
-end
 
-function UIMoveableTabBar:setScrollOffset(offset)
-  self.scrollOffset = math.max(0, math.min(offset, self.maxScrollOffset))
-  updateMargins(self)
-  updateNavigation(self)
-  signalcall(self.onScroll, self, self.scrollOffset)
-end
-
-function UIMoveableTabBar:scroll(delta)
-  self:setScrollOffset(self.scrollOffset + delta)
-end
-
-function UIMoveableTabBar:ensureVisible(tab)
-  local left = tab:getMarginLeft()
-  local right = left + tab:getWidth()
-  if left < 0 then
-    self:scroll(left)
-  elseif right > self:getWidth() then
-    self:scroll(right - self:getWidth())
-  end
+  self:selectTab(prevTab)
 end
 
 function UIMoveableTabBar:blinkTab(tab)
@@ -365,15 +516,19 @@ function UIMoveableTabBar:getCurrentTabPanel()
   end
 end
 
+function UIMoveableTabBar:getCurrentTab()
+  return self.currentTab
+end
+
 function UIMoveableTabBar:setNavigation(prevButton, nextButton)
   self.prevNavigation = prevButton
   self.nextNavigation = nextButton
 
   if self.prevNavigation then
-     self.prevNavigation.onClick = function() self:scroll(-self.scrollStep) end
+    self.prevNavigation.onClick = function() self:selectPrevTab() end
   end
   if self.nextNavigation then
-     self.nextNavigation.onClick = function() self:scroll(self.scrollStep) end
+    self.nextNavigation.onClick = function() self:selectNextTab() end
   end
   updateNavigation(self)
 end
