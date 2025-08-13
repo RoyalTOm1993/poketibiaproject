@@ -5,7 +5,7 @@ MoveableTabBarButton < UIButton
   size: 20 21
   background-color: #191919
   border-width: 1
-  border-color: white
+  border-color: #232323
   border-radius: 12
   icon-color: #dfdfdf
   color: #dfdfdf
@@ -15,12 +15,12 @@ MoveableTabBarButton < UIButton
 
   $hover !checked:
     background-color: #3f3e3eff
-    border-color: white
+    border-color: #232323
     color: #dfdfdf
 
   $disabled:
     background-color: #19191988
-    border-color: white
+    border-color: #232323
     icon-color: #dfdfdf
 
   $checked:
@@ -29,7 +29,7 @@ MoveableTabBarButton < UIButton
 
   $on !checked:
     background-color: #3f3e3eff
-    border-color: black
+    border-color: #232323
     color: #de6f6f
 
 TabBar < UITabBar
