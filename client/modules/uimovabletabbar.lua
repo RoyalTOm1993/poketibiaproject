@@ -240,6 +240,7 @@ function UIMoveableTabBar:clearTabs()
 end
 
 function UIMoveableTabBar:removeTab(tab)
+  if not tab then return end
   local index = table.find(self.tabs, tab)
   if not index then
     return
