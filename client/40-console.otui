@@ -135,34 +135,8 @@ ChatButton < ChatIconButton
   margin: 4 6 4 6
   padding: 1
   background-color: #232323
-  border: 1 #232323
-  border-radius: 12
-  clipping: true
-  focusable: false
-  phantom: true
-
-SayModeButton < ChatIconButton
-  icon: /images/game/console/say
-  !tooltip: tr('Adjust volume')
-  &sayMode: 2
-  size: 20 20
-  anchors.left: parent.left
-  anchors.bottom: parent.bottom
-  margin-left: 6
-  margin-bottom: 6
-  @onClick: sayModeChange()
-  visible: false
-
-ConsoleContentPanel < Panel
-  anchors.top: prev.bottom
-  anchors.left: parent.left
-  anchors.right: parent.right
-  anchors.bottom: consoleTextEdit.top
-  margin: 4 6 4 6
-  padding: 1
-  background-color: #232323
-  border: 1 #232323
-  border-radius: 12
+  image-source: /images/ui/console_panel
+  image-border: 12
   clipping: true
   focusable: false
   phantom: true
@@ -227,8 +201,8 @@ TopResizeBorder < ResizeBorder
   anchors.right: parent.right
   height: 3
   enabled: false
-  border: 1 #232323
-  border-radius: 12
+  image-source: /images/ui/console_panel
+  image-border: 12
   background-color: #00000000
 
 RightResizeBorder < ResizeBorder
@@ -237,7 +211,7 @@ RightResizeBorder < ResizeBorder
   anchors.bottom: parent.bottom
   width: 3
   enabled: false
-  border: 1 #232323
-  border-radius: 12
+  image-source: /images/ui/console_panel
+  image-border: 12
   background-color: #00000000
   
