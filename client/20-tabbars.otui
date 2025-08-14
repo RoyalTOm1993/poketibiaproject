@@ -67,6 +67,7 @@ TabBarRounded < TabBar
 TabBarRoundedPanel < TabBarPanel
 TabBarRoundedButton < TabBarButton
   image-source: /images/ui/tabbutton_rounded2
+  image-border: 30
   size: 22 23
   image-clip: 0 0 22 23
 
@@ -132,5 +133,3 @@ ConsoleTabBarButton < MoveableTabBarButton
     background-color: #3f3e3eff
   $focus:
     background-color: #3f3e3eff
-  $checked:
-    background-color: red
