@@ -63,7 +63,7 @@ ConsolePanel < Panel
   minimum-size: 448 122
   clipping: true
 
-  PrevChannelButton < ChatIconButton
+PrevChannelButton < ChatIconButton
   icon: /images/game/console/leftarrow
   anchors.left: parent.left
   anchors.top: parent.top
@@ -127,7 +127,7 @@ ChatButton < ChatIconButton
   $mobile:
     visible: false
 
-  ConsoleContentPanel < Panel
+ConsoleContentPanel < Panel
   anchors.top: prev.bottom
   anchors.left: parent.left
   anchors.right: parent.right
@@ -214,4 +214,3 @@ RightResizeBorder < ResizeBorder
   image-source: /images/ui/console_panel
   image-border: 12
   background-color: #00000000
-  
