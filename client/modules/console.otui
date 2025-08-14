@@ -1,9 +1,5 @@
-Panel
+ConsolePanel
   id: consolePanel
-  image-source: /images/ui/console_panel
-  image-border: 12
-  draggable: true
-  focusable: true
 
   PrevChannelButton
     id: prevChannelButton
