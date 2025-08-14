@@ -116,7 +116,8 @@ function init()
     onGameEnd = offline,
   })
 
-  g_ui.importStyle('communicationwindow.otui')
+  g_ui.importStyle('/20-tabbars.otui')
+  g_ui.importStyle('/40-console.otui')
 
   consolePanel = g_ui.loadUI('console', modules.game_interface.getBottomPanel())
   consoleTextEdit = consolePanel:getChildById('consoleTextEdit')
