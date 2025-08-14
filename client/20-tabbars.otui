@@ -36,8 +36,8 @@ TabBarPanel < Panel
 TabBarButton < UIButton
   size: 20 21
   background-color: #dfdfdf
-  border-color: #dfdfdf
-  border-radius: 12
+  image-source: /images/ui/tabbutton_rounded2
+  image-border: 30
   icon-color: #dfdfdf
   color: #dfdfdf
   anchors.top: parent.top
