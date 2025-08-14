@@ -1,5 +1,3 @@
-dofile('uimovabletabbar')
-
 SpeakTypesSettings = {
   none = {},
   say = { speakType = MessageModes.Say, color = '#FFFF00' },
@@ -190,7 +188,7 @@ function init()
   g_keyboard.bindKeyDown('Enter', sendCurrentMessage, consolePanel)
   g_keyboard.bindKeyPress('Ctrl+A', function() consoleTextEdit:clearText() end, consolePanel)
   g_keyboard.bindKeyDown('Ctrl+Shift+F', function() switchMode(not floatingMode) end, modules.game_interface.getRootPanel())
-
+  
   -- apply buttom functions after loaded
   consoleTabBar.prevNavigation = consolePanel:getChildById('prevChannelButton')
   consoleTabBar.nextNavigation = consolePanel:getChildById('nextChannelButton')
