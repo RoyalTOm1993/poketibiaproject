@@ -4,6 +4,6 @@ Module
   author: edubart, andrefaramir, baxnie, sn4ake, BeniS
   website: https://github.com/edubart/otclient
   sandboxed: true
-  scripts: [ console ]
+  scripts: [ uimovabletabbar, console ]
   @onLoad: init()
   @onUnload: terminate()
