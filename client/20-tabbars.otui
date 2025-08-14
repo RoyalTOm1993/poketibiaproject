@@ -3,7 +3,7 @@ MoveableTabBar < UIMoveableTabBar
 MoveableTabBarPanel < Panel
 MoveableTabBarButton < UIButton
   size: 20 21
-  background-color: #191919
+  background-color: #00000000
   image-source: /images/ui/tabbutton_rounded2
   image-border: 30
   icon-color: #dfdfdf
@@ -13,18 +13,18 @@ MoveableTabBarButton < UIButton
   padding: 5
 
   $hover !checked:
-    background-color: #3f3e3eff
+    background-color: #00000000
     color: #dfdfdf
 
   $disabled:
-    background-color: #19191988
+    background-color: #00000000
     icon-color: #dfdfdf
 
   $checked:
     color: #dfdfdf
 
   $on !checked:
-    background-color: #3f3e3eff
+    background-color: #00000000
     color: #de6f6f
 
 TabBar < UITabBar
@@ -35,7 +35,7 @@ TabBar < UITabBar
 TabBarPanel < Panel
 TabBarButton < UIButton
   size: 20 21
-  background-color: #dfdfdf
+  background-color: #00000000
   image-source: /images/ui/tabbutton_rounded2
   image-border: 30
   icon-color: #dfdfdf
@@ -54,7 +54,7 @@ TabBarButton < UIButton
     color: #dfdfdf
 
   $disabled:
-    background-color: #dfdfdf88
+    background-color: #00000000
     icon-color: #dfdfdf
 
   $checked:
@@ -130,6 +130,6 @@ ConsoleTabBarButton < MoveableTabBarButton
   padding: 15
   clipping: true
   $hover:
-    background-color: #3f3e3eff
+    background-color: #00000000
   $focus:
-    background-color: #3f3e3eff
+    background-color: #00000000
