@@ -28,3 +28,18 @@ Panel
 
   ChatButton
     id: chatButton
+
+  ConsoleContentPanel
+    id: consoleContentPanel
+
+  ConsoleTextEdit
+    id: consoleTextEdit
+
+  ToggleChat
+    id: toggleChat
+
+  TopResizeBorder
+    id: topResizeBorder
+
+  RightResizeBorder
+    id: rightResizeBorder
