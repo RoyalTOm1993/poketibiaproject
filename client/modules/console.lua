@@ -1,3 +1,5 @@
+dofile('uimovabletabbar')
+
 SpeakTypesSettings = {
   none = {},
   say = { speakType = MessageModes.Say, color = '#FFFF00' },
@@ -121,6 +123,7 @@ function init()
   g_ui.importStyle('/40-console.otui')
 
   consolePanel = g_ui.loadUI('console', modules.game_interface.getBottomPanel())
+  assert(consolePanel, 'Failed to load console.otui')
   consoleTextEdit = consolePanel:getChildById('consoleTextEdit')
   consoleContentPanel = consolePanel:getChildById('consoleContentPanel')
   consoleTabBar = consolePanel:getChildById('consoleTabBar')
