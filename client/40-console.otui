@@ -14,21 +14,17 @@ ConsoleLabel < UITextEdit
   selectable: false
   focusable: false
 
-ConsolePhantomLabel < UILabel
-  font: manrope-medium-11px
-  height: 14
-  color: yellow
-  text-wrap: true
-  text-auto-resize: true
-  selection-color: #111416
-  selection-background-color: #999999
-
 ConsoleTabBar < MoveableTabBar
   height: 28
+  background-color: #232323
+  border: 1 #232323
+  border-radius: 12
   clipping: true
 
 ConsoleTabBarPanel < MoveableTabBarPanel
   id: consoleTab
+  background-color: #232323
+  border: 1 #232323
   border-radius: 12
   clipping: true
 
@@ -40,9 +36,10 @@ ConsoleTabBarPanel < MoveableTabBarPanel
     layout:
       type: verticalBox
       align-bottom: true
-    background: #232323
+    background-color: #232323
     inverted-scroll: true
     padding: 1
+    border: 1 #232323
     border-radius: 12
     clipping: true
 
@@ -58,24 +55,21 @@ ConsoleTabBarButton < MoveableTabBarButton
   size: 22 23
   padding: 15
   background-color: #191919
-  border-radius: 12
-  border-width: 1
-  border-color: #232323
+  image-source: /images/ui/console_panel
+  image-border: 30
   clipping: true
   $hover:
     background-color: #3f3e3eff
-    border-color: #232323
   $focus:
     background-color: #3f3e3eff
-    border-color: #232323
   $checked:
     background-color: red
-    border-color: #232323
 
 ConsolePanel < Panel
+  id: consolePanel
   background-color: #232323
-  border: 1 #232323
-  border-radius: 12
+  image-source: /images/ui/console_panel
+  image-border: 30
   draggable: true
   focusable: true
   minimum-size: 448 122
@@ -171,6 +165,8 @@ ConsolePanel < Panel
     anchors.bottom: consoleTextEdit.top
     margin: 4 6 4 6
     padding: 1
+    background-color: #232323
+    border: 1 #232323
     border-radius: 12
     clipping: true
     focusable: false
@@ -240,7 +236,9 @@ ConsolePanel < Panel
     anchors.right: parent.right
     height: 3
     enabled: false
-    background: #00000000
+    border: 1 #232323
+    border-radius: 12
+    background-color: #00000000
 
   ResizeBorder
     id: rightResizeBorder
@@ -249,9 +247,6 @@ ConsolePanel < Panel
     anchors.bottom: parent.bottom
     width: 3
     enabled: false
-    background: #00000000
-    
-
-
-
-
+    border: 1 #232323
+    border-radius: 12
+    background-color: #00000000
