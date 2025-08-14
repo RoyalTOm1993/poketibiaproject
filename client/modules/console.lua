@@ -116,6 +116,7 @@ function init()
     onGameEnd = offline,
   })
 
+  g_ui.importStyle('/10-buttons.otui')
   g_ui.importStyle('/20-tabbars.otui')
   g_ui.importStyle('/40-console.otui')
 
