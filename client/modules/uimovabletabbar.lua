@@ -244,7 +244,7 @@ function UIMoveableTabBar:removeTab(tab)
   if not index then
     return
   end
-  table.remove(tabTable, index)
+  table.remove(self.tabs, index)
   if self.currentTab == tab then
     self:selectPrevTab()
     if #self.tabs == 0 then
