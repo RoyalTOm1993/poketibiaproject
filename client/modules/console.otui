@@ -1,6 +1,44 @@
 ConsolePanel
   id: consolePanel
-  phantom: false
-  size: 397 185
-  draggable: true
-  focusable: true
+
+  PrevChannelButton
+    id: prevChannelButton
+
+  ConsoleTabBar
+    id: consoleTabBar
+
+  NextChannelButton
+    id: nextChannelButton
+
+  CloseChannelButton
+    id: closeChannelButton
+
+  ClearChannelButton
+    id: clearChannelButton
+
+  ChannelsButton
+    id: channelsButton
+
+  IgnoreButton
+    id: ignoreButton
+
+  ChatButton
+    id: chatButton
+
+  ConsoleContentPanel
+    id: consoleContentPanel
+
+  SayModeButton
+    id: sayModeButton
+
+  ConsoleTextEdit
+    id: consoleTextEdit
+
+  ToggleChat
+    id: toggleChat
+
+  TopResizeBorder
+    id: topResizeBorder
+
+  RightResizeBorder
+    id: rightResizeBorder
