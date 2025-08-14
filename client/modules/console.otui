@@ -1,5 +1,9 @@
-ConsolePanel
+Panel
   id: consolePanel
+  image-source: /images/ui/console_panel
+  image-border: 12
+  draggable: true
+  focusable: true
 
   PrevChannelButton
     id: prevChannelButton
@@ -24,21 +28,3 @@ ConsolePanel
 
   ChatButton
     id: chatButton
-
-  ConsoleContentPanel
-    id: consoleContentPanel
-
-  SayModeButton
-    id: sayModeButton
-
-  ConsoleTextEdit
-    id: consoleTextEdit
-
-  ToggleChat
-    id: toggleChat
-
-  TopResizeBorder
-    id: topResizeBorder
-
-  RightResizeBorder
-    id: rightResizeBorder
