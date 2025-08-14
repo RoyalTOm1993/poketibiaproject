@@ -127,3 +127,19 @@ TabBarVerticalButton < UIButton
     color: #80c7f8
   $on !checked:
     color: #F55E5E
+    
+ConsoleTabBarButton < MoveableTabBarButton
+  size: 22 23
+  padding: 15
+  background-color: #191919
+  image-source: /images/ui/console_panel
+  image-border: 12
+  clipping: true
+  border-width: 0
+  border-radius: 0
+  $hover:
+    background-color: #3f3e3eff
+  $focus:
+    background-color: #3f3e3eff
+  $checked:
+    background-color: red
