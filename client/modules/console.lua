@@ -88,7 +88,6 @@ floatingPos = nil
 dragOffset = nil
 topResizeBorder = nil
 rightResizeBorder = nil
-skipNextToggle = false
 
 local communicationSettings = {
   useIgnoreList = true,
@@ -970,17 +969,7 @@ end
 
 function sendCurrentMessage()
   local message = consoleTextEdit:getText()
-  -- triggered by Enter key; toggles chat if message is empty to allow WASD movement
-  local message = consoleTextEdit:getText()
-  if #message == 0 then
-    if skipNextToggle then
-      skipNextToggle = false
-      return
-    end
-    -- pressing Enter with no text closes chat
-    consoleToggleChat:setChecked(not consoleToggleChat:isChecked())
-    return
-  end
+  if #message == 0 then return end
   if not isChatEnabled() then return end
   consoleTextEdit:clearText()
 
@@ -1698,4 +1687,3 @@ function hideAndShowChat(visible)
 
   end)
 end
-
