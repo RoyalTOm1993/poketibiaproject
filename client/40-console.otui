@@ -165,7 +165,6 @@ ConsoleTextEdit < TextEdit
   text-offset: 0 0
   shift-navigation: true
   max-length: 255
-  text-auto-submit: true
   !placeholder: tr('Write here...')
   image-source: /images/ui/text_edit1
   image-mode: stretch
