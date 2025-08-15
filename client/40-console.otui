@@ -154,33 +154,67 @@ SayModeButton < ChatIconButton
   visible: false
 
 ConsoleTextEdit < TextEdit
+  id: consoleTextEdit
   anchors.left: parent.left
   anchors.right: parent.right
   anchors.bottom: parent.bottom
-  margin: 0 12 12 12
-  padding-left: 26
+  margin: 0 8 7 8
+  size: 20 30
+  padding-left: 35
+  padding-top: 8
+  text-offset: 0 0
   shift-navigation: true
   max-length: 255
   text-auto-submit: true
   !placeholder: tr('Write here...')
-  background-color: #232323
-  border: 1 #474747
-  border-radius: 12
+  image-source: /images/ui/text_edit1
+  image-mode: stretch
   clipping: true
 
-  $focus:
-    background-color: #191919
+  @onHoverChange: |
+    local hasText = self:getText():len() > 0
+    if hasText then
+      self:setImageSource('/images/ui/text_edit_focus')
+    else
+      if self:isHovered() then
+        self:setImageSource('/images/ui/text_edit_hover')
+      else
+        self:setImageSource('/images/ui/text_edit1')
+      end
+    end
 
-  $hover:
-    background-color: #202020
+  @onFocusChange: |
+    local hasText = self:getText():len() > 0
+    if hasText then
+      self:setImageSource('/images/ui/text_edit_focus')
+    else
+      if self:isHovered() then
+        self:setImageSource('/images/ui/text_edit_hover')
+      else
+        self:setImageSource('/images/ui/text_edit1')
+      end
+    end
+
+  @onTextChange: |
+    local hasText = self:getText():len() > 0
+    if hasText then
+      self:setImageSource('/images/ui/text_edit_focus')
+    else
+      if self:isHovered() then
+        self:setImageSource('/images/ui/text_edit_hover')
+      else
+        self:setImageSource('/images/ui/text_edit1')
+      end
+    end
 
 ToggleChat < CheckBox
   size: 17 17
-  anchors.left: parent.left
-  anchors.bottom: parent.bottom
-  margin: 0 0 12 12
+  anchors.left: consoleTextEdit.left
+  anchors.top: consoleTextEdit.top
+  margin-left: 10
+  margin-top: 4
   !tooltip: tr('Disable chat mode, allow to walk using WASD.')
-  image-source: /images/ui/icons
+  image-source: /images/ui/icons2
   @onCheckChange: toggleChat()
 
   $!checked:
