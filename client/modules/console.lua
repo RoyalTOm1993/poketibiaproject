@@ -1108,6 +1108,10 @@ sendMessage = function(message, tab)
     local speakType = SpeakTypesSettings[speaktypedesc]
     channel = channel or 0
     g_game.talkChannel(speakType.speakType, channel, message)
+    if tab == defaultTab then
+      local composedText = applyMessagePrefixies(g_game.getCharacterName(), g_game.getLocalPlayer():getLevel(), message)
+      addText(composedText, speakType, name, g_game.getCharacterName())
+    end
     return
   else
     local isPrivateCommand = false
