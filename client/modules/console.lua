@@ -1108,12 +1108,9 @@ sendMessage = function(message, tab)
     local speakType = SpeakTypesSettings[speaktypedesc]
     local isLocal = channel == nil or channel == 0 or tab == defaultTab or tab == serverTab
     if isLocal then
-      g_game.talk(speakType.speakType, message)
-    else
-      g_game.talkChannel(speakType.speakType, channel, message)
+      channel = 0
     end
-    local player = g_game.getLocalPlayer()
-    onTalk(g_game.getCharacterName(), player and player:getLevel() or 0, speakType.speakType, message, isLocal and nil or channel)
+    g_game.talkChannel(speakType.speakType, channel, message)
     return
   else
     local isPrivateCommand = false
