@@ -88,7 +88,6 @@ floatingPos = nil
 dragOffset = nil
 topResizeBorder = nil
 rightResizeBorder = nil
-lastSentWasMessage = false
 
 local communicationSettings = {
   useIgnoreList = true,
@@ -99,6 +98,24 @@ local communicationSettings = {
   ignoredPlayers = {},
   whitelistedPlayers = {}
 }
+
+local function sendCurrentMessage()
+  local message = consoleTextEdit:getText()
+  if #message == 0 then
+    if lastSentWasMessage then
+      lastSentWasMessage = false
+      return
+    end
+    hideAndShowChat(true)
+    return
+  end
+  if not isChatEnabled() then return end
+  consoleTextEdit:clearText()
+
+  -- send message
+  sendMessage(message)
+  lastSentWasMessage = true
+end
 
 function init()
   connect(g_game, {
@@ -186,7 +203,7 @@ function init()
   end
   g_keyboard.bindKeyPress('Tab', function() scrollTabsBy(1) end, consolePanel)
   g_keyboard.bindKeyPress('Shift+Tab', function() scrollTabsBy(-1) end, consolePanel)
-  g_keyboard.bindKeyPress('Enter', sendCurrentMessage, consolePanel)
+  g_keyboard.bindKeyDown('Enter', sendCurrentMessage, consolePanel)
   g_keyboard.bindKeyPress('Ctrl+A', function() consoleTextEdit:clearText() end, consolePanel)
   g_keyboard.bindKeyDown('Ctrl+Shift+F', function() switchMode(not floatingMode) end, modules.game_interface.getRootPanel())
   
@@ -647,7 +664,11 @@ end
 
 function addText(text, speaktype, tabName, creatureName)
   local tab = getTab(tabName)
-  if tab ~= nil then
+  if not tab then
+    g_logger.warning(string.format("Console: tab '%s' not found, using current tab", tostring(tabName)))
+    tab = getCurrentTab()
+  end
+  if tab then
     addTabText(text, speaktype, tab, creatureName)
   end
 end
@@ -968,28 +989,10 @@ function processMessageMenu(mousePos, mouseButton, creatureName, text, label, ta
   end
 end
 
-function sendCurrentMessage()
-  if #message == 0 then
-    if lastSentWasMessage then
-      lastSentWasMessage = false
-      return
-    end
-    if isChatEnabled() then
-      consoleToggleChat:setChecked(true) -- chama toggleChat() via onCheckChange
-    else
-      consoleToggleChat:setChecked(false)
-    end
-    return
-  end
-  if not isChatEnabled() then return end
-  consoleTextEdit:clearText()
-
-  -- send message
-  sendMessage(message)
-  lastSentWasMessage = true
-end
-
 function addFilter(filter)
+  if type(filter) ~= 'function' then
+    return g_logger.error('console.addFilter expects a function')
+  end
   table.insert(filters, filter)
 end
 
@@ -1001,8 +1004,14 @@ function sendMessage(message, tab)
   local tab = tab or getCurrentTab()
   if not tab then return end
 
-  for k,func in pairs(filters) do
-    if func(message) then
+  for _, func in pairs(filters) do
+    local ok, blocked = pcall(func, message)
+    if not ok then
+      g_logger.error('error in console filter: ' .. blocked)
+    elseif blocked then
+      local info = debug.getinfo(func, 'S')
+      local source = info and info.short_src or 'unknown'
+      g_logger.debug(string.format('message "%s" blocked by filter (%s)', message, source))
       return true
     end
   end
@@ -1095,8 +1104,7 @@ function sendMessage(message, tab)
     end
 
     g_game.talkChannel(SpeakTypesSettings[speaktypedesc].speakType, channel, message)
-    addText(applyMessagePrefixies(g_game.getCharacterName(), g_game.getLocalPlayer():getLevel(), message), SpeakTypesSettings[speaktypedesc], name)
-
+    return
   else
     local isPrivateCommand = false
     local priv = true
