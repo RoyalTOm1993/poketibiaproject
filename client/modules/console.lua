@@ -88,6 +88,7 @@ floatingPos = nil
 dragOffset = nil
 topResizeBorder = nil
 rightResizeBorder = nil
+lastSentWasMessage = false
 
 local communicationSettings = {
   useIgnoreList = true,
@@ -969,6 +970,10 @@ end
 
 function sendCurrentMessage()
   if #message == 0 then
+    if lastSentWasMessage then
+      lastSentWasMessage = false
+      return
+    end
     if isChatEnabled() then
       consoleToggleChat:setChecked(true) -- chama toggleChat() via onCheckChange
     else
@@ -981,6 +986,7 @@ function sendCurrentMessage()
 
   -- send message
   sendMessage(message)
+  lastSentWasMessage = true
 end
 
 function addFilter(filter)
@@ -1089,6 +1095,7 @@ function sendMessage(message, tab)
     end
 
     g_game.talkChannel(SpeakTypesSettings[speaktypedesc].speakType, channel, message)
+    addText(applyMessagePrefixies(g_game.getCharacterName(), g_game.getLocalPlayer():getLevel(), message), SpeakTypesSettings[speaktypedesc], name)
     return
   else
     local isPrivateCommand = false
