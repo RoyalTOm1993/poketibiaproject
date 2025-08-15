@@ -1019,7 +1019,6 @@ sendMessage = function(message, tab)
   end
 
   -- when talking on server log, the message goes to default channel
-  
   local name = tab:getText()
   if tab == serverTab or tab == getRuleViolationsTab() then
     tab = defaultTab
@@ -1100,7 +1099,10 @@ sendMessage = function(message, tab)
   local speaktypedesc
   if (channel or tab == defaultTab or tab == serverTab) and not chatCommandPrivateReady then
     if tab == defaultTab or tab == serverTab then
-      speaktypedesc = chatCommandSayMode or SayModes[consolePanel:getChildById('sayModeButton').sayMode].speakTypeDesc
+            local _btn = consolePanel and consolePanel:getChildById('sayModeButton')
+      local _mode = (_btn and _btn.sayMode) or 2 -- fallback to 'say'
+      local _desc = (SayModes[_mode] and SayModes[_mode].speakTypeDesc) or 'say'
+      speaktypedesc = chatCommandSayMode or _desc
       if speaktypedesc ~= 'say' then sayModeChange(2) end -- head back to say mode
     else
       speaktypedesc = chatCommandSayMode or 'channelYellow'
@@ -1110,13 +1112,7 @@ sendMessage = function(message, tab)
     channel = channel or 0
     g_game.talkChannel(speakType.speakType, channel, message)
 
-    local composedText = applyMessagePrefixies(g_game.getCharacterName(), g_game.getLocalPlayer():getLevel(), message)
-    if originalTab == defaultTab or originalTab == serverTab then
-      addText(composedText, speakType, defaultTab:getText(), g_game.getCharacterName())
-      if originalTab == serverTab then
-        addText(composedText, speakType, serverTab:getText(), g_game.getCharacterName())
-      end
-    end
+
     return
   else
     local isPrivateCommand = false
@@ -1284,20 +1280,19 @@ function onTalk(name, level, mode, message, channelId, creaturePos)
     if modules.client_options.getOption('showPrivateMessagesOnScreen') and speaktype ~= SpeakTypesSettings.privateNpcToPlayer then
       modules.game_textmessage.displayPrivateMessage(name .. ':\n' .. message)
     end
+  else
+    local channel = tr('Default')
+    if not defaultMessage then
+      channel = channels[channelId]
+    end
+
+    if channel then
+      addText(composedMessage, speaktype, channel, name)
     else
-    if defaultMessage then
-      addTabText(composedMessage, speaktype, defaultTab, name)
-    else
-      -- Mensagens de canais (Help/Trade/etc) continuam por nome do canal aberto
-      local channel = channels[channelId]
-      if channel then
-        addText(composedMessage, speaktype, channel, name)
-      else
-        pwarning('message in channel id ' .. channelId .. ' which is unknown, this is a server bug, relogin if you want to see messages in this channel')
-      end
+      -- server sent a message on a channel that is not open
+      pwarning('message in channel id ' .. channelId .. ' which is unknown, this is a server bug, relogin if you want to see messages in this channel')
     end
   end
-
 end
 
 function onOpenChannel(channelId, channelName)
