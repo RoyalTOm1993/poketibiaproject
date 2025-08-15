@@ -1019,7 +1019,7 @@ sendMessage = function(message, tab)
   end
 
   -- when talking on server log, the message goes to default channel
-  local originalTab = tab
+  
   local name = tab:getText()
   if tab == serverTab or tab == getRuleViolationsTab() then
     tab = defaultTab
@@ -1111,9 +1111,11 @@ sendMessage = function(message, tab)
     g_game.talkChannel(speakType.speakType, channel, message)
 
     local composedText = applyMessagePrefixies(g_game.getCharacterName(), g_game.getLocalPlayer():getLevel(), message)
-    addText(composedText, speakType, defaultTab:getText(), g_game.getCharacterName())
-    if originalTab == serverTab then
-      addText(composedText, speakType, serverTab:getText(), g_game.getCharacterName())
+    if originalTab == defaultTab or originalTab == serverTab then
+      addText(composedText, speakType, defaultTab:getText(), g_game.getCharacterName())
+      if originalTab == serverTab then
+        addText(composedText, speakType, serverTab:getText(), g_game.getCharacterName())
+      end
     end
     return
   else
