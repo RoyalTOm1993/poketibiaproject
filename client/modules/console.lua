@@ -186,7 +186,7 @@ function init()
   end
   g_keyboard.bindKeyPress('Tab', function() scrollTabsBy(1) end, consolePanel)
   g_keyboard.bindKeyPress('Shift+Tab', function() scrollTabsBy(-1) end, consolePanel)
-  g_keyboard.bindKeyDown('Enter', sendCurrentMessage, consolePanel)
+  g_keyboard.bindKeyPress('Enter', sendCurrentMessage, consolePanel)
   g_keyboard.bindKeyPress('Ctrl+A', function() consoleTextEdit:clearText() end, consolePanel)
   g_keyboard.bindKeyDown('Ctrl+Shift+F', function() switchMode(not floatingMode) end, modules.game_interface.getRootPanel())
   
