@@ -969,10 +969,7 @@ end
 
 function sendCurrentMessage()
   local message = consoleTextEdit:getText()
-  if #message == 0 then
-    toggleChat()
-    return
-  end
+  if #message == 0 then return end
   if not isChatEnabled() then return end
   consoleTextEdit:clearText()
 
