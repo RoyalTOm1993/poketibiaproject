@@ -1020,7 +1020,7 @@ sendMessage = function(message, tab)
 
   -- when talking on server log, the message goes to default channel
   local name = tab:getText()
-  if tab == getRuleViolationsTab() then
+  if tab == serverTab or tab == getRuleViolationsTab() then
     tab = defaultTab
     name = defaultTab:getText()
   end
@@ -1106,10 +1106,7 @@ sendMessage = function(message, tab)
     end
 
     local speakType = SpeakTypesSettings[speaktypedesc]
-    local isLocal = channel == nil or channel == 0 or tab == defaultTab or tab == serverTab
-    if isLocal then
-      channel = 0
-    end
+    channel = channel or 0
     g_game.talkChannel(speakType.speakType, channel, message)
     return
   else
