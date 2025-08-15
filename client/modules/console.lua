@@ -1218,9 +1218,10 @@ function onTalk(name, level, mode, message, channelId, creaturePos)
   end
 
   local localPlayer = g_game.getLocalPlayer()
-  if name ~= g_game.getCharacterName()
-      and isUsingIgnoreList()
-        and not(isUsingWhiteList()) or (isUsingWhiteList() and not(isWhitelisted(name)) and not(isAllowingVIPs() and localPlayer:hasVip(name))) then
+  if name ~= g_game.getCharacterName() and (
+      (isUsingIgnoreList() and not isUsingWhiteList()) or
+      (isUsingWhiteList() and not isWhitelisted(name) and not (isAllowingVIPs() and localPlayer:hasVip(name)))
+    ) then
 
     if mode == MessageModes.Yell and isIgnoringYelling() then
       return
