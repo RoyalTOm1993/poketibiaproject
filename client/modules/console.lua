@@ -1105,7 +1105,14 @@ sendMessage = function(message, tab)
       speaktypedesc = chatCommandSayMode or 'channelYellow'
     end
 
-    g_game.talkChannel(SpeakTypesSettings[speaktypedesc].speakType, channel, message)
+    local speakType = SpeakTypesSettings[speaktypedesc]
+    if channel == nil then
+      g_game.talk(speakType.speakType, message)
+    else
+      g_game.talkChannel(speakType.speakType, channel, message)
+    end
+    local player = g_game.getLocalPlayer()
+    onTalk(g_game.getCharacterName(), player and player:getLevel() or 0, speakType.speakType, message, channel)
     return
   else
     local isPrivateCommand = false
