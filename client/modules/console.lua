@@ -1020,7 +1020,7 @@ sendMessage = function(message, tab)
 
   -- when talking on server log, the message goes to default channel
   local name = tab:getText()
-  if tab == serverTab or tab == getRuleViolationsTab() then
+  if tab == getRuleViolationsTab() then
     tab = defaultTab
     name = defaultTab:getText()
   end
@@ -1097,8 +1097,8 @@ sendMessage = function(message, tab)
   end
 
   local speaktypedesc
-  if (channel or tab == defaultTab) and not chatCommandPrivateReady then
-    if tab == defaultTab then
+  if (channel or tab == defaultTab or tab == serverTab) and not chatCommandPrivateReady then
+    if tab == defaultTab or tab == serverTab then
       speaktypedesc = chatCommandSayMode or SayModes[consolePanel:getChildById('sayModeButton').sayMode].speakTypeDesc
       if speaktypedesc ~= 'say' then sayModeChange(2) end -- head back to say mode
     else
@@ -1106,13 +1106,14 @@ sendMessage = function(message, tab)
     end
 
     local speakType = SpeakTypesSettings[speaktypedesc]
-    if channel == nil then
+    local isLocal = channel == nil or channel == 0 or tab == defaultTab or tab == serverTab
+    if isLocal then
       g_game.talk(speakType.speakType, message)
     else
       g_game.talkChannel(speakType.speakType, channel, message)
     end
     local player = g_game.getLocalPlayer()
-    onTalk(g_game.getCharacterName(), player and player:getLevel() or 0, speakType.speakType, message, channel)
+    onTalk(g_game.getCharacterName(), player and player:getLevel() or 0, speakType.speakType, message, isLocal and nil or channel)
     return
   else
     local isPrivateCommand = false
