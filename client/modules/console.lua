@@ -1096,7 +1096,7 @@ function sendMessage(message, tab)
 
     g_game.talkChannel(SpeakTypesSettings[speaktypedesc].speakType, channel, message)
     addText(applyMessagePrefixies(g_game.getCharacterName(), g_game.getLocalPlayer():getLevel(), message), SpeakTypesSettings[speaktypedesc], name)
-    return
+
   else
     local isPrivateCommand = false
     local priv = true
