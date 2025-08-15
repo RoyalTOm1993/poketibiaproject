@@ -968,9 +968,12 @@ function processMessageMenu(mousePos, mouseButton, creatureName, text, label, ta
 end
 
 function sendCurrentMessage()
-  local message = consoleTextEdit:getText()
   if #message == 0 then
-    consoleToggleChat:setChecked(true) -- chama toggleChat() via onCheckChange
+    if isChatEnabled() then
+      consoleToggleChat:setChecked(true) -- chama toggleChat() via onCheckChange
+    else
+      consoleToggleChat:setChecked(false)
+    end
     return
   end
   if not isChatEnabled() then return end
