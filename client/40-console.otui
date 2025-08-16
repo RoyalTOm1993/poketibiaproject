@@ -206,7 +206,6 @@ ConsoleTextEdit < TextEdit
     end
 
 ToggleChat < CheckBox
-  # Hidden by ChatGPT fix: keep widget alive but invisible
   visible: false
   enabled: false
   phantom: true
@@ -243,7 +242,6 @@ TopResizeBorder < ResizeBorder
   anchors.right: parent.right
   height: 3
   enabled: false
-  image-source: /images/ui/console_panel
   image-border: 12
   background-color: #00000000
 
@@ -253,6 +251,5 @@ RightResizeBorder < ResizeBorder
   anchors.bottom: parent.bottom
   width: 3
   enabled: false
-  image-source: /images/ui/console_panel
   image-border: 12
   background-color: #00000000
