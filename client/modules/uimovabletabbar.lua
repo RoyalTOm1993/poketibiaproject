@@ -7,7 +7,6 @@ local function onTabClick(tab)
 end
 
 local function updateMargins(tabBar)
-
   local currentMargin = 0
   for i = 1, #tabBar.tabs do
     local tab = tabBar.tabs[i]
@@ -142,7 +141,7 @@ function UIMoveableTabBar.create()
   tabbar.nextNavigation = nil
   tabbar.onGeometryChange = function(self, oldRect, newRect)
     if oldRect.width ~= newRect.width then
-      hideTabs(self, true, self.postTabs, 0)
+      -- removido: hideTabs(self, ...) pois não existe; basta atualizar tudo
       updateTabs(self)
     end
   end
