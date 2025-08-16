@@ -57,7 +57,7 @@ ConsoleTabBarPanel < MoveableTabBarPanel
 
 ConsolePanel < Panel
   image-source: /images/ui/console_panel
-  image-border: 12
+  image-border: 16
   draggable: true
   focusable: true
   minimum-size: 448 122
@@ -135,8 +135,6 @@ ConsoleContentPanel < Panel
   margin: 4 6 4 6
   padding: 1
   background-color: #232323
-  image-source: /images/ui/console_panel
-  image-border: 12
   clipping: true
   focusable: false
   phantom: true
@@ -212,29 +210,7 @@ ToggleChat < CheckBox
   width: 0
   height: 0
   opacity: 0
-  icon: ""
-  text: ""
-  tooltip: ""
-  size: 17 17
-  anchors.left: consoleTextEdit.left
-  anchors.top: consoleTextEdit.top
-  margin-left: 10
-  margin-top: 4
-  !tooltip: tr('Disable chat mode, allow to walk using WASD.')
-  image-source: /images/ui/icons2
   @onCheckChange: toggleChat()
-
-  $!checked:
-    image-clip: 16 0 17 17
-
-  $checked:
-    image-clip: 48 0 17 17
-
-  $hover !checked:
-    image-clip: 16 0 17 17
-
-  $hover checked:
-    image-clip: 48 0 17 17
 
 TopResizeBorder < ResizeBorder
   anchors.top: parent.top
@@ -242,7 +218,6 @@ TopResizeBorder < ResizeBorder
   anchors.right: parent.right
   height: 3
   enabled: false
-  image-border: 12
   background-color: #00000000
 
 RightResizeBorder < ResizeBorder
@@ -251,5 +226,4 @@ RightResizeBorder < ResizeBorder
   anchors.bottom: parent.bottom
   width: 3
   enabled: false
-  image-border: 12
   background-color: #00000000
