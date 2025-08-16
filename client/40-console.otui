@@ -160,14 +160,13 @@ ConsoleTextEdit < TextEdit
   anchors.bottom: parent.bottom
   margin: 0 8 7 8
   size: 20 30
-  padding-left: 35
+  padding-left: 14
   padding-top: 8
   text-offset: 0 0
   shift-navigation: true
   max-length: 255
   !placeholder: tr('Write here...')
   image-source: /images/ui/text_edit1
-  image-mode: stretch
   clipping: true
 
   @onHoverChange: |
@@ -207,6 +206,16 @@ ConsoleTextEdit < TextEdit
     end
 
 ToggleChat < CheckBox
+  # Hidden by ChatGPT fix: keep widget alive but invisible
+  visible: false
+  enabled: false
+  phantom: true
+  width: 0
+  height: 0
+  opacity: 0
+  icon: ""
+  text: ""
+  tooltip: ""
   size: 17 17
   anchors.left: consoleTextEdit.left
   anchors.top: consoleTextEdit.top
