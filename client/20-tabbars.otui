@@ -29,8 +29,6 @@ TabBar < UITabBar
     anchors.fill: parent
 TabBarPanel < Panel
 TabBarButton < UIButton
-  height: 30
-  image-source: /images/ui/tabbutton_rounded2
   icon-color: #dfdfdf
   color: #dfdfdf
   anchors.top: parent.top
@@ -58,8 +56,6 @@ TabBarButton < UIButton
 TabBarRounded < TabBar
 TabBarRoundedPanel < TabBarPanel
 TabBarRoundedButton < TabBarButton
-  image-source: /images/ui/tabbutton_rounded2
-  height: 22
 
 TabBarVertical < UITabBar
   width: 96
