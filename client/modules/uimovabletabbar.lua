@@ -186,7 +186,12 @@ function UIMoveableTabBar:addTab(text, panel, menuCallback)
   tab:setId('tab')
   tab:setDraggable(self.tabsMoveable)
   tab:setText(text)
-  tab:setWidth(tab:getTextSize().width + tab:getPaddingLeft() + tab:getPaddingRight())
+  addEvent(function()
+    if tab and not tab:isDestroyed() then
+      tab:setWidth(tab:getTextSize().width + tab:getPaddingLeft() + tab:getPaddingRight())
+      updateTabs(self)
+    end
+  end)
   tab.menuCallback = menuCallback or nil
   tab.onClick = onTabClick
   tab.onMousePress = onTabMousePress
