@@ -15,22 +15,17 @@ ConsoleLabel < UITextEdit
   focusable: false
 
 ConsoleTabBar < MoveableTabBar
-  height: 28
-  image-source: /images/ui/console_panel
-  image-border: 12
   clipping: true
   anchors.left: prev.right
   anchors.top: parent.top
   anchors.right: next.left
   margin-left: 5
-  margin-top: 7
+  margin-top: 5
   margin-right: 5
   tab-spacing: 2
   movable: true
 
 ConsoleTabBarPanel < MoveableTabBarPanel
-  image-source: /images/ui/console_panel
-  image-border: 12
   clipping: true
 
   ScrollablePanel
@@ -43,7 +38,6 @@ ConsoleTabBarPanel < MoveableTabBarPanel
       align-bottom: true
     inverted-scroll: true
     padding: 1
-    image-source: /images/ui/console_panel
     image-border: 12
     clipping: true
 
@@ -57,7 +51,7 @@ ConsoleTabBarPanel < MoveableTabBarPanel
 
 ConsolePanel < Panel
   image-source: /images/ui/console_panel
-  image-border: 16
+  image-border: 36
   draggable: true
   focusable: true
   minimum-size: 448 122
