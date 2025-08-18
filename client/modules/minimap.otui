@@ -2,7 +2,7 @@ MiniWindow
   id: minimapWindow
   !text: tr('Minimap')
   height: 150
-  icon: /images/topbuttons/miniwindowicon/minimap
+  icon: /images/topbuttons/minimap
   icon-rect: 4 4 20 16
   text-offset: 25 5
   @onClose: modules.game_minimap.onMiniWindowClose()

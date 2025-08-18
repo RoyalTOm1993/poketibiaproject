@@ -1,7 +1,7 @@
 ConsolePanel
   id: consolePanel
   phantom: false
-  size: 397 185
+  size: 400 200
   moveable: true
 
   PrevChannelButton

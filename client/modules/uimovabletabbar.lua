@@ -141,7 +141,7 @@ function UIMoveableTabBar.create()
   tabbar.nextNavigation = nil
   tabbar.onGeometryChange = function(self, oldRect, newRect)
     if oldRect.width ~= newRect.width then
-      -- removido: hideTabs(self, ...) pois n√£o existe; basta atualizar tudo
+      -- removido: hideTabs(self, ...) pois n„o existe; basta atualizar tudo
       updateTabs(self)
     end
   end

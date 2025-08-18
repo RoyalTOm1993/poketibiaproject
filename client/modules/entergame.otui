@@ -128,7 +128,7 @@ SpaceWindow
   Label
     id: rememberPasswordText
     !text: tr('Manter-se conectado')
-    font: sans-bold-16px-rounded
+    font: verdana-11px-rounded
     anchors.left: rememberPasswordBox.right
     anchors.top: rememberPasswordBox.top
     margin-top: 3
@@ -139,7 +139,7 @@ SpaceWindow
     draggable: false
     
   UIButton
-    font: sono_bold_border_32
+    font: manrope-bold-30px
     text-color: #000000
     size: 357 55
     image-source: images/buttonLogin
@@ -198,7 +198,7 @@ SpaceWindow
 
   Label
     id: serverInfoLabel
-    font: sono_bold_border_16
+    font: manrope-bold-16px
     anchors.top: prev.top
     anchors.left: parent.left
     margin-top: 5

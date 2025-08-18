@@ -1,5 +1,3 @@
--- console.lua (corrigido)
-
 SpeakTypesSettings = {
   none = {},
   say = { speakType = MessageModes.Say, color = '#FFFF00' },
@@ -126,18 +124,18 @@ local function settingsGetNumber(key, defaultValue)
 end
 
 -- =========================================================
---                HELPERS / NOVA MECÂNICA ENTER
+--                HELPERS / NOVA MEC�NICA ENTER
 -- =========================================================
 local function isBlank(s)
   return not s or s:match('^%s*$') ~= nil
 end
 
 -- Flag para impedir que o Enter global esconda o chat imediatamente
--- após o envio de mensagem (mesmo frame).
+-- ap�s o envio de mensagem (mesmo frame).
 local suppressGlobalEnter = false
 
 -- Detecta se existe OUTRO input focado (respeita Regra 4).
--- NÃO usa g_ui.getFocusedWidget (não existe nesse client).
+-- N�O usa g_ui.getFocusedWidget (n�o existe nesse client).
 local function isOtherTextInputFocused()
   if not rootWidget then return false end
   local w = rootWidget:getFocusedChild()
@@ -175,18 +173,18 @@ local function handleGlobalEnter()
     return
   end
 
-  -- chat visível
+  -- chat vis�vel
   if not consoleTextEdit then return end
   local txt = consoleTextEdit:getText()
 
-  -- Regra 1: se NÃO houver texto -> ocultar chat
+  -- Regra 1: se N�O houver texto -> ocultar chat
   if isBlank(txt) then
     hideAndShowChat(true)
     return
   end
 
-  -- Se houver texto, não fazemos nada aqui (não esconder!);
-  -- o envio continua sendo feito pela lógica já existente quando o campo está focado.
+  -- Se houver texto, n�o fazemos nada aqui (n�o esconder!);
+  -- o envio continua sendo feito pela l�gica j� existente quando o campo est� focado.
   return
 end
 -- =========================================================
@@ -246,6 +244,27 @@ function init()
   topResizeBorder.minimum = 122
   rightResizeBorder.minimum = 448
   consoleTabBar:setContentWidget(consoleContentPanel)
+  -- Remove the Ignore Players icon instance so the layout reflows
+  do
+    local ignoreBtn = nil
+    if consolePanel then
+      ignoreBtn = consolePanel:getChildById('ignoreButton')
+                  or consolePanel:getChildById('ignoredPlayersButton')
+                  or consolePanel:getChildById('ignoredButton')
+    end
+    if ignoreBtn then
+      ignoreBtn:destroy()
+    end
+  end
+
+  -- Remove the Close Channel icon instance so the layout reflows
+  do
+    local closeBtn = consolePanel and consolePanel:getChildById('closeChannelButton') or nil
+    if closeBtn then
+      closeBtn:destroy()
+    end
+  end
+
   channels = {}
 
   topResizeBorder.onMouseMove = function(self, mousePos, mouseMoved)
@@ -308,7 +327,6 @@ function init()
   -- tibia like hotkeys
   local gameRootPanel = modules.game_interface.getRootPanel()
   g_keyboard.bindKeyDown('Ctrl+O', g_game.requestChannels, gameRootPanel)
-  g_keyboard.bindKeyDown('Ctrl+E', removeCurrentTab, gameRootPanel)
   g_keyboard.bindKeyDown('Ctrl+H', openHelp, gameRootPanel)
 
   -- ENTER global (funciona em qualquer parte da tela)
@@ -364,7 +382,7 @@ function enableChat(temporarily)
   consoleTextEdit:clearText()
   consoleTextEdit:focus()
 
-  -- NÃO rebinda Enter aqui (para não conflitar com o handler global).
+  -- N�O rebinda Enter aqui (para n�o conflitar com o handler global).
   if temporarily then
     local quickFunc = function()
       if not g_game.isOnline() then return end
@@ -390,7 +408,7 @@ function disableChat(temporarily)
   consoleTextEdit:setVisible(false)
   consoleTextEdit:clearText()
 
-  -- NÃO rebinda Enter aqui (handler global já cuida de reexibir)
+  -- N�O rebinda Enter aqui (handler global j� cuida de reexibir)
   modules.game_walking.enableWSAD()
 
   consoleToggleChat:setTooltip(tr("Enable chat mode"))
@@ -422,7 +440,6 @@ function terminate()
 
   local gameRootPanel = modules.game_interface.getRootPanel()
   g_keyboard.unbindKeyDown('Ctrl+O', gameRootPanel)
-  g_keyboard.unbindKeyDown('Ctrl+E', gameRootPanel)
   g_keyboard.unbindKeyDown('Ctrl+H', gameRootPanel)
 
   saveCommunicationSettings()
@@ -474,13 +491,15 @@ function load()
 end
 
 function onTabChange(tabBar, tab)
+  -- Safe guard: close icon may not exist (icon removed from UI)
+  local btn = consolePanel and consolePanel:getChildById('closeChannelButton') or nil
+  if not btn then return end
   if tab == defaultTab or tab == serverTab then
-    consolePanel:getChildById('closeChannelButton'):disable()
+    btn:disable()
   else
-    consolePanel:getChildById('closeChannelButton'):enable()
+    btn:enable()
   end
 end
-
 function clear()
   -- save last open channels
   local lastChannelsOpen = g_settings.getNode('lastChannelsOpen') or {}
@@ -1750,7 +1769,7 @@ function online()
   end
   hideAndShowChat(false)
 
-  -- botões de navegação das tabs (prev/next)
+  -- bot�es de navega��o das tabs (prev/next)
   consoleTabBar:setNavigation(
     consolePanel:getChildById('prevChannelButton'),
     consolePanel:getChildById('nextChannelButton')
