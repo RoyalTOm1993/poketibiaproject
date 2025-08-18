@@ -1,64 +1,32 @@
 MoveableTabBar < UIMoveableTabBar
-  size: 80 21
+  size: 80 30
+
 MoveableTabBarPanel < Panel
+
 MoveableTabBarButton < UIButton
-  height: 23
+  size: 22 22
   image-source: /images/ui/tabbutton_rounded2
-  icon-color: #dfdfdf
+  image-border: 36
   color: #dfdfdf
   anchors.top: parent.top
   anchors.left: parent.left
   padding: 5
 
   $hover !checked:
-    color: #dfdfdf
+    image-source: /images/ui/tabbutton_rounded3
 
-  $disabled:
-    icon-color: #dfdfdf
+  $pressed !checked:
+    image-source: /images/ui/tabbutton_rounded4
 
   $checked:
-    color: #dfdfdf
+    image-source: /images/ui/tabbutton_rounded5
 
   $on !checked:
     color: #de6f6f
 
-TabBar < UITabBar
-  size: 80 21
-  Panel
-    id: buttonsPanel
-    anchors.fill: parent
-TabBarPanel < Panel
-TabBarButton < UIButton
-  icon-color: #dfdfdf
-  color: #dfdfdf
-  anchors.top: parent.top
-  padding: 5
-
-  $first:
-    anchors.left: parent.left
-
-  $!first:
-    anchors.left: prev.right
-    margin-left: 5
-
-  $hover !checked:
-    color: #dfdfdf
-
-  $disabled:
-    icon-color: #dfdfdf
-
-  $checked:
-    color: #dfdfdf
-
-  $on !checked:
-    color: #dfdfdf
-
-TabBarRounded < TabBar
-TabBarRoundedPanel < TabBarPanel
-TabBarRoundedButton < TabBarButton
-
 TabBarVertical < UITabBar
   width: 96
+  
   ScrollableFlatPanel
     id: buttonsPanel
     anchors.top: parent.top
@@ -78,33 +46,24 @@ TabBarVertical < UITabBar
     pixels-scroll: true
     $!on:
       width: 0
+
 TabBarVerticalPanel < Panel
 TabBarVerticalButton < UIButton
   size: 48 48
-  color: #aaaaaa
   anchors.left: parent.left
   anchors.right: parent.right
   text-align: bottom
   icon-align: top
   icon-offset-y: 2
-  icon-color: #156c93
   $first:
     anchors.top: parent.top
   $!first:
     anchors.top: prev.bottom
     margin-top: 10
-  $hover !checked:
-    color: white
-    icon-color: #dfdfdf
-  $disabled:
-    icon-color: #333333
-  $checked:
-    icon-color: #ffffff
-    color: #80c7f8
   $on !checked:
-    color: #F55E5E
-    
+    color: #de6f6f
+
 ConsoleTabBarButton < MoveableTabBarButton
-  padding-left: 15
-  padding-right: 15
+  size: 22 22
+  padding: 15
   clipping: true

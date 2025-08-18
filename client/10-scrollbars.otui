@@ -2,10 +2,11 @@ ScrollBarSlider < UIButton
   id: sliderButton
   anchors.centerIn: parent
   size: 12 14
-  image-source: /images/ui/scrollbar
-  image-clip: 0 26 12 14
+  image-source: /images/ui/scrollbar_button
   image-border: 5
-  image-color: #ffffffff
+
+  $hover !checked:
+    image-source: /images/ui/scrollbar_button_hover
 
 NewScrollBarSlider < UIButton
   id: sliderButton
@@ -76,26 +77,21 @@ VerticalScrollBar < UIScrollBar
   orientation: vertical
   width: 13
   height: 40
-  image-source: /images/ui/scrollbar
-  image-clip: 40 0 11 63
-  image-border: 7
   pixels-scroll: true
 
   UIButton
     id: decrementButton
-    visible: true
+    visible: false
     anchors.top: parent.top
     anchors.left: parent.left
     image-source: /images/ui/upScrollBarButton
     image-color: #ffffffff
-    size: 13 13
 
   UIButton
     id: incrementButton
-    visible: true
+    visible: false
     anchors.bottom: parent.bottom
     anchors.right: parent.right
-    size: 13 13
     
     image-source: /images/ui/downScrollBarButton
     image-color: #ffffffff
