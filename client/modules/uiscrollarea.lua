@@ -72,8 +72,13 @@ function UIScrollArea:updateScrollBars()
 end
 
 function UIScrollArea:setVerticalScrollBar(scrollbar)
-  if scrollbar then
-    self.verticalScrollBar = scrollbar
+  if self.verticalScrollBar then
+    disconnect(self.verticalScrollBar, 'onValueChange')
+  end
+
+  self.verticalScrollBar = scrollbar
+
+  if self.verticalScrollBar then
     connect(self.verticalScrollBar, 'onValueChange', function(scrollbar, value)
       local virtualOffset = self:getVirtualOffset()
       virtualOffset.y = value
@@ -81,14 +86,17 @@ function UIScrollArea:setVerticalScrollBar(scrollbar)
       signalcall(self.onScrollChange, self, virtualOffset)
     end)
     self:updateScrollBars()
-  else
-    g_logger.warning('UIScrollArea:setVerticalScrollBar called with nil scrollbar')
   end
 end
 
 function UIScrollArea:setHorizontalScrollBar(scrollbar)
-  if scrollbar then
-    self.horizontalScrollBar = scrollbar
+  if self.horizontalScrollBar then
+    disconnect(self.horizontalScrollBar, 'onValueChange')
+  end
+
+  self.horizontalScrollBar = scrollbar
+
+  if self.horizontalScrollBar then
     connect(self.horizontalScrollBar, 'onValueChange', function(scrollbar, value)
       local virtualOffset = self:getVirtualOffset()
       virtualOffset.x = value
@@ -96,8 +104,6 @@ function UIScrollArea:setHorizontalScrollBar(scrollbar)
       signalcall(self.onScrollChange, self, virtualOffset)
     end)
     self:updateScrollBars()
-  else
-    g_logger.warning('UIScrollArea:setHorizontalScrollBar called with nil scrollbar')
   end
 end
 
