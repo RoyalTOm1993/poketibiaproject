@@ -1,122 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <actions>
 
-
         <!-- Passe -->
-	<!-- <action itemid="0" script="passe/CaixaPasseJujutusu2.lua" allowfaruse="1" /> -->
 	<action itemid="5797" script="passe/CaixaPasseJujutusu.lua" allowfaruse="1" />
-
 
         <!-- Pesca -->
 	<action itemid="2580" script="pesca/fishing.lua" allowfaruse="1" /> 
 
-
-	<!-- <action itemid="0" script="caixa das almas.lua" />
-	<action itemid="0" script="Reset Ticket.lua" />
-
-	<action actionid="0" script="YiGiOh.lua" />
-	<action actionid="0" script="Mewtwo Spaawn.lua" />
-	<action actionid="0" script="torneioPorta.lua" />
-	<action itemid="0" script="torneioBau.lua" />
-	
-	
-	<action itemid="0" script="fusaoSystem.lua" />
-
-	<action itemid="0" script="test/conditionHelper.lua" />
-	
-
-  	<action itemid="0" script="profissao/coletor.lua"/> -->
-
         <!-- ELIXIRS -->
-  	<!-- <action itemid="0" script="elixir/atk.lua" allowfaruse="1"/> -->
-        <!-- ELIXIRS -->
-	<!-- <action itemid="0" script="itens/changeSmall.lua"/> -->
 	<action itemid="13134" script="itens/PasseSpace.lua"/>
         
-
-	<!-- PACKS -->
-		<!-- <action itemid="0" script="packs/packs.lua" />
-		<action itemid="0" script="packs/packs.lua" />
-		<action itemid="0" script="packs/packs.lua" />
-		<action itemid="0" script="packs/packs.lua" />
-		<action itemid="0" script="packs/packs.lua" /> -->
 	<!-- PACKS -->
   
       <!-- Entrada -->
 	<action itemid="22124" script="itembidu.lua"/> <!-- BIKE -->
-	<!-- <action itemid="0" script="BagEvent.lua"/>
-	<action itemid="0" script="entrada/Foguete.lua"/>
-	<action actionid="0" script="entrada/TpHoopa.lua"/>
-	<action actionid="0" script="TpCeru.lua"/>
-	<action actionid="0" script="reset.lua"/>
-	<action actionid="0" script="entrada/MegaCandy.lua"/>
-	<action actionid="0" script="entrada/MegaCandy2.lua"/>
-	<action actionid="0" script="entrada/MegaCandy3.lua"/>
-	<action actionid="0" script="entrada/BlackQuestEntrada.lua"/>
-	<action actionid="0" script="entrada/BlackQuestFake.lua"/>
-	<action actionid="0" script="entrada/BlackQuestOn.lua"/>
-	<action actionid="0" script="entrada/EntradaZoroark.lua"/>
-	<action actionid="0" script="entrada/EntradaGalactic.lua"/>
-	<action actionid="0" script="entrada/EntradaArceus.lua"/>
-	<action actionid="0" script="entrada/PortaPerfect.lua"/> -->
 	<!-- <action actionid="7716" script="entrada/entradapheromosa.lua"/> -->
 	<!-- <action actionid="7717" script="entrada/entradapheromosa2.lua"/> -->
 	<!-- <action actionid="0" script="entrada/TeleportKyurem.lua"/>
-	<action actionid="0" script="entrada/Megaalavanca.lua"/>
-	<action actionid="0" script="entrada/EntradaMarsh.lua"/>
-	<action actionid="0" script="entrada/Mega Boss.lua"/>
-	<action actionid="0" script="entrada/NatalQuesttp.lua"/>
-	<action actionid="0" script="entrada/NecroEntrada1.lua"/>
-	<action actionid="0" script="entrada/NecroEntrada2.lua"/>
-	<action actionid="0" script="entrada/tpmech.lua"/>
-	<action itemid="0" script="entrada/tpmech2.lua"/>
-	<action actionid="0" script="entrada/TpMeltan.lua"/>
-	<action actionid="0" script="entrada/TpFusion.lua"/> -->
 
       <!-- Outfits -->
-	<!-- <action actionid="0" script="outfit/BoxFit.lua"/> -->
 	<!-- <action itemid="5797" script="itens/dice.lua"/> -->
 	<action itemid="39098" script="itens/firstpoke.lua"/>
-	<!-- <action actionid="0" script="outfit/BoxFit2.lua"/>
-	<action actionid="0" script="outfit/BoxFit3.lua"/>
-	<action actionid="0" script="outfit/BoxFit4.lua"/>
-	<action actionid="0" script="outfit/BoxFit5.lua"/>
-	<action actionid="0" script="outfit/BoxFit6.lua"/>
-	<action actionid="0" script="outfit/BoxFit7.lua"/> -->
-
 
 	<!-- Towers -->
-	<!-- <action actionid="0" script="tower/tower.lua"/>
-	<action actionid="0" script="tower/tower2.lua"/>
-	<action actionid="0" script="tower/tower3.lua"/>
-	<action actionid="0" script="tower/tower4.lua"/>
-	<action actionid="0" script="tower/tower5.lua"/>
-	<action actionid="0" script="tower/tower6.lua"/>
-	<action actionid="0" script="tower/tower7.lua"/>
-	<action actionid="0" script="tower/tower8.lua"/>
-	<action actionid="0" script="tower/tower9.lua"/>
-	<action actionid="0" script="tower/tower10.lua"/>
-	<action actionid="0" script="tower/tower11.lua"/>
-	<action actionid="0" script="tower/tower12.lua"/>
-	<action actionid="0" script="tower/tower13.lua"/>
-	<action actionid="0" script="tower/tower14.lua"/>
-	<action actionid="0" script="tower/tower15.lua"/>
-	<action actionid="0" script="tower/bautower.lua"/>
-	<action actionid="0" script="tower/Bosses.lua"/>
-	<action actionid="0" script="tower/Bosses2.lua"/>
-	<action actionid="0" script="tower/Bosses3.lua"/>
-	<action actionid="0" script="tower/Bosses4.lua"/>
-	<action actionid="0" script="tower/BauTowerReset.lua"/> -->
+
 	<!--Fim -->
 
 	<!-- Card -->
-	<!-- <action itemid="0" script="itens/cardsystem.lua"/>
-	<action itemid="0" script="itens/cardsystem.lua"/>
-	<action itemid="0" script="itens/BauDoTessouro.lua"/> -->
 	<!-- <action itemid="2145" script="itens/Diamond.lua"/> -->
-	<!-- <action itemid="0" script="itens/MegaResetBox.lua"/>
-	<action itemid="0" script="itens/rayquazaBox.lua"/>
-	<action itemid="0" script="itens/hooxrayBox.lua"/> -->
 
 	<!-- Quests -->
 	<!-- <action actionid="2000" script="quests/B5.lua" /> -->
@@ -231,50 +142,12 @@
 	<!-- <action actionid="19194" script="quests/MegaCandyPremio2.lua"/> -->
 	<!-- <action actionid="19195" script="quests/MegaCandyPremio3.lua"/> -->
 	<!-- <action actionid="9838" script="quests/HoopaQuest.lua"/> -->
+
 	<!-- Itens -->
-	<!-- <action fromid="0" toid="0" script="itens/Box.lua"/>
-	<action fromid="0" toid="0" script="itens/ExpItems.lua"/>
-	<action fromid="0" toid="0" script="itens/ExpItems.lua"/>
-	<action itemid="0" script="itens/BoxReset.lua"/>
-	<action itemid="0" script="itens/ExpItems.lua"/>
-	<action itemid="0" script="itens/BikeBox.lua"/>
-	<action itemid="0" script="itens/ovokarp.lua"/>
-	<action itemid="0" script="itens/BikeBox.lua"/>
-	<action itemid="0" script="itens/ExpItems.lua"/>
-	<action itemid="0" script="itens/ExpItems.lua"/>
-	<action itemid="0" script="itens/ExpItems.lua"/>
-	<action fromid="0" toid="0" script="itens/ExpItems.lua"/>
-	<action itemid="0" script="itens/Rare Candys.lua"/>
-	<action itemid="0" script="itens/Mega Candys.lua"/>
-	<action itemid="0" script="itens/HeldBox2.lua"/>
-	<action itemid="0" script="itens/HeldBoxT12.lua"/>
-	<action fromid="0" toid="0" script="itens/Boost Stone.lua"/>
-	<action itemid="0" script="itens/Boost Stone.lua"/>
-	<action itemid="0" script="itens/Boost Stone.lua"/>
-	<action itemid="0" script="itens/Boost Stone.lua"/>
-	<action itemid="0" script="itens/Boost Stone.lua"/>
-	<action itemid="0" script="itens/Boost Stone.lua"/> -->
-	<action itemid="5785" script="itens/vipitem.lua"/>
-	<!-- <action itemid="0" script="itens/vipitem2dais.lua"/>
-	<action fromid="0" toid="20682" script="itens/Scroll.lua"/>
-	<action itemid="0" script="itens/Scroll.lua"/>
-	<action itemid="0" script="itens/Scroll.lua"/>
-	<action itemid="0" script="itens/Orbs.lua" allowfaruse="1" />
-	<action itemid="0" script="itens/Orbs.lua" allowfaruse="1" /> -->
 	<action itemid="2150" script="itens/Orbs.lua" allowfaruse="1" />
 	<!-- <action itemid="0" script="itens/BoxBoost.lua"/>
-	<action itemid="0" script="itens/HouseBox.lua"/>
-	<action itemid="0" script="itens/PresenteBox.lua"/>
-	<action itemid="0" script="itens/HalloweenBox.lua"/>
-	<action itemid="0" script="itens/BossPremio1.lua"/>
-	<action itemid="0" script="itens/BossPremio2.lua"/>
-	<action itemid="0" script="itens/BossPremio3.lua"/>
-	<action itemid="0" script="itens/BossPremio4.lua"/>
-	<action itemid="0" script="itens/HeldBoxT10.lua"/>
-	<action actionid="0" script="quests/ExpQuest.lua"/> -->
 
 	<!-- Tools -->
-	<!-- <action actionid="0" script="tools/Malefics.lua" /> -->
 	<!-- <action itemid="2420" script="tools/machete.lua" /> -->
 	<!-- <action itemid="2550" script="tools/scythe.lua" /> -->
 	<action itemid="10223" script="tools/fishinglava.lua" allowfaruse="1" />
@@ -299,14 +172,6 @@
 	<action actionid="6317" script="tools/alavanca01.lua" />
 	<action actionid="6318" script="tools/alavanca01.lua" />
 	<action itemid="4874" script="other/Mineracao.lua" />
-	<!-- <action itemid="0" script="mineracao/picaretamadeira.lua" />
-	<action itemid="0" script="mineracao/picaretaferro.lua" />
-	<action itemid="0" script="mineracao/picaretaouro.lua" />
-	<action itemid="0" script="mineracao/picaretadiamante.lua" />
-	<action fromid="0" toid="0" script="other/Carpet.lua" />
-	<action fromid="0" toid="0" script="other/Carpet.lua" />
-	<action fromid="0" toid="0" script="other/Carpet.lua" />
-	<action fromid="0" toid="0" script="other/Carpet.lua" /> -->
 	
 	<!-- Pokemon -->
 	<action itemid="26662" script="poke/catch.lua" allowfaruse="1" />
@@ -318,42 +183,12 @@
 
 
 	<!-- Balls catch-->
-
-
 	<action itemid="40926" script="poke/revive.lua" allowfaruse="1" />
 	<action itemid="27645" script="poke/revive.lua" allowfaruse="1" />
-
-
 	<action itemid="2382" script="poke/pokedex.lua" allowfaruse="1" /> 
 	<!-- <action itemid="2270" script="poke/order.lua" allowfaruse="1" /> -->
 	
 	<!-- BIKES -->
-    <!-- <action itemid="0" script="poke/bike.lua" />
-    <action itemid="0" script="poke/bike.lua" />
-    <action itemid="0" script="poke/bike.lua" />
-    <action itemid="0" script="poke/bike.lua" />
-    <action itemid="0" script="poke/bike.lua" />
-    <action itemid="0" script="poke/bike.lua" />
-    <action itemid="0" script="poke/bike.lua" />
-    <action itemid="0" script="poke/bike.lua" />
-    <action itemid="0" script="poke/bike.lua" />
-    <action itemid="0" script="poke/bike.lua" />
-    <action itemid="0" script="poke/bike.lua" />
-    <action itemid="0" script="poke/bike.lua" />
-    <action itemid="0" script="poke/bike.lua" />
-    <action itemid="0" script="poke/bike.lua" />
-    <action itemid="0" script="poke/bike.lua" />
-    <action itemid="0" script="poke/bike.lua" />
-    <action itemid="0" script="poke/bike.lua" />
-    <action itemid="0" script="poke/bike.lua" />
-    <action itemid="0" script="poke/bike.lua" />
-    <action itemid="0" script="poke/bike.lua" />
-    <action itemid="0" script="poke/bike.lua" />
-    <action itemid="0" script="poke/bike.lua" />
-    <action itemid="0" script="poke/bike.lua" />
-    <action itemid="0" script="poke/bike.lua" />
-    <action itemid="0" script="poke/bike.lua" />
-    <action itemid="0" script="poke/bike.lua" /> -->
 
     <!-- FIM BIKES -->
 
