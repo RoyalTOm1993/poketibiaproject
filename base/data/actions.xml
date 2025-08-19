@@ -3,7 +3,7 @@
 
 
         <!-- Passe -->
-	<action itemid="0" script="passe/CaixaPasseJujutusu2.lua" allowfaruse="1" />
+	<!-- <action itemid="0" script="passe/CaixaPasseJujutusu2.lua" allowfaruse="1" /> -->
 	<action itemid="5797" script="passe/CaixaPasseJujutusu.lua" allowfaruse="1" />
 
 
