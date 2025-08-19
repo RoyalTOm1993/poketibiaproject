@@ -7,6 +7,12 @@ Aplica-se a todo o repositório Poketibia (TFS 1.4 + OTCv8 + RevScript).
 - `base/`: código do servidor TFS e scripts Lua.
 - `client/`: cliente OTCv8 com scripts e interfaces.
 
+### Subdiretórios
+- `base/src` – núcleo C++ do servidor (lógica, networking). Exemplos: alterar cálculo de combate ou protocolos de conexão; veja os arquivos `.cpp` em `base/src`.
+- `base/data` – scripts Lua do servidor (ações, criaturas, quests). Exemplos: ajustar ações ou recompensas de quests nas pastas `base/data/actions`, `base/data/creatures` etc.
+- `client/modules` – scripts Lua do cliente (UI, eventos). Exemplos: tooltip universal (`client/modules/tooltip.lua`) ou scripts da tela de login; estilos relacionados em `.otui`/`.otmod` no mesmo diretório.
+- Arquivos `.otui`/`.otmod` – layout e estilos de interface. Exemplos: cor de botões na tela de login em `client/modules/entergame.otui` ou `client/40-entergame.otui`; busque estilos em `client/**/*.otui` e `client/modules/**/*.otui`.
+
 ## Estilo de código
 
 ### C++ (`base/src`, `client/src`)
@@ -28,8 +34,31 @@ Aplica-se a todo o repositório Poketibia (TFS 1.4 + OTCv8 + RevScript).
 1. Use `rg` para buscar trechos de código.
 2. Antes de commitar, verifique a compilação.
 
+### Localizando estilos e assets
+- Usar `rg` para buscar nomes de widgets ou classes.
+- Conferir `.otui` para definição de layout/cores.
+- Verificar scripts em `client/modules/*` para lógica associada.
+- Procurar tooltips ou estilos globais em módulos comuns (por ex., `client/modules` ou arquivos `.otui` compartilhados).
+
 ### Compilação do servidor
 ```bash
 cd base && mkdir -p build && cd build
 cmake ..
 make -j$(nproc)
+### Compilação do servidor
+```bash
+cd base && mkdir -p build && cd build
+cmake ..
+make -j$(nproc)
+```
+
+### Compilação do cliente
+```bash
+cd client/v16 && mkdir -p build && cd build
+cmake ..
+make -j$(nproc)
+```
+
+## Histórico de sessões
+
+- 2025-08-19 - Adicionada seção de histórico de sessões.
