@@ -19,7 +19,7 @@ TeamBarHover < UIWidget
     id: DexId
     !text: '#0'
     text-auto-resize: true
-    font: sono_bold_12
+    font: manrope-bold-11px
     anchors.top: parent.top
     anchors.left: parent.left
     margin-top: 6
@@ -28,7 +28,7 @@ TeamBarHover < UIWidget
     id: PokeName
     !text: 'nil'
     text-auto-resize: true
-    font: sono_medium_14
+    font: manrope-bold-14px
     anchors.top: creature.bottom
     anchors.horizontalCenter: creature.horizontalCenter
     margin-top: 5
@@ -43,7 +43,7 @@ TeamBarHover < UIWidget
     !text: '(nil)'
     visible: false
     text-auto-resize: true
-    font: sono_bold_12
+    font: manrope-bold-14px
     anchors.top: PokeName.bottom
     anchors.horizontalCenter: PokeName.horizontalCenter
   UIWidget
@@ -73,7 +73,7 @@ TeamBarHover < UIWidget
     id: valueLife
     !text: 'nil'
     text-auto-resize: true
-    font: sono_medium_12
+    font: manrope-medium-11px
     anchors.verticalCenter: prev.verticalCenter
     anchors.horizontalCenter: prev.horizontalCenter
     margin-top: -1
@@ -98,7 +98,7 @@ TeamBarHover < UIWidget
     id: valuexp
     !text: 'nil'
     text-auto-resize: true
-    font: sono_medium_12
+    font: manrope-medium-11px
     anchors.verticalCenter: prev.verticalCenter
     anchors.horizontalCenter: prev.horizontalCenter
     margin-top: -1
@@ -123,7 +123,7 @@ TeamBarHover < UIWidget
     id: valueHappy
     !text: 'nil'
     text-auto-resize: true
-    font: sono_medium_12
+    font: manrope-medium-11px
     anchors.verticalCenter: prev.verticalCenter
     anchors.horizontalCenter: prev.horizontalCenter
     margin-top: -1
@@ -141,7 +141,7 @@ TeamBarHover < UIWidget
     !text: tr('Level')..':'
     color: #ffff99
     text-auto-resize: true
-    font: sono_medium_12
+    font: manrope-medium-11px
     anchors.top: spells.bottom
     anchors.left: parent.left
     margin-top: 5
@@ -149,9 +149,9 @@ TeamBarHover < UIWidget
   UIWidget
     id: level
     !text: 'nil'
-    color: white
+    color: #ffffff
     text-auto-resize: true
-    font: sono_medium_12
+    font: manrope-medium-11px
     anchors.top: prev.top
     anchors.right: parent.right
     margin-right: 10
@@ -160,16 +160,16 @@ TeamBarHover < UIWidget
     !text: tr('Happiness')..':'
     color: #ffff99
     text-auto-resize: true
-    font: sono_medium_12
+    font: manrope-medium-11px
     anchors.top: levelTitle.bottom
     anchors.left: parent.left
     margin-left: 10
   UIWidget
     id: happy
     !text: 'nil'
-    color: white
+    color: #ffffff
     text-auto-resize: true
-    font: sono_medium_12
+    font: manrope-medium-11px
     anchors.top: prev.top
     anchors.right: parent.right
     margin-right: 10
@@ -178,16 +178,16 @@ TeamBarHover < UIWidget
     !text: tr('Perfection')..':'
     color: #ffff99
     text-auto-resize: true
-    font: sono_medium_12
+    font: manrope-medium-11px
     anchors.top: prev.bottom
     anchors.left: parent.left
     margin-left: 10
   UIWidget
     id: Perfection
     !text: 'nil'
-    color: white
+    color: #ffffff
     text-auto-resize: true
-    font: sono_medium_12
+    font: manrope-medium-11px
     anchors.top: prev.top
     anchors.right: parent.right
     margin-right: 10
@@ -196,16 +196,16 @@ TeamBarHover < UIWidget
     !text: tr('Nature')..':'
     color: #ffff99
     text-auto-resize: true
-    font: sono_medium_12
+    font: manrope-medium-11px
     anchors.top: prev.bottom
     anchors.left: parent.left
     margin-left: 10
   UIWidget
     id: Nature
     !text: 'nil'
-    color: white
+    color: #ffffff
     text-auto-resize: true
-    font: sono_medium_12
+    font: manrope-medium-11px
     anchors.top: prev.top
     anchors.right: parent.right
     margin-right: 10
@@ -214,16 +214,16 @@ TeamBarHover < UIWidget
     !text: tr('Npc Price')..':'
     color: #ffff99
     text-auto-resize: true
-    font: sono_medium_12
+    font: manrope-medium-11px
     anchors.top: prev.bottom
     anchors.left: parent.left
     margin-left: 10
   UIWidget
     id: NpcPrice
     !text: 'nil'
-    color: white
+    color: #ffffff
     text-auto-resize: true
-    font: sono_medium_12
+    font: manrope-medium-11px
     anchors.top: prev.top
     anchors.right: parent.right
     margin-right: 10
@@ -232,7 +232,7 @@ TeamBarHover < UIWidget
     !text: tr('Particle')..':'
     color: #ffff99
     text-auto-resize: true
-    font: sono_medium_12
+    font: manrope-medium-11px
     anchors.top: prev.bottom
     anchors.left: parent.left
     margin-left: 10
@@ -246,7 +246,7 @@ TeamBarHover < UIWidget
 
 HoverMapItem < UIItem
   size: 32 32
-  color: white
+  color: #ffffff
 
 HoverMap < UIWidget
   size: 94 94
@@ -327,7 +327,7 @@ HoverMap < UIWidget
 
 ItemHideCount < UIItem
   hide-count: true
-  color: white
+  color: #ffffff
 
 
 TooltipMainWindow < UIWindow
@@ -350,9 +350,9 @@ TooltipMainWindow < UIWindow
     anchors.horizontalCenter: itemBase.horizontalCenter
   Label
     id: name
-    color: white
+    color: #ffffff
     phantom: true
-    font: sono_medium_12
+    font: manrope-medium-11px
     text-auto-resize: true
     anchors.top: itemBase.bottom
     anchors.horizontalCenter: parent.horizontalCenter
@@ -365,10 +365,10 @@ TooltipMainWindow < UIWindow
     anchors.horizontalCenter: parent.horizontalCenter
     margin-top: 25
   Label
-    color: white
+    color: #ffffff
     !text: 'Price:'
     phantom: true
-    font: sono_medium_10
+    font: manrope-medium-11px
     text-auto-resize: true
     anchors.bottom: separator.top
     anchors.left: separator.left
@@ -378,7 +378,7 @@ TooltipMainWindow < UIWindow
     color: #ffea00
     !text: '0'
     phantom: true
-    font: sono_medium_10
+    font: manrope-medium-11px
     text-auto-resize: true
     anchors.bottom: separator.top
     anchors.right: separator.right
@@ -392,7 +392,7 @@ TooltipMainWindow < UIWindow
     margin-right: 2
   UILabel
     id: desc
-    font: sono_medium_10
+    font: manrope-medium-11px
     color: #dfdfdf
     phantom: true
     text-align: center
@@ -448,7 +448,7 @@ TooltipPokeWindow < UIWindow
     id: pokeName
     !text: 'Arceus'
     text-auto-resize: true
-    font: sono_medium_14
+    font: manrope-medium-14px
     anchors.top: base.bottom
     anchors.horizontalCenter: parent.horizontalCenter
     margin-top: 7
@@ -456,7 +456,7 @@ TooltipPokeWindow < UIWindow
     id: pokeName
     color: #8d8d8d
     text-auto-resize: true
-    font: sono_medium_12
+    font: manrope-medium-11px
     anchors.top: prev.bottom
     anchors.horizontalCenter: parent.horizontalCenter
   UIWidget
@@ -471,7 +471,7 @@ TooltipPokeWindow < UIWindow
     !text: 'Maestria'
     color: #ffff99
     text-auto-resize: true
-    font: sono_medium_12
+    font: manrope-medium-11px
     anchors.top: prev.bottom
     anchors.horizontalCenter: parent.horizontalCenter
     margin-top: 12
@@ -488,7 +488,7 @@ TooltipPokeWindow < UIWindow
     !text: 'Helds'
     color: #ffff99
     text-auto-resize: true
-    font: sono_medium_12
+    font: manrope-medium-11px
     anchors.top: prev.bottom
     anchors.horizontalCenter: parent.horizontalCenter
     margin-top: 12
@@ -527,7 +527,7 @@ TooltipPokeMarket < UIWindow
     id: pokeName
     color: #8d8d8d
     text-auto-resize: true
-    font: sono_medium_12
+    font: manrope-medium-11px
     anchors.top: base.bottom
     anchors.horizontalCenter: parent.horizontalCenter
     margin-top: 7
@@ -536,7 +536,7 @@ TooltipPokeMarket < UIWindow
     !text: 'Helds'
     color: #ffff99
     text-auto-resize: true
-    font: sono_medium_12
+    font: manrope-medium-11px
     anchors.top: prev.bottom
     anchors.horizontalCenter: parent.horizontalCenter
     margin-top: 12
