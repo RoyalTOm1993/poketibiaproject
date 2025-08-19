@@ -16,7 +16,6 @@
 	<action itemid="22124" script="itembidu.lua"/> <!-- BIKE -->
 	<!-- <action actionid="7716" script="entrada/entradapheromosa.lua"/> -->
 	<!-- <action actionid="7717" script="entrada/entradapheromosa2.lua"/> -->
-	<!-- <action actionid="0" script="entrada/TeleportKyurem.lua"/>
 
       <!-- Outfits -->
 	<!-- <action itemid="5797" script="itens/dice.lua"/> -->
@@ -145,7 +144,6 @@
 
 	<!-- Itens -->
 	<action itemid="2150" script="itens/Orbs.lua" allowfaruse="1" />
-	<!-- <action itemid="0" script="itens/BoxBoost.lua"/>
 
 	<!-- Tools -->
 	<!-- <action itemid="2420" script="tools/machete.lua" /> -->
