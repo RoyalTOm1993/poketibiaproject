@@ -63,6 +63,13 @@ make -j$(nproc)
 
 - 2025-08-19 - Adicionada seção de histórico de sessões.
 
+## Dossiê semanal
+
+### Semana 1
+- Pedido do usuário: Adicionar seção de histórico de sessões.
+- Como foi implementado: Seção "Histórico de sessões" criada com primeiro registro.
+- Resultado refletiu fielmente a proposta: Sim.
+
 ## Resumo dos arquivos
 
 - `base/data/constants.lua`: CONTAINER_POSITION = 0xFFFF
