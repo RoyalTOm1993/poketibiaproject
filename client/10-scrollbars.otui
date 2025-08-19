@@ -8,6 +8,9 @@ ScrollBarSlider < UIButton
   $hover !checked:
     image-source: /images/ui/scrollbar_button_hover
 
+  $pressed !checked:
+    image-source: /images/ui/scrollbar_button_pressed
+
 NewScrollBarSlider < UIButton
   id: sliderButton
   anchors.centerIn: parent
