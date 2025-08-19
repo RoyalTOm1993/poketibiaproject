@@ -25,7 +25,6 @@ MoveableTabBarButton < UIButton
     color: #de6f6f
 
 TabBarVertical < UITabBar
-  width: 96
   
   ScrollableFlatPanel
     id: buttonsPanel
@@ -44,26 +43,10 @@ TabBarVertical < UITabBar
     anchors.right: parent.right
     step: 16
     pixels-scroll: true
-    $!on:
-      width: 0
-
-TabBarVerticalPanel < Panel
-TabBarVerticalButton < UIButton
-  size: 48 48
-  anchors.left: parent.left
-  anchors.right: parent.right
-  text-align: bottom
-  icon-align: top
-  icon-offset-y: 2
-  $first:
-    anchors.top: parent.top
-  $!first:
-    anchors.top: prev.bottom
-    margin-top: 10
-  $on !checked:
-    color: #de6f6f
 
 ConsoleTabBarButton < MoveableTabBarButton
   size: 22 22
   padding: 15
   clipping: true
+
+TabBarVerticalButton < UIButton
