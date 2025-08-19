@@ -209,14 +209,24 @@ UIWidget
     layout:
       type: verticalBox
       fit-children: true
-  TabButton
+  TopButton
     id: chatButton
-    icon: /images/game/console/hide
+    icon: /images/game/console/locked
+    icon-color: #ffffff
     anchors.left: parent.left
     anchors.bottom: parent.bottom
-    margin: 0 0 4 4
-    !tooltip: tr('Show Chat')
+    margin: 0 0 8 3
+    !tooltip: tr('Show chat')
     visible: false
     @onClick: modules.game_console.hideAndShowChat(false)
     $$mobile:
       visible: false
+
+    $hover:
+      icon-color: #ffffffff
+    $hover !checked:
+      icon-color: #ffffffff
+    $hover $on:
+      icon-color: #ffffffff
+    $hover $on !checked:
+      icon-color: #ffffffff
