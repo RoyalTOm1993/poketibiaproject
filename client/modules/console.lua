@@ -124,18 +124,18 @@ local function settingsGetNumber(key, defaultValue)
 end
 
 -- =========================================================
---                HELPERS / NOVA MEC�NICA ENTER
+--                HELPERS / NOVA MECï¿½NICA ENTER
 -- =========================================================
 local function isBlank(s)
   return not s or s:match('^%s*$') ~= nil
 end
 
 -- Flag para impedir que o Enter global esconda o chat imediatamente
--- ap�s o envio de mensagem (mesmo frame).
+-- apï¿½s o envio de mensagem (mesmo frame).
 local suppressGlobalEnter = false
 
 -- Detecta se existe OUTRO input focado (respeita Regra 4).
--- N�O usa g_ui.getFocusedWidget (n�o existe nesse client).
+-- Nï¿½O usa g_ui.getFocusedWidget (nï¿½o existe nesse client).
 local function isOtherTextInputFocused()
   if not rootWidget then return false end
   local w = rootWidget:getFocusedChild()
@@ -173,18 +173,18 @@ local function handleGlobalEnter()
     return
   end
 
-  -- chat vis�vel
+  -- chat visï¿½vel
   if not consoleTextEdit then return end
   local txt = consoleTextEdit:getText()
 
-  -- Regra 1: se N�O houver texto -> ocultar chat
+  -- Regra 1: se Nï¿½O houver texto -> ocultar chat
   if isBlank(txt) then
     hideAndShowChat(true)
     return
   end
 
-  -- Se houver texto, n�o fazemos nada aqui (n�o esconder!);
-  -- o envio continua sendo feito pela l�gica j� existente quando o campo est� focado.
+  -- Se houver texto, nï¿½o fazemos nada aqui (nï¿½o esconder!);
+  -- o envio continua sendo feito pela lï¿½gica jï¿½ existente quando o campo estï¿½ focado.
   return
 end
 -- =========================================================
@@ -230,9 +230,9 @@ function init()
     onGameEnd = offline,
   })
 
-  g_ui.importStyle('/10-buttons.otui')
-  g_ui.importStyle('/20-tabbars.otui')
-  g_ui.importStyle('/40-console.otui')
+  g_ui.importStyle('/data/styles/10-buttons.otui')
+  g_ui.importStyle('/data/styles/20-tabbars.otui')
+  g_ui.importStyle('/data/styles/40-console.otui')
 
   consolePanel = g_ui.loadUI('console', modules.game_interface.getBottomPanel())
   assert(consolePanel, 'Failed to load console.otui')
@@ -382,7 +382,7 @@ function enableChat(temporarily)
   consoleTextEdit:clearText()
   consoleTextEdit:focus()
 
-  -- N�O rebinda Enter aqui (para n�o conflitar com o handler global).
+  -- Nï¿½O rebinda Enter aqui (para nï¿½o conflitar com o handler global).
   if temporarily then
     local quickFunc = function()
       if not g_game.isOnline() then return end
@@ -408,7 +408,7 @@ function disableChat(temporarily)
   consoleTextEdit:setVisible(false)
   consoleTextEdit:clearText()
 
-  -- N�O rebinda Enter aqui (handler global j� cuida de reexibir)
+  -- Nï¿½O rebinda Enter aqui (handler global jï¿½ cuida de reexibir)
   modules.game_walking.enableWSAD()
 
   consoleToggleChat:setTooltip(tr("Enable chat mode"))
@@ -1769,7 +1769,7 @@ function online()
   end
   hideAndShowChat(false)
 
-  -- bot�es de navega��o das tabs (prev/next)
+  -- botï¿½es de navegaï¿½ï¿½o das tabs (prev/next)
   consoleTabBar:setNavigation(
     consolePanel:getChildById('prevChannelButton'),
     consolePanel:getChildById('nextChannelButton')
