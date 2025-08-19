@@ -72,25 +72,33 @@ function UIScrollArea:updateScrollBars()
 end
 
 function UIScrollArea:setVerticalScrollBar(scrollbar)
-  self.verticalScrollBar = scrollbar
-  connect(self.verticalScrollBar, 'onValueChange', function(scrollbar, value)
-    local virtualOffset = self:getVirtualOffset()
-    virtualOffset.y = value
-    self:setVirtualOffset(virtualOffset)
-    signalcall(self.onScrollChange, self, virtualOffset)
-  end)
-  self:updateScrollBars()
+  if scrollbar then
+    self.verticalScrollBar = scrollbar
+    connect(self.verticalScrollBar, 'onValueChange', function(scrollbar, value)
+      local virtualOffset = self:getVirtualOffset()
+      virtualOffset.y = value
+      self:setVirtualOffset(virtualOffset)
+      signalcall(self.onScrollChange, self, virtualOffset)
+    end)
+    self:updateScrollBars()
+  else
+    g_logger.warning('UIScrollArea:setVerticalScrollBar called with nil scrollbar')
+  end
 end
 
 function UIScrollArea:setHorizontalScrollBar(scrollbar)
-  self.horizontalScrollBar = scrollbar
-  connect(self.horizontalScrollBar, 'onValueChange', function(scrollbar, value)
-    local virtualOffset = self:getVirtualOffset()
-    virtualOffset.x = value
-    self:setVirtualOffset(virtualOffset)
-    signalcall(self.onScrollChange, self, virtualOffset)
-  end)
-  self:updateScrollBars()
+  if scrollbar then
+    self.horizontalScrollBar = scrollbar
+    connect(self.horizontalScrollBar, 'onValueChange', function(scrollbar, value)
+      local virtualOffset = self:getVirtualOffset()
+      virtualOffset.x = value
+      self:setVirtualOffset(virtualOffset)
+      signalcall(self.onScrollChange, self, virtualOffset)
+    end)
+    self:updateScrollBars()
+  else
+    g_logger.warning('UIScrollArea:setHorizontalScrollBar called with nil scrollbar')
+  end
 end
 
 function UIScrollArea:setInverted(inverted)
