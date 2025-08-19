@@ -1768,6 +1768,7 @@ function online()
     end
   end
   hideAndShowChat(false)
+  enableChat()
 
   -- botï¿½es de navegaï¿½ï¿½o das tabs (prev/next)
   consoleTabBar:setNavigation(
@@ -1817,6 +1818,11 @@ function hideAndShowChat(visible)
     consoleTextEdit:clearText()
     chatButton:setVisible(visible)
     consolePanel:setVisible(not visible)
+    if not visible then
+      enableChat()
+    else
+      disableChat()
+    end
 
   end)
 end
