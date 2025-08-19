@@ -85,8 +85,8 @@ function UIScrollArea:setVerticalScrollBar(scrollbar)
       self:setVirtualOffset(virtualOffset)
       signalcall(self.onScrollChange, self, virtualOffset)
     end)
-    self:updateScrollBars()
   end
+  self:updateScrollBars()
 end
 
 function UIScrollArea:setHorizontalScrollBar(scrollbar)
@@ -103,8 +103,8 @@ function UIScrollArea:setHorizontalScrollBar(scrollbar)
       self:setVirtualOffset(virtualOffset)
       signalcall(self.onScrollChange, self, virtualOffset)
     end)
-    self:updateScrollBars()
   end
+  self:updateScrollBars()
 end
 
 function UIScrollArea:setInverted(inverted)
