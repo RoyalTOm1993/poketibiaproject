@@ -10,7 +10,7 @@ local function updateMargins(tabBar)
   local currentMargin = 0
   for i = 1, #tabBar.tabs do
     local tab = tabBar.tabs[i]
-    tab:setMarginLeft(currentMargin - tabBar.scrollOffset)
+    tab:setMarginLeft(math.floor(currentMargin - tabBar.scrollOffset))
     currentMargin = currentMargin + tabBar.tabSpacing + tab:getWidth()
   end
   tabBar.totalWidth = currentMargin > 0 and currentMargin - tabBar.tabSpacing or 0
@@ -141,7 +141,7 @@ function UIMoveableTabBar.create()
   tabbar.nextNavigation = nil
   tabbar.onGeometryChange = function(self, oldRect, newRect)
     if oldRect.width ~= newRect.width then
-      -- removido: hideTabs(self, ...) pois n„o existe; basta atualizar tudo
+      -- removido: hideTabs(self, ...) pois n√£o existe; basta atualizar tudo
       updateTabs(self)
     end
   end
@@ -365,7 +365,7 @@ end
 
 function UIMoveableTabBar:scrollTabs(delta)
   local maxOffset = math.max(0, self.totalWidth - self:getWidth())
-  self.scrollOffset = math.max(0, math.min(self.scrollOffset + delta, maxOffset))
+  self.scrollOffset = math.floor(math.max(0, math.min(self.scrollOffset + delta, maxOffset)))
   updateMargins(self)
   updateFade(self)
   updateNavigation(self)
