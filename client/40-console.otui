@@ -1,8 +1,6 @@
 ConsoleLabel < UITextEdit
   font: manrope-medium-11px
   height: 14
-  color: yellow
-  margin-left: 2
   text-wrap: true
   text-auto-resize: true
   selection-color: #111416
@@ -19,15 +17,11 @@ ConsoleTabBar < MoveableTabBar
   anchors.right: next.left
   anchors.top: parent.top
   margin-left: 4
-  margin-top: 7
+  margin-top: 8
   tab-spacing: 4
   movable: true
-  clipping: true
-
 
 ConsoleTabBarPanel < MoveableTabBarPanel
-  clipping: true
-
   ScrollablePanel
     id: consoleBuffer
     anchors.fill: parent
@@ -54,7 +48,6 @@ ConsolePanel < Panel
   image-border: 36
   draggable: true
   focusable: true
-  minimum-size: 448 122
   clipping: true
 
 PrevChannelButton < ChatIconButton
@@ -62,8 +55,8 @@ PrevChannelButton < ChatIconButton
   anchors.left: parent.left
   change-cursor-image: false
   anchors.top: parent.top
-  margin-left: 8
-  margin-top: 7
+  margin-left: 3
+  margin-top: 8
 
   $hover:
     icon-color: #ffd54a
@@ -87,7 +80,7 @@ NextChannelButton < ChatIconButton
   anchors.right: next.left
   change-cursor-image: false
   anchors.top: parent.top
-  margin-right: 7
+  margin-right: 3
   margin-top: 8
 
   $hover:
