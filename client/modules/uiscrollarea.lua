@@ -85,6 +85,11 @@ function UIScrollArea:setVerticalScrollBar(scrollbar)
       self:setVirtualOffset(virtualOffset)
       signalcall(self.onScrollChange, self, virtualOffset)
     end)
+  else
+    local virtualOffset = self:getVirtualOffset()
+    virtualOffset.y = 0
+    self:setVirtualOffset(virtualOffset)
+    signalcall(self.onScrollChange, self, virtualOffset)
   end
   self:updateScrollBars()
 end
@@ -103,6 +108,11 @@ function UIScrollArea:setHorizontalScrollBar(scrollbar)
       self:setVirtualOffset(virtualOffset)
       signalcall(self.onScrollChange, self, virtualOffset)
     end)
+  else
+    local virtualOffset = self:getVirtualOffset()
+    virtualOffset.x = 0
+    self:setVirtualOffset(virtualOffset)
+    signalcall(self.onScrollChange, self, virtualOffset)
   end
   self:updateScrollBars()
 end
