@@ -8,14 +8,18 @@ oldZoom = nil
 oldPos = nil
 
 function init()
-  minimapButton = modules.client_topmenu.addRightGameToggleButton('minimapButton', tr('Minimap') .. ' (Ctrl+M)', '/images/topbuttons/minimap', toggle)
+  g_ui.importStyle('/data/styles/20-topmenu.otui')
+  minimapButton = modules.client_topmenu.addLeftGameButton('minimapButton', tr('Minimap') .. ' (Ctrl+M)', '/images/topbuttons/minimap', toggle, false, 10)
   minimapButton:setWidth(31)
+  minimapButton:setStyle('MinimapButton')
   minimapButton:setOn(true)
 
   minimapWindow = g_ui.loadUI('minimap', modules.game_interface.getRightPanel())
   minimapWindow:setContentMinimumHeight(64)
 
   minimapWidget = minimapWindow:recursiveGetChildById('minimap')
+
+  minimapButton:setStyle('MinimapButton')
 
   local gameRootPanel = modules.game_interface.getRootPanel()
   g_keyboard.bindKeyPress('Alt+Left', function() minimapWidget:move(1,0) end, gameRootPanel)
