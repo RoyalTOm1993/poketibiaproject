@@ -61,6 +61,7 @@ ConsolePanel < Panel
 PrevChannelButton < ChatIconButton
   icon: /images/game/console/leftarrow
   anchors.left: parent.left
+  change-cursor-image: false
   anchors.top: parent.top
   margin-left: 8
   margin-top: 7
@@ -85,6 +86,7 @@ PrevChannelButton < ChatIconButton
 NextChannelButton < ChatIconButton
   icon: /images/game/console/rightarrow
   anchors.right: next.left
+  change-cursor-image: false
   anchors.top: parent.top
   margin-right: 7
   margin-top: 8
