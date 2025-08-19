@@ -33,6 +33,9 @@ TopButton < UIButton
 
 TopToggleButton < TopButton
 
+MinimapButton < TopToggleButton
+  # Propriedades específicas do botão do minimapa
+
 TopButtonLogout < TopButton
   icon-color: #CECECE
 
