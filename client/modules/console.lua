@@ -88,6 +88,7 @@ floatingPos = nil
 dragOffset = nil
 topResizeBorder = nil
 rightResizeBorder = nil
+lastNpcName = nil
 
 local communicationSettings = {
   useIgnoreList = true,
@@ -556,6 +557,7 @@ function clear()
   if npcTab then
     consoleTabBar:removeTab(npcTab)
     npcTab = nil
+    lastNpcName = nil
   end
 
   if violationReportTab then
@@ -708,6 +710,7 @@ function removeTab(tab)
     g_game.leaveChannel(tab.channelId)
   elseif tab:getText() == "NPCs" then
     g_game.closeNpcChannel()
+    lastNpcName = nil
   end
 
   if getCurrentTab() == tab then
@@ -762,6 +765,9 @@ function addPrivateText(text, speaktype, name, isPrivateCommand, creatureName)
   if speaktype.npcChat then
     name = 'NPCs'
     focus = true
+    if creatureName then
+      lastNpcName = creatureName
+    end
   end
 
   local privateTab = getTab(name)
@@ -1240,6 +1246,9 @@ sendMessage = function(message, tab)
       isPrivateCommand = true
     elseif tab and tab.npcChat then
       speaktypedesc = 'privatePlayerToNpc'
+      if lastNpcName then
+        name = lastNpcName
+      end
     elseif tab == violationReportTab then
       if violationReportTab.locked then
         modules.game_textmessage.displayFailureMessage('Wait for a gamemaster reply.')
