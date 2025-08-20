@@ -21,7 +21,9 @@ ConsoleTabBar < MoveableTabBar
   tab-spacing: 4
   movable: true
 
-ConsoleTabBarButton.pinned
+ConsoleTabBarButton < TabBarButton
+
+ConsoleTabBarButton.pinned < ConsoleTabBarButton
   color: #ffd54a
 
 ConsoleTabBarPanel < MoveableTabBarPanel
