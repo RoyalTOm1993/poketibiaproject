@@ -1013,6 +1013,11 @@ function processChannelTabMenu(tab, mousePos, mouseButton)
   local worldName = g_game.getWorldName()
   local characterName = g_game.getCharacterName()
   channelName = tab:getText()
+  if tab.pinned then
+    menu:addOption(tr('Desfixar'), function() consoleTabBar:unpinTab(tab) end)
+  else
+    menu:addOption(tr('Fixar'), function() consoleTabBar:pinTab(tab) end)
+  end
   if tab ~= defaultTab and tab ~= serverTab then
     menu:addOption(tr('Close'), function() removeTab(channelName) end)
     --menu:addOption(tr('Show Server Messages'), function() --[[TODO]] end)
