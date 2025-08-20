@@ -298,7 +298,16 @@ function UIMoveableTabBar:selectTab(tab)
 
   local parent = tab:getParent()
   parent:focusChild(tab, MouseFocusReason)
-  updateNavigation(self)
+  local left = tab:getMarginLeft()
+  local right = left + tab:getWidth()
+  if left < 0 then
+    self:scrollTabs(left)
+  elseif right > self:getWidth() then
+    self:scrollTabs(right - self:getWidth())
+  else
+    updateFade(self)
+    updateNavigation(self)
+  end
 end
 
 function UIMoveableTabBar:selectNextTab()
