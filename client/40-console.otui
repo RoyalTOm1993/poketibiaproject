@@ -19,7 +19,6 @@ ConsoleTabBar < MoveableTabBar
   margin-left: 4
   margin-top: 8
   tab-spacing: 4
-  movable: true
 
 ConsoleTabBarPanel < MoveableTabBarPanel
   ScrollablePanel
