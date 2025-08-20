@@ -90,6 +90,10 @@ topResizeBorder = nil
 rightResizeBorder = nil
 lastNpcName = nil
 
+-- pinned tabs persistence
+local pinsToRestore = nil
+local pinsWantedSet = nil
+
 local communicationSettings = {
   useIgnoreList = true,
   useWhiteList = true,
@@ -124,19 +128,25 @@ local function settingsGetNumber(key, defaultValue)
   return defaultValue
 end
 
+local function savePinnedOrderToSettings(settings)
+  if not consoleTabBar or not consoleTabBar.getPinnedTabsText then return end
+  settings.pinsByChar = settings.pinsByChar or {}
+  settings.pinsByChar[g_game.getCharacterName()] = consoleTabBar:getPinnedTabsText()
+end
+
 -- =========================================================
---                HELPERS / NOVA MECï¿½NICA ENTER
+--                HELPERS / NOVA MECÂNICA ENTER
 -- =========================================================
 local function isBlank(s)
   return not s or s:match('^%s*$') ~= nil
 end
 
 -- Flag para impedir que o Enter global esconda o chat imediatamente
--- apï¿½s o envio de mensagem (mesmo frame).
+-- após o envio de mensagem (mesmo frame).
 local suppressGlobalEnter = false
 
 -- Detecta se existe OUTRO input focado (respeita Regra 4).
--- Nï¿½O usa g_ui.getFocusedWidget (nï¿½o existe nesse client).
+-- NÃO usa g_ui.getFocusedWidget (não existe nesse client).
 local function isOtherTextInputFocused()
   if not rootWidget then return false end
   local w = rootWidget:getFocusedChild()
@@ -174,11 +184,11 @@ local function handleGlobalEnter()
     return
   end
 
-  -- chat visï¿½vel
+  -- chat visível
   if not consoleTextEdit then return end
   local txt = consoleTextEdit:getText()
 
-  -- Regra 1: se Nï¿½O houver texto -> ocultar chat
+  -- Regra 1: se NÃO houver texto -> ocultar chat
   if isBlank(txt) then
     hideAndShowChat(true)
     return
@@ -497,6 +507,7 @@ function save()
   if floatingPos then
     settings.floatingPos = floatingPos
   end
+  savePinnedOrderToSettings(settings)
   g_settings.setNode('game_console', settings)
 end
 
@@ -508,8 +519,34 @@ function load()
     if settings.floatingMode then
       switchMode(true)
     end
+    local pinsByChar = settings.pinsByChar or {}
+    pinsToRestore = pinsByChar[g_game.getCharacterName()] or {}
+    pinsWantedSet = {}
+    for _, name in ipairs(pinsToRestore) do pinsWantedSet[name] = true end
   end
   loadCommunicationSettings()
+end
+
+local function applyPinsBulk()
+  if not pinsToRestore or #pinsToRestore == 0 then return end
+  if not consoleTabBar or not consoleTabBar.pinTab then return end
+
+  for _, name in ipairs(pinsToRestore) do
+    local t = consoleTabBar:getTab(name)
+    if t and not consoleTabBar:isPinned(t) then
+      consoleTabBar:pinTab(t, { append = true })
+    end
+  end
+
+  local allApplied = true
+  for _, name in ipairs(pinsToRestore) do
+    local t = consoleTabBar:getTab(name)
+    if not (t and consoleTabBar:isPinned(t)) then allApplied = false break end
+  end
+  if allApplied then
+    pinsToRestore = nil
+    pinsWantedSet = nil
+  end
 end
 
 function onTabChange(tabBar, tab)
@@ -680,6 +717,9 @@ function addTab(name, focus)
     if not focus then focus = true end
   else
     tab = consoleTabBar:addTab(name, nil, processChannelTabMenu)
+    if pinsWantedSet and pinsWantedSet[name] then
+      applyPinsBulk()
+    end
   end
   tab:setTooltip(name)
   if focus then
@@ -718,6 +758,7 @@ function removeTab(tab)
   end
 
   consoleTabBar:removeTab(tab)
+  save()
 end
 
 function removeCurrentTab()
@@ -1052,6 +1093,7 @@ function processChannelTabMenu(tab, mousePos, mouseButton)
       consoleTabBar:pinTab(tab)
     end
     consoleTabBar:selectTab(tab)
+    save()
   end)
 
   menu:display(mousePos)
@@ -1806,6 +1848,11 @@ function online()
         end
       end
     end
+  end
+  if pinsToRestore and #pinsToRestore > 0 then
+    scheduleEvent(applyPinsBulk, 50)
+    scheduleEvent(applyPinsBulk, 500)
+    scheduleEvent(applyPinsBulk, 1500)
   end
   hideAndShowChat(false)
   enableChat()

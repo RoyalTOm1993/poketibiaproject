@@ -217,7 +217,7 @@ end
 -- Additional function to move the tab by lua
 function UIMoveableTabBar:moveTab(tab, units)
   if not tab or tab.pinned then
-    return table.find(self.tabs, tab)
+    return
   end
   local index = table.find(self.tabs, tab)
   if index == nil then return end
@@ -395,15 +395,20 @@ function UIMoveableTabBar:isPinned(tab)
   return tab and tab.pinned or false
 end
 
-function UIMoveableTabBar:pinTab(tab)
+-- opts.append: when true, insert at end of pinned block; otherwise go to index 1
+function UIMoveableTabBar:pinTab(tab, opts)
   if not tab or tab.pinned then return end
   tab.pinned = true
   tab:setDraggable(false)
-  local index = table.find(self.tabs, tab)
-  if index then
-    table.remove(self.tabs, index)
-    table.insert(self.tabs, 1, tab)
-  end
+  
+  local tabs = self.tabs
+  local prev = table.find(tabs, tab)
+  if prev then table.remove(tabs, prev) end
+
+  local pinnedCount = self:getPinnedCount()
+  local newIndex = (opts and opts.append) and (pinnedCount + 1) or 1
+  table.insert(tabs, newIndex, tab)
+
   updateTabs(self)
 end
 
@@ -411,12 +416,28 @@ function UIMoveableTabBar:unpinTab(tab)
   if not tab or not tab.pinned then return end
   tab.pinned = false
   tab:setDraggable(self.tabsMoveable)
-  local index = table.find(self.tabs, tab)
-  if index then
-    table.remove(self.tabs, index)
-    table.insert(self.tabs, tab)
+  
+  local tabs = self.tabs
+  local prev = table.find(tabs, tab)
+  if prev then
+    table.remove(tabs, prev)
+    table.insert(tabs, #tabs + 1, tab)
   end
+
   updateTabs(self)
+end
+
+function UIMoveableTabBar:getPinnedTabsText()
+  local out = {}
+  for i = 1, #self.tabs do
+    local t = self.tabs[i]
+    if t.pinned then
+      table.insert(out, t:getText())
+    else
+      break
+    end
+  end
+  return out
 end
 
 function UIMoveableTabBar:scrollTabs(delta)
