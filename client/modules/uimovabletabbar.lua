@@ -11,7 +11,7 @@ local function updateMargins(tabBar)
   for i = 1, #tabBar.tabs do
     local tab = tabBar.tabs[i]
     tab:setMarginLeft(math.floor(currentMargin - tabBar.scrollOffset))
-    currentMargin = currentMargin + tab:getWidth() + tabBar.tabSpacing
+    currentMargin = currentMargin + tabBar.tabSpacing + tab:getWidth()
   end
   tabBar.totalWidth = currentMargin > 0 and currentMargin - tabBar.tabSpacing or 0
 end
@@ -79,10 +79,6 @@ local function updateTabs(tabBar)
   if not tabBar.currentTab and #tabBar.tabs > 0 then
     tabBar:selectTab(tabBar.tabs[1])
   end
-  for i = 1, #tabBar.tabs do
-    local t = tabBar.tabs[i]
-    t:setDraggable(tabBar.tabsMoveable and not t.pinned)
-  end
   updateFade(tabBar)
   updateNavigation(tabBar)
 end
@@ -95,38 +91,20 @@ local function onTabMousePress(tab, mousePos, mouseButton)
 end
 
 local function onTabDragEnter(tab, mousePos)
-  if tab.pinned then return false end
-  tab.dragStartPos = mousePos
-  tab.dragging = false
+  tab:raise()
+  tab.hotSpot = mousePos.x - tab:getMarginLeft()
+  tab.tabBar.selected = tab
   return true
 end
 
 local function onTabDragLeave(tab)
-  if tab.tabBar.selected == tab then
     updateTabs(tab.tabBar)
     tab.tabBar.selected = nil
-  end
-  tab.dragging = false
-  tab.dragStart = nil
-  tab.dragging = nil
   return true
 end
 
 local function onTabDragMove(tab, mousePos, mouseMoved)
-  if not tab.dragging then
-    local dx = mousePos.x - tab.dragStartPos.x
-    local dy = mousePos.y - tab.dragStartPos.y
-    if math.abs(dx) > 5 and math.abs(dx) > math.abs(dy) then
-      tab.dragging = true
-      tab:raise()
-      tab.hotSpot = tab.dragStartPos.x - tab:getMarginLeft()
-      tab.tabBar.selected = tab
-    elseif math.abs(dy) > math.abs(dx) then
-      return false
-    end
-  end
-
-  if tab.dragging and tab == tab.tabBar.selected then
+  if tab == tab.tabBar.selected then
     local xoff = mousePos.x - tab.hotSpot + tab.tabBar.scrollOffset
 
     -- update indexes
@@ -210,13 +188,11 @@ function UIMoveableTabBar:addTab(text, panel, menuCallback)
   tab.tabPanel = panel
   tab.tabBar = self
   tab:setId('tab')
-  tab.pinned = false
   tab:setDraggable(self.tabsMoveable)
   tab:setText(text)
   addEvent(function()
     if tab and not tab:isDestroyed() then
-      tab.baseWidth = tab:getTextSize().width + tab:getPaddingLeft() + tab:getPaddingRight()
-      tab:setWidth(tab.baseWidth)
+      tab:setWidth(tab:getTextSize().width + tab:getPaddingLeft() + tab:getPaddingRight())
       updateTabs(self)
     end
   end)
@@ -239,7 +215,7 @@ end
 -- Additional function to move the tab by lua
 function UIMoveableTabBar:moveTab(tab, units)
   local index = table.find(self.tabs, tab)
-  if index == nil or tab.pinned then return end
+  if index == nil then return end
 
   local focus = false
   if self.currentTab == tab then
@@ -249,56 +225,11 @@ function UIMoveableTabBar:moveTab(tab, units)
 
   table.remove(self.tabs, index)
 
-  local pinnedCount = self:getPinnedCount()
-
-  local newIndex = math.min(#self.tabs + 1, math.max(index + units, pinnedCount + 1))
+  local newIndex = math.min(#self.tabs+1, math.max(index + units, 1))
   table.insert(self.tabs, newIndex, tab)
   if focus then self:selectTab(tab) end
   updateTabs(self)
   return newIndex
-end
-
-function UIMoveableTabBar:getPinnedCount()
-  local count = 0
-  for i = 1, #self.tabs do
-    if self.tabs[i].pinned then
-      count = count + 1
-    else
-      break
-    end
-  end
-  return count
-end
-
-function UIMoveableTabBar:pinTab(tab)
-  if not tab or tab.pinned then return end
-  local index = table.find(self.tabs, tab)
-  if not index then return end
-  table.remove(self.tabs, index)
-  local newIndex = self:getPinnedCount() + 1
-  table.insert(self.tabs, newIndex, tab)
-  tab.pinned = true
-  tab:addClass('pinned')
-  tab:setDraggable(false)
-  tab:setIcon('/images/ui/tabpin')
-  tab:setIconSize(4, 4)
-  tab:setTextOffset(6, 0)
-  tab:setWidth(tab.baseWidth + 6)
-  updateTabs(self)
-end
-
-function UIMoveableTabBar:unpinTab(tab)
-  if not tab or not tab.pinned then return end
-  local index = table.find(self.tabs, tab)
-  if not index then return end
-  table.remove(self.tabs, index)
-  tab.pinned = false
-  tab:removeClass('pinned')
-  tab:setIcon(nil)
-  tab:setTextOffset(0, 0)
-  tab:setWidth(tab.baseWidth)
-  table.insert(self.tabs, #self.tabs + 1, tab)
-  updateTabs(self)
 end
 
 function UIMoveableTabBar:onStyleApply(styleName, styleNode)
