@@ -25,6 +25,11 @@ ConsoleTabBarButton < TabBarButton
 
 ConsoleTabBarButton.pinned < ConsoleTabBarButton
   color: #ffd54a
+  icon-source: /images/ui/tabpin
+  icon-size: 4 4
+  icon-align: left
+  icon-offset: 0 0
+  text-offset: 6 0
 
 ConsoleTabBarPanel < MoveableTabBarPanel
   ScrollablePanel
