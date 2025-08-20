@@ -244,6 +244,27 @@ function init()
   topResizeBorder.minimum = 122
   rightResizeBorder.minimum = 448
   consoleTabBar:setContentWidget(consoleContentPanel)
+  connect(consoleTextEdit, {
+    onFocusChange = function(_, focused)
+      if not focused and consolePanel:isVisible() then
+        scheduleEvent(function() consoleTextEdit:focus() end, 50)
+      end
+    end
+  })
+
+  connect(consolePanel, {
+    onVisibilityChange = function(_, visible)
+      if visible then
+        scheduleEvent(function() consoleTextEdit:focus() end, 50)
+      end
+    end
+  })
+
+  consoleTextEdit.onFocusChange = function(_, focused)
+    if not focused and consolePanel:isVisible() then
+      scheduleEvent(function() consoleTextEdit:focus() end, 50)
+    end
+  end
   -- Remove the Ignore Players icon instance so the layout reflows
   do
     local ignoreBtn = nil
