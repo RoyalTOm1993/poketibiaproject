@@ -98,8 +98,8 @@ local function onTabDragEnter(tab, mousePos)
 end
 
 local function onTabDragLeave(tab)
-    updateTabs(tab.tabBar)
-    tab.tabBar.selected = nil
+  updateTabs(tab.tabBar)
+  tab.tabBar.selected = nil
   return true
 end
 
@@ -116,6 +116,7 @@ local function onTabDragMove(tab, mousePos, mouseMoved)
     xoff = math.min(xoff, getMaxMargin(tab.tabBar, tab))
     tab:setMarginLeft(xoff - tab.tabBar.scrollOffset)
   end
+  return true
 end
 
 local function tabBlink(tab, step)
@@ -374,6 +375,16 @@ end
 
 function UIMoveableTabBar:getCurrentTab()
   return self.currentTab
+end
+
+function UIMoveableTabBar:getPinnedCount()
+  local count = 0
+  for i = 1, #self.tabs do
+    if self.tabs[i].pinned then
+      count = count + 1
+    end
+  end
+  return count
 end
 
 function UIMoveableTabBar:scrollTabs(delta)
