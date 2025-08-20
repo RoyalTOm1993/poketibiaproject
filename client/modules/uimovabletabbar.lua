@@ -91,6 +91,7 @@ local function onTabMousePress(tab, mousePos, mouseButton)
 end
 
 local function onTabDragEnter(tab, mousePos)
+  if tab.pinned then return false end
   tab:raise()
   tab.hotSpot = mousePos.x - tab:getMarginLeft()
   tab.tabBar.selected = tab
@@ -215,6 +216,9 @@ end
 
 -- Additional function to move the tab by lua
 function UIMoveableTabBar:moveTab(tab, units)
+  if not tab or tab.pinned then
+    return table.find(self.tabs, tab)
+  end
   local index = table.find(self.tabs, tab)
   if index == nil then return end
 
@@ -385,6 +389,34 @@ function UIMoveableTabBar:getPinnedCount()
     end
   end
   return count
+end
+
+function UIMoveableTabBar:isPinned(tab)
+  return tab and tab.pinned or false
+end
+
+function UIMoveableTabBar:pinTab(tab)
+  if not tab or tab.pinned then return end
+  tab.pinned = true
+  tab:setDraggable(false)
+  local index = table.find(self.tabs, tab)
+  if index then
+    table.remove(self.tabs, index)
+    table.insert(self.tabs, 1, tab)
+  end
+  updateTabs(self)
+end
+
+function UIMoveableTabBar:unpinTab(tab)
+  if not tab or not tab.pinned then return end
+  tab.pinned = false
+  tab:setDraggable(self.tabsMoveable)
+  local index = table.find(self.tabs, tab)
+  if index then
+    table.remove(self.tabs, index)
+    table.insert(self.tabs, tab)
+  end
+  updateTabs(self)
 end
 
 function UIMoveableTabBar:scrollTabs(delta)

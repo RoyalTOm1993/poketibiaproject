@@ -1044,6 +1044,16 @@ function processChannelTabMenu(tab, mousePos, mouseButton)
     end)
   end
 
+  local isPinned = consoleTabBar.isPinned and consoleTabBar:isPinned(tab)
+  menu:addOption(tr(isPinned and 'Desafixar' or 'Fixar'), function()
+    if isPinned then
+      consoleTabBar:unpinTab(tab)
+    else
+      consoleTabBar:pinTab(tab)
+    end
+    consoleTabBar:selectTab(tab)
+  end)
+
   menu:display(mousePos)
 end
 
