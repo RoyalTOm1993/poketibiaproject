@@ -93,6 +93,8 @@ lastNpcName = nil
 -- pinned tabs persistence
 local pinsToRestore = nil
 local pinsWantedSet = nil
+-- cache de pins por personagem (lido do g_settings em load())
+local pinsByCharCache = nil
 
 local communicationSettings = {
   useIgnoreList = true,
@@ -126,12 +128,6 @@ local function settingsGetNumber(key, defaultValue)
     if v and v > 0 then return v end
   end
   return defaultValue
-end
-
-local function savePinnedOrderToSettings(settings)
-  if not consoleTabBar or not consoleTabBar.getPinnedTabsText then return end
-  settings.pinsByChar = settings.pinsByChar or {}
-  settings.pinsByChar[g_game.getCharacterName()] = consoleTabBar:getPinnedTabsText()
 end
 
 -- =========================================================
@@ -501,13 +497,29 @@ function terminate()
 end
 
 function save()
-  local settings = {}
+  -- Mesclar com o que ja existe para nao apagar outros chars
+  local settings = g_settings.getNode('game_console') or {}
+
+  -- manter os campos ja usados
   settings.messageHistory = messageHistory
-  settings.floatingMode = floatingMode
+  settings.floatingMode   = floatingMode
   if floatingPos then
     settings.floatingPos = floatingPos
+  else
+    settings.floatingPos = nil
   end
-  savePinnedOrderToSettings(settings)
+
+  -- Salvar pins do char atual (somente se houver nome)
+  if consoleTabBar and consoleTabBar.getPinnedTabsText then
+    local char = g_game.getCharacterName()
+    if char and char ~= '' then
+      settings.pinsByChar = settings.pinsByChar or {}
+      settings.pinsByChar[char] = consoleTabBar:getPinnedTabsText()
+      -- atualiza cache em memoria para consistencia
+      pinsByCharCache = settings.pinsByChar
+    end
+  end
+
   g_settings.setNode('game_console', settings)
 end
 
@@ -515,14 +527,12 @@ function load()
   local settings = g_settings.getNode('game_console')
   if settings then
     messageHistory = settings.messageHistory or {}
-    floatingPos = settings.floatingPos
+    floatingPos    = settings.floatingPos
     if settings.floatingMode then
       switchMode(true)
     end
-    local pinsByChar = settings.pinsByChar or {}
-    pinsToRestore = pinsByChar[g_game.getCharacterName()] or {}
-    pinsWantedSet = {}
-    for _, name in ipairs(pinsToRestore) do pinsWantedSet[name] = true end
+    -- NOVO: apenas cachear o mapa completo; nao derive por char aqui
+    pinsByCharCache = settings.pinsByChar or {}
   end
   loadCommunicationSettings()
 end
@@ -1828,6 +1838,25 @@ end
 function online()
   defaultTab = addTab(tr('Default'), true)
   serverTab = addTab(tr('Server Log'), false)
+  -- Reidratar pins agora que ja temos o nome do personagem
+  pinsToRestore = {}
+  pinsWantedSet = nil
+  if pinsByCharCache then
+    local char = g_game.getCharacterName()
+    if char and char ~= '' then
+      pinsToRestore = pinsByCharCache[char] or {}
+      if #pinsToRestore > 0 then
+        pinsWantedSet = {}
+        for _, name in ipairs(pinsToRestore) do pinsWantedSet[name] = true end
+      end
+    end
+  end
+
+  if pinsToRestore and #pinsToRestore > 0 then
+    scheduleEvent(applyPinsBulk, 50)
+    scheduleEvent(applyPinsBulk, 500)
+    scheduleEvent(applyPinsBulk, 1500)
+  end
 
   if g_game.getClientVersion() < 862 then
     local gameRootPanel = modules.game_interface.getRootPanel()
@@ -1848,11 +1877,6 @@ function online()
         end
       end
     end
-  end
-  if pinsToRestore and #pinsToRestore > 0 then
-    scheduleEvent(applyPinsBulk, 50)
-    scheduleEvent(applyPinsBulk, 500)
-    scheduleEvent(applyPinsBulk, 1500)
   end
   hideAndShowChat(false)
   enableChat()
