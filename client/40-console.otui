@@ -247,18 +247,6 @@ ConsoleContentPanel < Panel
   focusable: false
   phantom: true
 
-SayModeButton < ChatIconButton
-  icon: /images/game/console/say
-  !tooltip: tr('Adjust volume')
-  &sayMode: 2
-  size: 20 20
-  anchors.left: parent.left
-  anchors.bottom: parent.bottom
-  margin-left: 6
-  margin-bottom: 6
-  @onClick: sayModeChange()
-  visible: false
-
 ConsoleTextEdit < TextEdit
   id: consoleTextEdit
   anchors.left: parent.left
