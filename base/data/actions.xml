@@ -1,24 +1,11 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="cp1252"?>
 <actions>
-
-        <!-- Passe -->
-	<action itemid="5797" script="passe/CaixaPasseJujutusu.lua" allowfaruse="1" />
 
         <!-- Pesca -->
 	<action itemid="2580" script="pesca/fishing.lua" allowfaruse="1" /> 
 
-        <!-- ELIXIRS -->
-	<action itemid="13134" script="itens/PasseSpace.lua"/>
-        
-	<!-- PACKS -->
-  
-      <!-- Entrada -->
-	<action itemid="22124" script="itembidu.lua"/> <!-- BIKE -->
-	<!-- <action actionid="7716" script="entrada/entradapheromosa.lua"/> -->
-	<!-- <action actionid="7717" script="entrada/entradapheromosa2.lua"/> -->
-
       <!-- Outfits -->
-	<!-- <action itemid="5797" script="itens/dice.lua"/> -->
+	<action itemid="5797" script="itens/dice.lua"/>
 	<action itemid="39098" script="itens/firstpoke.lua"/>
 
 	<!-- Towers -->
@@ -26,7 +13,7 @@
 	<!--Fim -->
 
 	<!-- Card -->
-	<!-- <action itemid="2145" script="itens/Diamond.lua"/> -->
+	<action itemid="2145" script="itens/Diamond.lua"/>
 
 	<!-- Quests -->
 	<!-- <action actionid="2000" script="quests/B5.lua" /> -->
