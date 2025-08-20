@@ -845,7 +845,7 @@ void UIWidget::internalDestroy()
 void UIWidget::destroy()
 {
     if(m_destroyed)
-        g_logger.warning(stdext::format("attempt to destroy widget '%s' two times", m_id));
+        return;
 
     // hold itself reference
     UIWidgetPtr self = static_self_cast<UIWidget>();
