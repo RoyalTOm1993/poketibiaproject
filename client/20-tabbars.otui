@@ -52,6 +52,9 @@ ConsoleTabBarButton < MoveableTabBarButton
 TabBarVerticalButton < UIButton
 
 TabBarButton < UIButton
+  anchors.top: parent.top
+  height: 20
+  padding: 3 6
   checkable: true
   focusable: false
 
