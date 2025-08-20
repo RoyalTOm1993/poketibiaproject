@@ -802,11 +802,11 @@ void Combat::doTargetCombat(Creature* caster, Creature* target, CombatDamage& da
 }
 
 
-void Combat::doAreaCombatTemp(Creature* caster, const Position& position, const AreaCombat* area, CombatDamage& damage,
+void Combat::doAreaCombatTemp(Creature* caster, const Position& position, const AreaCombat* area, [[maybe_unused]] CombatDamage& damage,
                           const CombatParams& params)
 {
 	
-	std::forward_list<Tile*> tileList;
+	     std::forward_list<Tile*> tileList;
 
 	if (caster) {
 		getCombatArea(caster->getPosition(), position, area, tileList);
