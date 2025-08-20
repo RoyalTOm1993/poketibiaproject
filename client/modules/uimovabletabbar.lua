@@ -96,49 +96,48 @@ end
 
 local function onTabDragEnter(tab, mousePos)
   if tab.pinned then return false end
-  tab.hotSpot = mousePos.x - tab:getMarginLeft()
-  tab.dragStart = { x = mousePos.x, y = mousePos.y }
+  tab.dragStartPos = mousePos
   tab.dragging = false
-  tab.tabBar.selected = tab
   return true
 end
 
 local function onTabDragLeave(tab)
-  updateTabs(tab.tabBar)
-  tab.tabBar.selected = nil
+  if tab.tabBar.selected == tab then
+    updateTabs(tab.tabBar)
+    tab.tabBar.selected = nil
+  end
+  tab.dragging = false
   tab.dragStart = nil
   tab.dragging = nil
   return true
 end
 
 local function onTabDragMove(tab, mousePos, mouseMoved)
-  if tab ~= tab.tabBar.selected then
-    return
-  end
-
   if not tab.dragging then
-    local dx = mousePos.x - tab.dragStart.x
-    local dy = mousePos.y - tab.dragStart.y
+    local dx = mousePos.x - tab.dragStartPos.x
+    local dy = mousePos.y - tab.dragStartPos.y
     if math.abs(dx) > 5 and math.abs(dx) > math.abs(dy) then
       tab.dragging = true
       tab:raise()
+      tab.hotSpot = tab.dragStartPos.x - tab:getMarginLeft()
+      tab.tabBar.selected = tab
     elseif math.abs(dy) > math.abs(dx) then
       return false
-    else
-      return
     end
   end
 
-local xoff = mousePos.x - tab.hotSpot + tab.tabBar.scrollOffset
+  if tab.dragging and tab == tab.tabBar.selected then
+    local xoff = mousePos.x - tab.hotSpot + tab.tabBar.scrollOffset
 
-  -- update indexes
-  updateIndexes(tab.tabBar, tab, xoff)
+    -- update indexes
+    updateIndexes(tab.tabBar, tab, xoff)
 
-  -- update margins
-  updateMargins(tab.tabBar)
-  xoff = math.max(xoff, 0)
-  xoff = math.min(xoff, getMaxMargin(tab.tabBar, tab))
-  tab:setMarginLeft(xoff - tab.tabBar.scrollOffset)
+    -- update margins
+    updateMargins(tab.tabBar)
+    xoff = math.max(xoff, 0)
+    xoff = math.min(xoff, getMaxMargin(tab.tabBar, tab))
+    tab:setMarginLeft(xoff - tab.tabBar.scrollOffset)
+  end
 end
 
 local function tabBlink(tab, step)
@@ -281,11 +280,10 @@ function UIMoveableTabBar:pinTab(tab)
   tab.pinned = true
   tab:addClass('pinned')
   tab:setDraggable(false)
-  local w = tab.baseWidth + (tab.pinned and 6 or 0)
-  tab:setWidth(w)
   tab:setIcon('/images/ui/tabpin')
   tab:setIconSize(4, 4)
   tab:setTextOffset(6, 0)
+  tab:setWidth(tab.baseWidth + 6)
   updateTabs(self)
 end
 
@@ -296,9 +294,10 @@ function UIMoveableTabBar:unpinTab(tab)
   table.remove(self.tabs, index)
   tab.pinned = false
   tab:removeClass('pinned')
+  tab:setIcon(nil)
+  tab:setTextOffset(0, 0)
+  tab:setWidth(tab.baseWidth)
   table.insert(self.tabs, #self.tabs + 1, tab)
-  local w = tab.baseWidth + (tab.pinned and 6 or 0)
-  tab:setWidth(w)
   updateTabs(self)
 end
 
