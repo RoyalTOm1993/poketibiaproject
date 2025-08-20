@@ -1,5 +1,6 @@
 MoveableTabBar < UIMoveableTabBar
   height: 30
+  movable: true
 
 MoveableTabBarPanel < Panel
 
