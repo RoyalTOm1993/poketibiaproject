@@ -765,7 +765,7 @@ function addPrivateText(text, speaktype, name, isPrivateCommand, creatureName)
   if speaktype.npcChat then
     name = 'NPCs'
     focus = true
-    if creatureName then
+    if creatureName and creatureName ~= g_game.getCharacterName() then
       lastNpcName = creatureName
     end
   end
@@ -1154,7 +1154,7 @@ sendMessage = function(message, tab)
   end
 
   -- handling chat commands
-  local channel = tab and tab.channelId or 0
+  local channel = tab and tab.channelId
   local originalMessage = message
   local chatCommandSayMode
   local chatCommandPrivate
