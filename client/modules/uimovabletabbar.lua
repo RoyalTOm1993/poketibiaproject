@@ -11,7 +11,7 @@ local function updateMargins(tabBar)
   for i = 1, #tabBar.tabs do
     local tab = tabBar.tabs[i]
     tab:setMarginLeft(math.floor(currentMargin - tabBar.scrollOffset))
-    currentMargin = currentMargin + tabBar.tabSpacing + tab:getWidth()
+    currentMargin = currentMargin + tab:getWidth() + tabBar.tabSpacing
   end
   tabBar.totalWidth = currentMargin > 0 and currentMargin - tabBar.tabSpacing or 0
 end
@@ -96,8 +96,9 @@ end
 
 local function onTabDragEnter(tab, mousePos)
   if tab.pinned then return false end
-  tab:raise()
   tab.hotSpot = mousePos.x - tab:getMarginLeft()
+  tab.dragStart = { x = mousePos.x, y = mousePos.y }
+  tab.dragging = false
   tab.tabBar.selected = tab
   return true
 end
@@ -105,22 +106,39 @@ end
 local function onTabDragLeave(tab)
   updateTabs(tab.tabBar)
   tab.tabBar.selected = nil
+  tab.dragStart = nil
+  tab.dragging = nil
   return true
 end
 
 local function onTabDragMove(tab, mousePos, mouseMoved)
-  if tab == tab.tabBar.selected then
-    local xoff = mousePos.x - tab.hotSpot + tab.tabBar.scrollOffset
-
-    -- update indexes
-    updateIndexes(tab.tabBar, tab, xoff)
-
-    -- update margins
-    updateMargins(tab.tabBar)
-    xoff = math.max(xoff, 0)
-    xoff = math.min(xoff, getMaxMargin(tab.tabBar, tab))
-    tab:setMarginLeft(xoff - tab.tabBar.scrollOffset)
+  if tab ~= tab.tabBar.selected then
+    return
   end
+
+  if not tab.dragging then
+    local dx = mousePos.x - tab.dragStart.x
+    local dy = mousePos.y - tab.dragStart.y
+    if math.abs(dx) > 5 and math.abs(dx) > math.abs(dy) then
+      tab.dragging = true
+      tab:raise()
+    elseif math.abs(dy) > math.abs(dx) then
+      return false
+    else
+      return
+    end
+  end
+
+local xoff = mousePos.x - tab.hotSpot + tab.tabBar.scrollOffset
+
+  -- update indexes
+  updateIndexes(tab.tabBar, tab, xoff)
+
+  -- update margins
+  updateMargins(tab.tabBar)
+  xoff = math.max(xoff, 0)
+  xoff = math.min(xoff, getMaxMargin(tab.tabBar, tab))
+  tab:setMarginLeft(xoff - tab.tabBar.scrollOffset)
 end
 
 local function tabBlink(tab, step)
@@ -198,7 +216,8 @@ function UIMoveableTabBar:addTab(text, panel, menuCallback)
   tab:setText(text)
   addEvent(function()
     if tab and not tab:isDestroyed() then
-      tab:setWidth(tab:getTextSize().width + tab:getPaddingLeft() + tab:getPaddingRight())
+      tab.baseWidth = tab:getTextSize().width + tab:getPaddingLeft() + tab:getPaddingRight()
+      tab:setWidth(tab.baseWidth)
       updateTabs(self)
     end
   end)
@@ -262,6 +281,11 @@ function UIMoveableTabBar:pinTab(tab)
   tab.pinned = true
   tab:addClass('pinned')
   tab:setDraggable(false)
+  local w = tab.baseWidth + (tab.pinned and 6 or 0)
+  tab:setWidth(w)
+  tab:setIcon('/images/ui/tabpin')
+  tab:setIconSize(4, 4)
+  tab:setTextOffset(6, 0)
   updateTabs(self)
 end
 
@@ -273,6 +297,8 @@ function UIMoveableTabBar:unpinTab(tab)
   tab.pinned = false
   tab:removeClass('pinned')
   table.insert(self.tabs, #self.tabs + 1, tab)
+  local w = tab.baseWidth + (tab.pinned and 6 or 0)
+  tab:setWidth(w)
   updateTabs(self)
 end
 
