@@ -51,3 +51,5 @@ ConsoleTabBarButton < MoveableTabBarButton
   clipping: true
 
 TabBarVerticalButton < UIButton
+
+
