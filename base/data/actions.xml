@@ -1,12 +1,20 @@
 <?xml version="1.0" encoding="cp1252"?>
 <actions>
 
+     <!-- Charms -->
+	<action itemid="23149" script="charms.lua"/>
+	<action itemid="23151" script="charms.lua"/>
+	<action itemid="23152" script="charms.lua"/>
+
         <!-- Pesca -->
-	<action itemid="2580" script="pesca/fishing.lua" allowfaruse="1" /> 
+        <action itemid="2580" script="pesca/fishing.lua" allowfaruse="1" />
 
       <!-- Outfits -->
 	<action itemid="5797" script="itens/dice.lua"/>
 	<action itemid="39098" script="itens/firstpoke.lua"/>
+
+	<!-- ELIXIRS -->
+<action itemid="13134" script="itens/PasseSpace.lua"/>
 
 	<!-- Towers -->
 
