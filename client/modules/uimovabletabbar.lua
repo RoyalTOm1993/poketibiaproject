@@ -2,6 +2,40 @@
 UIMoveableTabBar = extends(UIWidget, "UIMoveableTabBar")
 
 -- =====================
+-- Pin icon defaults
+-- =====================
+local PIN_ICON_DEFAULTS = {
+  path    = '/images/ui/tabpin',
+  width   = 15,
+  height  = 14,
+  dx      = 4,
+  dy      = -1,
+  text_dx = 10
+}
+
+local function layoutPinIcon(tab)
+  if not tab then return end
+  local width  = (tab.tabBar.pinIconWidth or PIN_ICON_DEFAULTS.width)
+  local height = (tab.tabBar.pinIconHeight or PIN_ICON_DEFAULTS.height)
+  local dx     = (tab.tabBar.pinIconDx or PIN_ICON_DEFAULTS.dx)
+  local dy     = (tab.tabBar.pinIconDy or PIN_ICON_DEFAULTS.dy)
+  if tab.pinned then
+    local y = math.floor((tab:getHeight() - height) / 2) + dy
+    tab:setIcon(tab.tabBar.pinIconPath or PIN_ICON_DEFAULTS.path)
+    tab:setIconOffsetX(dx)
+    tab:setIconOffsetY(y)
+    tab:setIconWidth(width)
+    tab:setIconHeight(height)
+  else
+    tab:setIcon('')
+    tab:setIconOffsetX(0)
+    tab:setIconOffsetY(0)
+    tab:setIconWidth(0)
+    tab:setIconHeight(0)
+  end
+end
+
+-- =====================
 -- Internal helpers
 -- =====================
 local function onTabClick(tab)
@@ -92,20 +126,16 @@ local function updateTabs(tabBar)
   updateNavigation(tabBar)
 end
 
--- desloca o texto 4px para a direita quando fixado (sem alterar largura)
 local function applyPinnedTextOffset(tab, enabled)
   if not tab or not tab.setTextOffset then return end
   tab._baseTextOffset = tab._baseTextOffset or { x = 0, y = 0 }
   local bx = tab._baseTextOffset.x or 0
   local by = tab._baseTextOffset.y or 0
-  if enabled then
-    tab:setTextOffset({ x = bx + 10, y = by })
-  else
-    tab:setTextOffset({ x = bx, y = by })
-  end
+  local textDx = (tab.tabBar and tab.tabBar.pinTextDx) or PIN_ICON_DEFAULTS.text_dx
+  tab:setTextOffset({ x = enabled and (bx + textDx) or bx, y = by })
 end
 
--- rec√°lculo simples de largura (texto + paddings)
+-- rec·lculo simples de largura (texto + paddings)
 local function recalcTabWidth(tab)
   local w = tab:getTextSize().width + tab:getPaddingLeft() + tab:getPaddingRight()
   tab:setWidth(w)
@@ -241,10 +271,15 @@ function UIMoveableTabBar:addTab(text, panel, menuCallback)
   -- baseline de offset de texto
   tab._baseTextOffset = (tab.getTextOffset and tab:getTextOffset()) or { x = 0, y = 0 }
 
+  tab.onGeometryChange = function()
+    layoutPinIcon(tab)
+  end
+
   addEvent(function()
     if tab and not tab:isDestroyed() then
       recalcTabWidth(tab)
       updateTabs(self)
+      layoutPinIcon(tab)
     end
   end)
 
@@ -255,7 +290,11 @@ function UIMoveableTabBar:addTab(text, panel, menuCallback)
   tab.onDragEnter    = onTabDragEnter
   tab.onDragLeave    = onTabDragLeave
   tab.onDragMove     = onTabDragMove
-  tab.onDestroy      = function() tab.tabPanel:destroy() end
+  tab.onDestroy      = function()
+    if tab.tabPanel and not tab.tabPanel:isDestroyed() then
+      tab.tabPanel:destroy()
+    end
+  end
 
   table.insert(self.tabs, tab)
   if #self.tabs == 1 then self:selectTab(tab) end
@@ -280,6 +319,12 @@ end
 function UIMoveableTabBar:onStyleApply(styleName, styleNode)
   if styleNode['movable'] then self.tabsMoveable = styleNode['movable'] end
   if styleNode['tab-spacing'] then self:setTabSpacing(styleNode['tab-spacing']) end
+  if styleNode['pin-icon-dx'] then self.pinIconDx = tonumber(styleNode['pin-icon-dx']) end
+  if styleNode['pin-icon-dy'] then self.pinIconDy = tonumber(styleNode['pin-icon-dy']) end
+  if styleNode['pin-icon-width'] then self.pinIconWidth = tonumber(styleNode['pin-icon-width']) end
+  if styleNode['pin-icon-height'] then self.pinIconHeight = tonumber(styleNode['pin-icon-height']) end
+  if styleNode['pin-text-dx'] then self.pinTextDx = tonumber(styleNode['pin-text-dx']) end
+  if styleNode['pin-icon-path'] then self.pinIconPath = tostring(styleNode['pin-icon-path']) end
 end
 
 function UIMoveableTabBar:removeTab(tab)
@@ -356,6 +401,7 @@ function UIMoveableTabBar:pinTab(tab, opts)
   tab:setDraggable(false)
 
   applyPinnedTextOffset(tab, true)
+  layoutPinIcon(tab)
 
   local tabs = self.tabs
   local prev = table.find(tabs, tab)
@@ -374,6 +420,7 @@ function UIMoveableTabBar:unpinTab(tab)
   tab:setDraggable(self.tabsMoveable)
 
   applyPinnedTextOffset(tab, false)
+  layoutPinIcon(tab)
 
   local tabs = self.tabs
   local prev = table.find(tabs, tab)

@@ -95,7 +95,13 @@ function init()
     g_settings.setDefault("extras_" .. v, extraOptions[v])
   end
 
+  g_ui.importStyle('/data/styles/10-windows.otui')
+  g_ui.importStyle('/data/styles/20-tabbars.otui')
   optionsWindow = g_ui.displayUI('options')
+  if not optionsWindow then
+    g_logger.error('failed to load options window')
+    return
+  end
   optionsWindow:hide()
 
   optionsTabBar = optionsWindow:getChildById('optionsTabBar')

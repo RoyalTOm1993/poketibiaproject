@@ -913,7 +913,7 @@ function addTabText(text, speaktype, tab, creatureName)
     displayText = timestampText .. ' ' .. text
   end
 
-  local panel = consoleTabBar:getTabPanel(tab)
+  local panel = tab.tabPanel
   local consoleBuffer = panel:getChildById('consoleBuffer')
 
   local label = nil
@@ -926,7 +926,10 @@ function addTabText(text, speaktype, tab, creatureName)
     label = g_ui.createWidget('ConsoleLabel', consoleBuffer)
   end
   label:setId('consoleLabel' .. consoleBuffer:getChildCount())
-  consoleTabBar:blinkTab(tab)
+  if consoleTabBar:getCurrentTab() ~= tab and not tab.blinking then
+    tab.blinking = true
+    g_effects.startBlink(tab)
+  end
   local highlightData
 
   if speaktype.npcChat and (g_game.getCharacterName() ~= creatureName or g_game.getCharacterName() == 'Account Manager') then
@@ -1048,7 +1051,7 @@ function addTabText(text, speaktype, tab, creatureName)
 end
 
 function removeTabLabelByName(tab, name)
-  local panel = consoleTabBar:getTabPanel(tab)
+  local panel = tab.tabPanel
   local consoleBuffer = panel:getChildById('consoleBuffer')
   for _,label in pairs(consoleBuffer:getChildren()) do
     if label.name == name then
@@ -1073,7 +1076,7 @@ function processChannelTabMenu(tab, mousePos, mouseButton)
   if consoleTabBar:getCurrentTab() == tab then
     menu:addOption(tr('Clear Messages'), function() clearChannel(consoleTabBar) end)
     menu:addOption(tr('Save Messages'), function()
-      local panel = consoleTabBar:getTabPanel(tab)
+      local panel = tab.tabPanel
       local consoleBuffer = panel:getChildById('consoleBuffer')
       local lines = {}
       for _,label in pairs(consoleBuffer:getChildren()) do
