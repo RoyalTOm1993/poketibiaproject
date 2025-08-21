@@ -134,16 +134,15 @@ local function tabBlink(tab, step)
 end
 
 -- space reserved for the pin icon
-local PIN_ICON_W   = 9
-local PIN_ICON_H   = 8
-local PIN_ICON_GAP = 4   -- gap between icon and text
-local PIN_ICON_ML  = 6   -- margin left from tab edge to icon
+local PIN_ICON_W   = 15
+local PIN_ICON_H   = 15
+local PIN_ICON_GAP = 3   -- respiro entre ícone e texto
+local PIN_ICON_ML  = 6   -- margem interna da borda até o ícone
+local PIN_TEXT_NUDGE = 3   -- empurrãozinho visual no texto
 
 local function recalcTabWidth(tab)
+  -- largura = texto + paddings. Ícone não entra aqui!
   local w = tab:getTextSize().width + tab:getPaddingLeft() + tab:getPaddingRight()
-  if tab.pinned then
-    w = w + PIN_ICON_W + PIN_ICON_GAP
-  end
   tab:setWidth(w)
 end
 
@@ -419,13 +418,28 @@ function UIMoveableTabBar:isPinned(tab)
   return tab and tab.pinned or false
 end
 
+local function ensurePinPadding(tab)
+  -- o mínimo necessário para caber ícone (ML + W + GAP)
+  local need = PIN_ICON_ML + PIN_ICON_W + PIN_ICON_GAP
+  local base = tab._basePaddingLeft or tab:getPaddingLeft()
+
+  -- se o padding original já comporta o ícone, só fazemos o "empurrão" visual
+  local target = base
+  if base < need then
+    target = need
+  end
+  tab:setPaddingLeft(target + PIN_TEXT_NUDGE)
+end
+
 -- opts.append: when true, insert at end of pinned block; otherwise go to index 1
 function UIMoveableTabBar:pinTab(tab, opts)
   if not tab or tab.pinned then return end
   tab.pinned = true
   tab:setDraggable(false)
-  if not tab._basePaddingLeft then tab._basePaddingLeft = tab:getPaddingLeft() end
-  tab:setPaddingLeft(tab._basePaddingLeft + PIN_ICON_W + PIN_ICON_GAP + PIN_ICON_ML)
+  if not tab._basePaddingLeft then
+    tab._basePaddingLeft = tab:getPaddingLeft()
+  end
+  ensurePinPadding(tab)
   if tab.pinIcon then tab.pinIcon:show() end
   
   local tabs = self.tabs
