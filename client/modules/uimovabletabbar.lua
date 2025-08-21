@@ -133,6 +133,20 @@ local function tabBlink(tab, step)
   end
 end
 
+-- space reserved for the pin icon
+local PIN_ICON_W   = 9
+local PIN_ICON_H   = 8
+local PIN_ICON_GAP = 4   -- gap between icon and text
+local PIN_ICON_ML  = 6   -- margin left from tab edge to icon
+
+local function recalcTabWidth(tab)
+  local w = tab:getTextSize().width + tab:getPaddingLeft() + tab:getPaddingRight()
+  if tab.pinned then
+    w = w + PIN_ICON_W + PIN_ICON_GAP
+  end
+  tab:setWidth(w)
+end
+
 -- public functions
 function UIMoveableTabBar.create()
   local tabbar = UIMoveableTabBar.internalCreate()
@@ -192,9 +206,19 @@ function UIMoveableTabBar:addTab(text, panel, menuCallback)
   tab:setId('tab')
   tab:setDraggable(self.tabsMoveable)
   tab:setText(text)
+  -- store original padding and prepare pin icon
+  tab._basePaddingLeft = tab:getPaddingLeft()
+  tab.pinIcon = g_ui.createWidget('TabPinIcon', tab)
+  tab.pinIcon:hide()
+  tab.pinIcon:setPhantom(true)
+  tab.pinIcon:setSize({ width = PIN_ICON_W, height = PIN_ICON_H })
+  tab.pinIcon:addAnchor(AnchorLeft, 'parent', AnchorLeft)
+  tab.pinIcon:addAnchor(AnchorVerticalCenter, 'parent', AnchorVerticalCenter)
+  tab.pinIcon:setMarginLeft(PIN_ICON_ML)
   addEvent(function()
     if tab and not tab:isDestroyed() then
-      tab:setWidth(tab:getTextSize().width + tab:getPaddingLeft() + tab:getPaddingRight())
+      recalcTabWidth(tab)
+
       updateTabs(self)
     end
   end)
@@ -400,6 +424,9 @@ function UIMoveableTabBar:pinTab(tab, opts)
   if not tab or tab.pinned then return end
   tab.pinned = true
   tab:setDraggable(false)
+  if not tab._basePaddingLeft then tab._basePaddingLeft = tab:getPaddingLeft() end
+  tab:setPaddingLeft(tab._basePaddingLeft + PIN_ICON_W + PIN_ICON_GAP + PIN_ICON_ML)
+  if tab.pinIcon then tab.pinIcon:show() end
   
   local tabs = self.tabs
   local prev = table.find(tabs, tab)
@@ -409,6 +436,7 @@ function UIMoveableTabBar:pinTab(tab, opts)
   local newIndex = (opts and opts.append) and (pinnedCount + 1) or 1
   table.insert(tabs, newIndex, tab)
 
+  recalcTabWidth(tab)
   updateTabs(self)
 end
 
@@ -416,6 +444,10 @@ function UIMoveableTabBar:unpinTab(tab)
   if not tab or not tab.pinned then return end
   tab.pinned = false
   tab:setDraggable(self.tabsMoveable)
+  if tab._basePaddingLeft then
+    tab:setPaddingLeft(tab._basePaddingLeft)
+  end
+  if tab.pinIcon then tab.pinIcon:hide() end
   
   local tabs = self.tabs
   local prev = table.find(tabs, tab)
@@ -424,6 +456,7 @@ function UIMoveableTabBar:unpinTab(tab)
     table.insert(tabs, #tabs + 1, tab)
   end
 
+  recalcTabWidth(tab)
   updateTabs(self)
 end
 
