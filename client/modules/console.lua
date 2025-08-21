@@ -131,18 +131,18 @@ local function settingsGetNumber(key, defaultValue)
 end
 
 -- =========================================================
---                HELPERS / NOVA MECÂNICA ENTER
+--                HELPERS / NOVA MECNICA ENTER
 -- =========================================================
 local function isBlank(s)
   return not s or s:match('^%s*$') ~= nil
 end
 
 -- Flag para impedir que o Enter global esconda o chat imediatamente
--- após o envio de mensagem (mesmo frame).
+-- aps o envio de mensagem (mesmo frame).
 local suppressGlobalEnter = false
 
 -- Detecta se existe OUTRO input focado (respeita Regra 4).
--- NÃO usa g_ui.getFocusedWidget (não existe nesse client).
+-- NO usa g_ui.getFocusedWidget (no existe nesse client).
 local function isOtherTextInputFocused()
   if not rootWidget then return false end
   local w = rootWidget:getFocusedChild()
@@ -180,11 +180,11 @@ local function handleGlobalEnter()
     return
   end
 
-  -- chat visível
+  -- chat visvel
   if not consoleTextEdit then return end
   local txt = consoleTextEdit:getText()
 
-  -- Regra 1: se NÃO houver texto -> ocultar chat
+  -- Regra 1: se NO houver texto -> ocultar chat
   if isBlank(txt) then
     hideAndShowChat(true)
     return
