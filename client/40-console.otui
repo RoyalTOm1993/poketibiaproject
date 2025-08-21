@@ -20,14 +20,6 @@ ConsoleTabBar < MoveableTabBar
   margin-top: 8
   tab-spacing: 4
   movable: true
-  tab-button-image: /images/ui/tabbutton_rounded2
-  tab-button-hover-image: /images/ui/tabbutton_rounded3
-  tab-button-pressed-image: /images/ui/tabbutton_rounded4
-  tab-button-checked-image: /images/ui/tabbutton_rounded5
-  tab-button-image-fixed: /images/ui/tabbutton_rounded5_fixed
-  tab-button-hover-image-fixed: /images/ui/tabbutton_rounded3_fixed
-  tab-button-pressed-image-fixed: /images/ui/tabbutton_rounded4_fixed
-  tab-button-checked-image-fixed: /images/ui/tabbutton_rounded5_fixed
 
 ConsoleTabBarPanel < MoveableTabBarPanel
   ScrollablePanel

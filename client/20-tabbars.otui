@@ -1,6 +1,12 @@
 MoveableTabBar < UIMoveableTabBar
   height: 32
   movable: true
+  pin-icon-path: /images/ui/tabpin
+  pin-icon-dx: 4
+  pin-icon-dy: -1
+  pin-icon-width: 15
+  pin-icon-height: 14
+  pin-text-dx: 10
 
 MoveableTabBarPanel < Panel
 
