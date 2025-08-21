@@ -1,5 +1,5 @@
 ConsoleLabel < UITextEdit
-  font: manrope-medium-11px
+  font: manrope-medium-12px
   height: 14
   text-wrap: true
   text-auto-resize: true
@@ -250,13 +250,16 @@ ConsoleContentPanel < Panel
 
 ConsoleTextEdit < TextEdit
   id: consoleTextEdit
+  font: manrope-medium-12px
+  selection-color: #111416
+  selection-background-color: #999999
   anchors.left: parent.left
   anchors.right: parent.right
   anchors.bottom: parent.bottom
   margin: 0 8 7 8
   size: 20 30
   padding-left: 14
-  padding-top: 8
+  padding-top: 6
   text-offset: 0 0
   shift-navigation: true
   max-length: 255
