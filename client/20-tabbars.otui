@@ -1,5 +1,5 @@
 MoveableTabBar < UIMoveableTabBar
-  height: 30
+  height: 32
   movable: true
 
 MoveableTabBarPanel < Panel
@@ -51,12 +51,3 @@ ConsoleTabBarButton < MoveableTabBarButton
   clipping: true
 
 TabBarVerticalButton < UIButton
-
-TabPinIcon < UIWidget
-  size: 9 8
-  image-source: /images/ui/tabpin
-  anchors.left: parent.left
-  anchors.verticalCenter: parent.verticalCenter
-  margin-left: 6
-  phantom: true
-  opacity: 1.0
