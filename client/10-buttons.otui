@@ -1,5 +1,5 @@
 Button < UIButton
-  font: arial-medium-14px
+  font: manrope-medium-14px
   color: #68b4db
   size: 138 44
   text-offset: 0 1
@@ -188,7 +188,7 @@ ButtonGuild < UIButton
     change-cursor-image: false
 
 BorderedButton < UIButton
-  font: arial-medium-14px
+  font: manrope-medium-14px
   color: #68b4db
   size: 138 44
   text-offset: 0 1

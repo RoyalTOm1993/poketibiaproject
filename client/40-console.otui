@@ -251,13 +251,13 @@ ConsoleContentPanel < Panel
 ConsoleTextEdit < TextEdit
   id: consoleTextEdit
   font: manrope-medium-12px
+  color: #faf7f7ff
   selection-color: #111416
   selection-background-color: #999999
   anchors.left: parent.left
   anchors.right: parent.right
   anchors.bottom: parent.bottom
-  margin: 0 8 7 8
-  size: 20 30
+  margin: 0 8 8 8
   padding-left: 14
   padding-top: 6
   text-offset: 0 0
@@ -266,6 +266,9 @@ ConsoleTextEdit < TextEdit
   !placeholder: tr('Write here...')
   image-source: /images/ui/text_edit1
   clipping: true
+  orientation: horizontal
+  width: 20
+  height: 30
 
   @onHoverChange: |
     local hasText = self:getText():len() > 0

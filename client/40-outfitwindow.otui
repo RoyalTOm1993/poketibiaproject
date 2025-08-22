@@ -133,7 +133,7 @@ OutfitWindow < UIWindow
   image-source: /images/ui/escolherRoupaWindow
   size: 750 582
   text: CUSTOMIZAO DE PERSONAGEM
-  font: future-earth-26
+  font: manrope-medium-26px
   text-offset: -10 14
   color: #aeebff
   @onEnter: modules.game_outfit.accept()
