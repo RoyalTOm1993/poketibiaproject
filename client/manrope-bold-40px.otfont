@@ -1,0 +1,6 @@
+Font
+  name: manrope-bold-40px
+  texture: manrope-bold-40px
+  height: 55
+  glyph-size: 55 55
+  space-width: 3
