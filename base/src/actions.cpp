@@ -220,9 +220,14 @@ bool Actions::registerLuaEvent(Action* event)
 	}
 
 	const std::string& scriptFile = scriptInterface.getFileById(event->getScriptId());
-	
-	std::cout << "[Warning - Actions::registerLuaEvent] There is no id / aid / uid set for this event (" << scriptFile << ")" << std::endl;
-	return false;
+
+       if (scriptFile != "(Unknown scriptfile)") {
+               std::cout << "[Warning - Actions::registerLuaEvent] There is no id / aid / uid set for this event (" << scriptFile
+                         << ")" << std::endl;
+       } else {
+               std::cout << "[Warning - Actions::registerLuaEvent] There is no id / aid / uid set for this event" << std::endl;
+       }
+       return false;
 }
 ReturnValue Actions::canUse(const Player* player, const Position& pos)
 {
