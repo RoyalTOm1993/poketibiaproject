@@ -1,7 +1,7 @@
 MainWindow
   image-source:  assets/background
   text: RESGATAR CÓDIGO
-  font: future-earth-32
+  font: manrope-bold-30px
   color: #66c8ff
   size: 528 280
   @onEscape: self:hide()
@@ -33,7 +33,7 @@ MainWindow
     
   SpaceGreenButton
     id: resgate
-    font: future-earth-18
+    font: manrope-bold-18px
     color: #d9fead
     anchors.horizontalCenter: parent.horizontalCenter
     anchors.bottom: parent.bottom
@@ -43,7 +43,7 @@ MainWindow
 
   UITextEdit
     id: code
-    font: future-earth-40
+    font: manrope-medium-40px
     color: #66c8ff
     size: 240 50
     margin-top: 10

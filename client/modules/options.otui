@@ -51,7 +51,7 @@ SpaceConfiguracoes
     id: topText
     text-auto-resize: true
     !text: tr('Options')
-    font: arial-bold-30px
+    font: manrope-bold-30px
     anchors.horizontalCenter: parent.horizontalCenter
     anchors.top: parent.top
     color: #ffffff

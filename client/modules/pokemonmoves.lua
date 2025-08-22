@@ -142,23 +142,30 @@ function stopAllEvents()
 end
 
 function createUIMoves()
-	local width = side == 'horizontal' and ((38 * #spells) + 60) or 58
-	local height = side == 'horizontal' and 58 or ((38 * #spells) + 60)
-	local player = g_game.getLocalPlayer()
-	local level = player:getLevel()
-
 	if not spellWindow or not mainWindow then return end
 
-	if side == 'horizontal' then
-		mainWindow:setImageSource("background_horizontal")
-	else
-		mainWindow:setImageSource("background_vertical")
-	end
+        if #spells == 0 then
+                stopAllEvents()
+                spellWindow:destroyChildren()
+                mainWindow:hide()
+                return
+        end
 
-	mainWindow:show()
+        local width = side == 'horizontal' and ((38 * #spells) + 60) or 58
+        local height = side == 'horizontal' and 58 or ((38 * #spells) + 60)
+        local player = g_game.getLocalPlayer()
+        local level = player:getLevel()
 
-	stopAllEvents()
-	spellWindow:destroyChildren()
+        if side == 'horizontal' then
+                mainWindow:setImageSource("background_horizontal")
+        else
+                mainWindow:setImageSource("background_vertical")
+        end
+
+        mainWindow:show()
+
+        stopAllEvents()
+        spellWindow:destroyChildren()
 	for moveId, moveInfo in ipairs(spells) do
 		local spellWidget = g_ui.createWidget('SpellButton', spellWindow)
 		spellWidget:setId(moveId)

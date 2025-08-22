@@ -27,7 +27,6 @@ StatsPanel < Panel
 
     Panel
       id: box
-      image-source: /images/ui/menusuperior
       anchors.fill: parent
       layout:
         type: horizontalBox

@@ -7,7 +7,7 @@ local received = false
 function init()
 	mainWindow = g_ui.loadUI("task_kill", modules.game_interface.getRootPanel())
 	mainWindow:hide()
-	btn = modules.client_topmenu.addRightGameToggleButton('task_kill', tr('Task Kill'), 'icon', toggle)
+	btn = modules.client_topmenu.addRightGameToggleButton('task_kill', tr('Task Kill'), 'icon', toggle, false, 7)
 	ProtocolGame.registerExtendedOpcode(opcode, receiveOpcode)
 end
 
@@ -113,7 +113,7 @@ function receiveOpcode(protocol, opcode, buffer)
 			if not task.access and not done then
 				widget.sobrepor:setVisible(true)
 				widget.sobrepor:raise()
-				widget.sobrepor.requisitoText:setText("Para liberar a missão: " .. task.descRequeriment)
+				widget.sobrepor.requisitoText:setText("Para liberar a misssão: " .. task.descRequeriment)
 			end
 
 		end

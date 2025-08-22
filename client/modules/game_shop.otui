@@ -2,7 +2,7 @@ quantityWindow < UIWindow
   anchors.centerIn: parent
   image-source: assets/buyFundo
   size: 235 157
-  font: future-earth-18
+  font: manrope-bold-18px
   @onEscape: self:destroy()
   Label
     id: precoItem

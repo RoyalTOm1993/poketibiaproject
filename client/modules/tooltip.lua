@@ -12,31 +12,50 @@ local currentAdvancedHoveredWidget
 local evoEvent = nil
 local evoCode = 0
 local itemsAdvancedTooltip = true
+local moveTooltipEvent
 
 -- private functions
 local function moveToolTip(first)
-	if not first and (not toolTipLabel:isVisible() or toolTipLabel:getOpacity() < 0.1) then return end
+	if type(first) ~= 'boolean' then
+    first = false
+  end
+  if not first and (not toolTipLabel:isVisible() or toolTipLabel:getOpacity() < 0.1) then return end
 
-	local pos = g_window.getMousePosition()
-	local windowSize = g_window.getSize()
-	local labelSize = toolTipLabel:getSize()
+  local pos = g_window.getMousePosition()
+  local windowSize = g_window.getSize()
+  local labelSize = toolTipLabel:getSize()
 
-	pos.x = pos.x + 1
-	pos.y = pos.y + 1
+  pos.x = pos.x + 1
+  pos.y = pos.y + 1
 
-	if windowSize.width - (pos.x + labelSize.width) < 10 then
-		pos.x = pos.x - labelSize.width - 3
-	else
-		pos.x = pos.x + 10
-	end
+  if windowSize.width - (pos.x + labelSize.width) < 10 then
+    pos.x = pos.x - labelSize.width - 3
+  else
+    pos.x = pos.x + 10
+  end
 
-	if windowSize.height - (pos.y + labelSize.height) < 10 then
-		pos.y = pos.y - labelSize.height - 3
-	else
-		pos.y = pos.y + 10
-	end
+  if windowSize.height - (pos.y + labelSize.height) < 10 then
+    pos.y = pos.y - labelSize.height - 3
+  else
+    pos.y = pos.y + 10
+  end
 
-	toolTipLabel:setPosition(pos)
+  if moveTooltipEvent then
+    removeEvent(moveTooltipEvent)
+    moveTooltipEvent = nil
+  end
+
+  local function float()
+    local curPos = toolTipLabel:getPosition()
+    curPos.x = curPos.x + (pos.x - curPos.x) * 0.5
+    curPos.y = curPos.y + (pos.y - curPos.y) * 0.5
+    toolTipLabel:setPosition(curPos)
+    if math.abs(pos.x - curPos.x) > 1 or math.abs(pos.y - curPos.y) > 1 then
+      moveTooltipEvent = scheduleEvent(float, 16)
+    end
+  end
+
+  float()
 end
 
 local function advancedMoveToolTip(first)
@@ -101,19 +120,19 @@ end
 
 -- public functions
 function g_tooltip.init()
-	connect(g_game, { changeHoverItem = onChangeHoverItem })
-	connect(UIWidget, {
-		onStyleApply = onWidgetStyleApply,
-		onHoverChange = onWidgetHoverChange
-	})
-	addEvent(function()
-		toolTipLabel = g_ui.createWidget('UILabel', rootWidget)
-		toolTipLabel:setId('toolTip')
-		toolTipLabel:setBackgroundColor('#111111cc')
-		toolTipLabel:setTextAlign(AlignCenter)
-		toolTipLabel:hide()
-		toolTipLabel.onMouseMove = function() moveToolTip() end
-	end)
+  connect(g_game, { changeHoverItem = onChangeHoverItem })
+  connect(UIWidget, {
+    onStyleApply = onWidgetStyleApply,
+    onHoverChange = onWidgetHoverChange
+  })
+  connect(rootWidget, { onMouseMove = moveToolTip })
+  addEvent(function()
+    toolTipLabel = g_ui.createWidget('UILabel', rootWidget)
+    toolTipLabel:setId('toolTip')
+    toolTipLabel:setBackgroundColor('#111111cc')
+    toolTipLabel:setTextAlign(AlignCenter)
+    toolTipLabel:hide()
+  end)
 end
 
 function onChangeHoverItem(item, code)
@@ -144,16 +163,22 @@ end
 
 function g_tooltip.terminate()
 	disconnect(g_game, { changeHoverItem = onChangeHoverItem })
-	disconnect(UIWidget, {
-		onStyleApply = onWidgetStyleApply,
-		onHoverChange = onWidgetHoverChange
-	})
+  disconnect(UIWidget, {
+    onStyleApply = onWidgetStyleApply,
+    onHoverChange = onWidgetHoverChange
+  })
+  disconnect(rootWidget, { onMouseMove = moveToolTip })
 
-	currentHoveredWidget = nil
-	toolTipLabel:destroy()
-	toolTipLabel = nil
+  if moveTooltipEvent then
+    removeEvent(moveTooltipEvent)
+    moveTooltipEvent = nil
+  end
 
-	g_tooltip = nil
+  currentHoveredWidget = nil
+  toolTipLabel:destroy()
+  toolTipLabel = nil
+
+  g_tooltip = nil
 end
 
 function g_advancedTooltip.terminate()

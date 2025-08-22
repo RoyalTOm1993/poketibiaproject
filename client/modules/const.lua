@@ -220,12 +220,9 @@ TextColors = {
   red       = '#f55e5e', --'#c83200'
   orange    = '#f36500', --'#c87832'
   yellow    = '#ffff00', --'#e6c832'
-  green     = '#00EB00', --'#3fbe32'
+  green     = '#04d804ff', --'#3fbe32'
   lightblue = '#5ff7f7',
   blue      = '#9f9dfd',
-  --blue1     = '#6e50dc',
-  --blue2     = '#3264c8',
-  --blue3     = '#0096c8',
   white     = '#ffffff', --'#bebebe'
 }
 

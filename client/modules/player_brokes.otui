@@ -24,7 +24,7 @@ pokemonChildPanel < UIWidget
     margin-bottom: 25
     anchors.bottom: parent.bottom
     text-auto-resize: true
-    font: future-earth-18
+    font: manrope-bold-18px
     color: #aeebff
   UIWidget
     id: pokemonName
@@ -101,7 +101,7 @@ pokeWindow < UIWindow
   UILabel
     id: pokemonName
     text-auto-resize: true
-    font: future-earth-26
+    font: manrope-medium-26px
     color: #66c8ff
     anchors.top: parent.top
     anchors.horizontalCenter: panelBestBalls.horizontalCenter
@@ -115,7 +115,7 @@ pokeWindow < UIWindow
   UILabel
     id: pontuacao
     text-auto-resize: true
-    font: future-earth-14
+    font: manrope-medium-14px
     color: #aeebff
     anchors.top: prev.bottom
     margin-top: 10
@@ -137,7 +137,7 @@ pokeWindow < UIWindow
     id: topText
     text-auto-resize: true
     !text: tr('POKEBOLAS USADAS')
-    font: future-earth-18
+    font: manrope-bold-18px
     anchors.horizontalCenter: parent.horizontalCenter
     anchors.top: parent.top
     color: #aeebff
@@ -149,7 +149,7 @@ MainWindow
   size: 555 466
   text: INFORMAÇÕES DE CAPTURA
   color: #aeebff
-  font: future-earth-18
+  font: manrope-bold-18px
   text-offset: 10 12
   @onEscape: self:hide()
   UIWidget
@@ -204,7 +204,7 @@ MainWindow
     anchors.horizontalCenter: parent.horizontalCenter
     anchors.bottom: parent.bottom
     margin-bottom: 3
-    font: future-earth-26
+    font: manrope-medium-26px
 
   UIWidget
     id: doubleLeft

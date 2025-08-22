@@ -280,6 +280,7 @@ function UIMoveableTabBar:addTab(text, panel, menuCallback)
       recalcTabWidth(tab)
       updateTabs(self)
       layoutPinIcon(tab)
+      self:scrollTabs(self.totalWidth)
     end
   end)
 

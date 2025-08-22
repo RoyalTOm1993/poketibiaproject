@@ -2,7 +2,7 @@ CountWindow < MainWindow
   id: countWindow
   !text: tr('Move Stackable Item')
   text-offset: 0 13
-  font: window
+  font: manrope-bold-11px
   size: 196 110
 
   SpinBox

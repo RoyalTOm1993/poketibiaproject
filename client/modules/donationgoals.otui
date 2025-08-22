@@ -22,7 +22,7 @@ MainWindow
   text: Donation Goals
   text-align: top
   text-offset: -10 5
-  font: future-earth-26
+  font: manrope-bold-26px
   UIWidget
     id: exitButton
     image-source: images/closeButton
@@ -36,7 +36,7 @@ MainWindow
     text: First
     text-align: top
     text-offset: -10 5
-    font: future-earth-26
+    font: manrope-bold-26px
     id: firstGoal
     image-source: images/window_secondary
     anchors.verticalCenter: parent.verticalCenter
@@ -51,7 +51,7 @@ MainWindow
       margin-top: -45
     UILabel
       text: Meta Pessoal
-      font: future-earth-18
+      font: sono_medium_18
       anchors.bottom: barraVazia.top
       anchors.horizontalCenter: barraVazia.horizontalCenter
       margin-bottom: 10
@@ -97,7 +97,7 @@ MainWindow
     text: Second
     text-align: top
     text-offset: -10 5
-    font: future-earth-26
+    font: manrope-bold-26px
     image-source: images/window_secondary
     anchors.verticalCenter: parent.verticalCenter
     anchors.left: firstGoal.right
@@ -111,7 +111,7 @@ MainWindow
       margin-top: -45
     UILabel
       text: Meta Pessoal
-      font: future-earth-18
+      font: sono_medium_18
       anchors.bottom: barraVazia.top
       anchors.horizontalCenter: barraVazia.horizontalCenter
       margin-bottom: 10
@@ -157,7 +157,7 @@ MainWindow
     text: Third
     text-align: top
     text-offset: -10 5
-    font: future-earth-26
+    font: manrope-bold-26px
     image-source: images/window_secondary
     anchors.verticalCenter: parent.verticalCenter
     anchors.left: secondGoal.right
@@ -171,7 +171,7 @@ MainWindow
       margin-top: -45
     UILabel
       text: Meta Pessoal
-      font: future-earth-18
+      font: sono_medium_18
       anchors.bottom: barraVazia.top
       anchors.horizontalCenter: barraVazia.horizontalCenter
       margin-bottom: 10
