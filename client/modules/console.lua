@@ -62,6 +62,7 @@ ChannelEventFormats = {
 MAX_HISTORY = 500
 MAX_LINES = 100
 HELP_CHANNEL = 9
+FLOATING_MAX_LINES = 15
 
 consolePanel = nil
 consoleContentPanel = nil
@@ -89,6 +90,8 @@ dragOffset = nil
 topResizeBorder = nil
 rightResizeBorder = nil
 lastNpcName = nil
+floatingConsolePanel = nil
+floatingConsoleBuffer = nil
 
 -- pinned tabs persistence
 local pinsToRestore = nil
@@ -251,6 +254,10 @@ function init()
   topResizeBorder.minimum = 122
   rightResizeBorder.minimum = 448
   consoleTabBar:setContentWidget(consoleContentPanel)
+  floatingConsolePanel = g_ui.createWidget('FloatingConsolePanel', modules.game_interface.getRootPanel())
+  floatingConsolePanel:setVisible(false)
+  floatingConsolePanel:getChildById('consoleScrollBar'):hide()
+  floatingConsoleBuffer = floatingConsolePanel:getChildById('consoleBuffer')
   connect(consoleTextEdit, {
     onFocusChange = function(_, focused)
       if not focused and consolePanel:isVisible() then
@@ -721,12 +728,12 @@ function openPlayerReportRuleViolationWindow()
   end
 end
 
-function addTab(name, focus)
+function addTab(name, focus, skipScroll)
   local tab = getTab(name)
   if tab then -- is channel already open
     if not focus then focus = true end
   else
-    tab = consoleTabBar:addTab(name, nil, processChannelTabMenu)
+    tab = consoleTabBar:addTab(name, nil, processChannelTabMenu, skipScroll)
     if pinsWantedSet and pinsWantedSet[name] then
       applyPinsBulk()
     end
@@ -801,7 +808,7 @@ end
 function addChannel(name, id)
   channels[id] = name
   local focus = not table.find(ignoredChannels, id)
-  local tab = addTab(name, focus)
+  local tab = addTab(name, focus, not focus)
   tab.channelId = id
   return tab
 end
@@ -877,6 +884,37 @@ function getHighlightedText(text)
   until not(string.find(text, "{([^}]+)}", tmpData[#tmpData-1]))
 
   return tmpData
+end
+
+local function addFloatingText(tab, displayText, speaktype, coloredText, highlightData, showTimestamp)
+  if not floatingConsolePanel or not floatingConsolePanel:isVisible() then return end
+  local channelName = tab:getText()
+  local prefix = '[' .. channelName .. ']: '
+  local label = g_ui.createWidget('ConsoleLabel', floatingConsoleBuffer)
+  if showTimestamp then
+    local pieces = { prefix, speaktype.color }
+    if coloredText then
+      for i = 1, #coloredText do
+        table.insert(pieces, coloredText[i])
+      end
+    else
+      table.insert(pieces, displayText)
+      table.insert(pieces, speaktype.color)
+    end
+    label:setColoredText(pieces)
+  elseif highlightData and #highlightData > 2 then
+    local pieces = { prefix, speaktype.color }
+    for i = 1, #highlightData do
+      table.insert(pieces, highlightData[i])
+    end
+    label:setColoredText(pieces)
+  else
+    label:setText(prefix .. displayText)
+    label:setColor(speaktype.color)
+  end
+  if floatingConsoleBuffer:getChildCount() > FLOATING_MAX_LINES then
+    floatingConsoleBuffer:getFirstChild():destroy()
+  end
 end
 
 function getNewHighlightedText(text, color, highlightColor)
@@ -1048,6 +1086,7 @@ function addTabText(text, speaktype, tab, creatureName)
 
     return true
   end
+  addFloatingText(tab, displayText, speaktype, coloredText, highlightData, showTimestamp)
 end
 
 function removeTabLabelByName(tab, name)
@@ -1839,8 +1878,8 @@ function removeIgnoreListPanel(name)
 end
 
 function online()
-  defaultTab = addTab(tr('Default'), true)
-  serverTab = addTab(tr('Server Log'), false)
+  defaultTab = addTab(tr('Default'), true, true)
+  serverTab = addTab(tr('Server Log'), false, true)
   -- Reidratar pins agora que ja temos o nome do personagem
   pinsToRestore = {}
   pinsWantedSet = nil
@@ -1932,6 +1971,17 @@ function hideAndShowChat(visible)
     consoleTextEdit:clearText()
     chatButton:setVisible(visible)
     consolePanel:setVisible(not visible)
+    if visible then
+      floatingConsolePanel:setSize(consolePanel:getSize())
+      floatingConsolePanel:setPosition(consolePanel:getPosition())
+      floatingConsolePanel:raise()
+      floatingConsolePanel:setVisible(true)
+    else
+      floatingConsolePanel:setVisible(false)
+      if floatingConsoleBuffer then
+        floatingConsoleBuffer:destroyChildren()
+      end
+    end
     if not visible then
       enableChat()
     else

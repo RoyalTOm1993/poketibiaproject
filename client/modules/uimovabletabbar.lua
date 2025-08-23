@@ -254,7 +254,7 @@ function UIMoveableTabBar:setTabSpacing(tabSpacing)
   updateMargins(self)
 end
 
-function UIMoveableTabBar:addTab(text, panel, menuCallback)
+function UIMoveableTabBar:addTab(text, panel, menuCallback, skipScroll)
   if panel == nil then
     panel = g_ui.createWidget(self:getStyleName() .. 'Panel')
     panel:setId('tabPanel')
@@ -280,7 +280,9 @@ function UIMoveableTabBar:addTab(text, panel, menuCallback)
       recalcTabWidth(tab)
       updateTabs(self)
       layoutPinIcon(tab)
-      self:scrollTabs(self.totalWidth)
+      if not skipScroll then
+        self:scrollTabs(self.totalWidth)
+      end
     end
   end)
 
