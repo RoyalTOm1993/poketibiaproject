@@ -209,15 +209,21 @@ IgnoreButton < ChatIconButton
     icon-color: #999999
 
 ChatButton < ChatIconButton
-  icon: /images/game/console/unlocked
   anchors.right: parent.right
   anchors.top: parent.top
   margin-right: 7
   margin-top: 8
-  !tooltip: tr('Hide chat')
-  @onClick: hideAndShowChat(true)
+  @onClick: modules.game_console.toggleChatLock(self)
   $mobile:
     visible: false
+
+  $!on:
+    icon: /images/game/console/unlocked
+    !tooltip: tr('Lock chat')
+
+  $on:
+    icon: /images/game/console/locked
+    !tooltip: tr('Unlock chat')
 
   $hover:
     icon-color: #ffd54a
