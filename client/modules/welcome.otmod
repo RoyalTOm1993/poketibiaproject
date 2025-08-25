@@ -1,0 +1,8 @@
+Module
+  name: game_welcome
+  description: Show welcome message on login
+  author: Ewerton
+  sandboxed: true
+  scripts: [ welcome ]
+  @onLoad: init()
+  @onUnload: terminate()
