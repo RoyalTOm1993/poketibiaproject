@@ -1,4 +1,26 @@
-# AGENTS
+---
+# Guard rails para os agentes
+# Objetivo: impedir que o agente aplique patches automáticos durante a inicialização
+# Resultado esperado: o agente só analisa e sugere, não escreve no repo.
+policy:
+  apply_patches: false
+  write_to_repo: false
+  run_mode: manual   # não rodar tarefas de escrita automaticamente
+  during_setup: no_edits
+---
+
+# Instruções obrigatórias (leitura por agentes)
+
+**NÃO MODIFICAR ARQUIVOS DO REPOSITÓRIO.**
+- Trate o repositório como *read-only*.
+- Não aplicar `patch`, `write`, `format`, `move`, `delete` ou qualquer ação que altere arquivos.
+- Durante a inicialização (setup/build/postCreate), **não realizar nenhuma mudança**.
+- Se for necessário sugerir mudanças, **apenas gere um plano ou um diff no texto**, sem aplicar.
+- Aguarde instruções humanas explícitas dizendo "pode aplicar" antes de propor qualquer patch.
+
+## Tarefas
+- nome: noop
+  descrição: Apenas analisar e responder perguntas. Não editar arquivos.
 
 ## Escopo
 Aplica-se a todo o repositório Poketibia (TFS 1.4 + OTCv8 + RevScript).
