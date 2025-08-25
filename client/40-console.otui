@@ -1,5 +1,5 @@
 ConsoleLabel < UITextEdit
-  font: verdana-11px-rounded
+  font: manrope-medium-14px
   height: 14
   text-wrap: true
   text-auto-resize: true
@@ -338,9 +338,13 @@ RightResizeBorder < ResizeBorder
   background-color: #00000000
 
 FloatingConsolePanel < ConsoleTabBarPanel
+  font: verdana-11px-rounded
   phantom: true
   focusable: false
   draggable: false
+
+  ScrollablePanel
+    id: consoleBuffer
 
   VerticalScrollBar
     id: consoleScrollBar
