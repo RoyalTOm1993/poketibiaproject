@@ -2206,6 +2206,9 @@ void ProtocolGame::parseTalk(const InputMessagePtr& msg)
     }
 
     Otc::MessageMode mode = Proto::translateMessageModeFromServer(msg->getU8());
+    if ((mode == Otc::MessageBarkLow || mode == Otc::MessageBarkLoud) && level > 0) {
+		mode = Otc::MessageSpell;
+	}
     int channelId = 0;
     Position pos;
 
