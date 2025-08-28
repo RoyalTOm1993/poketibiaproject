@@ -1,38 +1,27 @@
-function onUse(cid, item, fromPosition, itemEx, toPosition)
-  if not isPlayer(cid) then
-    return false
+function onStepIn(cid, item, position, fromPosition)
+  if not isPlayer(cid) then 
+    return true 
   end
 
-  -- Nome do Pokémon que você deseja verificar a presença
-  local pokemonName = "Giant G MVP"
+  local requiredStorageValue1 = 102331 -- Valor necessÃ¡rio para a primeira storage (resets)
+  local requiredValueResets = 3 -- Valor mÃ­nimo necessÃ¡rio na storage 102131 (resets)
 
-  -- Define a distância máxima em tiles para verificar a presença do Pokémon
-  local maxDistance = 3
+  local resets = getPlayerStorageValue(cid, requiredStorageValue1)
 
-  -- Defina as informações do "Mech Genesect" a serem verificadas
-  local monsters = {
-    {pos = {x = 3046, y = 2967, z = 7}, name = "Giant G MVP"}
-  }
+  local message = "VocÃª precisa de:"
 
-  for _, monsterinfo in ipairs(monsters) do
-    local spectator = getSpectators(monsterinfo.pos, 3, 3, false)
-    for _, v in ipairs(spectator) do
-      if isCreature(v) and getCreatureName(v) == monsterinfo.name then
-        local playerPos = getCreaturePosition(cid)
-        if getDistanceBetween(playerPos, monsterinfo.pos) <= maxDistance then
-          doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_ORANGE, "Você não pode usar isso com um " .. pokemonName .. " por perto.")
-          return true
-        end
-      end
-    end
+  if resets < requiredValueResets then
+    message = message .. " pelo menos 3 Mega Reset"
+  else
+    message = "VocÃª jÃ¡ tem o necessÃ¡rio para passar."
   end
 
-  -- Se não houver um Pokémon com o nome específico por perto, teleporte o jogador para o local desejado
-  local teleportPosition = {x = 3047, y = 2959, z = 7}  -- Substitua com as coordenadas do local desejado
-  doTeleportThing(cid, teleportPosition, false)
-  doSendMagicEffect(teleportPosition, CONST_ME_TELEPORT)
+  if resets < requiredValueResets then
+    doPlayerSendCancel(cid, message)
+    doSendMagicEffect(getThingPos(cid), CONST_ME_POFF)
+    doTeleportThing(cid, fromPosition, true) -- Teleporta o jogador de volta para a posiÃ§Ã£o anterior
+    return true
+  end
+
   return true
 end
-
-
-
