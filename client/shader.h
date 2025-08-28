@@ -20,33 +20,32 @@
  * THE SOFTWARE.
  */
 
-#ifndef FRAMEWORK_GRAPHICS_DECLARATIONS_H
-#define FRAMEWORK_GRAPHICS_DECLARATIONS_H
+#ifndef SHADER_H
+#define SHADER_H
 
-#include <framework/global.h>
-#include "glutil.h"
+#include "declarations.h"
 
-class Texture;
-class TextureManager;
-class Image;
-class AnimatedTexture;
-class BitmapFont;
-class CachedText;
-class FrameBuffer;
-class FrameBufferManager;
-class Shader;
-class ShaderProgram;
-class PainterShaderProgram;
+class Shader : public stdext::shared_object
+{
+public:
+    enum ShaderType {
+        Vertex,
+        Fragment
+    };
 
-typedef stdext::shared_object_ptr<Image> ImagePtr;
-typedef stdext::shared_object_ptr<Texture> TexturePtr;
-typedef stdext::shared_object_ptr<AnimatedTexture> AnimatedTexturePtr;
-typedef stdext::shared_object_ptr<BitmapFont> BitmapFontPtr;
-typedef stdext::shared_object_ptr<CachedText> CachedTextPtr;
-typedef stdext::shared_object_ptr<FrameBuffer> FrameBufferPtr;
-typedef stdext::shared_object_ptr<Shader> ShaderPtr;
-typedef stdext::shared_object_ptr<ShaderProgram> ShaderProgramPtr;
-typedef stdext::shared_object_ptr<PainterShaderProgram> PainterShaderProgramPtr;
-typedef std::vector<ShaderPtr> ShaderList;
+    Shader(ShaderType shaderType);
+    ~Shader();
+
+    bool compileSourceCode(const std::string& sourceCode);
+    bool compileSourceFile(const std::string& sourceFile);
+    std::string log();
+
+    uint getShaderId() { return m_shaderId; }
+    ShaderType getShaderType() { return m_shaderType; }
+
+private:
+    uint m_shaderId;
+    ShaderType m_shaderType;
+};
 
 #endif

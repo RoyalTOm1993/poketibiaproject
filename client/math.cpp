@@ -20,33 +20,50 @@
  * THE SOFTWARE.
  */
 
-#ifndef FRAMEWORK_GRAPHICS_DECLARATIONS_H
-#define FRAMEWORK_GRAPHICS_DECLARATIONS_H
+#include "math.h"
+#include <random>
 
-#include <framework/global.h>
-#include "glutil.h"
-
-class Texture;
-class TextureManager;
-class Image;
-class AnimatedTexture;
-class BitmapFont;
-class CachedText;
-class FrameBuffer;
-class FrameBufferManager;
-class Shader;
-class ShaderProgram;
-class PainterShaderProgram;
-
-typedef stdext::shared_object_ptr<Image> ImagePtr;
-typedef stdext::shared_object_ptr<Texture> TexturePtr;
-typedef stdext::shared_object_ptr<AnimatedTexture> AnimatedTexturePtr;
-typedef stdext::shared_object_ptr<BitmapFont> BitmapFontPtr;
-typedef stdext::shared_object_ptr<CachedText> CachedTextPtr;
-typedef stdext::shared_object_ptr<FrameBuffer> FrameBufferPtr;
-typedef stdext::shared_object_ptr<Shader> ShaderPtr;
-typedef stdext::shared_object_ptr<ShaderProgram> ShaderProgramPtr;
-typedef stdext::shared_object_ptr<PainterShaderProgram> PainterShaderProgramPtr;
-typedef std::vector<ShaderPtr> ShaderList;
-
+#ifdef _MSC_VER
+    #pragma warning(disable:4267) // '?' : conversion from 'A' to 'B', possible loss of data
 #endif
+
+namespace stdext {
+
+uint32_t adler32(const uint8_t *buffer, size_t size) {
+    size_t a = 1, b = 0, tlen;
+    while(size > 0) {
+        tlen = size > 5552 ? 5552 : size;
+        size -= tlen;
+        do {
+            a += *buffer++;
+            b += a;
+        } while (--tlen);
+
+        a %= 65521;
+        b %= 65521;
+    }
+    return (b << 16) | a;
+}
+
+long random_range(long min, long max)
+{
+    static std::random_device rd;
+    static std::mt19937 gen(rd());
+    static std::uniform_int_distribution<long> dis(0, 2147483647);
+    return min + (dis(gen) % (max - min + 1));
+}
+
+float random_range(float min, float max)
+{
+    static std::random_device rd;
+    static std::mt19937 gen(rd());
+    static std::uniform_real_distribution<float> dis(0.0, 1.0);
+    return min + (max - min)*dis(gen);
+}
+
+double round(double r)
+{
+    return (r > 0.0) ? floor(r + 0.5) : ceil(r - 0.5);
+}
+
+}

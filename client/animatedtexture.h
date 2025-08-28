@@ -20,33 +20,34 @@
  * THE SOFTWARE.
  */
 
-#ifndef FRAMEWORK_GRAPHICS_DECLARATIONS_H
-#define FRAMEWORK_GRAPHICS_DECLARATIONS_H
+#ifndef ANIMATEDTEXTURE_H
+#define ANIMATEDTEXTURE_H
 
-#include <framework/global.h>
-#include "glutil.h"
+#include "texture.h"
+#include <framework/core/timer.h>
 
-class Texture;
-class TextureManager;
-class Image;
-class AnimatedTexture;
-class BitmapFont;
-class CachedText;
-class FrameBuffer;
-class FrameBufferManager;
-class Shader;
-class ShaderProgram;
-class PainterShaderProgram;
+class AnimatedTexture : public Texture
+{
+public:
+    AnimatedTexture(const Size& size, std::vector<ImagePtr> frames, std::vector<int> framesDelay, bool buildMipmaps = false, bool compress = false);
+    virtual ~AnimatedTexture();
 
-typedef stdext::shared_object_ptr<Image> ImagePtr;
-typedef stdext::shared_object_ptr<Texture> TexturePtr;
-typedef stdext::shared_object_ptr<AnimatedTexture> AnimatedTexturePtr;
-typedef stdext::shared_object_ptr<BitmapFont> BitmapFontPtr;
-typedef stdext::shared_object_ptr<CachedText> CachedTextPtr;
-typedef stdext::shared_object_ptr<FrameBuffer> FrameBufferPtr;
-typedef stdext::shared_object_ptr<Shader> ShaderPtr;
-typedef stdext::shared_object_ptr<ShaderProgram> ShaderProgramPtr;
-typedef stdext::shared_object_ptr<PainterShaderProgram> PainterShaderProgramPtr;
-typedef std::vector<ShaderPtr> ShaderList;
+    void replace(const ImagePtr& image) { }
+    void update();
+
+    virtual bool isAnimatedTexture() { return true; }
+
+protected:
+    virtual bool buildHardwareMipmaps();
+
+    virtual void setSmooth(bool smooth);
+    virtual void setRepeat(bool repeat);
+
+private:
+    std::vector<TexturePtr> m_frames;
+    std::vector<int> m_framesDelay;
+    uint m_currentFrame;
+    Timer m_animTimer;
+};
 
 #endif

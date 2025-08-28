@@ -20,33 +20,43 @@
  * THE SOFTWARE.
  */
 
-#ifndef FRAMEWORK_GRAPHICS_DECLARATIONS_H
-#define FRAMEWORK_GRAPHICS_DECLARATIONS_H
+#ifndef CACHEDTEXT_H
+#define CACHEDTEXT_H
 
-#include <framework/global.h>
-#include "glutil.h"
+#include "declarations.h"
+#include "coordsbuffer.h"
+#include "drawqueue.h"
 
-class Texture;
-class TextureManager;
-class Image;
-class AnimatedTexture;
-class BitmapFont;
-class CachedText;
-class FrameBuffer;
-class FrameBufferManager;
-class Shader;
-class ShaderProgram;
-class PainterShaderProgram;
+class CachedText
+{
+public:
+    CachedText();
 
-typedef stdext::shared_object_ptr<Image> ImagePtr;
-typedef stdext::shared_object_ptr<Texture> TexturePtr;
-typedef stdext::shared_object_ptr<AnimatedTexture> AnimatedTexturePtr;
-typedef stdext::shared_object_ptr<BitmapFont> BitmapFontPtr;
-typedef stdext::shared_object_ptr<CachedText> CachedTextPtr;
-typedef stdext::shared_object_ptr<FrameBuffer> FrameBufferPtr;
-typedef stdext::shared_object_ptr<Shader> ShaderPtr;
-typedef stdext::shared_object_ptr<ShaderProgram> ShaderProgramPtr;
-typedef stdext::shared_object_ptr<PainterShaderProgram> PainterShaderProgramPtr;
-typedef std::vector<ShaderPtr> ShaderList;
+    void draw(const Rect& rect, const Color& color);
+
+    void wrapText(int maxWidth);
+    void setFont(const BitmapFontPtr& font) { m_font = font; update(); }
+    void setText(const std::string& text) { m_textColors.clear();  m_text = text; update(); }
+    void setColoredText(const std::vector<std::string>& texts);
+    void setAlign(Fw::AlignmentFlag align) { m_align = align; update(); }
+
+    Size getTextSize() { return m_textSize; }
+    std::string getText() const { return m_text; }
+    BitmapFontPtr getFont() const { return m_font; }
+    Fw::AlignmentFlag getAlign() { return m_align; }
+
+    bool hasText() { return !m_text.empty(); }
+
+private:
+    void update();
+
+    std::string m_text;
+    std::vector<std::pair<int, Color>> m_textColors;
+    Size m_textSize;
+    stdext::boolean<true> m_textMustRecache;
+    Rect m_textCachedScreenCoords;
+    BitmapFontPtr m_font;
+    Fw::AlignmentFlag m_align;
+};
 
 #endif

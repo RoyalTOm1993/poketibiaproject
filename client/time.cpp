@@ -20,33 +20,36 @@
  * THE SOFTWARE.
  */
 
-#ifndef FRAMEWORK_GRAPHICS_DECLARATIONS_H
-#define FRAMEWORK_GRAPHICS_DECLARATIONS_H
+#include "time.h"
+#include <chrono>
+#include <ctime>
+#include <thread>
 
-#include <framework/global.h>
-#include "glutil.h"
+namespace stdext {
 
-class Texture;
-class TextureManager;
-class Image;
-class AnimatedTexture;
-class BitmapFont;
-class CachedText;
-class FrameBuffer;
-class FrameBufferManager;
-class Shader;
-class ShaderProgram;
-class PainterShaderProgram;
+const static auto startup_time = std::chrono::high_resolution_clock::now();
 
-typedef stdext::shared_object_ptr<Image> ImagePtr;
-typedef stdext::shared_object_ptr<Texture> TexturePtr;
-typedef stdext::shared_object_ptr<AnimatedTexture> AnimatedTexturePtr;
-typedef stdext::shared_object_ptr<BitmapFont> BitmapFontPtr;
-typedef stdext::shared_object_ptr<CachedText> CachedTextPtr;
-typedef stdext::shared_object_ptr<FrameBuffer> FrameBufferPtr;
-typedef stdext::shared_object_ptr<Shader> ShaderPtr;
-typedef stdext::shared_object_ptr<ShaderProgram> ShaderProgramPtr;
-typedef stdext::shared_object_ptr<PainterShaderProgram> PainterShaderProgramPtr;
-typedef std::vector<ShaderPtr> ShaderList;
+ticks_t time() {
+    return std::time(NULL);
+}
 
-#endif
+ticks_t millis()
+{
+    return std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - startup_time).count();
+}
+
+ticks_t micros() {
+    return std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::high_resolution_clock::now() - startup_time).count();
+}
+
+void millisleep(size_t ms)
+{
+    std::this_thread::sleep_for(std::chrono::milliseconds(ms));
+};
+
+void microsleep(size_t us)
+{
+    std::this_thread::sleep_for(std::chrono::microseconds(us));
+};
+
+}

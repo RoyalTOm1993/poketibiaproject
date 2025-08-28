@@ -20,33 +20,26 @@
  * THE SOFTWARE.
  */
 
-#ifndef FRAMEWORK_GRAPHICS_DECLARATIONS_H
-#define FRAMEWORK_GRAPHICS_DECLARATIONS_H
+#ifndef DEPTHARRAY_H
+#define DEPTHARRAY_H
 
-#include <framework/global.h>
-#include "glutil.h"
+#include "declarations.h"
+#include <framework/util/databuffer.h>
 
-class Texture;
-class TextureManager;
-class Image;
-class AnimatedTexture;
-class BitmapFont;
-class CachedText;
-class FrameBuffer;
-class FrameBufferManager;
-class Shader;
-class ShaderProgram;
-class PainterShaderProgram;
+class DepthArray
+{
+public:
+    inline void addDepth(float depth) { m_buffer << depth; }
 
-typedef stdext::shared_object_ptr<Image> ImagePtr;
-typedef stdext::shared_object_ptr<Texture> TexturePtr;
-typedef stdext::shared_object_ptr<AnimatedTexture> AnimatedTexturePtr;
-typedef stdext::shared_object_ptr<BitmapFont> BitmapFontPtr;
-typedef stdext::shared_object_ptr<CachedText> CachedTextPtr;
-typedef stdext::shared_object_ptr<FrameBuffer> FrameBufferPtr;
-typedef stdext::shared_object_ptr<Shader> ShaderPtr;
-typedef stdext::shared_object_ptr<ShaderProgram> ShaderProgramPtr;
-typedef stdext::shared_object_ptr<PainterShaderProgram> PainterShaderProgramPtr;
-typedef std::vector<ShaderPtr> ShaderList;
+    void clear() { m_buffer.reset(); }
+    float *depths() const { return m_buffer.data(); }
+    float *data() const { return m_buffer.data(); }
+    int depthCount() const { return m_buffer.size(); }
+    int count() const { return m_buffer.size(); }
+    int size() const { return m_buffer.size(); }
+
+private:
+    DataBuffer<float> m_buffer;
+};
 
 #endif

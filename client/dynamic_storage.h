@@ -20,33 +20,48 @@
  * THE SOFTWARE.
  */
 
-#ifndef FRAMEWORK_GRAPHICS_DECLARATIONS_H
-#define FRAMEWORK_GRAPHICS_DECLARATIONS_H
+#ifndef STDEXT_DYNAMICSTORAGE_H
+#define STDEXT_DYNAMICSTORAGE_H
 
-#include <framework/global.h>
-#include "glutil.h"
+#include "types.h"
+#include "any.h"
+#include <unordered_map>
 
-class Texture;
-class TextureManager;
-class Image;
-class AnimatedTexture;
-class BitmapFont;
-class CachedText;
-class FrameBuffer;
-class FrameBufferManager;
-class Shader;
-class ShaderProgram;
-class PainterShaderProgram;
+namespace stdext {
 
-typedef stdext::shared_object_ptr<Image> ImagePtr;
-typedef stdext::shared_object_ptr<Texture> TexturePtr;
-typedef stdext::shared_object_ptr<AnimatedTexture> AnimatedTexturePtr;
-typedef stdext::shared_object_ptr<BitmapFont> BitmapFontPtr;
-typedef stdext::shared_object_ptr<CachedText> CachedTextPtr;
-typedef stdext::shared_object_ptr<FrameBuffer> FrameBufferPtr;
-typedef stdext::shared_object_ptr<Shader> ShaderPtr;
-typedef stdext::shared_object_ptr<ShaderProgram> ShaderProgramPtr;
-typedef stdext::shared_object_ptr<PainterShaderProgram> PainterShaderProgramPtr;
-typedef std::vector<ShaderPtr> ShaderList;
+template<typename Key>
+class dynamic_storage {
+public:
+    template<typename T> void set(const Key& k, const T& value) {
+        if(m_data.size() <= k)
+            m_data.resize(k+1);
+        m_data[k] = value;
+    }
+    bool remove(const Key& k) {
+        if(m_data.size() < k)
+            return false;
+        if(m_data[k].empty())
+            return false;
+        m_data[k] = any();
+        return true;
+    }
+    template<typename T> T get(const Key& k) const { return has(k) ? any_cast<T>(m_data[k]) : T(); }
+    bool has(const Key& k) const { return k < m_data.size() && !m_data[k].empty(); }
+
+    std::size_t size() const {
+        std::size_t count = 0;
+        for(std::size_t i=0;i<m_data.size();++i)
+            if(!m_data[i].empty())
+                count++;
+        return count;
+    }
+
+    void clear() { m_data.clear(); }
+
+private:
+    std::vector<any> m_data;
+};
+
+}
 
 #endif

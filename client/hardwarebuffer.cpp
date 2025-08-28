@@ -20,33 +20,28 @@
  * THE SOFTWARE.
  */
 
-#ifndef FRAMEWORK_GRAPHICS_DECLARATIONS_H
-#define FRAMEWORK_GRAPHICS_DECLARATIONS_H
+#include "hardwarebuffer.h"
+#include "graphics.h"
 
-#include <framework/global.h>
-#include "glutil.h"
+#include <framework/core/application.h>
+#include <framework/core/eventdispatcher.h>
+#include <framework/core/logger.h>
 
-class Texture;
-class TextureManager;
-class Image;
-class AnimatedTexture;
-class BitmapFont;
-class CachedText;
-class FrameBuffer;
-class FrameBufferManager;
-class Shader;
-class ShaderProgram;
-class PainterShaderProgram;
+HardwareBuffer::HardwareBuffer(Type type)
+{
+    m_type = type;
+    m_id = 0;
+    glGenBuffers(1, &m_id);
+    if(!m_id)
+        g_logger.fatal("Unable to create hardware buffer.");
+    g_graphics.checkForError(__FUNCTION__, __FILE__, __LINE__);
+}
 
-typedef stdext::shared_object_ptr<Image> ImagePtr;
-typedef stdext::shared_object_ptr<Texture> TexturePtr;
-typedef stdext::shared_object_ptr<AnimatedTexture> AnimatedTexturePtr;
-typedef stdext::shared_object_ptr<BitmapFont> BitmapFontPtr;
-typedef stdext::shared_object_ptr<CachedText> CachedTextPtr;
-typedef stdext::shared_object_ptr<FrameBuffer> FrameBufferPtr;
-typedef stdext::shared_object_ptr<Shader> ShaderPtr;
-typedef stdext::shared_object_ptr<ShaderProgram> ShaderProgramPtr;
-typedef stdext::shared_object_ptr<PainterShaderProgram> PainterShaderProgramPtr;
-typedef std::vector<ShaderPtr> ShaderList;
-
-#endif
+HardwareBuffer::~HardwareBuffer()
+{
+    VALIDATE(!g_app.isTerminated());
+    uint id = m_id;
+    g_graphicsDispatcher.addEvent([id] {
+        glDeleteBuffers(1, &id);
+    });
+}

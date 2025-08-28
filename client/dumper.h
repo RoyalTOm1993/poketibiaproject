@@ -20,33 +20,23 @@
  * THE SOFTWARE.
  */
 
-#ifndef FRAMEWORK_GRAPHICS_DECLARATIONS_H
-#define FRAMEWORK_GRAPHICS_DECLARATIONS_H
+#ifndef STDEXT_DUMPER_H
+#define STDEXT_DUMPER_H
 
-#include <framework/global.h>
-#include "glutil.h"
+#include <iostream>
 
-class Texture;
-class TextureManager;
-class Image;
-class AnimatedTexture;
-class BitmapFont;
-class CachedText;
-class FrameBuffer;
-class FrameBufferManager;
-class Shader;
-class ShaderProgram;
-class PainterShaderProgram;
+namespace stdext {
 
-typedef stdext::shared_object_ptr<Image> ImagePtr;
-typedef stdext::shared_object_ptr<Texture> TexturePtr;
-typedef stdext::shared_object_ptr<AnimatedTexture> AnimatedTexturePtr;
-typedef stdext::shared_object_ptr<BitmapFont> BitmapFontPtr;
-typedef stdext::shared_object_ptr<CachedText> CachedTextPtr;
-typedef stdext::shared_object_ptr<FrameBuffer> FrameBufferPtr;
-typedef stdext::shared_object_ptr<Shader> ShaderPtr;
-typedef stdext::shared_object_ptr<ShaderProgram> ShaderProgramPtr;
-typedef stdext::shared_object_ptr<PainterShaderProgram> PainterShaderProgramPtr;
-typedef std::vector<ShaderPtr> ShaderList;
+static struct {
+    struct dumper_dummy {
+        ~dumper_dummy() { std::cout << std::endl; }
+        template<class T> dumper_dummy& operator<<(const T& v) { std::cout << v << " "; return *this; }
+    };
+    template<class T> dumper_dummy operator<<(const T& v) const { dumper_dummy d; d << v; return d; }
+} dump;
+
+}
+
+using stdext::dump;
 
 #endif

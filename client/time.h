@@ -20,33 +20,31 @@
  * THE SOFTWARE.
  */
 
-#ifndef FRAMEWORK_GRAPHICS_DECLARATIONS_H
-#define FRAMEWORK_GRAPHICS_DECLARATIONS_H
+#ifndef STDEXT_TIME_H
+#define STDEXT_TIME_H
 
-#include <framework/global.h>
-#include "glutil.h"
+#include "types.h"
 
-class Texture;
-class TextureManager;
-class Image;
-class AnimatedTexture;
-class BitmapFont;
-class CachedText;
-class FrameBuffer;
-class FrameBufferManager;
-class Shader;
-class ShaderProgram;
-class PainterShaderProgram;
+namespace stdext {
 
-typedef stdext::shared_object_ptr<Image> ImagePtr;
-typedef stdext::shared_object_ptr<Texture> TexturePtr;
-typedef stdext::shared_object_ptr<AnimatedTexture> AnimatedTexturePtr;
-typedef stdext::shared_object_ptr<BitmapFont> BitmapFontPtr;
-typedef stdext::shared_object_ptr<CachedText> CachedTextPtr;
-typedef stdext::shared_object_ptr<FrameBuffer> FrameBufferPtr;
-typedef stdext::shared_object_ptr<Shader> ShaderPtr;
-typedef stdext::shared_object_ptr<ShaderProgram> ShaderProgramPtr;
-typedef stdext::shared_object_ptr<PainterShaderProgram> PainterShaderProgramPtr;
-typedef std::vector<ShaderPtr> ShaderList;
+ticks_t time();
+ticks_t millis();
+ticks_t micros();
+void millisleep(size_t ms);
+void microsleep(size_t us);
+
+struct timer {
+public:
+    timer() { restart(); }
+    float elapsed_seconds() { return (float)((stdext::micros() - m_start)/1000000.0); }
+    ticks_t elapsed_millis() { return (stdext::micros() - m_start)/1000; }
+    ticks_t elapsed_micros() { return stdext::micros() - m_start; }
+    void restart(int shift = 0) { m_start = stdext::micros() - shift; }
+private:
+    ticks_t m_start;
+};
+
+}
 
 #endif
+

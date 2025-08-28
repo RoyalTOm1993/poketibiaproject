@@ -20,33 +20,24 @@
  * THE SOFTWARE.
  */
 
-#ifndef FRAMEWORK_GRAPHICS_DECLARATIONS_H
-#define FRAMEWORK_GRAPHICS_DECLARATIONS_H
+#ifndef STDEXT_H
+#define STDEXT_H
 
-#include <framework/global.h>
-#include "glutil.h"
-
-class Texture;
-class TextureManager;
-class Image;
-class AnimatedTexture;
-class BitmapFont;
-class CachedText;
-class FrameBuffer;
-class FrameBufferManager;
-class Shader;
-class ShaderProgram;
-class PainterShaderProgram;
-
-typedef stdext::shared_object_ptr<Image> ImagePtr;
-typedef stdext::shared_object_ptr<Texture> TexturePtr;
-typedef stdext::shared_object_ptr<AnimatedTexture> AnimatedTexturePtr;
-typedef stdext::shared_object_ptr<BitmapFont> BitmapFontPtr;
-typedef stdext::shared_object_ptr<CachedText> CachedTextPtr;
-typedef stdext::shared_object_ptr<FrameBuffer> FrameBufferPtr;
-typedef stdext::shared_object_ptr<Shader> ShaderPtr;
-typedef stdext::shared_object_ptr<ShaderProgram> ShaderProgramPtr;
-typedef stdext::shared_object_ptr<PainterShaderProgram> PainterShaderProgramPtr;
-typedef std::vector<ShaderPtr> ShaderList;
+#include "compiler.h"
+#include "dumper.h"
+#include "types.h"
+#include "exception.h"
+#include "demangle.h"
+#include "cast.h"
+#include "math.h"
+#include "string.h"
+#include "time.h"
+#include "boolean.h"
+#include "shared_object.h"
+#include "any.h"
+#include "packed_any.h"
+#include "dynamic_storage.h"
+#include "packed_storage.h"
+#include "format.h"
 
 #endif

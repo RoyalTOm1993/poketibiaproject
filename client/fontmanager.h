@@ -20,33 +20,33 @@
  * THE SOFTWARE.
  */
 
-#ifndef FRAMEWORK_GRAPHICS_DECLARATIONS_H
-#define FRAMEWORK_GRAPHICS_DECLARATIONS_H
+#ifndef FONTMANAGER_H
+#define FONTMANAGER_H
 
-#include <framework/global.h>
-#include "glutil.h"
+#include "bitmapfont.h"
 
-class Texture;
-class TextureManager;
-class Image;
-class AnimatedTexture;
-class BitmapFont;
-class CachedText;
-class FrameBuffer;
-class FrameBufferManager;
-class Shader;
-class ShaderProgram;
-class PainterShaderProgram;
+//@bindsingleton g_fonts
+class FontManager
+{
+public:
+    FontManager();
 
-typedef stdext::shared_object_ptr<Image> ImagePtr;
-typedef stdext::shared_object_ptr<Texture> TexturePtr;
-typedef stdext::shared_object_ptr<AnimatedTexture> AnimatedTexturePtr;
-typedef stdext::shared_object_ptr<BitmapFont> BitmapFontPtr;
-typedef stdext::shared_object_ptr<CachedText> CachedTextPtr;
-typedef stdext::shared_object_ptr<FrameBuffer> FrameBufferPtr;
-typedef stdext::shared_object_ptr<Shader> ShaderPtr;
-typedef stdext::shared_object_ptr<ShaderProgram> ShaderProgramPtr;
-typedef stdext::shared_object_ptr<PainterShaderProgram> PainterShaderProgramPtr;
-typedef std::vector<ShaderPtr> ShaderList;
+    void terminate();
+    void clearFonts();
+
+    void importFont(std::string file);
+
+    bool fontExists(const std::string& fontName);
+    BitmapFontPtr getFont(const std::string& fontName);
+    BitmapFontPtr getDefaultFont() { return m_defaultFont; }
+
+    void setDefaultFont(const std::string& fontName) { m_defaultFont = getFont(fontName); }
+
+private:
+    std::vector<BitmapFontPtr> m_fonts;
+    BitmapFontPtr m_defaultFont;
+};
+
+extern FontManager g_fonts;
 
 #endif

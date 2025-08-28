@@ -20,33 +20,29 @@
  * THE SOFTWARE.
  */
 
-#ifndef FRAMEWORK_GRAPHICS_DECLARATIONS_H
-#define FRAMEWORK_GRAPHICS_DECLARATIONS_H
+#ifndef STDEXT_DEMANGLE_H
+#define STDEXT_DEMANGLE_H
 
-#include <framework/global.h>
-#include "glutil.h"
+#include <typeinfo>
+#include <string>
 
-class Texture;
-class TextureManager;
-class Image;
-class AnimatedTexture;
-class BitmapFont;
-class CachedText;
-class FrameBuffer;
-class FrameBufferManager;
-class Shader;
-class ShaderProgram;
-class PainterShaderProgram;
+namespace stdext {
 
-typedef stdext::shared_object_ptr<Image> ImagePtr;
-typedef stdext::shared_object_ptr<Texture> TexturePtr;
-typedef stdext::shared_object_ptr<AnimatedTexture> AnimatedTexturePtr;
-typedef stdext::shared_object_ptr<BitmapFont> BitmapFontPtr;
-typedef stdext::shared_object_ptr<CachedText> CachedTextPtr;
-typedef stdext::shared_object_ptr<FrameBuffer> FrameBufferPtr;
-typedef stdext::shared_object_ptr<Shader> ShaderPtr;
-typedef stdext::shared_object_ptr<ShaderProgram> ShaderProgramPtr;
-typedef stdext::shared_object_ptr<PainterShaderProgram> PainterShaderProgramPtr;
-typedef std::vector<ShaderPtr> ShaderList;
+/// Demangle names for GNU g++ compiler
+const char* demangle_name(const char* name);
+
+/// Returns the name of a class
+template<typename T> std::string demangle_class() {
+#ifdef _MSC_VER
+    return demangle_name(typeid(T).name()) + 6;
+#else
+    return demangle_name(typeid(T).name());
+#endif
+}
+
+/// Returns the name of a type
+template<typename T> std::string demangle_type() { return demangle_name(typeid(T).name()); }
+
+}
 
 #endif

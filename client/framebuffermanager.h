@@ -20,33 +20,29 @@
  * THE SOFTWARE.
  */
 
-#ifndef FRAMEWORK_GRAPHICS_DECLARATIONS_H
-#define FRAMEWORK_GRAPHICS_DECLARATIONS_H
 
-#include <framework/global.h>
-#include "glutil.h"
+#ifndef FRAMEBUFFERMANAGER_H
+#define FRAMEBUFFERMANAGER_H
 
-class Texture;
-class TextureManager;
-class Image;
-class AnimatedTexture;
-class BitmapFont;
-class CachedText;
-class FrameBuffer;
-class FrameBufferManager;
-class Shader;
-class ShaderProgram;
-class PainterShaderProgram;
+#include "framebuffer.h"
 
-typedef stdext::shared_object_ptr<Image> ImagePtr;
-typedef stdext::shared_object_ptr<Texture> TexturePtr;
-typedef stdext::shared_object_ptr<AnimatedTexture> AnimatedTexturePtr;
-typedef stdext::shared_object_ptr<BitmapFont> BitmapFontPtr;
-typedef stdext::shared_object_ptr<CachedText> CachedTextPtr;
-typedef stdext::shared_object_ptr<FrameBuffer> FrameBufferPtr;
-typedef stdext::shared_object_ptr<Shader> ShaderPtr;
-typedef stdext::shared_object_ptr<ShaderProgram> ShaderProgramPtr;
-typedef stdext::shared_object_ptr<PainterShaderProgram> PainterShaderProgramPtr;
-typedef std::vector<ShaderPtr> ShaderList;
+class FrameBufferManager
+{
+public:
+    void init();
+    void terminate();
+    void clear();
+
+    FrameBufferPtr createFrameBuffer(bool withDepth = false);
+    const FrameBufferPtr& getTemporaryFrameBuffer() { return m_temporaryFramebuffer; }
+    const FrameBufferPtr& getDrawQueueTemporaryFrameBuffer() { return m_drawQueueTemporaryFramebuffer; }
+
+protected:
+    FrameBufferPtr m_temporaryFramebuffer;
+    FrameBufferPtr m_drawQueueTemporaryFramebuffer;
+    std::vector<FrameBufferPtr> m_framebuffers;
+};
+
+extern FrameBufferManager g_framebuffers;
 
 #endif

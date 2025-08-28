@@ -20,33 +20,27 @@
  * THE SOFTWARE.
  */
 
-#ifndef FRAMEWORK_GRAPHICS_DECLARATIONS_H
-#define FRAMEWORK_GRAPHICS_DECLARATIONS_H
+#ifndef APNGLOADER_H
+#define APNGLOADER_H
 
-#include <framework/global.h>
-#include "glutil.h"
+#include <sstream>
 
-class Texture;
-class TextureManager;
-class Image;
-class AnimatedTexture;
-class BitmapFont;
-class CachedText;
-class FrameBuffer;
-class FrameBufferManager;
-class Shader;
-class ShaderProgram;
-class PainterShaderProgram;
+struct apng_data {
+    unsigned char *pdata;
+    unsigned int width;
+    unsigned int height;
+    unsigned int first_frame;
+    unsigned int last_frame;
+    unsigned char bpp;
+    unsigned char coltype;
+    unsigned int num_frames;
+    unsigned int num_plays;
+    unsigned short *frames_delay; // each frame delay in ms
+};
 
-typedef stdext::shared_object_ptr<Image> ImagePtr;
-typedef stdext::shared_object_ptr<Texture> TexturePtr;
-typedef stdext::shared_object_ptr<AnimatedTexture> AnimatedTexturePtr;
-typedef stdext::shared_object_ptr<BitmapFont> BitmapFontPtr;
-typedef stdext::shared_object_ptr<CachedText> CachedTextPtr;
-typedef stdext::shared_object_ptr<FrameBuffer> FrameBufferPtr;
-typedef stdext::shared_object_ptr<Shader> ShaderPtr;
-typedef stdext::shared_object_ptr<ShaderProgram> ShaderProgramPtr;
-typedef stdext::shared_object_ptr<PainterShaderProgram> PainterShaderProgramPtr;
-typedef std::vector<ShaderPtr> ShaderList;
+// returns -1 on error, 0 on success
+int load_apng(std::stringstream& file, struct apng_data *apng);
+void save_png(std::stringstream& file, unsigned int width, unsigned int height, int channels, unsigned char *pixels);
+void free_apng(struct apng_data *apng);
 
 #endif

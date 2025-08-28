@@ -19,34 +19,26 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
-#ifndef FRAMEWORK_GRAPHICS_DECLARATIONS_H
-#define FRAMEWORK_GRAPHICS_DECLARATIONS_H
-
+#pragma once
 #include <framework/global.h>
-#include "glutil.h"
 
-class Texture;
-class TextureManager;
-class Image;
-class AnimatedTexture;
-class BitmapFont;
-class CachedText;
-class FrameBuffer;
-class FrameBufferManager;
-class Shader;
-class ShaderProgram;
-class PainterShaderProgram;
+class Mouse
+{
+public:
+    void init();
+    void terminate();
 
-typedef stdext::shared_object_ptr<Image> ImagePtr;
-typedef stdext::shared_object_ptr<Texture> TexturePtr;
-typedef stdext::shared_object_ptr<AnimatedTexture> AnimatedTexturePtr;
-typedef stdext::shared_object_ptr<BitmapFont> BitmapFontPtr;
-typedef stdext::shared_object_ptr<CachedText> CachedTextPtr;
-typedef stdext::shared_object_ptr<FrameBuffer> FrameBufferPtr;
-typedef stdext::shared_object_ptr<Shader> ShaderPtr;
-typedef stdext::shared_object_ptr<ShaderProgram> ShaderProgramPtr;
-typedef stdext::shared_object_ptr<PainterShaderProgram> PainterShaderProgramPtr;
-typedef std::vector<ShaderPtr> ShaderList;
+    void loadCursors(std::string filename);
+    void addCursor(const std::string& name, const std::string& file, const Point& hotSpot);
+    void pushCursor(const std::string& name);
+    void popCursor(const std::string& name);
+    bool isCursorChanged();
+    bool isPressed(Fw::MouseButton mouseButton);
 
-#endif
+private:
+    std::map<std::string, int> m_cursors;
+    std::deque<int> m_cursorStack;
+    std::mutex m_mutex;
+};
+
+extern Mouse g_mouse;

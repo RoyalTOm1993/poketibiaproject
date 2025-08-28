@@ -20,33 +20,45 @@
  * THE SOFTWARE.
  */
 
-#ifndef FRAMEWORK_GRAPHICS_DECLARATIONS_H
-#define FRAMEWORK_GRAPHICS_DECLARATIONS_H
+#include "demangle.h"
 
-#include <framework/global.h>
-#include "glutil.h"
+#ifdef _MSC_VER
 
-class Texture;
-class TextureManager;
-class Image;
-class AnimatedTexture;
-class BitmapFont;
-class CachedText;
-class FrameBuffer;
-class FrameBufferManager;
-class Shader;
-class ShaderProgram;
-class PainterShaderProgram;
+#include <winsock2.h>
+#include <windows.h>
 
-typedef stdext::shared_object_ptr<Image> ImagePtr;
-typedef stdext::shared_object_ptr<Texture> TexturePtr;
-typedef stdext::shared_object_ptr<AnimatedTexture> AnimatedTexturePtr;
-typedef stdext::shared_object_ptr<BitmapFont> BitmapFontPtr;
-typedef stdext::shared_object_ptr<CachedText> CachedTextPtr;
-typedef stdext::shared_object_ptr<FrameBuffer> FrameBufferPtr;
-typedef stdext::shared_object_ptr<Shader> ShaderPtr;
-typedef stdext::shared_object_ptr<ShaderProgram> ShaderProgramPtr;
-typedef stdext::shared_object_ptr<PainterShaderProgram> PainterShaderProgramPtr;
-typedef std::vector<ShaderPtr> ShaderList;
+#pragma warning (push)
+#pragma warning (disable:4091) // warning C4091: 'typedef ': ignored on left of '' when no variable is declared
+#include <ImageHlp.h>
+#pragma warning (pop)
+
+#else
+
+#include <cxxabi.h>
+#include <cstring>
+#include <cstdlib>
 
 #endif
+
+namespace stdext {
+
+const char* demangle_name(const char* name)
+{
+#ifdef _MSC_VER
+    static char buffer[1024];
+    UnDecorateSymbolName(name, buffer, sizeof(buffer), UNDNAME_COMPLETE);
+    return buffer;
+#else
+    size_t len;
+    int status;
+    static char buffer[1024];
+    char* demangled = abi::__cxa_demangle(name, 0, &len, &status);
+    if(demangled) {
+        strcpy(buffer, demangled);
+        free(demangled);
+    }
+    return buffer;
+#endif
+}
+
+}

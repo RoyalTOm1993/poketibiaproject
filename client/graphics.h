@@ -20,33 +20,55 @@
  * THE SOFTWARE.
  */
 
-#ifndef FRAMEWORK_GRAPHICS_DECLARATIONS_H
-#define FRAMEWORK_GRAPHICS_DECLARATIONS_H
+#ifndef GRAPHICS_H
+#define GRAPHICS_H
 
-#include <framework/global.h>
-#include "glutil.h"
+#include "declarations.h"
+#include "painter.h"
 
-class Texture;
-class TextureManager;
-class Image;
-class AnimatedTexture;
-class BitmapFont;
-class CachedText;
-class FrameBuffer;
-class FrameBufferManager;
-class Shader;
-class ShaderProgram;
-class PainterShaderProgram;
+class Painter;
 
-typedef stdext::shared_object_ptr<Image> ImagePtr;
-typedef stdext::shared_object_ptr<Texture> TexturePtr;
-typedef stdext::shared_object_ptr<AnimatedTexture> AnimatedTexturePtr;
-typedef stdext::shared_object_ptr<BitmapFont> BitmapFontPtr;
-typedef stdext::shared_object_ptr<CachedText> CachedTextPtr;
-typedef stdext::shared_object_ptr<FrameBuffer> FrameBufferPtr;
-typedef stdext::shared_object_ptr<Shader> ShaderPtr;
-typedef stdext::shared_object_ptr<ShaderProgram> ShaderProgramPtr;
-typedef stdext::shared_object_ptr<PainterShaderProgram> PainterShaderProgramPtr;
-typedef std::vector<ShaderPtr> ShaderList;
+// @bindsingleton g_graphics
+class Graphics
+{
+public:
+    Graphics();
+
+    // @dontbind
+    void init();
+    // @dontbind
+    void terminate();
+
+    void resize(const Size& size);
+    void checkDepthSupport();
+
+    int getMaxTextureSize() { return m_maxTextureSize; }
+    const Size& getViewportSize() { return m_viewportSize; }
+
+    std::string getVendor() { return m_vendor; }
+    std::string getRenderer() { return m_renderer; }
+    std::string getVersion() { return m_version; }
+    std::string getExtensions() { return m_extensions; }
+
+    bool ok() { return m_ok; }
+    void checkForError(const std::string& function, const std::string& file, int line);
+
+private:
+#ifdef WITH_DEPTH_BUFFER
+    void checkDepthSupport();
+#endif
+
+    Size m_viewportSize;
+    std::string m_vendor;
+    std::string m_renderer;
+    std::string m_version;
+    std::string m_extensions;
+
+    int m_maxTextureSize;
+    int m_alphaBits;
+    stdext::boolean<false> m_ok;
+};
+
+extern Graphics g_graphics;
 
 #endif

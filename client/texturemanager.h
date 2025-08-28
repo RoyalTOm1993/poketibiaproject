@@ -20,33 +20,32 @@
  * THE SOFTWARE.
  */
 
-#ifndef FRAMEWORK_GRAPHICS_DECLARATIONS_H
-#define FRAMEWORK_GRAPHICS_DECLARATIONS_H
+#ifndef TEXTUREMANAGER_H
+#define TEXTUREMANAGER_H
 
-#include <framework/global.h>
-#include "glutil.h"
+#include "texture.h"
+#include <framework/core/declarations.h>
 
-class Texture;
-class TextureManager;
-class Image;
-class AnimatedTexture;
-class BitmapFont;
-class CachedText;
-class FrameBuffer;
-class FrameBufferManager;
-class Shader;
-class ShaderProgram;
-class PainterShaderProgram;
+class TextureManager
+{
+public:
+    void init();
+    void terminate();
 
-typedef stdext::shared_object_ptr<Image> ImagePtr;
-typedef stdext::shared_object_ptr<Texture> TexturePtr;
-typedef stdext::shared_object_ptr<AnimatedTexture> AnimatedTexturePtr;
-typedef stdext::shared_object_ptr<BitmapFont> BitmapFontPtr;
-typedef stdext::shared_object_ptr<CachedText> CachedTextPtr;
-typedef stdext::shared_object_ptr<FrameBuffer> FrameBufferPtr;
-typedef stdext::shared_object_ptr<Shader> ShaderPtr;
-typedef stdext::shared_object_ptr<ShaderProgram> ShaderProgramPtr;
-typedef stdext::shared_object_ptr<PainterShaderProgram> PainterShaderProgramPtr;
-typedef std::vector<ShaderPtr> ShaderList;
+    void clearCache();
+    void reload();
+
+    void preload(const std::string& fileName) { getTexture(fileName); }
+    TexturePtr getTexture(const std::string& fileName);
+    TexturePtr loadTexture(std::stringstream& file, const std::string& source);
+
+private:
+    std::unordered_map<std::string, TexturePtr> m_textures;
+    std::vector<AnimatedTexturePtr> m_animatedTextures;
+    ScheduledEventPtr m_liveReloadEvent;
+    std::list<uint> m_texturesToRelease;
+};
+
+extern TextureManager g_textures;
 
 #endif
