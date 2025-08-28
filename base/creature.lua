@@ -1,54 +1,121 @@
-function Creature:onChangeOutfit(outfit)
-	if self:isPlayer() then
-		if self:isOnEvent() then
-			return false
-		end
-		-- if self:isOnFly() or self:isOnRide() or self:isOnSurf() or self:isOnDive() or self:isOnEvent() then
-		-- 	return false
-		-- end
+function Creature.getClosestFreePosition(self, position, maxRadius, mustBeReachable)
+	maxRadius = maxRadius or 1
+
+	-- backward compatability (extended)
+	if maxRadius == true then
+		maxRadius = 2
 	end
+
+	local checkPosition = Position(position)
+	for radius = 0, maxRadius do
+		checkPosition.x = checkPosition.x - math.min(1, radius)
+		checkPosition.y = checkPosition.y + math.min(1, radius)
+
+		local total = math.max(1, radius * 8)
+		for i = 1, total do
+			if radius > 0 then
+				local direction = math.floor((i - 1) / (radius * 2))
+				checkPosition:getNextPosition(direction)
+			end
+
+			local tile = Tile(checkPosition)
+			if tile and tile:getCreatureCount() == 0 and tile:getGround() and tile:getGround():getId() ~= flyFloor and not tile:hasProperty(CONST_PROP_IMMOVABLEBLOCKSOLID) and not tile:hasProperty(CONST_PROP_BLOCKPATH) and not tile:getHouse() and not tile:hasFlag(TILESTATE_PROTECTIONZONE) and not tile:hasFlag(TILESTATE_FLOORCHANGE) and
+				(not mustBeReachable or self:getPathTo(checkPosition)) then
+				return checkPosition
+			end
+		end
+	end
+	return Position()
+end
+
+function Creature:addSummon(monster)
+	local summon = Monster(monster)
+	if not summon then
+		return false
+	end
+
+	summon:setDropLoot(false)
+	-- summon:setMaster(self)
+
+	local hostilesList = summon:getTargetList()
+	for _, hostileCreature in pairs(hostilesList) do
+		if hostileCreature:isMonster() then
+			if hostileCreature:getTarget() == self then
+				hostileCreature:searchTarget()
+			end
+		end
+	end
+
 	return true
 end
 
-function Creature:onAreaCombat(tile, isAggressive)
-	if hasEventCallback(EVENT_CALLBACK_ONAREACOMBAT) then
-		return EventCallback(EVENT_CALLBACK_ONAREACOMBAT, self, tile, isAggressive)
-	else
-		return RETURNVALUE_NOERROR
+function Creature:removeSummon(monster)
+	local summon = Monster(monster)
+	if not summon or summon:getMaster() ~= self then
+		return false
 	end
+
+	summon:setTarget(nil)
+	summon:setFollowCreature(nil)
+	summon:setDropLoot(true)
+	summon:setMaster(nil)
+	return true
 end
 
-function Creature:onTargetCombat(target)
-	if not self then return false end
-	if self:isPlayer() and target:isMonster() then
-		if isSummon(target) and target:getMaster():isNpc() and not self:isDuelingWithNpc() then
-			return RETURNVALUE_YOUMAYNOTATTACKTHISCREATURE
-		end
-		if isSummon(target) and target:getMaster() == self then
-			return RETURNVALUE_YOUMAYNOTATTACKTHISCREATURE
-		end
-	elseif self:isPlayer() and target:isPlayer() then
-		if hasSummons(target) then
-			return RETURNVALUE_YOUMAYNOTATTACKTHISCREATURE
-		end
-	elseif self:isMonster() and target:isPlayer() then
-		if isSummon(self) and self:getMaster():isNpc() then
-			return RETURNVALUE_YOUMAYNOTATTACKTHISCREATURE
-		end
-		if hasSummons(target) then
-			return RETURNVALUE_YOUMAYNOTATTACKTHISCREATURE
-		end
-	elseif self:isMonster() and target:isMonster() then
-		if isSummon(self) and isSummon(target) and target:getMaster():isNpc() and self:getMaster():isPlayer() and not self:getMaster():isDuelingWithNpc() then
-			return RETURNVALUE_YOUMAYNOTATTACKTHISCREATURE
-		end
-		if isSummon(self) and isSummon(target) and self:getMaster():isNpc() and target:getMaster():isPlayer() and not target:getMaster():isDuelingWithNpc() then
-			return RETURNVALUE_YOUMAYNOTATTACKTHISCREATURE
-		end
-	end
-	return RETURNVALUE_NOERROR
+function Creature.getPlayer(self)
+	return self:isPlayer() and self or nil
 end
 
-function Creature:onChangeZone(oldZone, newZone, isTeleport)
-	return hasEvent.onChangeCustomZone and Event.onChangeCustomZone(self, oldZone, newZone, isTeleport)
+function Creature.isItem(self)
+	return false
+end
+
+function Creature.isMonster(self)
+	return false
+end
+
+function Creature.isNpc(self)
+	return false
+end
+
+function Creature.isPlayer(self)
+	return false
+end
+
+function Creature.isTile(self)
+	return false
+end
+
+function Creature:setMonsterOutfit(monster, time)
+	local monsterType = MonsterType(monster)
+	if not monsterType then
+		return false
+	end
+
+	if self:isPlayer() and not (getPlayerFlagValue(self, PlayerFlag_CanIllusionAll) or monsterType:isIllusionable()) then
+		return false
+	end
+
+	local condition = Condition(CONDITION_OUTFIT)
+	condition:setOutfit(monsterType:outfit())
+	condition:setTicks(time)
+	self:addCondition(condition)
+
+	return true
+end
+
+function Creature:setItemOutfit(item, time)
+	local itemType = ItemType(item)
+	if not itemType then
+		return false
+	end
+
+	local condition = Condition(CONDITION_OUTFIT)
+	condition:setOutfit({
+		lookTypeEx = itemType:getId()
+	})
+	condition:setTicks(time)
+	self:addCondition(condition)
+
+	return true
 end
