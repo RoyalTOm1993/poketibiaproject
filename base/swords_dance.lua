@@ -4,6 +4,6 @@ function spell.onCastSpell(creature, variant)
     return true
 end
 
-spell:name("Bug Figther")
-spell:words("#Bug Figther#")
+spell:name("Swords Dance")
+spell:words("#Swords Dance#")
 spell:register()
