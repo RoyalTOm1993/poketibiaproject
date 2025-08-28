@@ -1,0 +1,115 @@
+MainWindow
+  id: mainWindow
+  size: 300 340
+  image-source: img/back2
+  !text: tr("Doações via Pix")
+
+  Label
+    id: alertLabel
+    !text: tr('Este método está disponível somente para pessoas no Brasil.')
+    height: 35
+    text-wrap: true
+    anchors.left: parent.left
+    anchors.right: parent.right
+    anchors.top: parent.top
+
+  Label
+    id: userLabel
+    !text: tr('Nome')
+    anchors.left: parent.left
+    anchors.top: alertLabel.bottom
+    margin-top: 5
+
+  TextEdit
+    id: nameEntryPassword
+    text-hidden: false
+    anchors.left: userLabel.left
+    anchors.right: parent.right
+    anchors.top: userLabel.bottom
+    margin-top: 5
+
+  TextEdit
+    id: nameEntry
+    anchors.left: userLabel.left
+    anchors.right: parent.right
+    anchors.top: userLabel.bottom
+    margin-top: 5
+
+  CheckBox
+    id: nameCheckBox
+    anchors.right: nameEntry.right
+    anchors.top: nameEntry.top
+    margin-top: 2
+    margin-right: 2
+    @onCheckChange: checkBoxCallback('name')
+
+  Label
+    id: cpfLabel
+    !text: tr('CPF')
+    anchors.left: parent.left
+    anchors.top: nameEntry.bottom
+    margin-top: 10
+
+  TextEdit
+    id: cpfEntryPassword
+    text-hidden: false
+    anchors.left: cpfLabel.left
+    anchors.right: parent.right
+    anchors.top: cpfLabel.bottom
+    margin-top: 5
+
+  TextEdit
+    id: cpfEntry
+    anchors.left: cpfLabel.left
+    anchors.right: parent.right
+    anchors.top: cpfLabel.bottom
+    margin-top: 5
+
+  CheckBox
+    id: cpfCheckBox
+    anchors.right: cpfEntry.right
+    anchors.top: cpfEntry.top
+    margin-top: 2
+    margin-right: 2
+    @onCheckChange: checkBoxCallback('cpf')
+
+  Label
+    id: valueLabel
+    !text: tr('Quantidade')
+    anchors.left: parent.left
+    anchors.top: cpfEntry.bottom
+    margin-top: 10
+
+  TextEdit
+    id: valueEntry
+    anchors.left: valueLabel.left
+    anchors.right: parent.right
+    anchors.top: valueLabel.bottom
+    margin-top: 5
+
+  ComboBox
+    id: valueComboBox
+    anchors.left: valueEntry.left
+    anchors.right: parent.right
+    anchors.top: valueEntry.top
+    menu-scroll: true
+    menu-scroll-step: 25
+
+  SpaceBlueButton
+    size: 64 30
+    id: submitButton
+    !text: tr('Ok')
+    anchors.left: parent.left
+    anchors.top: valueEntry.bottom
+    margin-top: 15
+    margin-left: 70
+    @onClick: submitButtonCallback()
+
+  SpaceGreenButton
+    size: 64 30
+    id: cancelButton
+    !text: tr('Cancelar')
+    anchors.left: submitButton.right
+    anchors.top: submitButton.top
+    margin-left: 10
+    @onClick: closeWindow()

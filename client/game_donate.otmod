@@ -1,0 +1,7 @@
+Module
+  name: game_donate
+  author: samueldev45
+  description: Donate system
+  scripts: [ game_donate ]
+  @onLoad: init()
+  @onUnload: terminate()

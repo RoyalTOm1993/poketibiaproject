@@ -1,36 +1,50 @@
-OptionPanel
-  margin-top: 24
-  OptionCheckBox
-    id: showInfoMessagesInConsole
-    font: window
-    !text: tr('Mostrar mensagens de informacao no console')
+ConsolePanel
+  id: consolePanel
+  phantom: false
+  size: 400 200
+  moveable: true
+  @onVisibilityChange: |
+      if self:isVisible() then
+        scheduleEvent(function()
+          self:focus()
+        end, 50)
+      end
 
-  OptionCheckBox
-    id: showEventMessagesInConsole
-    font: window
-    !text: tr('Mostrar mensagens de evento no console')
+  PrevChannelButton
+    id: prevChannelButton
 
-  OptionCheckBox
-    id: showStatusMessagesInConsole
-    font: window
-    !text: tr('Mostrar mensagens de status no console')
+  ConsoleTabBar
+    id: consoleTabBar
 
-  OptionCheckBox
-    id: showTimestampsInConsole
-    font: window
-    !text: tr('Mostrar timestamps no console')
+  NextChannelButton
+    id: nextChannelButton
 
-  OptionCheckBox
-    id: showLevelsInConsole
-    font: window
-    !text: tr('Mostrar niveis no console')
+  CloseChannelButton
+    id: closeChannelButton
 
-  OptionCheckBox
-    id: showPrivateMessagesInConsole
-    font: window
-    !text: tr('Mostrar mensagens privadas no console')
+  ClearChannelButton
+    id: clearChannelButton
 
-  OptionCheckBox
-    id: showPrivateMessagesOnScreen
-    font: window
-    !text: tr('Mostrar mensagens privadas na tela')
+  ChannelsButton
+    id: channelsButton
+
+  IgnoreButton
+    id: ignoreButton
+
+  ChatButton
+    id: chatButton
+
+  ConsoleContentPanel
+    id: consoleContentPanel
+
+  ConsoleTextEdit
+    id: consoleTextEdit
+
+  ToggleChat
+    id: toggleChat
+
+  TopResizeBorder
+    id: topResizeBorder
+
+  RightResizeBorder
+    id: rightResizeBorder
