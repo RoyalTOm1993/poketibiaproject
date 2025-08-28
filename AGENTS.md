@@ -13,7 +13,7 @@ policy:
 
 **NÃO MODIFICAR ARQUIVOS DO REPOSITÓRIO.**
 - Trate o repositório como *read-only*.
-- Arquivos com extensões como .dll, .exe, .txt .props, .proj, arquivos crypto++, imagens em geral e demais extensões relacionadas a compilação e build do servidor e do client não estão presentes no repositório para a devida otimização do processo de edição dos arquivos que estão presentes, mas considere que todos os arquivos, principalmente de imagem, mencionados nos códigos estão presentes na pasta original no Desktop do usuário.
+- Arquivos com extensões como .dll, .exe, .props, .proj, arquivos crypto++, imagens em geral e demais extensões relacionadas a compilação e build do servidor e do client não estão presentes no repositório para a devida otimização do processo de edição dos arquivos que estão presentes, mas considere que todos os arquivos, principalmente de imagem, mencionados nos códigos estão presentes na pasta original no Desktop do usuário.
 - Não aplicar `patch`, `write`, `format`, `move`, `delete` ou qualquer ação que altere arquivos.
 - Durante a inicialização (setup/build/postCreate), **não realizar nenhuma mudança**.
 - Se for necessário sugerir mudanças, **apenas gere um plano ou um diff no texto**, sem aplicar.
@@ -30,11 +30,11 @@ Aplica-se a todo o repositório Poketibia (TFS 1.4 + OTCv8 + RevScript).
 - `base/`: código do servidor TFS e scripts Lua.
 - `client/`: cliente OTCv8 com scripts e interfaces.
 
-### Subdiretórios
-- `base/src` – núcleo C++ do servidor (lógica, networking). Exemplos: alterar cálculo de combate ou protocolos de conexão; veja os arquivos `.cpp` em `base/src`.
-- `base/data` – scripts Lua do servidor (ações, criaturas, quests). Exemplos: ajustar ações ou recompensas de quests nas pastas `base/data/actions`, `base/data/creatures` etc.
-- `client/modules` – scripts Lua do cliente (UI, eventos). Exemplos: tooltip universal (`client/modules/tooltip.lua`) ou scripts da tela de login; estilos relacionados em `.otui`/`.otmod` no mesmo diretório.
-- Arquivos `.otui`/`.otmod` – layout e estilos de interface. Exemplos: cor de botões na tela de login em `client/modules/entergame.otui` ou `client/40-entergame.otui`; busque estilos em `client/**/*.otui` e `client/modules/**/*.otui`.
+### Pastas
+- `base` – núcleo C++ do servidor (lógica, networking). Exemplos: alterar cálculo de combate ou protocolos de conexão; veja os arquivos `.cpp` em `base/src`.
+- `base` – scripts Lua do servidor (ações, criaturas, quests). Exemplos: ajustar ações ou recompensas de quests nas pastas `base/data/actions`, `base/data/creatures` etc.
+- `client` – scripts Lua do cliente (UI, eventos). Exemplos: tooltip universal (`client/modules/tooltip.lua`) ou scripts da tela de login; estilos relacionados em `.otui`/`.otmod` no mesmo diretório.
+- Arquivos `.otui`/`.otmod` – layout e estilos de interface. Exemplos: cor de botões na tela de login em `client/modules/entergame.otui` ou `client/40-entergame.otui`; busque estilos em `client/**/*.otui` e `client/**/*.otui`.
 
 ## Estilo de código
 
@@ -60,5 +60,5 @@ Aplica-se a todo o repositório Poketibia (TFS 1.4 + OTCv8 + RevScript).
 ### Localizando estilos e assets
 - Usar `rg` para buscar nomes de widgets ou classes.
 - Conferir `.otui` para definição de layout/cores.
-- Verificar scripts em `client/modules/*` para lógica associada.
-- Procurar tooltips ou estilos globais em módulos comuns (por ex., `client/modules` ou arquivos `.otui` compartilhados).
+- Verificar scripts em `client/*` para lógica associada.
+- Procurar tooltips ou estilos globais em módulos comuns (por ex., `client/` ou arquivos `.otui` compartilhados).
