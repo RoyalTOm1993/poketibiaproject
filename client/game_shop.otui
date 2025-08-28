@@ -1,0 +1,422 @@
+quantityWindow < UIWindow
+  anchors.centerIn: parent
+  image-source: assets/buyFundo
+  size: 235 157
+  font: manrope-bold-18px
+  @onEscape: self:destroy()
+  Label
+    id: precoItem
+    anchors.top: parent.top
+    margin-top: 42
+    font: window
+    anchors.horizontalCenter: parent.horizontalCenter
+    text-auto-resize: true
+  Label
+    id: quantidadeLabel
+    phantom: true
+    size: 100 12
+    font: window
+    margin-top: 5
+    anchors.top: next.bottom
+    anchors.horizontalCenter: next.horizontalCenter
+    text-align: center
+    text: 1 x
+  HorizontalScrollBar
+    id: quantidadeBuy
+    minimum: 1
+    maximum: 10000
+    anchors.verticalCenter: parent.verticalCenter
+    anchors.left: parent.left
+    anchors.right: parent.right
+    margin-left: 30
+    margin-right: 30
+    margin-top: 0
+    step: 1
+    @onValueChange: modules.game_shop.changeQuantidade(self:getValue())
+  SpaceGreenButtonFont
+    id: buyButton
+    anchors.bottom: parent.bottom
+    anchors.horizontalCenter: parent.horizontalCenter
+    margin-bottom: 10
+    text: Comprar
+    text-align: center
+    size: 75 25
+  UIButton
+    id: closeButton
+    anchors.top: parent.top
+    anchors.right: parent.right
+    margin-top: 8
+    margin-right: 2
+    size: 24 25
+    image-source: /images/ui/closeButton
+    change-cursor-image: true
+    cursor: pointer
+    @onClick: modules.game_shop.destroyWindow()
+  UIWidget
+    id: minusButton
+    anchors.right: precoItem.left
+    anchors.top: precoItem.top
+    margin-right: 8
+    margin-top: -4
+    text: -
+    font: window
+    text-align: center
+    size: 22 22
+    image-source: assets/buttonPlusMinion
+  UIWidget
+    id: plusButton
+    anchors.left: precoItem.right
+    anchors.top: precoItem.top
+    margin-left: 8
+    margin-top: -4
+    text: +
+    font: window
+    text-align: center
+    size: 22 22
+    image-source: assets/buttonPlusMinion
+  Label
+    id: topText
+    text-auto-resize: true
+    !text: tr('COMPRANDO')
+    font: sono_medium_18
+    anchors.horizontalCenter: parent.horizontalCenter
+    anchors.top: parent.top
+    color: #68b4db
+    draggable: false
+    phantom: true
+    margin-top: 0
+
+itemClube < UIItem
+  image-source: assets/backgrounds/slot_item
+  margin-left: 7
+  margin-right: -7
+  margin-top: 10
+  margin-bottom: -10
+
+baseCategoria < UIWidget
+  text-offset: 48 0
+  font: sono_medium_18
+  color: #66c8ff
+  image-source: assets/button_unselect
+  &updateOnStates: |
+    function(self)
+      local children = self:getChildren()
+      for i=1,#children do
+        children[i]:setOn(self:isFocused())
+      end
+    end
+  @onFocusChange: self:updateOnStates()
+  @onSetup: self:updateOnStates()
+  $focus:
+    image-source: assets/button_select
+
+baseOutfit < UIWidget
+  image-source: assets/backgrounds/default_item
+  margin-left: 3
+  UICreature
+    id: outfit
+    size: 48 48
+    anchors.verticalCenter: parent.verticalCenter
+    anchors.horizontalCenter: parent.horizontalCenter
+    margin-bottom: 15
+    phantom: true
+  Label
+    id: preco
+    text-auto-resize: true
+    font: window
+    anchors.bottom: parent.bottom
+    anchors.horizontalCenter: parent.horizontalCenter
+    margin-bottom: 4
+    margin-left: 5
+    text: 250
+    color: #68b4db
+    phantom: true
+  UIItem
+    id: icon_currency
+    size: 32 32
+    anchors.bottom: parent.bottom
+    anchors.left: parent.left
+    margin-bottom: 2
+    margin-left: 0
+    phantom: true
+  Label
+    id: name
+    color: #aeebff
+    anchors.horizontalCenter: parent.horizontalCenter
+    anchors.top: parent.top
+    text-auto-resize: true
+    margin-top: 2
+    phantom: true
+  UIWidget
+    id: tooltipName
+    anchors.fill: prev
+  @onClick: modules.game_shop.sendBuffer(self:getId())
+
+basePokemon < UIWidget
+  image-source: assets/backgrounds/default_item
+  margin-left: 3
+  UICreature
+    id: outfit
+    size: 48 48
+    anchors.verticalCenter: parent.verticalCenter
+    anchors.horizontalCenter: parent.horizontalCenter
+    margin-bottom: 15
+    phantom: true
+  Label
+    id: preco
+    text-auto-resize: true
+    font: window
+    anchors.bottom: parent.bottom
+    anchors.horizontalCenter: parent.horizontalCenter
+    margin-bottom: 4
+    margin-left: 5
+    text: 250
+    color: #68b4db
+    phantom: true
+  UIItem
+    id: icon_currency
+    size: 32 32
+    anchors.bottom: parent.bottom
+    anchors.left: parent.left
+    margin-bottom: 2
+    margin-left: 0
+    phantom: true
+  Label
+    id: name
+    color: #aeebff
+    anchors.horizontalCenter: parent.horizontalCenter
+    anchors.top: parent.top
+    text-auto-resize: true
+    margin-top: 2
+    phantom: true
+  UIWidget
+    id: tooltipName
+    anchors.fill: prev
+  UIWidget
+    id: iconRank
+    size: 24 24
+    phantom: true
+    anchors.bottom: parent.bottom
+    anchors.right: parent.right
+  @onClick: modules.game_shop.sendBuffer(self:getId())
+
+baseItem < UIWidget
+  image-source: assets/backgrounds/default_item
+  margin-left: 3
+  UIItem
+    id: item
+    size: 48 48
+    anchors.verticalCenter: parent.verticalCenter
+    anchors.horizontalCenter: parent.horizontalCenter
+    margin-bottom: 15
+    phantom: true
+  Label
+    id: preco
+    text-auto-resize: true
+    font: window
+    anchors.bottom: parent.bottom
+    anchors.horizontalCenter: parent.horizontalCenter
+    margin-bottom: 4
+    margin-left: 5
+    text: 250
+    color: #68b4db
+    phantom: true
+  UIItem
+    id: icon_currency
+    size: 32 32
+    anchors.bottom: parent.bottom
+    anchors.left: parent.left
+    margin-bottom: 2
+    margin-left: 0
+    phantom: true
+  Label
+    id: name
+    color: #aeebff
+    anchors.horizontalCenter: parent.horizontalCenter
+    anchors.top: parent.top
+    text-auto-resize: true
+    margin-top: 2
+    phantom: true
+  UIWidget
+    id: tooltipName
+    anchors.fill: prev
+  @onClick: modules.game_shop.createWindow(self:getId(), self)
+
+MainWindow
+  size: 750 500
+  image-size: 693 463
+  image-source: assets/mainBackground
+  text: MASTER SHOP
+  focusable: false
+  text-offset: -6 6
+  font: sono_medium_30
+  color: #aeebff
+  @onEscape: self:hide()
+  UIButton
+    id: closeButton
+    anchors.top: parent.top
+    anchors.right: parent.right
+    margin-top: 8
+    margin-right: 50
+    size: 24 25
+    image-source: /images/ui/closeButton
+    @onClick: self:getParent():hide()
+    change-cursor-image: true
+    cursor: pointer
+  SpaceGreenButton
+    id: donateButton
+    size: 150 48
+    text: DONATE
+    font: sono_medium_26
+    color: #b8db85
+    anchors.bottom: parent.bottom
+    anchors.left: parent.left
+    margin-left: 40
+    margin-bottom: 50
+    @onClick: modules.game_donate.toggle() self:getParent():hide()
+  ScrollablePanel
+    id: panelCategorias
+    size: 213 282
+    anchors.top: parent.top
+    margin-top: 50
+    margin-left: 8
+    anchors.left: parent.left
+    vertical-scrollbar: panelBar
+    layout:
+      type: grid
+      cell-size: 213 50
+      cell-spacing: 8
+      flow: false
+      num-columns: 1
+  VerticalScrollBar
+    id: panelBar
+    visible: true
+    anchors.top: panelCategorias.top
+    anchors.bottom: panelCategorias.bottom
+    anchors.right: panelCategorias.right
+    margin-right: -20
+    step: 50
+  ScrollablePanel
+    id: verticalPanel
+    size: 412 335
+    anchors.bottom: parent.bottom
+    anchors.left: parent.left
+    margin-left: 244
+    margin-bottom: 40
+    visible: false
+    vertical-scrollbar: verticalBar
+    layout:
+      type: grid
+      cell-spacing: 3
+      cell-size: 96 110
+      flow: true
+      num-columns: 3
+  VerticalScrollBar
+    id: verticalBar
+    anchors.top: verticalPanel.top
+    anchors.bottom: verticalPanel.bottom
+    anchors.right: parent.right
+    margin-top: -25
+    margin-bottom: 35
+    margin-right: 50
+    step: 40
+    pixels-scroll: true
+    visible: false 
+  UIWidget
+    id: vipImage
+    size: 416 344
+    anchors.right: parent.right
+    anchors.bottom: parent.bottom
+    margin-bottom: 55
+    margin-right: 60
+    visible: false
+    image-source: assets/backgrounds/vipplus
+    phantom: true
+  ScrollablePanel
+    id: backgroundClubText
+    size: 160 93
+    text-align: topleft
+    anchors.top: parent.top
+    anchors.right: parent.right
+    image-source: assets/backgrounds/recompensas
+    vertical-scrollbar: verticalTextBar
+    margin-top: 100
+    margin-right: 80
+    visible: false
+    layout: verticalBox
+    UIWidget
+      id: text
+      font: damas
+      size: 171 300
+      text-align: topleft
+      text-offset: 10 10
+      text-wrap: true
+  VerticalScrollBar
+    id: verticalTextBar
+    anchors.top: backgroundClubText.top
+    anchors.bottom: backgroundClubText.bottom
+    anchors.right: backgroundClubText.right
+    step: 40
+    visible: false
+  UILabel
+    id: clubBeneficiosTopText
+    text: BENEFICIOS
+    color: #FFDF00
+    text-auto-resize: true
+    anchors.top: backgroundClubText.top
+    anchors.horizontalCenter: backgroundClubText.horizontalCenter
+    font: damas
+    margin-top: -13
+    visible: false
+  SpaceGreenButtonFont
+    id: VIP_BUY
+    size: 120 32
+    anchors.horizontalCenter: backgroundClubText.horizontalCenter
+    anchors.top: backgroundClubText.bottom
+    visible: false
+    text: Comprar Vip
+    @onClick: modules.game_shop.sendBuffer(self:getId())
+  UIButton
+    id: vip_info
+    size: 24 24
+    image-source: assets/info
+    anchors.top: parent.top
+    anchors.left: parent.left
+    margin-left: 250
+    margin-top: 55
+    visible: false
+  UIWidget
+    id: searchImage
+    phantom: true
+    size: 134 31
+    image-source: assets/search
+    margin-top: 38
+    margin-right: 44
+    anchors.top: parent.top
+    anchors.horizontalCenter: parent.horizontalCenter
+  UITextEdit
+    id: searchTextEdit
+    selection-color: black
+    selection-background-color: white
+    size: 96 31
+    margin-top: 46
+    margin-right: 32
+    anchors.top: parent.top
+    anchors.horizontalCenter: parent.horizontalCenter
+    color: #66c8ff
+    font: window
+    @onTextChange: modules.game_shop.onSearch()
+  Button
+    id: typeMoeda
+    size: 134 31
+    anchors.top: searchImage.top
+    anchors.left: searchImage.right
+    text: Moeda: Todas
+    margin-left: 10
+  Button
+    id: typeItem
+    size: 111 31
+    anchors.top: typeMoeda.top
+    anchors.left: typeMoeda.right
+    text: Type: All
+    margin-left: 10

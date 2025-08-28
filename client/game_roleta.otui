@@ -1,0 +1,161 @@
+MainWindow
+  image-source: images/background
+  size: 500 500
+  UIWidget
+    focusable: false
+    id: roletaMain
+    image-source: images/roleta
+    size: 444 445
+    anchors.verticalCenter: parent.verticalCenter
+    anchors.horizontalCenter: parent.horizontalCenter
+    margin-bottom: 10
+    UIItem
+      id: 1
+      size: 32 32
+      anchors.top: parent.top
+      anchors.left: parent.left
+      margin-top: 52
+      margin-left: 102
+      item-id: 15799
+      virtual: true
+    UIItem
+      id: 2
+      size: 32 32
+      anchors.top: parent.top
+      anchors.left: parent.left
+      margin-top: 24
+      margin-left: 170
+      item-id: 15800
+      virtual: true
+    UIItem
+      id: 3
+      size: 32 32
+      anchors.top: parent.top
+      anchors.right: parent.right
+      margin-top: 24
+      margin-right: 170
+      item-id: 15801
+      virtual: true
+    UIItem
+      id: 4
+      size: 32 32
+      anchors.top: parent.top
+      anchors.right: parent.right
+      margin-top: 52
+      margin-right: 102
+      item-id: 15802
+      virtual: true
+    UIItem
+      id: 5
+      size: 32 32
+      anchors.top: parent.top
+      anchors.right: parent.right
+      margin-top: 104
+      margin-right: 51
+      item-id: 15803
+      virtual: true
+    UIItem
+      id: 6
+      size: 32 32
+      anchors.top: parent.top
+      anchors.right: parent.right
+      margin-top: 170
+      margin-right: 24
+      item-id: 15804
+      virtual: true
+    UIItem
+      id: 7
+      size: 32 32
+      anchors.top: parent.top
+      anchors.right: parent.right
+      margin-top: 242
+      margin-right: 24
+      item-id: 15805
+      virtual: true
+    UIItem
+      id: 8
+      size: 32 32
+      anchors.top: parent.top
+      anchors.right: parent.right
+      margin-top: 308
+      margin-right: 50
+      item-id: 15806
+      virtual: true
+    UIItem
+      id: 9
+      size: 32 32
+      anchors.bottom: parent.bottom
+      anchors.right: parent.right
+      margin-bottom: 52
+      margin-right: 102
+      item-id: 15807
+      virtual: true
+    UIItem
+      id: 10
+      size: 32 32
+      anchors.bottom: parent.bottom
+      anchors.right: parent.right
+      margin-bottom: 25
+      margin-right: 169
+      item-id: 15808
+      virtual: true
+    UIItem
+      id: 11
+      size: 32 32
+      anchors.bottom: parent.bottom
+      anchors.left: parent.left
+      margin-bottom: 25
+      margin-left: 170
+      item-id: 15809
+      virtual: true
+    UIItem
+      id: 12
+      size: 32 32
+      anchors.bottom: parent.bottom
+      anchors.left: parent.left
+      margin-bottom: 53
+      margin-left: 103
+      item-id: 15810
+      virtual: true
+    UIItem
+      id: 13
+      size: 32 32
+      anchors.bottom: parent.bottom
+      anchors.left: parent.left
+      margin-bottom: 104
+      margin-left: 52
+      item-id: 15811
+      virtual: true
+    UIItem
+      id: 14
+      size: 32 32
+      anchors.bottom: parent.bottom
+      anchors.left: parent.left
+      margin-bottom: 171
+      margin-left: 25
+      item-id: 15812
+      virtual: true
+    UIItem
+      id: 15
+      size: 32 32
+      anchors.bottom: parent.bottom
+      anchors.left: parent.left
+      margin-bottom: 244
+      margin-left: 25
+      item-id: 15813
+      virtual: true
+    UIItem
+      id: 16
+      size: 32 32
+      anchors.top: parent.top
+      anchors.left: parent.left
+      margin-top: 104
+      margin-left: 51
+      item-id: 15814
+      virtual: true
+  UIWidget
+    image-source: images/seta
+    size: 25 22
+    anchors.top: parent.top
+    anchors.horizontalCenter: parent.horizontalCenter
+    margin-top: -14

@@ -1,0 +1,11 @@
+Module
+  name: game_poketeam
+  description: pokemons bar
+  author: Icaro
+  website: 
+  autoload: true
+  autoload-priority: 1000
+  scripts: [ poketeam ]
+  sandboxed: true
+  @onLoad: init()
+  @onUnload: terminate()
