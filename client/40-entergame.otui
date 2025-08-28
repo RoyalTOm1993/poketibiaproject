@@ -1,0 +1,2 @@
+EnterGameWindow < StaticMainWindow
+  size: 260 354

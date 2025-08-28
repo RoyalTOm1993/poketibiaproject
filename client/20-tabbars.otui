@@ -1,0 +1,61 @@
+MoveableTabBar < UIMoveableTabBar
+  height: 32
+  movable: true
+  pin-icon-path: /images/ui/tabpin
+  pin-icon-dx: 4
+  pin-icon-dy: -1
+  pin-icon-width: 15
+  pin-icon-height: 14
+  pin-text-dx: 10
+
+MoveableTabBarPanel < Panel
+
+MoveableTabBarButton < UIButton
+  size: 22 22
+  image-source: /images/ui/tabbutton_rounded2
+  image-mode: border
+  image-border: 20
+  color: #dfdfdf
+  anchors.top: parent.top
+  anchors.left: parent.left
+
+  $hover:
+    image-source: /images/ui/tabbutton_rounded3
+
+  $pressed:
+    image-source: /images/ui/tabbutton_rounded4
+
+  $checked:
+    image-source: /images/ui/tabbutton_rounded5
+
+  $on !checked:
+    color: #de6f6f
+
+TabBarVertical < UITabBar
+  
+  ScrollableFlatPanel
+    id: buttonsPanel
+    anchors.top: parent.top
+    anchors.left: parent.left
+    anchors.right: scrollBar.left
+    anchors.bottom: parent.bottom
+    vertical-scrollbar: scrollBar
+    margin-right: 1
+    padding-top: 10
+
+  VerticalScrollBar
+    id: scrollBar
+    anchors.top: parent.top
+    anchors.bottom: parent.bottom
+    anchors.right: parent.right
+    step: 16
+    pixels-scroll: true
+
+ConsoleTabBarButton < MoveableTabBarButton
+  size: 22 22
+  padding: 15
+  clipping: true
+
+TabBarVerticalButton < UIButton
+
+

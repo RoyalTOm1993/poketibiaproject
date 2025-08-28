@@ -1,0 +1,81 @@
+TopToggleButtonNew < UIButton
+  id: TopToggleButtonNew
+  size: 136 33
+  image-source: /images/topbuttons/hide
+  anchors.top: parent.top
+  anchors.horizontalCenter: parent.horizontalCenter
+  margin-top: 50
+  opacity: 0.0
+  phantom: false
+  @onClick: toggleTopMenu()
+  @onHoverChange: self:setOpacity(hovered and 1.0 or (topMenu:isVisible() and 0.0 or 0.15))
+
+  $hover:
+    opacity: 1.0
+    cursor: pointer
+
+TopButton < UIButton
+  size: 32 32
+  icon-size: 32 32
+  change-cursor-image: true
+  cursor: pointer
+  margin-top: 8
+  icon-offset: 2 2
+  icon-color: #CECECE
+
+  $hover:
+    icon-size: 36 36
+    icon-offset: 0 0
+    icon-color: #fcd630ff
+
+  $pressed:
+    icon-color: #e4dedee3
+
+TopToggleButton < TopButton
+
+MinimapButton < TopToggleButton
+  # Propriedades específicas do botão do minimapa
+
+TopButtonLogout < TopButton
+  icon-color: #CECECE
+
+  $hover:
+    icon-size: 36 36
+    icon-offset: 0 0
+    icon-color: #fd1f48ff
+
+  $pressed:
+    icon-color: #e4dedee3
+
+TopMenuButtonsPanel < Panel
+  layout:
+    type: horizontalBox
+    spacing: 12
+    fit-children: true
+  padding-top: 4
+  padding-bottom: 2
+  padding-right: 10
+  padding-left: 10
+  
+
+TopMenuPanel < Panel
+  margin-top: 0
+  focusable: false
+
+TopMenu < TopMenuPanel
+  id: topMenu
+  size: 735 52
+  image-size: 735 60
+  anchors.horizontalCenter: parent.horizontalCenter
+  anchors.top: parent.top
+
+  UIWidget
+    phantom: false
+    anchors.fill: parent
+    image-source: /images/ui/topMenuBackground
+
+  TopMenuButtonsPanel
+    id: gameButtonsPanel
+    anchors.top: parent.top
+    anchors.bottom: parent.bottom
+    anchors.horizontalCenter: parent.horizontalCenter
