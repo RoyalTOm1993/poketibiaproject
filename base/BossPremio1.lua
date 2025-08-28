@@ -1,6 +1,6 @@
 function onUse(cid, item, fromPosition, itemEx, toPosition)
     local player = Player(cid)
-    local bag = player:addItem(7343, 1)
+    local bag = player:addItem(17336, 1)
 
     if not bag then
         player:sendTextMessage(MESSAGE_INFO_DESCR, "Você não tem espaço para abrir a bolsa!")
