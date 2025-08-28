@@ -1,0 +1,137 @@
+HostPanel < Panel
+  focusable: true
+  phantom: false
+  border: 2 #c7c0b8
+  padding: 2
+  cursor: pointer
+
+  Panel
+    id: thumb
+    anchors.fill: parent
+  
+  Label
+    id: name
+    anchors.top: parent.top
+    anchors.left: parent.left
+    margin-top: 4
+    margin-left: 4
+    text-align: left
+    text-auto-resize: true
+    color: white
+    shadow: true
+  
+  Label
+    id: desc
+    anchors.top: parent.top
+    anchors.left: parent.left
+    margin-top: 20
+    margin-left: 4
+    text-align: left
+    color: #d5c3af
+    text-auto-resize: true
+    shadow: true
+
+  Panel
+    anchors.left: parent.left
+    anchors.bottom: parent.bottom
+    margin-left: 5
+    margin-bottom: 3
+    image-source: /images/views
+    image-color: black
+    size: 22 14
+  
+  Panel
+    anchors.left: parent.left
+    anchors.bottom: parent.bottom
+    margin-left: 4
+    margin-bottom: 4
+    image-source: /images/views
+    size: 22 14
+  
+  Label
+    id: viewers
+    anchors.left: parent.left
+    anchors.bottom: parent.bottom
+    margin-left: 31
+    margin-bottom: 4
+    text-align: left
+    color: white
+    text-auto-resize: true
+    shadow: true
+
+  Panel
+    id: passBack
+    anchors.right: parent.right
+    anchors.bottom: parent.bottom
+    margin-right: 2
+    margin-bottom: 2
+    image-source: /images/lock
+    image-color: black
+    size: 24 29
+  
+  Panel
+    id: pass
+    anchors.right: parent.right
+    anchors.bottom: parent.bottom
+    margin-right: 4
+    margin-bottom: 4
+    image-source: /images/lock
+    size: 24 29
+    phantom: false
+    tooltip: Password protected
+
+MainWindow
+  size: 1085 600
+  text: Spectate Menu
+
+  ScrollablePanel
+    id: hosts
+    anchors.top: parent.top
+    anchors.left: parent.left
+    anchors.right: parent.right
+    anchors.bottom: parent.bottom
+    margin-bottom: 40
+    padding: 1
+    vertical-scrollbar: hostsScroll
+    auto-focus: none
+    layout:
+      type: grid
+      cell-size: 335 200
+      cell-spacing: 10
+      flow: true
+  
+  VerticalScrollBar
+    id: hostsScroll
+    anchors.top: hosts.top
+    anchors.bottom: hosts.bottom
+    anchors.right: hosts.right
+    step: 24
+    pixels-scroll: true
+
+  HorizontalSeparator
+    anchors.top: prev.bottom
+    anchors.left: parent.left
+    anchors.right: parent.right
+  
+  Button
+    id: hostBtn
+    anchors.bottom: parent.bottom
+    anchors.horizontalCenter: parent.horizontalCenter
+    text: Start Hosting
+    @onClick: modules.game_spectate.showHosting()
+  
+  Button
+    anchors.bottom: parent.bottom
+    anchors.right: parent.right
+    margin-bottom: 5
+    text: Close
+    @onClick: modules.game_spectate.hide()
+
+  CheckBox
+    id: hideCheck
+    anchors.bottom: parent.bottom
+    anchors.left: parent.left
+    margin-bottom: 5
+    text: Hide password protected
+    width: 200
+    @onClick: modules.game_spectate.hideProtected(self)

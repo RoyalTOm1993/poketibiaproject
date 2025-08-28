@@ -1,0 +1,40 @@
+VipListLabel < GameLabel
+  margin-top: 2
+  image-rect: 0 0 12 12
+  image-clip: 0 0 12 12
+  image-source: /images/game/viplist/icons
+  phantom: false
+  font: window
+
+  $first:
+    margin-top: 5
+
+MiniWindow
+  id: vipWindow
+  !text: tr('VIP List')
+  height: 100
+  icon: /images/topbuttons/viplist
+  icon-offset: 30 5
+  icon-size: 24 24
+  @onClose: modules.game_viplist.onMiniWindowClose()
+  &save: true
+  &autoOpen: false
+
+  MiniWindowContents
+    layout: verticalBox
+    margin-left: 16
+    margin-top: 52
+    padding-left: 5
+    padding-right: 5
+    &onMousePress: modules.game_viplist.onVipListMousePress
+  ResizeBorder
+    id: bottomResizeBorder
+    anchors.bottom: parent.bottom
+    anchors.left: parent.left
+    anchors.right: parent.right
+    height: 3
+    minimum: 110
+    maximum: 350
+    margin-left: 3
+    margin-right: 3
+    background: #ffffff88
