@@ -13,6 +13,7 @@ policy:
 
 **NÃO MODIFICAR ARQUIVOS DO REPOSITÓRIO.**
 - Trate o repositório como *read-only*.
+- Arquivos com extensões como .dll, .exe, .txt .props, .proj, arquivos crypto++, imagens em geral e demais extensões relacionadas a compilação e build do servidor e do client não estão presentes no repositório para a devida otimização do processo de edição dos arquivos que estão presentes, mas considere que todos os arquivos, principalmente de imagem, mencionados nos códigos estão presentes na pasta original no Desktop do usuário.
 - Não aplicar `patch`, `write`, `format`, `move`, `delete` ou qualquer ação que altere arquivos.
 - Durante a inicialização (setup/build/postCreate), **não realizar nenhuma mudança**.
 - Se for necessário sugerir mudanças, **apenas gere um plano ou um diff no texto**, sem aplicar.
