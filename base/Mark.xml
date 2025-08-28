@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="cp1252"?>
+<npc name="Mark" script="default.lua" walkinterval="0" floorchange="0">
+	<health now="150" max="150"/>
+	<look type="2598" head="50" body="50" legs="30" feet="200" corpse="2212"/>
+	<parameters>
+		<parameter key="idletime" value="180" />
+		<parameter key="module_shop" value="1"/>
+		<parameter key="message_greet" value="Hello |PLAYERNAME|! Looking for supplies for your journey? Here you will find the best Poke Balls in the region. Just say {trade}!"/>
+		<parameter key="shop_buyable" value="
+		empty poke ball, 26662, 8;
+		empty great ball, 26660, 35;
+		empty super ball, 26659, 90;
+		empty ultra ball, 26688, 130;
+		small potion, 27642, 10;
+		great potion, 27643, 25;
+		ultra potion, 27641, 90;
+		hyper potion, 27647, 110;
+		ultimate potion, 27646, 150;
+		revive, 27645, 200;"/>
+	<parameter key="shop_sellable" value="
+		leaf stone,26731,5000;
+		boost stone,26723,120000;
+		water stone,26736,5000;
+		venom stone,26735,5000;
+		thunder stone,26734,5000;
+		rock stone,26733,5000;
+		punch stone,26732,5000;
+		fire stone,26728,5000;
+		ice stone,26730,5000;
+		cocoon stone,26724,5000;
+		ancient stone,26749,50000;
+		crystal stone,26725,50000;
+		darkness stone,26726,5000;
+		earth stone,26742,5000;
+		enigma stone,26727,5000;
+		metal stone,26747,50000;
+		sun stone,26748,15000;
+		feather stone,26743,5000;
+		king's rock stone,26746,5000;
+		dragon stone,5000,125;
+		bug gosme,41605,1;
+		enchanted gem,41607,1;
+		bandaid,41608,1;
+		rough gemstone,41609,125;
+		dragon scale,41611,125;
+		ghost essence,41612,1;
+		earth ball,41613,1;
+		bicycle,27634,125;
+		bag of pollen,27658,125;
+		bird beak,27680,125;
+		bitten apple,27681,125;
+		bottle of poison,27672,1;
+		comb,27687,125;
+		strange rock,27818,10;
+		feather,27706,10;
+		electric box,27684,20;
+		future orb,27700,20;
+		sandbag,27685,15;
+		horn,27686,15;
+		dragon tooth,27667,125;
+		nail,27665,125;
+		pot of lava,27656,15;
+		pot of moss bug,27679,15;
+		ruby,27695,125;
+		straw,27719,1;
+		tooth,27683,15;
+		water gem,27668,1;
+		stone orb,27702,15;
+		bat wing,27690,125;
+		horn drill,27794,125;
+		rat tail,27682,125;
+		wool ball,27694,125;
+		old amber,27663,125;
+		helix fossil,27661,125;
+		electric rat tail,27734,125;
+		fox tail,27688,125;
+		bug antenna,27691,125;
+		leaves,27660,8;
+		piece of diglett,27800,125;
+		bull tail,27820,125;
+		ice bra,27676,125;
+		gyarados tail,27652,125;
+		karate duck,27697,125;
+		luck medallion,27693,125;
+		magma foot,27806,125;
+		male ear,27803,125;
+		magnet,27704,125;
+		electric tail,27677,125;
+		bulb,27659,125;
+		crab claw,27713,125;
+		owl feather,27804,125;
+		farfetch'd stick,27705,125;
+		fire tail,27780,125;
+		punch machine,27698,125;
+		bone,27714,125;
+		seed,27670,1;
+		water pendant,27678,125;
+		locksmith of shell,27709,125;
+		bear paw,27776,125;
+		blue ball,27721,125;
+		psyduck mug,27696,125;
+		gem star,27790,125;
+		giant ruby,27778,125;
+		seal tail,27781,125;
+		squirrel tail,27772,125;
+		steel wings,27730,125;
+		cat ear,27779,125;
+		moth wing,27773,125;
+		dark gem,27784,1;
+		old skull,27737,125;
+		aerodactyl wing,27757,125;
+		big bat wing,27766,125;
+		mystic shell hat,27729,125;
+		rock trunk,27748,125;
+		magnetic tail,27754,125;
+		brush tail,27728,125;
+		long seal tail,27749,125;
+		blue kick machine,27771,125;
+		stone shell,27731,125;
+		blue ball tail,27753,125;
+		ice block,27707,125;
+		articuno feather,27653,125;
+		zapdos feather,27654,125;
+		moltres feather,27655,125;
+		pot of pure water,27720,125;
+		evil pendant,27722,125;
+		blue rat ear,27770,125;
+		lava shell,27739,125;
+		head top,27741,125;
+		nature pendant,27742,125;
+		poisonous flower,27743,125;
+		ice orb,28569,125;
+		thunder orb,28570,125;
+		fire orb,28571,125;"/>
+	</parameters>
+</npc>
