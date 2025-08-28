@@ -1,50 +1,65 @@
-function onUse(player, item, fromPosition, target, toPosition, isHotkey)
+function onTime(interval)
 
-    local itemsReceived = {}  -- Lista para armazenar os itens recebidos
-    local possibleItems = {
-        {itemid = 14435, min = 100, max = 2000},
-        {itemid = 14434, min = 100, max = 2000},
-        {itemid = 13198, min = 100, max = 2000},
-        {itemid = 13234, min = 100, max = 2000},
-        {itemid = 12237, min = 100, max = 500},
-        {itemid = 20709, min = 1, max = 2},
-        {itemid = 20708, min = 1, max = 1},
-        {itemid = 22787, min = 1, max = 1},
-        {itemid = 13560, min = 1, max = 5},
-        {itemid = 13561, min = 1, max = 5},
-        {itemid = 13563, min = 1, max = 5},
-        {itemid = 13564, min = 1, max = 5},
-        {itemid = 13565, min = 1, max = 5},
-        {itemid = 17315, min = 1, max = 10},
-        {itemid = 20652, min = 1, max = 5},
-        {itemid = 20651, min = 1, max = 3},
-        {itemid = 17208, min = 1, max = 1},
-        {itemid = 17208, min = 1, max = 1},
-        {itemid = 17208, min = 1, max = 1},
-        {itemid = 17208, min = 1, max = 1},
-        {itemid = 17208, min = 1, max = 1},
-        {itemid = 17208, min = 1, max = 1},
-        {itemid = 17208, min = 1, max = 1},
-        {itemid = 17208, min = 1, max = 1},
-        {itemid = 17208, min = 1, max = 1},
-        {itemid = 17208, min = 1, max = 1},
-        {itemid = 17120, min = 1, max = 10},
-    }
+    -- if tonumber(os.date("%w")) ~= 3 then
+        -- return true
+    -- end
 
-    -- Adiciona até 3 itens ao inventário do jogador
-    for i = 1, math.random(1, 5) do
-        local randomItem = possibleItems[math.random(#possibleItems)]
-        local amount = math.random(randomItem.min, randomItem.max)
-        local itemType = ItemType(randomItem.itemid)
-        if itemType then
-            player:addItem(randomItem.itemid, amount)
-            table.insert(itemsReceived, amount .. "x " .. itemType:getName())
-        end
+    local minPlayers = 15
+    local playersOnline = #Game.getPlayers()
+
+    if playersOnline < minPlayers then
+        local playersNeeded = minPlayers - playersOnline
+        Game.broadcastMessage("[EVENTO BAG] O evento do bag n�o iniciar� devido � falta de jogadores. Pelo menos " .. minPlayers .. " jogador(es) adicional(is) s�o necess�rios. Online no momento : " .. playersOnline)
+        return true
     end
+	
+    Game.broadcastMessage("[EVENTO BAG] Evento bag iniciado!, Portal no cp!.")
 
-    local receivedItemsMessage = "e recebeu: " .. table.concat(itemsReceived, ", ")
-    Game.broadcastMessage(player:getName() .. " acabou de abrir uma box do evento bag!, " .. receivedItemsMessage, MESSAGE_EVENT_ADVANCE)
-    item:remove(1)
+    local portalPosFinal = Position(3211, 2833, 9)
+    local portalPosInicial = Position(3078, 2904, 7)
+    Game.createItem(1387, 1, portalPosInicial):setDestination(portalPosFinal)
+
+    addEvent(function()
+        Game.broadcastMessage("[EVENTO BAG] 3 minutos se passaram! O portal permanecer� aberto por mais 2 minutos!.")
+    end, 120000)
+
+local textTimer = 0
+local textInterval = 1000
+
+local function displayEventText()
+    Game.sendAnimatedText(portalPosInicial, "[EVENTO BAG]", math.random(1, 255))
+    textTimer = textTimer + textInterval
+    if textTimer < 300000 then
+        addEvent(displayEventText, textInterval)
+    end
+end
+
+displayEventText()
+
+    addEvent(function()
+        Game.broadcastMessage("[EVENTO BAG] 5 minutos restantes! O portal ser� fechado em breve. Aproveite o tempo que resta!")
+
+        local teleportPosition = Position(3209, 2839, 9)
+        local teleportPositionCp = Position(3078, 2904, 7)
+        local targetPosition = Position(3228, 2819, 9)
+        local distanceThreshold = 30
+
+        for _, player in ipairs(Game.getPlayers()) do
+            local playerPos = player:getPosition()
+            local distance = playerPos:getDistance(targetPosition)
+
+            if distance <= distanceThreshold then
+                player:teleportTo(teleportPositionCp)
+                player:sendTextMessage(MESSAGE_INFO_DESCR, "[EVENTO BAG] FIM DO EVENTO ATE A PROXIMA")
+            end
+        end
+
+        local portalTile = Tile(portalPosInicial):getItemById(1387)
+        if portalTile then
+            portalTile:remove()
+            Game.broadcastMessage("[EVENTO BAG] O portal desapareceu! Ate a proxima semana!")
+        end
+    end, 300000)
 
     return true
 end

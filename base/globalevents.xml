@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<globalevents>
+	<globalevent type="startup" name="ServerStartup" script="startup.lua" />
+	<globalevent type="record" name="PlayerRecord" script="record.lua" />
+	<globalevent name="Server Save" interval="60000" script="serversave.lua" />
+	<!-- <globalevent name="Bag Event" time="19:07:00" script="bagevent.lua" /> -->
+	<!-- <globalevent name="Bag Event 2" time="19:10:00" script="bagevent.lua" /> -->
+	<!-- <globalevent name="Bag Event 3" time="19:13:00" script="bagevent.lua" /> -->
+	<!-- <globalevent name="Bag Event 4" time="19:16:00" script="bagevent.lua" /> -->
+	<!-- <globalevent name="Arena Event" time="17:00:00" script="arenaevent.lua" /> -->
+	<!-- <globalevent name="Arena Event 2" time="17:30:00" script="arenaevent.lua" /> -->
+	<!-- <globalevent name="Arena Event 3" time="18:00:00" script="arenaevent.lua" /> -->
+	<!-- <globalevent name="Arena Event 4" time="18:30:00" script="arenaevent.lua" /> -->
+	<!-- <globalevent name="Soccer Event" time="19:30:00" script="soccerevent.lua" /> -->
+    <globalevent name="texto" interval="2000" script="texto.lua"/>
+    <globalevent name="PIXAPI" interval="1000" script="apiPix.lua"/>
+    <!-- <globalevent name="shop" interval="5000" script="Shop.lua"/> -->
+    <globalevent name="mensagem" interval="600000" script="mensagens ultra.lua"/>
+	<!-- <globalevent name="Lottery" time="17:00:00" script="EventLottry.lua" /> -->
+	<!-- <globalevent name="Lottery2" time="12:30:00" script="EventLottry.lua" /> -->
+	<!-- <globalevent name="Lottery3" time="06:30:00" script="EventLottry.lua" /> -->
+	<globalevent name="DoubleLoot" time="13:0:00" script="Event Loot.lua" />
+	<globalevent name="torneioAviso" time="21:00:00" script="aviso_torneio.lua" />
+	<globalevent name="torneioStart" time="21:15:00" script="evento_torneio.lua" />
+                    <!-- EVENT AUTOMATICO -->
+	<!-- <globalevent name="BagEvent" time="21:58:00" script="eventauto/BagEvent.lua" /> -->
+	<!-- <globalevent name="Invasao" time="13:52:30" script="Evento Invasao.lua" /> -->
+	<!-- <globalevent name="Invasa2o" time="20:54:00" script="Evento Invasao.lua" /> -->
+
+	
+                    <!-- BOSS EVENT -->
+	<!-- <globalevent name="BossHeld" time="23:59:00" script="boss event/Boss Held.lua" /> ADAPTADO -->
+
+	<!-- <globalevent name="BossHo-oh" time="07:00:00" script="boss event/Boss Ho-oh.lua" /> -->
+	<!-- <globalevent name="BossHo-oh1" time="11:00:00" script="boss event/Boss Ho-oh.lua" /> -->
+	<!-- <globalevent name="BossHo-oh2" time="16:00:00" script="boss event/Boss Ho-oh.lua" /> -->
+	<!-- <globalevent name="BossHo-oh3" time="19:00:00" script="boss event/Boss Ho-oh.lua" /> -->
+	<!-- <globalevent name="BossGiratina" time="07:00:00" script="boss event/Boss Giratina Held.lua" /> -->
+	<!-- <globalevent name="BossGiratin1a" time="11:00:00" script="boss event/Boss Giratina Held.lua" /> -->
+	<!-- <globalevent name="BossGiratina2" time="16:00:00" script="boss event/Boss Giratina Held.lua" /> -->
+	<!-- <globalevent name="BossGiratina3" time="19:00:00" script="boss event/Boss Giratina Held.lua" /> -->
+	<!-- <globalevent name="BossGengarGlobal" time="07:00:00" script="boss event/Boss Gengar Global.lua" /> -->
+	<!-- <globalevent name="BossGengarGlobal2" time="11:00:00" script="boss event/Boss Gengar Global.lua" /> -->
+	<!-- <globalevent name="BossGengarGlobal3" time="16:00:00" script="boss event/Boss Gengar Global.lua" /> -->
+	<!-- <globalevent name="BossGengarGlobal4" time="19:00:00" script="boss event/Boss Gengar Global.lua" /> -->
+	
+	
+		<!-- ZONES EVENTS -->
+	<globalevent name="zones" interval="3600000" script="zonesEvents.lua"/>
+
+</globalevents>
