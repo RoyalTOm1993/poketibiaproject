@@ -22,37 +22,38 @@
 
 #ifdef FW_SOUND
 
-#ifndef FRAMEWORK_SOUND_DECLARATIONS_H
-#define FRAMEWORK_SOUND_DECLARATIONS_H
+#ifndef SOUNDFILE_H
+#define SOUNDFILE_H
 
-#include <framework/global.h>
+#include "declarations.h"
+#include <framework/core/filestream.h>
 
-#define AL_LIBTYPE_STATIC
+class SoundFile : public stdext::shared_object
+{
+public:
+    SoundFile(const FileStreamPtr& fileStream);
+    virtual ~SoundFile() { }
+    static SoundFilePtr loadSoundFile(const std::string& filename);
 
-#if defined(__APPLE__)
-#include <OpenAL/al.h>
-#include <OpenAL/alc.h>
-#else
-#include <AL/al.h>
-#include <AL/alc.h>
-#endif
+    virtual int read(void *buffer, int bufferSize) { return -1; }
+    virtual void reset() { }
+    bool eof() { return m_file->eof(); }
 
-class SoundManager;
-class SoundSource;
-class SoundBuffer;
-class SoundFile;
-class SoundChannel;
-class StreamSoundSource;
-class CombinedSoundSource;
-class OggSoundFile;
+    ALenum getSampleFormat();
 
-typedef stdext::shared_object_ptr<SoundSource> SoundSourcePtr;
-typedef stdext::shared_object_ptr<SoundFile> SoundFilePtr;
-typedef stdext::shared_object_ptr<SoundBuffer> SoundBufferPtr;
-typedef stdext::shared_object_ptr<SoundChannel> SoundChannelPtr;
-typedef stdext::shared_object_ptr<StreamSoundSource> StreamSoundSourcePtr;
-typedef stdext::shared_object_ptr<CombinedSoundSource> CombinedSoundSourcePtr;
-typedef stdext::shared_object_ptr<OggSoundFile> OggSoundFilePtr;
+    int getChannels() { return m_channels; }
+    int getRate() { return m_rate; }
+    int getBps() { return m_bps; }
+    int getSize() { return m_size; }
+    std::string getName() { return m_file ? m_file->name() : std::string(); }
+
+protected:
+    FileStreamPtr m_file;
+    int m_channels;
+    int m_rate;
+    int m_bps;
+    int m_size;
+};
 
 #endif
 
