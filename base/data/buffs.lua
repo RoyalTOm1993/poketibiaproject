@@ -1,3 +1,0 @@
--- src/guild.h contains values, search "// Guild Buffs"
--- buffs are also coded in sources
--- most useless script file, author: Oen44

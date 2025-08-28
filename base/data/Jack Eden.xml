@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<npc name="Jack Eden" script="shop_pokemonMarket.lua" walkinterval="0" floorchange="0">
-	<health now="100" max="100"/>
-	<look type="3328" head="50" body="50" legs="30" feet="200"/>
-	<parameters>
-		<parameter key="message_greet" value="Welcome to the Pokemon Market! Here you can {buy} or {sell} Pokemon. You can also {list} or {cancel} your offerts."/>
-	</parameters>
-</npc>

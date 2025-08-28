@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<npc name="Hugh Morgan" script="quest_deliverNewspaper.lua" walkinterval="1500" floorchange="0">
-	<health now="100" max="100"/>
-	<look type="3328" head="10" body="66" legs="70" feet="10" addons="0"/>
-	<parameters>
-		<parameter key="message_greet" value="Huh? You want to talk to me?"/>
-		<parameter key="idletime" value="30" />
-	</parameters>
-</npc>

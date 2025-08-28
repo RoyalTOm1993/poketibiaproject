@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<npc name="Officer Jeny" script="quest_officerJeny.lua" walkinterval="0" floorchange="0">
-	<health now="100" max="100"/>
-	<look type="3328" head="0" body="0" legs="0" feet="0" addons="0"/>
-	<parameters>
-		<parameter key="message_greet" value="Hello |PLAYERNAME|, I'm a police officer in this area if you saw something strange come talk to me. But now I'm doing some missions, excuse."/>
-	</parameters>
-</npc>
