@@ -20,18 +20,37 @@
  * THE SOFTWARE.
  */
 
-#ifndef FRAMEWORK_OTML_DECLARATIONS_H
-#define FRAMEWORK_OTML_DECLARATIONS_H
+#ifndef LUAEXCEPTION_H
+#define LUAEXCEPTION_H
 
-#include <framework/global.h>
+#include "declarations.h"
 
-class OTMLNode;
-class OTMLDocument;
-class OTMLParser;
-class OTMLEmitter;
+class LuaException : public stdext::exception
+{
+public:
+    LuaException(const std::string& error, int traceLevel = -1);
+    virtual ~LuaException() throw() { }
 
-typedef stdext::shared_object_ptr<OTMLNode> OTMLNodePtr;
-typedef stdext::shared_object_ptr<OTMLDocument> OTMLDocumentPtr;
-typedef std::vector<OTMLNodePtr> OTMLNodeList;
+    void generateLuaErrorMessage(const std::string& error, int traceLevel);
+
+    virtual const char* what() const throw() { return m_what.c_str(); }
+
+protected:
+    LuaException() { }
+
+    std::string m_what;
+};
+
+class LuaBadNumberOfArgumentsException : public LuaException
+{
+public:
+    LuaBadNumberOfArgumentsException(int expected = -1, int got = -1);
+};
+
+class LuaBadValueCastException : public LuaException
+{
+public:
+    LuaBadValueCastException(const std::string& luaTypeName, const std::string& cppTypeName);
+};
 
 #endif

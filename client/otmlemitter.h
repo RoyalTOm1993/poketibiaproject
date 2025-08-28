@@ -20,18 +20,16 @@
  * THE SOFTWARE.
  */
 
-#ifndef FRAMEWORK_OTML_DECLARATIONS_H
-#define FRAMEWORK_OTML_DECLARATIONS_H
+#ifndef OTMLEMITTER_H
+#define OTMLEMITTER_H
 
-#include <framework/global.h>
+#include "declarations.h"
 
-class OTMLNode;
-class OTMLDocument;
-class OTMLParser;
-class OTMLEmitter;
-
-typedef stdext::shared_object_ptr<OTMLNode> OTMLNodePtr;
-typedef stdext::shared_object_ptr<OTMLDocument> OTMLDocumentPtr;
-typedef std::vector<OTMLNodePtr> OTMLNodeList;
+class OTMLEmitter
+{
+public:
+    /// Emits a node and it's children to a std::string
+    static std::string emitNode(const OTMLNodePtr& node, int currentDepth = -1);
+};
 
 #endif

@@ -20,18 +20,11 @@
  * THE SOFTWARE.
  */
 
-#ifndef FRAMEWORK_OTML_DECLARATIONS_H
-#define FRAMEWORK_OTML_DECLARATIONS_H
+#ifndef LBITLIB_520_BACKPORT4_H
+#define LBITLIB_520_BACKPORT4_H
 
-#include <framework/global.h>
+struct lua_State;
 
-class OTMLNode;
-class OTMLDocument;
-class OTMLParser;
-class OTMLEmitter;
-
-typedef stdext::shared_object_ptr<OTMLNode> OTMLNodePtr;
-typedef stdext::shared_object_ptr<OTMLDocument> OTMLDocumentPtr;
-typedef std::vector<OTMLNodePtr> OTMLNodeList;
+int luaopen_bit32 (lua_State *L);
 
 #endif

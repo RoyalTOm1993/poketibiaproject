@@ -20,18 +20,34 @@
  * THE SOFTWARE.
  */
 
-#ifndef FRAMEWORK_OTML_DECLARATIONS_H
-#define FRAMEWORK_OTML_DECLARATIONS_H
+#include "luaexception.h"
+#include "luainterface.h"
 
-#include <framework/global.h>
+LuaException::LuaException(const std::string& error, int traceLevel)
+{
+    //g_lua.clearStack(); // on every exception, clear lua stack
+    generateLuaErrorMessage(error, traceLevel);
+}
 
-class OTMLNode;
-class OTMLDocument;
-class OTMLParser;
-class OTMLEmitter;
+void LuaException::generateLuaErrorMessage(const std::string& error, int traceLevel)
+{
+    // append trace level to error message
+    if(traceLevel >= 0)
+        m_what = stdext::format("LUA ERROR: %s", g_lua.traceback(error, traceLevel));
+    else
+        m_what = stdext::format("LUA ERROR:\n%s", error);
+}
 
-typedef stdext::shared_object_ptr<OTMLNode> OTMLNodePtr;
-typedef stdext::shared_object_ptr<OTMLDocument> OTMLDocumentPtr;
-typedef std::vector<OTMLNodePtr> OTMLNodeList;
+LuaBadNumberOfArgumentsException::LuaBadNumberOfArgumentsException(int expected, int got)
+{
+    std::string error = "attempt to call a function with wrong number of arguments";
+    if(expected >= 0 && got >= 0)
+        error = stdext::format("%s (expected %d, but got %d)", error, expected, got);
+    generateLuaErrorMessage(error, 1);
+}
 
-#endif
+LuaBadValueCastException::LuaBadValueCastException(const std::string& luaTypeName, const std::string& cppTypeName)
+{
+    std::string error = stdext::format("attempt to cast a '%s' lua value to '%s'", luaTypeName, cppTypeName);
+    generateLuaErrorMessage(error, 0);
+}

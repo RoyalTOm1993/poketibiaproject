@@ -20,18 +20,25 @@
  * THE SOFTWARE.
  */
 
-#ifndef FRAMEWORK_OTML_DECLARATIONS_H
-#define FRAMEWORK_OTML_DECLARATIONS_H
+#ifndef SERVER_H
+#define SERVER_H
 
-#include <framework/global.h>
+#include "declarations.h"
+#include <framework/luaengine/luaobject.h>
 
-class OTMLNode;
-class OTMLDocument;
-class OTMLParser;
-class OTMLEmitter;
+class Server : public LuaObject
+{
+public:
+    Server(int port);
+    static ServerPtr create(int port);
+    bool isOpen() { return m_isOpen; }
+    void close();
 
-typedef stdext::shared_object_ptr<OTMLNode> OTMLNodePtr;
-typedef stdext::shared_object_ptr<OTMLDocument> OTMLDocumentPtr;
-typedef std::vector<OTMLNodePtr> OTMLNodeList;
+    void acceptNext();
+
+private:
+    stdext::boolean<true> m_isOpen;
+    asio::ip::tcp::acceptor m_acceptor;
+};
 
 #endif

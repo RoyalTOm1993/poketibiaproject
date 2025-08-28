@@ -20,18 +20,37 @@
  * THE SOFTWARE.
  */
 
-#ifndef FRAMEWORK_OTML_DECLARATIONS_H
-#define FRAMEWORK_OTML_DECLARATIONS_H
+#ifndef OTMLPARSER_H
+#define OTMLPARSER_H
 
-#include <framework/global.h>
+#include "declarations.h"
 
-class OTMLNode;
-class OTMLDocument;
-class OTMLParser;
-class OTMLEmitter;
+class OTMLParser
+{
+public:
+    OTMLParser(OTMLDocumentPtr doc, std::istream& in);
 
-typedef stdext::shared_object_ptr<OTMLNode> OTMLNodePtr;
-typedef stdext::shared_object_ptr<OTMLDocument> OTMLDocumentPtr;
-typedef std::vector<OTMLNodePtr> OTMLNodeList;
+    /// Parse the entire document
+    void parse();
+
+private:
+    /// Retrieve next line from the input stream
+    std::string getNextLine();
+    /// Counts depth of a line (every 2 spaces increments one depth)
+    int getLineDepth(const std::string& line, bool multilining = false);
+
+    /// Parse each line of the input stream
+    void parseLine(std::string line);
+    /// Parse nodes tag and value
+    void parseNode(const std::string& data);
+
+    int currentDepth;
+    int currentLine;
+    OTMLDocumentPtr doc;
+    OTMLNodePtr currentParent;
+    std::unordered_map<OTMLNodePtr, OTMLNodePtr> parentMap;
+    OTMLNodePtr previousNode;
+    std::istream& in;
+};
 
 #endif

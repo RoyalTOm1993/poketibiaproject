@@ -20,18 +20,50 @@
  * THE SOFTWARE.
  */
 
-#ifndef FRAMEWORK_OTML_DECLARATIONS_H
-#define FRAMEWORK_OTML_DECLARATIONS_H
+#include "otmldocument.h"
+#include "otmlparser.h"
+#include "otmlemitter.h"
 
-#include <framework/global.h>
+#include <framework/core/resourcemanager.h>
 
-class OTMLNode;
-class OTMLDocument;
-class OTMLParser;
-class OTMLEmitter;
+OTMLDocumentPtr OTMLDocument::create()
+{
+    OTMLDocumentPtr doc(new OTMLDocument);
+    doc->setTag("doc");
+    return doc;
+}
 
-typedef stdext::shared_object_ptr<OTMLNode> OTMLNodePtr;
-typedef stdext::shared_object_ptr<OTMLDocument> OTMLDocumentPtr;
-typedef std::vector<OTMLNodePtr> OTMLNodeList;
+OTMLDocumentPtr OTMLDocument::parse(const std::string& fileName)
+{
+    std::stringstream fin;
+    std::string source = g_resources.resolvePath(fileName);
+    g_resources.readFileStream(source, fin);
+    return parse(fin, source);
+}
 
-#endif
+OTMLDocumentPtr OTMLDocument::parseString(const std::string& data, const std::string& source)
+{
+    std::istringstream is(data);
+    return parse(is, source);
+}
+
+OTMLDocumentPtr OTMLDocument::parse(std::istream& in, const std::string& source)
+{
+    OTMLDocumentPtr doc(new OTMLDocument);
+    doc->setSource(source);
+    OTMLParser parser(doc, in);
+    parser.parse();
+    return doc;
+}
+
+std::string OTMLDocument::emit()
+{
+    return OTMLEmitter::emitNode(asOTMLNode()) + "\n";
+}
+
+bool OTMLDocument::save(const std::string& fileName)
+{
+    m_source = fileName;
+    return g_resources.writeFileContents(fileName, emit());
+}
+

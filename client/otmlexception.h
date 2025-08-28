@@ -20,18 +20,23 @@
  * THE SOFTWARE.
  */
 
-#ifndef FRAMEWORK_OTML_DECLARATIONS_H
-#define FRAMEWORK_OTML_DECLARATIONS_H
+#ifndef OTMLEXCEPTION_H
+#define OTMLEXCEPTION_H
 
-#include <framework/global.h>
+#include "declarations.h"
 
-class OTMLNode;
-class OTMLDocument;
-class OTMLParser;
-class OTMLEmitter;
+/// All OTML errors throw this exception
+class OTMLException : public stdext::exception
+{
+public:
+    OTMLException(const OTMLNodePtr& node, const std::string& error);
+    OTMLException(const OTMLDocumentPtr& doc, const std::string& error, int line = -1);
+    virtual ~OTMLException() throw() { };
 
-typedef stdext::shared_object_ptr<OTMLNode> OTMLNodePtr;
-typedef stdext::shared_object_ptr<OTMLDocument> OTMLDocumentPtr;
-typedef std::vector<OTMLNodePtr> OTMLNodeList;
+    virtual const char* what() const throw() { return m_what.c_str(); }
+
+protected:
+    std::string m_what;
+};
 
 #endif

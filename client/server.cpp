@@ -20,18 +20,45 @@
  * THE SOFTWARE.
  */
 
-#ifndef FRAMEWORK_OTML_DECLARATIONS_H
-#define FRAMEWORK_OTML_DECLARATIONS_H
+#include "server.h"
+#include "connection.h"
 
-#include <framework/global.h>
+extern asio::io_service g_ioService;
 
-class OTMLNode;
-class OTMLDocument;
-class OTMLParser;
-class OTMLEmitter;
+Server::Server(int port)
+    : m_acceptor(g_ioService, asio::ip::tcp::endpoint(asio::ip::tcp::v4(), port))
+{
+}
 
-typedef stdext::shared_object_ptr<OTMLNode> OTMLNodePtr;
-typedef stdext::shared_object_ptr<OTMLDocument> OTMLDocumentPtr;
-typedef std::vector<OTMLNodePtr> OTMLNodeList;
+ServerPtr Server::create(int port)
+{
+    try {
+        Server *server = new Server(port);
+        return ServerPtr(server);
+    }
+    catch(const std::exception& e) {
+        g_logger.error(stdext::format("Failed to initialize server: %s", e.what()));
+        return ServerPtr();
+    }
+}
 
-#endif
+void Server::close()
+{
+    m_isOpen = false;
+    m_acceptor.cancel();
+    m_acceptor.close();
+}
+
+void Server::acceptNext()
+{
+    ConnectionPtr connection = ConnectionPtr(new Connection);
+    connection->m_connecting = true;
+    auto self = static_self_cast<Server>();
+    m_acceptor.async_accept(connection->m_socket, [=](const boost::system::error_code& error) {
+        if(!error) {
+            connection->m_connected = true;
+            connection->m_connecting = false;
+        }
+        self->callLuaField("onAccept", connection, error.message(), error.value());
+    });
+}

@@ -20,18 +20,37 @@
  * THE SOFTWARE.
  */
 
-#ifndef FRAMEWORK_OTML_DECLARATIONS_H
-#define FRAMEWORK_OTML_DECLARATIONS_H
+#ifndef OTMLDOCUMENT_H
+#define OTMLDOCUMENT_H
 
-#include <framework/global.h>
+#include "otmlnode.h"
 
-class OTMLNode;
-class OTMLDocument;
-class OTMLParser;
-class OTMLEmitter;
+class OTMLDocument : public OTMLNode
+{
+public:
+    virtual ~OTMLDocument() { }
 
-typedef stdext::shared_object_ptr<OTMLNode> OTMLNodePtr;
-typedef stdext::shared_object_ptr<OTMLDocument> OTMLDocumentPtr;
-typedef std::vector<OTMLNodePtr> OTMLNodeList;
+    /// Create a new OTML document for filling it with nodes
+    static OTMLDocumentPtr create();
+
+    /// Parse OTML from a file
+    static OTMLDocumentPtr parse(const std::string& fileName);
+
+    /// Parse OTML from a string
+    static OTMLDocumentPtr parseString(const std::string& data, const std::string& source);
+
+    /// Parse OTML from input stream
+    /// @param source is the file name that will be used to show errors messages
+    static OTMLDocumentPtr parse(std::istream& in, const std::string& source);
+
+    /// Emits this document and all it's children to a std::string
+    std::string emit();
+
+    /// Save this document to a file
+    bool save(const std::string& fileName);
+
+private:
+    OTMLDocument() { }
+};
 
 #endif
