@@ -1,0 +1,139 @@
+OptionPanel
+  margin-top: 18
+  margin-left: 25
+  Label
+    id: floorFadingLabel
+    font: window
+    margin-top: 6
+    @onSetup: |
+      local value = modules.client_options.getOption('floorFading')
+      self:setText(tr('Fade do chao: %s ms', value))
+
+  OptionScrollbar
+    id: floorFading
+    margin-top: 3
+    minimum: 0
+    maximum: 2000
+
+  Label
+    id: gameOpacityLabel
+    margin-top: 6
+    font: window
+    @onSetup: |
+      local value = modules.client_options.getOption('gameOpacity')
+      self:setText(tr('Opacidade de Efeitos e Misseis: %s%%', value))
+
+  OptionScrollbar
+    id: gameOpacity
+    margin-top: 3
+    minimum: 0
+    maximum: 100
+
+  Label
+    id: hotkeyDelayLabel
+    margin-top: 10
+    font: window
+    !tooltip: tr('Da um tempo para fazer uma curva enquanto caminha se voce pressionar muitas teclas simultaneamente')
+    @onSetup: |
+      local value = modules.client_options.getOption('hotkeyDelay')
+      self:setText(tr('Atraso de atalho: %s ms', value))
+
+  OptionScrollbar
+    id: hotkeyDelay
+    margin-top: 3
+    minimum: 5
+    maximum: 50
+
+  Label
+    id: walkFirstStepDelayLabel
+    margin-top: 10
+    font: window
+    @onSetup: |
+      local value = modules.client_options.getOption('walkFirstStepDelay')
+      self:setText(tr('Atraso apos o primeiro passo: %s ms', value))
+
+    $mobile:
+      visible: false
+
+  OptionScrollbar
+    id: walkFirstStepDelay
+    margin-top: 3
+    minimum: 50
+    maximum: 300
+
+    $mobile:
+      visible: false
+
+  Label
+    id: walkTurnDelayLabel
+    margin-top: 10
+    font: window
+    @onSetup: |
+      local value = modules.client_options.getOption('walkTurnDelay')
+      self:setText(tr('Atraso apos a curva: %s ms', value))
+
+    $mobile:
+      visible: false
+
+  OptionScrollbar
+    id: walkTurnDelay
+    margin-top: 3
+    minimum: 0
+    maximum: 300
+
+    $mobile:
+      visible: false
+
+  Label
+    id: walkCtrlTurnDelayLabel
+    margin-top: 10
+    font: window
+    $mobile:
+      visible: false
+    @onSetup: |
+      local value = modules.client_options.getOption('walkTurnDelay')
+      self:setText(tr('Atraso apos curva com Ctrl: %s ms', value))
+
+  OptionScrollbar
+    id: walkCtrlTurnDelay
+    margin-top: 3
+    minimum: 0
+    maximum: 300    
+    $mobile:
+      visible: false
+
+  Label
+    id: walkStairsDelayLabel
+    margin-top: 10
+    font: window
+    @onSetup: |
+      local value = modules.client_options.getOption('walkStairsDelay')
+      self:setText(tr('Atraso apos mudanca de andar: %s ms', value))
+    $mobile:
+      visible: false
+
+  OptionScrollbar
+    id: walkStairsDelay
+    margin-top: 3
+    minimum: 0
+    maximum: 300
+    $mobile:
+      visible: false
+
+  Label
+    id: walkTeleportDelayLabel
+    margin-top: 10
+    font: window
+    @onSetup: |
+      local value = modules.client_options.getOption('walkTeleportDelay')
+      self:setText(tr('Atraso apos teletransporte: %s ms', value))
+    $mobile:
+      visible: false
+
+  OptionScrollbar
+    id: walkTeleportDelay
+    margin-top: 3
+    minimum: 0
+    maximum: 300
+    $mobile:
+      visible: false

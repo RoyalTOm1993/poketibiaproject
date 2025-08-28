@@ -1,0 +1,259 @@
+checkBoxLogin < UICheckBox
+  size: 22 23
+  image-source: images/!check
+  $checked:
+    image-source:images/check
+  $!checked:
+  $hover:
+    change-cursor-image: true
+    cursor: pointer
+
+showPassword < UICheckBox
+  size: 25 25
+  image-source: images/visible
+  image-color: white
+  &updateCheck: |
+    function(self)
+      if self:isChecked() then
+        self:setChecked(false)
+        getPassword():setTextHidden(true)
+      else
+        self:setChecked(true)
+        getPassword():setTextHidden(false)
+      end
+    end
+  @onClick: self:updateCheck()
+  $checked:
+    image-source: images/hidden
+  $!checked:
+  $hover:
+    change-cursor-image: true
+    cursor: pointer
+
+showAccount < UICheckBox
+  size: 25 25
+  image-source: images/visible
+  image-color: white
+  &updateCheck: |
+    function(self)
+      if self:isChecked() then
+        self:setChecked(false)
+        getAccount():setTextHidden(true)
+      else
+        self:setChecked(true)
+        getAccount():setTextHidden(false)
+      end
+    end
+  @onClick: self:updateCheck()
+  $checked:
+    image-source: images/hidden
+  $!checked:
+  $hover:
+    change-cursor-image: true
+    cursor: pointer
+
+SpaceWindow
+  id: enterGame
+  width: 500
+  height: 580
+  focusable: true
+  draggable: true
+  @onEnter: EnterGame.doLogin()
+
+  LoginTextEdit
+    id: accountNameTextEdit
+    text-hidden: true
+    size: 330 70
+    padding: 20 40
+    color: #ffffff
+    image-source: images/loginTextEdit
+    icon-source:  images/loginIcon
+    icon-offset: -160 -10
+    image-source: images/loginTextFilled
+    anchors.left: parent.left
+    anchors.top: parent.top
+    margin-left: 100
+    margin-top: 140
+    draggable: false
+
+    $hover:
+      image-source: images/loginTextHover
+      change-cursor-image: true
+      cursor: pointer
+
+  PasswordTextEdit
+    id: accountPasswordTextEdit
+    text-hidden: false
+    size: 330 70
+    padding: 20 40
+    image-source: images/loginTextFilled
+    color: #ffffff
+    icon-source:  images/passwordIcon
+    icon-offset: -160 -10
+    anchors.left: parent.left
+    anchors.top: prev.bottom
+    margin-top: 15
+    margin-left: 100
+    draggable: false
+
+    $hover:
+      image-source: images/loginTextHover
+      change-cursor-image: true
+      cursor: pointer
+
+  checkBoxLogin
+    id: rememberPasswordBox
+    anchors.left: parent.left
+    anchors.top: prev.bottom
+    margin-top: 10
+    margin-left: 20
+    draggable: false
+
+  showPassword
+    id: showPassword
+    anchors.right: accountPasswordTextEdit.right
+    anchors.verticalCenter: accountPasswordTextEdit.verticalCenter
+    margin-right: 45
+    margin-bottom: 10
+    draggable: false
+
+  showAccount
+    id: showAccount
+    anchors.right: accountNameTextEdit.right
+    anchors.verticalCenter: accountNameTextEdit.verticalCenter
+    margin-right: 45
+    margin-bottom: 10
+    draggable: false
+
+  Label
+    id: rememberPasswordText
+    !text: tr('Manter-se conectado')
+    font: verdana-11px-rounded
+    anchors.left: rememberPasswordBox.right
+    anchors.top: rememberPasswordBox.top
+    margin-top: 3
+    margin-left: 8
+    color:#ffffff
+    text-auto-resize: true
+    text-align: left
+    draggable: false
+    
+  UIButton
+    font: manrope-bold-30px
+    text-color: #000000
+    size: 357 55
+    image-source: images/buttonLogin
+    anchors.horizontalCenter: parent.horizontalCenter
+    anchors.top: rememberPasswordBox.bottom
+    margin-top: 35
+    @onClick: EnterGame.doLogin()
+    $hover:
+      image-source: images/buttonLogin2
+      change-cursor-image: true
+      cursor: pointer
+    $pressed:
+      image-source: images/buttonLogin3
+      change-cursor-image: true
+      cursor: pointer
+
+  UIButton
+    !text: tr('Criar uma conta')
+    font: sans-bold-16px-rounded
+    color:#FEEB9D
+    size: 138 44
+    anchors.right: parent.right
+    anchors.bottom: parent.bottom
+    margin-right: 167
+    margin-bottom: 15
+    @onClick: CreateAccount.show()
+
+    $hover:
+      color:#ffffff
+      change-cursor-image: true
+      cursor: pointer
+    $pressed:
+      color:#808080
+      change-cursor-image: true
+      cursor: pointer
+
+  UIButton
+    !text: tr('Esqueceu sua senha?')
+    font: sans-bold-16px-rounded
+    color:#ffffff
+    size: 190 44
+    anchors.right: parent.right
+    anchors.bottom: parent.bottom
+    margin-bottom:-15
+    margin-right: 137
+    @onClick: ForgotPassword.show()
+
+    $hover:
+      color:#FEEB9D
+      change-cursor-image: true
+      cursor: pointer
+    $pressed:
+      color:#808080
+      change-cursor-image: true
+      cursor: pointer
+
+  Label
+    id: serverInfoLabel
+    font: manrope-bold-16px
+    anchors.top: prev.top
+    anchors.left: parent.left
+    margin-top: 5
+    color: green
+    text-auto-resize: true
+    draggable: false
+
+  Panel
+    id: serverSelectorPanel
+    anchors.left: parent.left
+    anchors.right: parent.right
+    anchors.bottom: parent.bottom
+    margin-bottom: 80
+    height: 52
+    on: true
+    focusable: false
+    $on:
+      visible: true
+      margin-top: 0
+    $!on:
+      visible: false
+      margin-top: -52
+      
+    MenuLabel
+      id: serverLabel
+      !text: tr('Server')
+      anchors.left: parent.left
+      anchors.top: prev.bottom
+      text-auto-resize: true    
+      margin-top: 5
+
+    ComboBox
+      id: serverSelector
+      anchors.left: prev.left
+      anchors.right: parent.right
+      anchors.top: serverLabel.bottom
+      margin-top: 2
+      margin-right: 3
+      menu-scroll: true
+      menu-height: 125
+      menu-scroll-step: 25
+      text-offset: 5 2
+      @onOptionChange: EnterGame.onServerChange()
+
+  Panel
+    id: customServerSelectorPanel
+
+    MenuLabel
+      id: serverLabel
+
+    TextEdit
+      id: serverHostTextEdit
+
+    MenuLabel
+      id: clientLabel
+
+    ComboBox
+      id: clientVersionSelector

@@ -1,0 +1,138 @@
+OptionPanel
+  margin-top: 19
+
+  OptionCheckBox
+    id: classicView
+    !text: tr('Visual classico')
+    margin-top: 5
+    
+    $mobile:
+      visible: false
+
+  OptionCheckBox
+    id: showMinimap
+    !text: tr('Mostrar minimapa')
+    
+  OptionCheckBox
+    id: showPing
+    !text: tr('Mostrar ping da conexao')
+    !tooltip: tr('Exibir velocidade da conexao com o servidor (milissegundos)')
+
+  OptionCheckBox
+    id: displayNames
+    !text: tr('Exibir nomes de criaturas')
+
+  OptionCheckBox
+    id: displayHealth
+    !text: tr('Exibir barras de vida das criaturas')
+
+  OptionCheckBox
+    id: displayHealthOnTop
+    !text: tr('Exibir barras de vida das criaturas acima dos textos')
+    $mobile:
+      visible: false
+
+  OptionCheckBox
+    id: hidePlayerBars
+    !text: tr('Mostrar barra de vida do jogador')
+
+  OptionCheckBox
+    id: highlightThingsUnderCursor
+    !text: tr('Destacar itens sob o cursor')
+
+  Panel
+    height: 40
+    margin-top: 7
+    
+    Label
+      width: 130
+      font: window
+      anchors.left: parent.left
+      anchors.top: parent.top
+      id: leftPanelsLabel
+      !text: tr("Paineis a esquerda")
+
+    Label
+      width: 96
+      margin-left: 20
+      font: window
+      anchors.left: prev.right
+      anchors.top: prev.top
+      id: rightPanelsLabel
+      !text: tr("Paineis a direita")
+
+    Label
+      width: 130
+      margin-left: 20
+      font: window
+      anchors.left: prev.right
+      anchors.top: prev.top
+      id: backpackPanelLabel
+      !text: tr("Painel do Conteiner")
+      !tooltip: tr("Abrir novos conteineres no painel selecionado")
+
+    ComboBox
+      id: leftPanels
+      font: window
+      anchors.left: leftPanelsLabel.left
+      anchors.right: leftPanelsLabel.right
+      anchors.top: leftPanelsLabel.bottom
+      margin-top: 3
+      margin-right: 20
+      @onOptionChange: modules.client_options.setOption(self:getId(), self.currentIndex)
+      @onSetup: |
+        self:addOption("1")
+        self:addOption("2")
+        self:addOption("3")
+        self:addOption("4")
+
+    ComboBox
+      id: rightPanels
+      font: window
+      anchors.left: rightPanelsLabel.left
+      anchors.right: rightPanelsLabel.right
+      anchors.top: rightPanelsLabel.bottom
+      margin-top: 3
+      margin-right: 20
+      @onOptionChange: modules.client_options.setOption(self:getId(), self.currentIndex)
+      @onSetup: |
+        self:addOption("1")
+        self:addOption("2")
+        self:addOption("3")
+        self:addOption("4")
+
+    ComboBox
+      id: containerPanel
+      font: window
+      anchors.left: backpackPanelLabel.left
+      anchors.right: backpackPanelLabel.right
+      anchors.top: backpackPanelLabel.bottom
+      margin-top: 3
+      @onOptionChange: modules.client_options.setOption(self:getId(), self.currentIndex)
+      @onSetup: |
+        self:addOption("1 painel a esquerda")
+        self:addOption("2 painel a esquerda")
+        self:addOption("3 painel a esquerda")
+        self:addOption("4 painel a esquerda")
+        self:addOption("1 painel a direita")
+        self:addOption("2 painel a direita")
+        self:addOption("3 painel a direita")
+        self:addOption("4 painel a direita")
+
+  Label
+    margin-top: 3
+    font: window
+    id: crosshairLabel
+    !text: tr("Mirar")
+    
+  ComboBox
+    id: crosshair
+    font: window
+    margin-top: 3
+    margin-right: 2
+    margin-left: 2
+    @onOptionChange: modules.client_options.setOption(self:getId(), self.currentIndex)
+    @onSetup: |
+      self:addOption("Nenhum")
+      self:addOption("Padrao")
+      self:addOption("Completo")

@@ -1,0 +1,27 @@
+OptionPanel
+  Label
+    text-wrap: false
+    text-auto-resize: true
+    font: sono_bold_18
+    @onSetup: |
+      self:setText(tr("NPC CHAT CONFIGURATION"))
+
+  Label
+    margin-top: 12
+    id: optimizationLevelLabel
+    !text: tr("Dialogue Speed")
+    
+  ComboBox
+    id: speedNpcChatLevel
+    margin-top: 3
+    margin-right: 2
+    margin-left: 2
+    @onOptionChange: modules.client_options.setOption(self:getId(), self.currentIndex)
+    @onSetup: |
+      self:addOption(tr("Very Slow"))
+      self:addOption(tr("Slow"))
+      self:addOption(tr("Average"))
+      self:addOption(tr("Fast"))
+      self:addOption(tr("Very Fast"))
+      self:addOption(tr("Super Fast"))
+      self:addOption(tr("Instant"))

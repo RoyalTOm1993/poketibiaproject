@@ -1,0 +1,40 @@
+UIWidget
+  id: background
+  anchors.fill: parent
+  focusable: true
+  image-source: /images/background
+  image-smooth: true
+  image-fixed-ratio: true
+  margin-top: 1
+
+  UILabel
+    id: clientVersionLabel
+    anchors.right: parent.right
+    anchors.bottom: parent.bottom
+    text-align: center
+    text-auto-resize: true
+    font: sono_bold_border_30
+
+  UIButton
+    id: discord
+    image-source: /images/ui/socialicons/discord
+    anchors.right: parent.right
+    anchors.bottom: parent.bottom
+    margin-right: 15
+    margin-bottom: 10
+    rotation: 0
+    @onClick: g_platform.openUrl("https://discord.gg/jAKcmfZs")
+    $hover:
+      image-source: /images/ui/socialicons/discord2
+
+  UIButton
+    id: configButton
+    image-source: /images/ui/configbutton1
+    anchors.top: parent.top
+    anchors.right: parent.right
+    margin-top: 12
+    margin-right: 12
+    color: #ffffff
+    @onClick: modules.client_options.toggle()
+    $hover:
+      image-source: /images/ui/configbutton2
