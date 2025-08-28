@@ -1,0 +1,50 @@
+ConsolePanel
+  id: consolePanel
+  phantom: false
+  size: 400 200
+  moveable: true
+  @onVisibilityChange: |
+      if self:isVisible() then
+        scheduleEvent(function()
+          self:focus()
+        end, 50)
+      end
+
+  PrevChannelButton
+    id: prevChannelButton
+
+  ConsoleTabBar
+    id: consoleTabBar
+
+  NextChannelButton
+    id: nextChannelButton
+
+  CloseChannelButton
+    id: closeChannelButton
+
+  ClearChannelButton
+    id: clearChannelButton
+
+  ChannelsButton
+    id: channelsButton
+
+  IgnoreButton
+    id: ignoreButton
+
+  ChatButton
+    id: chatButton
+
+  ConsoleContentPanel
+    id: consoleContentPanel
+
+  ConsoleTextEdit
+    id: consoleTextEdit
+
+  ToggleChat
+    id: toggleChat
+
+  TopResizeBorder
+    id: topResizeBorder
+
+  RightResizeBorder
+    id: rightResizeBorder
