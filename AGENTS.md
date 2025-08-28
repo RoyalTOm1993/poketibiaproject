@@ -63,18 +63,6 @@ Aplica-se a todo o repositório Poketibia (TFS 1.4 + OTCv8 + RevScript).
 - Verificar scripts em `client/modules/*` para lógica associada.
 - Procurar tooltips ou estilos globais em módulos comuns (por ex., `client/modules` ou arquivos `.otui` compartilhados).
 
-### Compilação do servidor
-```bash
-cd base && mkdir -p build && cd build
-cmake ..
-make -j$(nproc)
-### Compilação do servidor
-```bash
-cd base && mkdir -p build && cd build
-cmake ..
-make -j$(nproc)
-```
-
 ### Compilação do cliente
 ```bash
 cd client/v16 && mkdir -p build && cd build
