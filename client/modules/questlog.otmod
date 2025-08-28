@@ -1,9 +1,0 @@
-Module
-  name: game_questlog
-  description: Quest status preview and tracking
-  author: Vithrax
-  website: https://github.com/Vithrax
-  sandboxed: true
-  scripts: [ questlog ]
-  @onLoad: init()
-  @onUnload: terminate()

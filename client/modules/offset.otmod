@@ -1,9 +1,0 @@
-Module
-  name: game_offset
-  description: Manage offset client
-  author: Telasko
-  website: https://tibiadevs.com
-  sandboxed: true
-  scripts: [ offset ]
-  @onLoad: init()
-  @onUnload: terminate()
