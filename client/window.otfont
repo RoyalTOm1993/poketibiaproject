@@ -1,0 +1,9 @@
+Font
+  name: window
+  texture: window
+  height: 14
+  glyph-size: 17 17
+  y-offset: 1
+  space-width: 2
+  spacing: 1 0
+  default: true
