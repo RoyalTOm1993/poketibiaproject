@@ -20,37 +20,16 @@
  * THE SOFTWARE.
  */
 
-#ifndef FRAMEWORK_GLOBAL_H
-#define FRAMEWORK_GLOBAL_H
+#ifndef UI_H
+#define UI_H
 
-#include "stdext/compiler.h"
-
-// common C/C++ headers
-#include "pch.h"
-
-// error handling
-#if defined(NDEBUG)
-#define VALIDATE(expression) ((void)0)
-#else
-extern void fatalError(const char* error, const char* file, int line);
-#define VALIDATE(expression) { if(!(expression)) fatalError(#expression, __FILE__, __LINE__); };
-#endif
-
-
-// global constants
-#include "const.h"
-
-// stdext which includes additional C++ algorithms
-#include "stdext/stdext.h"
-
-// additional utilities
-#include "util/point.h"
-#include "util/color.h"
-#include "util/rect.h"
-#include "util/size.h"
-#include "util/matrix.h"
-
-// logger
-#include "core/logger.h"
+#include "uimanager.h"
+#include "uiwidget.h"
+#include "uitextedit.h"
+#include "uilayout.h"
+#include "uihorizontallayout.h"
+#include "uiverticallayout.h"
+#include "uigridlayout.h"
+#include "uianchorlayout.h"
 
 #endif

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2017 OTClient <https://github.com/edubart/otclient>
+ * Copyright (c) 2010-2013 OTClient <https://github.com/edubart/otclient>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,37 +20,36 @@
  * THE SOFTWARE.
  */
 
-#ifndef FRAMEWORK_GLOBAL_H
-#define FRAMEWORK_GLOBAL_H
 
-#include "stdext/compiler.h"
+#include "consoleapplication.h"
+#include <framework/core/clock.h>
+#include <framework/luaengine/luainterface.h>
 
-// common C/C++ headers
-#include "pch.h"
-
-// error handling
-#if defined(NDEBUG)
-#define VALIDATE(expression) ((void)0)
-#else
-extern void fatalError(const char* error, const char* file, int line);
-#define VALIDATE(expression) { if(!(expression)) fatalError(#expression, __FILE__, __LINE__); };
+#ifdef FW_NET
+#include <framework/net/connection.h>
 #endif
 
+ConsoleApplication g_app;
 
-// global constants
-#include "const.h"
+void ConsoleApplication::run()
+{
+    m_running = true;
 
-// stdext which includes additional C++ algorithms
-#include "stdext/stdext.h"
+    // run the first poll
+    poll();
 
-// additional utilities
-#include "util/point.h"
-#include "util/color.h"
-#include "util/rect.h"
-#include "util/size.h"
-#include "util/matrix.h"
+    // first clock update
+    g_clock.update();
 
-// logger
-#include "core/logger.h"
+    g_lua.callGlobalField("g_app", "onRun");
 
-#endif
+    while(!m_stopping) {
+        poll();
+        stdext::millisleep(1);
+        g_clock.update();
+        m_frameCounter.update();
+    }
+
+    m_stopping = false;
+    m_running = false;
+}

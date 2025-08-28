@@ -20,37 +20,52 @@
  * THE SOFTWARE.
  */
 
-#ifndef FRAMEWORK_GLOBAL_H
-#define FRAMEWORK_GLOBAL_H
+#include "asyncdispatcher.h"
 
-#include "stdext/compiler.h"
+AsyncDispatcher g_asyncDispatcher;
 
-// common C/C++ headers
-#include "pch.h"
+void AsyncDispatcher::init()
+{
+    spawn_thread();
+}
 
-// error handling
-#if defined(NDEBUG)
-#define VALIDATE(expression) ((void)0)
-#else
-extern void fatalError(const char* error, const char* file, int line);
-#define VALIDATE(expression) { if(!(expression)) fatalError(#expression, __FILE__, __LINE__); };
-#endif
+void AsyncDispatcher::terminate()
+{
+    stop();
+    m_tasks.clear();
+}
 
+void AsyncDispatcher::spawn_thread()
+{
+    m_running = true;
+    m_threads.push_back(std::thread(std::bind(&AsyncDispatcher::exec_loop, this)));
+}
 
-// global constants
-#include "const.h"
+void AsyncDispatcher::stop()
+{
+    m_mutex.lock();
+    m_running = false;
+    m_condition.notify_all();
+    m_mutex.unlock();
+    for(std::thread& thread : m_threads)
+        thread.join();
+    m_threads.clear();
+};
 
-// stdext which includes additional C++ algorithms
-#include "stdext/stdext.h"
+void AsyncDispatcher::exec_loop() {
+    std::unique_lock<std::mutex> lock(m_mutex);
+    while(true) {
+        while(m_tasks.size() == 0 && m_running)
+            m_condition.wait(lock);
 
-// additional utilities
-#include "util/point.h"
-#include "util/color.h"
-#include "util/rect.h"
-#include "util/size.h"
-#include "util/matrix.h"
+        if(!m_running)
+            return;
 
-// logger
-#include "core/logger.h"
+        std::function<void()> task = m_tasks.front();
+        m_tasks.pop_front();
 
-#endif
+        lock.unlock();
+        task();
+        lock.lock();
+    }
+}

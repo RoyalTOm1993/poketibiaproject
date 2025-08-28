@@ -20,37 +20,37 @@
  * THE SOFTWARE.
  */
 
-#ifndef FRAMEWORK_GLOBAL_H
-#define FRAMEWORK_GLOBAL_H
+#ifndef MODULEMANAGER_H
+#define MODULEMANAGER_H
 
-#include "stdext/compiler.h"
+#include "module.h"
 
-// common C/C++ headers
-#include "pch.h"
+// @bindsingleton g_modules
+class ModuleManager
+{
+public:
+    void clear();
 
-// error handling
-#if defined(NDEBUG)
-#define VALIDATE(expression) ((void)0)
-#else
-extern void fatalError(const char* error, const char* file, int line);
-#define VALIDATE(expression) { if(!(expression)) fatalError(#expression, __FILE__, __LINE__); };
-#endif
+    void discoverModules();
+    void autoLoadModules(int maxPriority);
+    ModulePtr discoverModule(const std::string& moduleFile);
+    void ensureModuleLoaded(const std::string& moduleName);
+    void unloadModules();
+    void reloadModules();
 
+    ModulePtr getModule(const std::string& moduleName);
+    std::deque<ModulePtr> getModules() { return m_modules; }
 
-// global constants
-#include "const.h"
+protected:
+    void updateModuleLoadOrder(ModulePtr module);
 
-// stdext which includes additional C++ algorithms
-#include "stdext/stdext.h"
+    friend class Module;
 
-// additional utilities
-#include "util/point.h"
-#include "util/color.h"
-#include "util/rect.h"
-#include "util/size.h"
-#include "util/matrix.h"
+private:
+    std::deque<ModulePtr> m_modules;
+    std::multimap<int, ModulePtr> m_autoLoadModules;
+};
 
-// logger
-#include "core/logger.h"
+extern ModuleManager g_modules;
 
 #endif

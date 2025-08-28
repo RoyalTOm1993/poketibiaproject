@@ -20,37 +20,46 @@
  * THE SOFTWARE.
  */
 
-#ifndef FRAMEWORK_GLOBAL_H
-#define FRAMEWORK_GLOBAL_H
+#ifndef ASYNCDISPATCHER_H
+#define ASYNCDISPATCHER_H
 
-#include "stdext/compiler.h"
+#include "declarations.h"
+#include <framework/stdext/thread.h>
 
-// common C/C++ headers
-#include "pch.h"
+class AsyncDispatcher {
+public:
+    void init();
+    void terminate();
 
-// error handling
-#if defined(NDEBUG)
-#define VALIDATE(expression) ((void)0)
-#else
-extern void fatalError(const char* error, const char* file, int line);
-#define VALIDATE(expression) { if(!(expression)) fatalError(#expression, __FILE__, __LINE__); };
-#endif
+    void spawn_thread();
+    void stop();
 
+    template<class F>
+    std::shared_future<typename std::invoke_result<F>::type> schedule(const F& task) {
+        std::lock_guard<std::mutex> lock(m_mutex);
+        auto prom = std::make_shared<std::promise<typename std::invoke_result<F>::type>>();
+        m_tasks.push_back([=]() { prom->set_value(task()); });
+        m_condition.notify_all();
+        return std::shared_future<typename std::invoke_result<F>::type>(prom->get_future());
+    }
 
-// global constants
-#include "const.h"
+    void dispatch(std::function<void()> f) {
+        std::lock_guard<std::mutex> lock(m_mutex);
+        m_tasks.push_back(f);
+        m_condition.notify_all();
+    }
 
-// stdext which includes additional C++ algorithms
-#include "stdext/stdext.h"
+protected:
+    void exec_loop();
 
-// additional utilities
-#include "util/point.h"
-#include "util/color.h"
-#include "util/rect.h"
-#include "util/size.h"
-#include "util/matrix.h"
+private:
+    std::list<std::function<void()>> m_tasks;
+    std::list<std::thread> m_threads;
+    std::mutex m_mutex;
+    std::condition_variable m_condition;
+    stdext::boolean<false> m_running;
+};
 
-// logger
-#include "core/logger.h"
+extern AsyncDispatcher g_asyncDispatcher;
 
 #endif

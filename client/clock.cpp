@@ -20,37 +20,30 @@
  * THE SOFTWARE.
  */
 
-#ifndef FRAMEWORK_GLOBAL_H
-#define FRAMEWORK_GLOBAL_H
+#include "clock.h"
 
-#include "stdext/compiler.h"
+Clock g_clock;
 
-// common C/C++ headers
-#include "pch.h"
+Clock::Clock()
+{
+    m_currentMicros = 0;
+    m_currentMillis = 0;
+    m_currentSeconds = 0;
+}
 
-// error handling
-#if defined(NDEBUG)
-#define VALIDATE(expression) ((void)0)
-#else
-extern void fatalError(const char* error, const char* file, int line);
-#define VALIDATE(expression) { if(!(expression)) fatalError(#expression, __FILE__, __LINE__); };
-#endif
+void Clock::update()
+{
+    m_currentMicros = stdext::micros();
+    m_currentMillis = m_currentMicros / 1000;
+    m_currentSeconds = m_currentMicros / 1000000.0f;
+}
 
+ticks_t Clock::realMicros()
+{
+    return stdext::micros();
+}
 
-// global constants
-#include "const.h"
-
-// stdext which includes additional C++ algorithms
-#include "stdext/stdext.h"
-
-// additional utilities
-#include "util/point.h"
-#include "util/color.h"
-#include "util/rect.h"
-#include "util/size.h"
-#include "util/matrix.h"
-
-// logger
-#include "core/logger.h"
-
-#endif
+ticks_t Clock::realMillis()
+{
+    return stdext::millis();
+}

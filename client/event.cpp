@@ -20,37 +20,36 @@
  * THE SOFTWARE.
  */
 
-#ifndef FRAMEWORK_GLOBAL_H
-#define FRAMEWORK_GLOBAL_H
+#include "event.h"
 
-#include "stdext/compiler.h"
+Event::Event(const std::string& function, const std::function<void()>& callback, bool botSafe) :
+    m_function(function),
+    m_callback(callback),
+    m_canceled(false),
+    m_executed(false),
+    m_botSafe(botSafe)
+{
+}
 
-// common C/C++ headers
-#include "pch.h"
+Event::~Event()
+{
+    // assure that we lost callback refs
+    //VALIDATE(m_callback == nullptr);
+}
 
-// error handling
-#if defined(NDEBUG)
-#define VALIDATE(expression) ((void)0)
-#else
-extern void fatalError(const char* error, const char* file, int line);
-#define VALIDATE(expression) { if(!(expression)) fatalError(#expression, __FILE__, __LINE__); };
-#endif
+void Event::execute()
+{
+    if(!m_canceled && !m_executed && m_callback) {
+        m_callback();
+        m_executed = true;
+    }
 
+    // reset callback to free object refs
+    m_callback = nullptr;
+}
 
-// global constants
-#include "const.h"
-
-// stdext which includes additional C++ algorithms
-#include "stdext/stdext.h"
-
-// additional utilities
-#include "util/point.h"
-#include "util/color.h"
-#include "util/rect.h"
-#include "util/size.h"
-#include "util/matrix.h"
-
-// logger
-#include "core/logger.h"
-
-#endif
+void Event::cancel()
+{
+    m_canceled = true;
+    m_callback = nullptr;
+}

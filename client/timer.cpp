@@ -20,37 +20,17 @@
  * THE SOFTWARE.
  */
 
-#ifndef FRAMEWORK_GLOBAL_H
-#define FRAMEWORK_GLOBAL_H
 
-#include "stdext/compiler.h"
+#include "timer.h"
+#include "clock.h"
 
-// common C/C++ headers
-#include "pch.h"
+void Timer::restart()
+{
+    m_startTicks = g_clock.millis();
+    m_stopped = false;
+}
 
-// error handling
-#if defined(NDEBUG)
-#define VALIDATE(expression) ((void)0)
-#else
-extern void fatalError(const char* error, const char* file, int line);
-#define VALIDATE(expression) { if(!(expression)) fatalError(#expression, __FILE__, __LINE__); };
-#endif
-
-
-// global constants
-#include "const.h"
-
-// stdext which includes additional C++ algorithms
-#include "stdext/stdext.h"
-
-// additional utilities
-#include "util/point.h"
-#include "util/color.h"
-#include "util/rect.h"
-#include "util/size.h"
-#include "util/matrix.h"
-
-// logger
-#include "core/logger.h"
-
-#endif
+ticks_t Timer::ticksElapsed()
+{
+    return g_clock.millis() - m_startTicks;
+}

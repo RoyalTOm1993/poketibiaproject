@@ -20,37 +20,47 @@
  * THE SOFTWARE.
  */
 
-#ifndef FRAMEWORK_GLOBAL_H
-#define FRAMEWORK_GLOBAL_H
+#ifndef CONFIG_H
+#define CONFIG_H
 
-#include "stdext/compiler.h"
+#include "declarations.h"
 
-// common C/C++ headers
-#include "pch.h"
+#include <framework/luaengine/luaobject.h>
+#include <framework/otml/declarations.h>
 
-// error handling
-#if defined(NDEBUG)
-#define VALIDATE(expression) ((void)0)
-#else
-extern void fatalError(const char* error, const char* file, int line);
-#define VALIDATE(expression) { if(!(expression)) fatalError(#expression, __FILE__, __LINE__); };
-#endif
+// @bindclass
+class Config : public LuaObject
+{
+public:
+    Config();
 
+    bool load(const std::string& file);
+    bool unload();
+    bool save();
+    void clear();
 
-// global constants
-#include "const.h"
+    void setValue(const std::string& key, const std::string& value);
+    void setList(const std::string& key, const std::vector<std::string>& list);
+    std::string getValue(const std::string& key);
+    std::vector<std::string> getList(const std::string& key);
 
-// stdext which includes additional C++ algorithms
-#include "stdext/stdext.h"
+    void setNode(const std::string& key, const OTMLNodePtr& node);
+    void mergeNode(const std::string& key, const OTMLNodePtr& node);
+    OTMLNodePtr getNode(const std::string& key);
+    int getNodeSize(const std::string& key);
 
-// additional utilities
-#include "util/point.h"
-#include "util/color.h"
-#include "util/rect.h"
-#include "util/size.h"
-#include "util/matrix.h"
+    bool exists(const std::string& key);
+    void remove(const std::string& key);
 
-// logger
-#include "core/logger.h"
+    std::string getFileName();
+    bool isLoaded();
+
+    // @dontbind
+    ConfigPtr asConfig() { return static_self_cast<Config>(); }
+
+private:
+    std::string m_fileName;
+    OTMLDocumentPtr m_confsDoc;
+};
 
 #endif

@@ -20,37 +20,38 @@
  * THE SOFTWARE.
  */
 
-#ifndef FRAMEWORK_GLOBAL_H
-#define FRAMEWORK_GLOBAL_H
+#include "scheduledevent.h"
 
-#include "stdext/compiler.h"
+ScheduledEvent::ScheduledEvent(const std::string& function, const std::function<void()>& callback, int delay, int maxCycles, bool botSafe) : Event(function, callback, botSafe)
+{
+    m_ticks = g_clock.millis() + delay;
+    m_delay = delay;
+    m_maxCycles = maxCycles;
+    m_cyclesExecuted = 0;
+}
 
-// common C/C++ headers
-#include "pch.h"
+void ScheduledEvent::execute()
+{
+    if(!m_canceled && m_callback && (m_maxCycles == 0 || m_cyclesExecuted < m_maxCycles)) {
+        m_callback();
+        m_executed = true;
+        // callback may be used in the next cycle
+    } else {
+        // reset callback to free object refs
+        m_callback = nullptr;
+    }
 
-// error handling
-#if defined(NDEBUG)
-#define VALIDATE(expression) ((void)0)
-#else
-extern void fatalError(const char* error, const char* file, int line);
-#define VALIDATE(expression) { if(!(expression)) fatalError(#expression, __FILE__, __LINE__); };
-#endif
+    m_cyclesExecuted++;
+}
 
+bool ScheduledEvent::nextCycle()
+{
+    if(m_callback && !m_canceled && (m_maxCycles == 0 || m_cyclesExecuted < m_maxCycles)) {
+        m_ticks += m_delay;
+        return true;
+    }
 
-// global constants
-#include "const.h"
-
-// stdext which includes additional C++ algorithms
-#include "stdext/stdext.h"
-
-// additional utilities
-#include "util/point.h"
-#include "util/color.h"
-#include "util/rect.h"
-#include "util/size.h"
-#include "util/matrix.h"
-
-// logger
-#include "core/logger.h"
-
-#endif
+    // reset callback to free object refs
+    m_callback = nullptr;
+    return false;
+}

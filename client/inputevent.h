@@ -20,37 +20,36 @@
  * THE SOFTWARE.
  */
 
-#ifndef FRAMEWORK_GLOBAL_H
-#define FRAMEWORK_GLOBAL_H
+#ifndef INPUTEVENT_H
+#define INPUTEVENT_H
 
-#include "stdext/compiler.h"
+#include "declarations.h"
 
-// common C/C++ headers
-#include "pch.h"
+struct InputEvent {
+    InputEvent() {
+        reset();
+        keyboardModifiers = 0;
+    }
 
-// error handling
-#if defined(NDEBUG)
-#define VALIDATE(expression) ((void)0)
-#else
-extern void fatalError(const char* error, const char* file, int line);
-#define VALIDATE(expression) { if(!(expression)) fatalError(#expression, __FILE__, __LINE__); };
-#endif
+    void reset(Fw::InputEventType eventType = Fw::NoInputEvent) {
+        type = eventType;
+        wheelDirection = Fw::MouseNoWheel;
+        mouseButton = Fw::MouseNoButton;
+        keyCode = Fw::KeyUnknown;
+        keyText = "";
+        autoRepeatTicks = 0;
+        mouseMoved = Point();
+    };
 
-
-// global constants
-#include "const.h"
-
-// stdext which includes additional C++ algorithms
-#include "stdext/stdext.h"
-
-// additional utilities
-#include "util/point.h"
-#include "util/color.h"
-#include "util/rect.h"
-#include "util/size.h"
-#include "util/matrix.h"
-
-// logger
-#include "core/logger.h"
+    Fw::InputEventType type;
+    Fw::MouseWheelDirection wheelDirection;
+    Fw::MouseButton mouseButton;
+    Fw::Key keyCode;
+    std::string keyText;
+    int keyboardModifiers;
+    Point mousePos;
+    Point mouseMoved;
+    int autoRepeatTicks;
+};
 
 #endif

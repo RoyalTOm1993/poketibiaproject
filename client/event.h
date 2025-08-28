@@ -20,37 +20,33 @@
  * THE SOFTWARE.
  */
 
-#ifndef FRAMEWORK_GLOBAL_H
-#define FRAMEWORK_GLOBAL_H
+#ifndef EVENT_H
+#define EVENT_H
 
-#include "stdext/compiler.h"
+#include <framework/luaengine/luaobject.h>
 
-// common C/C++ headers
-#include "pch.h"
+// @bindclass
+class Event : public LuaObject
+{
+public:
+    Event(const std::string& function, const std::function<void()>& callback, bool botSafe = false);
+    virtual ~Event();
 
-// error handling
-#if defined(NDEBUG)
-#define VALIDATE(expression) ((void)0)
-#else
-extern void fatalError(const char* error, const char* file, int line);
-#define VALIDATE(expression) { if(!(expression)) fatalError(#expression, __FILE__, __LINE__); };
-#endif
+    virtual void execute();
+    void cancel();
 
+    bool isCanceled() { return m_canceled; }
+    bool isExecuted() { return m_executed; }
+    bool isBotSafe() { return m_botSafe; }
 
-// global constants
-#include "const.h"
+    const std::string& getFunction() { return m_function; }
 
-// stdext which includes additional C++ algorithms
-#include "stdext/stdext.h"
-
-// additional utilities
-#include "util/point.h"
-#include "util/color.h"
-#include "util/rect.h"
-#include "util/size.h"
-#include "util/matrix.h"
-
-// logger
-#include "core/logger.h"
+protected:
+    std::string m_function;
+    std::function<void()> m_callback;
+    bool m_canceled;
+    bool m_executed;
+    bool m_botSafe;
+};
 
 #endif

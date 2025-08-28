@@ -20,37 +20,35 @@
  * THE SOFTWARE.
  */
 
-#ifndef FRAMEWORK_GLOBAL_H
-#define FRAMEWORK_GLOBAL_H
+#ifndef CONFIGMANAGER_H
+#define CONFIGMANAGER_H
 
-#include "stdext/compiler.h"
+#include "config.h"
 
-// common C/C++ headers
-#include "pch.h"
+// @bindsingleton g_configs
+class ConfigManager
+{
+public:
+    void init();
+    void terminate();
 
-// error handling
-#if defined(NDEBUG)
-#define VALIDATE(expression) ((void)0)
-#else
-extern void fatalError(const char* error, const char* file, int line);
-#define VALIDATE(expression) { if(!(expression)) fatalError(#expression, __FILE__, __LINE__); };
-#endif
+    ConfigPtr getSettings();
+    ConfigPtr get(const std::string& file);
 
+    ConfigPtr create(const std::string& file);
+    ConfigPtr loadSettings(const std::string file);
+    ConfigPtr load(const std::string& file);
 
-// global constants
-#include "const.h"
+    bool unload(const std::string& file);
+    void remove(const ConfigPtr config);
 
-// stdext which includes additional C++ algorithms
-#include "stdext/stdext.h"
+protected:
+    ConfigPtr m_settings;
 
-// additional utilities
-#include "util/point.h"
-#include "util/color.h"
-#include "util/rect.h"
-#include "util/size.h"
-#include "util/matrix.h"
+private:
+    std::list<ConfigPtr> m_configs;
+};
 
-// logger
-#include "core/logger.h"
+extern ConfigManager g_configs;
 
 #endif

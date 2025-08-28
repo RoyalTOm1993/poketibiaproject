@@ -20,37 +20,38 @@
  * THE SOFTWARE.
  */
 
-#ifndef FRAMEWORK_GLOBAL_H
-#define FRAMEWORK_GLOBAL_H
+#ifndef SCHEDULEDEVENT_H
+#define SCHEDULEDEVENT_H
 
-#include "stdext/compiler.h"
+#include <framework/global.h>
+#include "event.h"
+#include "clock.h"
 
-// common C/C++ headers
-#include "pch.h"
+// @bindclass
+class ScheduledEvent : public Event
+{
+public:
+    ScheduledEvent(const std::string& function, const std::function<void()>& callback, int delay, int maxCycles, bool botSafe = false);
+    void execute();
+    bool nextCycle();
 
-// error handling
-#if defined(NDEBUG)
-#define VALIDATE(expression) ((void)0)
-#else
-extern void fatalError(const char* error, const char* file, int line);
-#define VALIDATE(expression) { if(!(expression)) fatalError(#expression, __FILE__, __LINE__); };
-#endif
+    int ticks() { return m_ticks; }
+    int remainingTicks() { return m_ticks - g_clock.millis(); }
+    int delay() { return m_delay; }
+    int cyclesExecuted() { return m_cyclesExecuted; }
+    int maxCycles() { return m_maxCycles; }
 
+private:
+    ticks_t m_ticks;
+    int m_delay;
+    int m_maxCycles;
+    int m_cyclesExecuted;
+};
 
-// global constants
-#include "const.h"
-
-// stdext which includes additional C++ algorithms
-#include "stdext/stdext.h"
-
-// additional utilities
-#include "util/point.h"
-#include "util/color.h"
-#include "util/rect.h"
-#include "util/size.h"
-#include "util/matrix.h"
-
-// logger
-#include "core/logger.h"
+struct lessScheduledEvent {
+    bool operator()(const ScheduledEventPtr& a, const ScheduledEventPtr& b) {
+        return  b->ticks() < a->ticks();
+    }
+};
 
 #endif
