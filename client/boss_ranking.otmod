@@ -1,0 +1,11 @@
+Module
+  name: boss_ranking
+  description: display top damage rank on boss
+  author: san
+  website: 
+  autoload: true
+  autoload-priority: 1000
+  scripts: [ boss_ranking ]
+  sandboxed: true
+  @onLoad: init()
+  @onUnload: terminate()
